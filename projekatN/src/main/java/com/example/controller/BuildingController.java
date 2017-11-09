@@ -21,7 +21,7 @@ import com.example.model.Building;
 import com.example.service.BuildingService;
 
 @RestController
-@RequestMapping(value = "api/buildings")
+@RequestMapping(value = "/buildings")
 public class BuildingController {
 
 	@Autowired

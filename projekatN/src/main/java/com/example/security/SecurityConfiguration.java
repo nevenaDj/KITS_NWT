@@ -23,10 +23,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	@Autowired
 	private UserDetailsService userDetailsService;
 
-	public void configureAuthentication(AuthenticationManagerBuilder authenticationManagerBuilder) 
-			throws Exception {
-		authenticationManagerBuilder.userDetailsService(this.userDetailsService)
-		                            .passwordEncoder(passwordEncoder());
+	public void configureAuthentication(AuthenticationManagerBuilder authenticationManagerBuilder) throws Exception {
+		authenticationManagerBuilder.userDetailsService(this.userDetailsService).passwordEncoder(passwordEncoder());
 	}
 
 	@Bean
@@ -41,8 +39,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	}
 
 	@Bean
-	public AuthenticationTokenFilter authenticationTokenFilterBean() 
-			throws Exception {
+	public AuthenticationTokenFilter authenticationTokenFilterBean() throws Exception {
 		AuthenticationTokenFilter authenticationTokenFilter = new AuthenticationTokenFilter();
 		authenticationTokenFilter.setAuthenticationManager(authenticationManagerBean());
 		return authenticationTokenFilter;
@@ -50,14 +47,13 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
 	@Override
 	protected void configure(HttpSecurity httpSecurity) throws Exception {
-		httpSecurity.csrf().disable()
-		            .sessionManagement()
-		            	.sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
-		            .authorizeRequests()
-		            	.antMatchers("/api/login").permitAll()
-		            	.anyRequest().authenticated();
-
-		httpSecurity.addFilterBefore(authenticationTokenFilterBean(), 
-				UsernamePasswordAuthenticationFilter.class);
+		
+		  httpSecurity.csrf().disable() .sessionManagement()
+		  .sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
+		  .authorizeRequests() .antMatchers("/login").permitAll()
+		  .anyRequest().authenticated();
+		 
+		httpSecurity.addFilterBefore(authenticationTokenFilterBean(), UsernamePasswordAuthenticationFilter.class);
+		
 	}
 }

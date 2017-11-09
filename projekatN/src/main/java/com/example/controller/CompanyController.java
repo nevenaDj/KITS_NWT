@@ -21,7 +21,7 @@ import com.example.model.User;
 import com.example.service.UserService;
 
 @RestController
-@RequestMapping(value = "/api/companies")
+@RequestMapping(value = "/companies")
 public class CompanyController {
 	@Autowired
 	PasswordEncoder passwordEncoder;

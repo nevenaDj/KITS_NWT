@@ -1,8 +1,10 @@
 package com.example.model;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 
 @Entity
 public class Apartment {
@@ -12,6 +14,8 @@ public class Apartment {
 
 	private Integer number;
 	private String description;
+	@ManyToOne(fetch = FetchType.EAGER)
+	private Building building;
 
 	public Apartment() {
 	}
@@ -45,6 +49,14 @@ public class Apartment {
 
 	public void setDescription(String description) {
 		this.description = description;
+	}
+
+	public Building getBuilding() {
+		return building;
+	}
+
+	public void setBuilding(Building building) {
+		this.building = building;
 	}
 
 }

@@ -3,6 +3,8 @@ set foreign_key_checks = 0;
 insert into authority (name) values ('ROLE_ADMIN');
 insert into authority (name) values ('ROLE_USER');
 insert into authority (name) values ('ROLE_COMPANY');
+insert into authority (name) values ('ROLE_OWNER');
+insert into authority (name) values ('ROLE_PRESIDENT');
 
 -- password is 'admin' (bcrypt encoded) 
 insert into user (username, password) values ('admin', '$2a$04$SwzgBrIJZhfnzOw7KFcdzOTiY6EFVwIpG7fkF/D1w26G1.fWsi.aK');

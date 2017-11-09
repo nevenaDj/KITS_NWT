@@ -17,16 +17,19 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.dto.ApartmentDTO;
 import com.example.model.Apartment;
+import com.example.model.Building;
 import com.example.service.ApartmentService;
+import com.example.service.BuildingService;
 
 @RestController
-@RequestMapping(value = "api/apartments")
 public class ApartmentController {
 
 	@Autowired
 	ApartmentService apartmentService;
+	@Autowired
+	BuildingService buildingService;
 
-	@RequestMapping(method = RequestMethod.GET)
+	@RequestMapping(value = "/apartments", method = RequestMethod.GET)
 	public ResponseEntity<List<ApartmentDTO>> getApartments(Pageable page) {
 		Page<Apartment> apartments = apartmentService.findAll(page);
 
@@ -39,7 +42,7 @@ public class ApartmentController {
 		return new ResponseEntity<List<ApartmentDTO>>(apartmentsDTO, HttpStatus.OK);
 	}
 
-	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
+	@RequestMapping(value = "/apartments/{id}", method = RequestMethod.GET)
 	public ResponseEntity<ApartmentDTO> getApartment(@PathVariable Long id) {
 		Apartment apartment = apartmentService.findOne(id);
 
@@ -50,17 +53,23 @@ public class ApartmentController {
 		return new ResponseEntity<ApartmentDTO>(new ApartmentDTO(apartment), HttpStatus.OK);
 	}
 
-	@RequestMapping(method = RequestMethod.POST, consumes = "application/json")
+	@RequestMapping(value = "/buildings/{id}/apartments", method = RequestMethod.POST, consumes = "application/json")
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
-	public ResponseEntity<ApartmentDTO> addApartment(@RequestBody ApartmentDTO apartmentDTO) {
+	public ResponseEntity<ApartmentDTO> addApartment(@PathVariable Long id, @RequestBody ApartmentDTO apartmentDTO) {
 		Apartment apartment = ApartmentDTO.getApartment(apartmentDTO);
+		Building building = buildingService.findOne(id);
+
+		if (building == null) {
+			return new ResponseEntity<ApartmentDTO>(HttpStatus.BAD_REQUEST);
+		}
+		apartment.setBuilding(building);
 
 		apartment = apartmentService.save(apartment);
 
 		return new ResponseEntity<ApartmentDTO>(new ApartmentDTO(apartment), HttpStatus.CREATED);
 	}
 
-	@RequestMapping(method = RequestMethod.PUT, consumes = "application/json")
+	@RequestMapping(value = "/apartments", method = RequestMethod.PUT, consumes = "application/json")
 	public ResponseEntity<ApartmentDTO> updateApartment(@RequestBody ApartmentDTO apartmentDTO) {
 		Apartment apartment = apartmentService.findOne(apartmentDTO.getId());
 
@@ -76,7 +85,7 @@ public class ApartmentController {
 		return new ResponseEntity<ApartmentDTO>(new ApartmentDTO(apartment), HttpStatus.OK);
 	}
 
-	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+	@RequestMapping(value = "/apartments/{id}", method = RequestMethod.DELETE)
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	public ResponseEntity<Void> deleteApartment(@PathVariable Long id) {
 		Apartment apartment = apartmentService.findOne(id);

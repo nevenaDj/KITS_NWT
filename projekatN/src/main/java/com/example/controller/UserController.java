@@ -45,7 +45,7 @@ public class UserController {
 	@Autowired
 	PasswordEncoder passwordEncoder;
 
-	@RequestMapping(value = "/api/login", method = RequestMethod.POST, consumes = "application/json")
+	@RequestMapping(value = "/login", method = RequestMethod.POST, consumes = "application/json")
 	public ResponseEntity<String> login(@RequestBody LoginDTO loginDTO) {
 		try {
 			UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(loginDTO.getUsername(),
@@ -60,7 +60,7 @@ public class UserController {
 		}
 	}
 
-	@RequestMapping(value = "/api/users", method = RequestMethod.GET)
+	@RequestMapping(value = "/users", method = RequestMethod.GET)
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	public ResponseEntity<List<UserDTO>> getUsers(Pageable page) {
 		Page<User> users = userService.findAll(page);
@@ -73,7 +73,7 @@ public class UserController {
 		return new ResponseEntity<List<UserDTO>>(usersDTO, HttpStatus.OK);
 	}
 
-	@RequestMapping(value = "/api/users/{id}", method = RequestMethod.GET)
+	@RequestMapping(value = "/users/{id}", method = RequestMethod.GET)
 	public ResponseEntity<UserDTO> getUser(@PathVariable Long id) {
 		User user = userService.findOne(id);
 		if (user == null) {
