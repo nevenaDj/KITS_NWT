@@ -1,1 +1,1 @@
-# nvt_kits
+# Konstrukcija i testiranje softvera / Napredne veb tehnologije
