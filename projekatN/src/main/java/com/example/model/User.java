@@ -23,7 +23,7 @@ public class User {
 
 	@OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.REFRESH)
 	private Set<UserAuthority> userAuthorities = new HashSet<UserAuthority>();
-
+	
 	public User() {
 
 	}

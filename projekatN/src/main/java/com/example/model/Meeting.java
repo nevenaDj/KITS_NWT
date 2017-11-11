@@ -27,6 +27,9 @@ public class Meeting {
 
 	@OneToMany(mappedBy = "meeting", fetch = FetchType.LAZY)
 	private Set<Survey> surveys = new HashSet<Survey>();
+	
+	@OneToMany(mappedBy = "meeting", fetch = FetchType.LAZY)
+	private Set<Notification> notifications = new HashSet<Notification>();
 
 	public Meeting() {
 
