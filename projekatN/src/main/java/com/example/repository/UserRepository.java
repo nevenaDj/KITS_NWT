@@ -9,8 +9,11 @@ import com.example.model.User;
 
 public interface UserRepository extends JpaRepository<User, Long> {
 	public User findByUsername(String username);
-	
+
 	@Query("SELECT u FROM User u, UserAuthority au, Authority a WHERE a.name = ?1 AND au.authority.id = a.id AND au.user.id = u.id")
 	public Page<User> find(String role, Pageable page);
+
+	@Query("SELECT a.name FROM User u, UserAuthority au, Authority a WHERE u.id = ?1 AND au.authority.id = a.id AND au.user.id = u.id")
+	public String getUserAuthority(Long id);
 
 }
