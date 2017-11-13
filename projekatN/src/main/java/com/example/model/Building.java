@@ -8,6 +8,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 
 @Entity
 public class Building {
@@ -16,6 +17,9 @@ public class Building {
 	private Long id;
 
 	private String address;
+
+	@OneToOne(fetch = FetchType.EAGER)
+	private User president;
 
 	@OneToMany(mappedBy = "building", fetch = FetchType.LAZY)
 	private Set<Apartment> apartments = new HashSet<Apartment>();
@@ -62,6 +66,14 @@ public class Building {
 
 	public void setMeetings(Set<Meeting> meetings) {
 		this.meetings = meetings;
+	}
+
+	public User getPresident() {
+		return president;
+	}
+
+	public void setPresident(User president) {
+		this.president = president;
 	}
 
 }

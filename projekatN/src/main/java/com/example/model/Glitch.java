@@ -1,12 +1,15 @@
 package com.example.model;
 
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -42,6 +45,9 @@ public class Glitch {
 
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date dateOfRepair;
+
+	@OneToMany(mappedBy = "glitch", fetch = FetchType.LAZY)
+	private Set<Comment> comments = new HashSet<Comment>();
 
 	public Glitch() {
 
@@ -136,6 +142,14 @@ public class Glitch {
 
 	public void setDateOfRepair(Date dateOfRepair) {
 		this.dateOfRepair = dateOfRepair;
+	}
+
+	public Set<Comment> getComments() {
+		return comments;
+	}
+
+	public void setComments(Set<Comment> comments) {
+		this.comments = comments;
 	}
 
 }

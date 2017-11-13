@@ -17,8 +17,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.dto.BuildingDTO;
+import com.example.dto.UserDTO;
 import com.example.model.Building;
+import com.example.model.User;
 import com.example.service.BuildingService;
+import com.example.service.UserService;
 
 @RestController
 @RequestMapping(value = "/buildings")
@@ -26,6 +29,9 @@ public class BuildingController {
 
 	@Autowired
 	BuildingService buildingService;
+
+	@Autowired
+	UserService userService;
 
 	@RequestMapping(method = RequestMethod.GET)
 	public ResponseEntity<List<BuildingDTO>> getBuildings(Pageable page) {
@@ -88,6 +94,24 @@ public class BuildingController {
 		System.out.println(address);
 		return new ResponseEntity<List<BuildingDTO>>(HttpStatus.OK);
 
+	}
+
+	@RequestMapping(value = "/{id}/president", method = RequestMethod.POST, consumes = "application/json")
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	public ResponseEntity<UserDTO> addPresident(@PathVariable Long id, @RequestBody UserDTO userDTO) {
+		User user = UserDTO.getUser(userDTO);
+
+		user = userService.save(user, "ROLE_PRESIDENT");
+
+		Building building = buildingService.findOne(id);
+
+		if (building == null) {
+			return new ResponseEntity<UserDTO>(HttpStatus.BAD_REQUEST);
+		}
+
+		buildingService.setPresident(building.getId(), user);
+
+		return new ResponseEntity<UserDTO>(new UserDTO(user), HttpStatus.CREATED);
 	}
 
 }

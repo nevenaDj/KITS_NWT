@@ -30,4 +30,8 @@ public class GlitchService {
 			return glitchRepository.findGlitchesOfCompany(user.getId(), page);
 		}
 	}
+
+	public Glitch findOne(Long id) {
+		return glitchRepository.findOne(id);
+	}
 }
