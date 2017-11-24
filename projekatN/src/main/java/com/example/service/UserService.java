@@ -60,4 +60,8 @@ public class UserService {
 		return userRepository.findByUsername(username);
 	}
 
+	public User findByUsernameAndAuthority(String username, String role) {
+		return userRepository.findByUsernameAndAuthority(username, role);
+	}
+
 }

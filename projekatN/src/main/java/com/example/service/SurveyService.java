@@ -15,4 +15,8 @@ public class SurveyService {
 	public Survey save(Survey survey) {
 		return surveyRepsotory.save(survey);
 	}
+
+	public Survey findOne(Long id) {
+		return surveyRepsotory.findOne(id);
+	}
 }

@@ -14,6 +14,8 @@ public class Answer {
 	private Long id;
 
 	@ManyToOne(fetch = FetchType.EAGER)
+	private Survey survey;
+	@ManyToOne(fetch = FetchType.EAGER)
 	private Question question;
 	@ManyToOne(fetch = FetchType.EAGER)
 	private Option option;
@@ -30,6 +32,22 @@ public class Answer {
 		this.question = question;
 		this.option = option;
 		this.user = user;
+	}
+
+	public Answer(Survey survey, Question question, Option option, User user) {
+		super();
+		this.survey = survey;
+		this.question = question;
+		this.option = option;
+		this.user = user;
+	}
+
+	public Survey getSurvey() {
+		return survey;
+	}
+
+	public void setSurvey(Survey survey) {
+		this.survey = survey;
 	}
 
 	public Long getId() {

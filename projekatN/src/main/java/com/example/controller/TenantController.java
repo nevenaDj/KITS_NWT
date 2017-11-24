@@ -17,28 +17,48 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.dto.UserDTO;
+import com.example.model.Apartment;
 import com.example.model.User;
+import com.example.model.UserAparment;
+import com.example.service.ApartmentService;
+import com.example.service.UserApartmentService;
 import com.example.service.UserService;
 
 @RestController
-@RequestMapping(value = "/tenants")
 public class TenantController {
 	@Autowired
 	PasswordEncoder passwordEncoder;
 	@Autowired
 	UserService userService;
+	@Autowired
+	ApartmentService apartmentService;
+	@Autowired
+	UserApartmentService userApartmentService;
 
-	@RequestMapping(method = RequestMethod.POST, consumes = "application/json")
+	@RequestMapping(value = "aparments/{id}/tenants", method = RequestMethod.POST, consumes = "application/json")
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
-	public ResponseEntity<UserDTO> addTenant(@RequestBody UserDTO userDTO) {
-		User user = UserDTO.getUser(userDTO);
-		user.setPassword(passwordEncoder.encode(userDTO.getPassword()));
+	public ResponseEntity<UserDTO> addTenant(@PathVariable Long id, @RequestBody UserDTO userDTO) {
 
-		user = userService.save(user, "ROLE_USER");
+		Apartment apartment = apartmentService.findOne(id);
+
+		if (apartment == null) {
+			return new ResponseEntity<UserDTO>(HttpStatus.BAD_REQUEST);
+		}
+
+		User user = userService.findByUsernameAndAuthority(userDTO.getUsername(), "ROLE_USER");
+
+		if (user == null) {
+			user = UserDTO.getUser(userDTO);
+			user.setPassword(passwordEncoder.encode(userDTO.getPassword()));
+			user = userService.save(user, "ROLE_USER");
+		}
+		UserAparment userApartment = new UserAparment(user, apartment);
+		userApartmentService.save(userApartment);
+
 		return new ResponseEntity<UserDTO>(new UserDTO(user), HttpStatus.CREATED);
 	}
 
-	@RequestMapping(method = RequestMethod.GET)
+	@RequestMapping(value = "/tenants", method = RequestMethod.GET)
 	public ResponseEntity<List<UserDTO>> getTenants(Pageable page) {
 		Page<User> users = userService.find(page, "ROLE_USER");
 
@@ -49,7 +69,7 @@ public class TenantController {
 		return new ResponseEntity<List<UserDTO>>(usersDTO, HttpStatus.OK);
 	}
 
-	@RequestMapping(method = RequestMethod.PUT, consumes = "application/json")
+	@RequestMapping(value = "/tenants", method = RequestMethod.PUT, consumes = "application/json")
 	public ResponseEntity<UserDTO> updateTenant(@RequestBody UserDTO userDTO) {
 		User user = userService.findOne(userDTO.getId());
 
@@ -66,7 +86,7 @@ public class TenantController {
 		return new ResponseEntity<UserDTO>(new UserDTO(user), HttpStatus.OK);
 	}
 
-	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+	@RequestMapping(value = "tenants/{id}", method = RequestMethod.DELETE)
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	public ResponseEntity<Void> deleteTenant(@PathVariable Long id) {
 		User user = userService.findOne(id);

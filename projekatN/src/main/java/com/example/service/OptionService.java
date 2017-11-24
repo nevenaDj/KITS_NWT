@@ -15,4 +15,8 @@ public class OptionService {
 		return optionRepository.save(option);
 	}
 
+	public Option findOne(Long id) {
+		return optionRepository.findOne(id);
+	}
+
 }

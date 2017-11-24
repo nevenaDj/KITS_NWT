@@ -15,4 +15,8 @@ public class QuestionService {
 	public Question save(Question question) {
 		return questionRepository.save(question);
 	}
+
+	public Question findOne(Long id) {
+		return questionRepository.findOne(id);
+	}
 }

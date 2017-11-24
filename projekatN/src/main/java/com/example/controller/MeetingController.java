@@ -3,6 +3,7 @@ package com.example.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,6 +25,7 @@ public class MeetingController {
 	BuildingService buildingService;
 
 	@RequestMapping(value = "/buildings/{id}/meetings", method = RequestMethod.POST, consumes = "application/json")
+	@PreAuthorize("hasRole('ROLE_PRESIDENT')")
 	public ResponseEntity<MeetingDTO> addMeeting(@PathVariable Long id, @RequestBody MeetingDTO meetingDTO) {
 		Meeting meeting = MeetingDTO.getMeeting(meetingDTO);
 		Building building = buildingService.findOne(id);

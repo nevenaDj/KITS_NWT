@@ -17,6 +17,9 @@ public class Apartment {
 	@ManyToOne(fetch = FetchType.EAGER)
 	private Building building;
 
+	@ManyToOne(fetch = FetchType.EAGER)
+	private User owner;
+
 	public Apartment() {
 	}
 
@@ -57,6 +60,14 @@ public class Apartment {
 
 	public void setBuilding(Building building) {
 		this.building = building;
+	}
+
+	public User getOwner() {
+		return owner;
+	}
+
+	public void setOwner(User owner) {
+		this.owner = owner;
 	}
 
 }
