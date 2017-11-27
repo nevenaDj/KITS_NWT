@@ -33,7 +33,7 @@ public class CompanyController {
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	public ResponseEntity<UserDTO> addCompany(@RequestBody UserDTO userDTO) {
 		User user = UserDTO.getUser(userDTO);
-		user.setPassword(passwordEncoder.encode(userDTO.getPassword()));
+		user.setPassword(passwordEncoder.encode("password"));
 
 		user = userService.save(user, "ROLE_COMPANY");
 		return new ResponseEntity<UserDTO>(new UserDTO(user), HttpStatus.CREATED);

@@ -28,11 +28,10 @@ public class User {
 
 	}
 
-	public User(Long id, String username, String password, String email, String address, String phoneNo) {
+	public User(Long id, String username, String email, String address, String phoneNo) {
 		super();
 		this.id = id;
 		this.username = username;
-		this.password = password;
 		this.email = email;
 		this.address = address;
 		this.phoneNo = phoneNo;

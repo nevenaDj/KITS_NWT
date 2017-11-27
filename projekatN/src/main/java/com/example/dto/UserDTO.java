@@ -5,7 +5,6 @@ import com.example.model.User;
 public class UserDTO {
 	private Long id;
 	private String username;
-	private String password;
 
 	private String email;
 	private String address;
@@ -16,15 +15,21 @@ public class UserDTO {
 	}
 
 	public UserDTO(User user) {
-		this(user.getId(), user.getUsername(), user.getPassword(), user.getEmail(), user.getAddress(),
-				user.getPhoneNo());
+		this(user.getId(), user.getUsername(), user.getEmail(), user.getAddress(), user.getPhoneNo());
 	}
 
-	public UserDTO(Long id, String username, String password, String email, String address, String phoneNo) {
+	public UserDTO(String username, String email, String address, String phoneNo) {
+		super();
+		this.username = username;
+		this.email = email;
+		this.address = address;
+		this.phoneNo = phoneNo;
+	}
+
+	public UserDTO(Long id, String username, String email, String address, String phoneNo) {
 		super();
 		this.id = id;
 		this.username = username;
-		this.password = password;
 		this.email = email;
 		this.address = address;
 		this.phoneNo = phoneNo;
@@ -44,14 +49,6 @@ public class UserDTO {
 
 	public void setUsername(String username) {
 		this.username = username;
-	}
-
-	public String getPassword() {
-		return password;
-	}
-
-	public void setPassword(String password) {
-		this.password = password;
 	}
 
 	public String getEmail() {
@@ -79,8 +76,8 @@ public class UserDTO {
 	}
 
 	public static User getUser(UserDTO userDTO) {
-		return new User(userDTO.getId(), userDTO.getUsername(), userDTO.getPassword(), userDTO.getEmail(),
-				userDTO.getAddress(), userDTO.getPhoneNo());
+		return new User(userDTO.getId(), userDTO.getUsername(), userDTO.getEmail(), userDTO.getAddress(),
+				userDTO.getPhoneNo());
 
 	}
 

@@ -35,7 +35,7 @@ public class TenantController {
 	@Autowired
 	UserApartmentService userApartmentService;
 
-	@RequestMapping(value = "aparments/{id}/tenants", method = RequestMethod.POST, consumes = "application/json")
+	@RequestMapping(value = "/aparments/{id}/tenants", method = RequestMethod.POST, consumes = "application/json")
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	public ResponseEntity<UserDTO> addTenant(@PathVariable Long id, @RequestBody UserDTO userDTO) {
 
@@ -49,7 +49,7 @@ public class TenantController {
 
 		if (user == null) {
 			user = UserDTO.getUser(userDTO);
-			user.setPassword(passwordEncoder.encode(userDTO.getPassword()));
+			user.setPassword(passwordEncoder.encode("password"));
 			user = userService.save(user, "ROLE_USER");
 		}
 		UserAparment userApartment = new UserAparment(user, apartment);
@@ -86,7 +86,7 @@ public class TenantController {
 		return new ResponseEntity<UserDTO>(new UserDTO(user), HttpStatus.OK);
 	}
 
-	@RequestMapping(value = "tenants/{id}", method = RequestMethod.DELETE)
+	@RequestMapping(value = "/tenants/{id}", method = RequestMethod.DELETE)
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	public ResponseEntity<Void> deleteTenant(@PathVariable Long id) {
 		User user = userService.findOne(id);
