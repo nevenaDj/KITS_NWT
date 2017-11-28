@@ -17,8 +17,8 @@ public class ApartmentService {
 		return apartmentRepository.findOne(id);
 	}
 
-	public Page<Apartment> findAll(Pageable page) {
-		return apartmentRepository.findAll(page);
+	public Page<Apartment> findApartments(Long idBuilding, Pageable page) {
+		return apartmentRepository.findApartments(idBuilding, page);
 	}
 
 	public Apartment save(Apartment apartment) {

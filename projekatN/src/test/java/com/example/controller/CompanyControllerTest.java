@@ -2,14 +2,6 @@ package com.example.controller;
 
 import static com.example.constants.UserConstants.PASSWORD_ADMIN;
 import static com.example.constants.UserConstants.USERNAME_ADMIN;
-import static com.example.constants.UserConstants.NEW_USERNAME;
-import static com.example.constants.UserConstants.PAGE_SIZE;
-import static com.example.constants.UserConstants.NEW_EMAIL;
-import static com.example.constants.UserConstants.NEW_PHONE_NO;
-import static com.example.constants.UserConstants.NEW_ADDRESS;
-import static com.example.constants.UserConstants.USERNAME;
-import static com.example.constants.UserConstants.ID_USER;
-import static org.hamcrest.CoreMatchers.hasItem;
 import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -18,6 +10,13 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static com.example.constants.UserConstants.NEW_USERNAME_COMPANY;
+import static com.example.constants.UserConstants.NEW_EMAIL_COMPANY;
+import static com.example.constants.UserConstants.NEW_ADDRESS_COMPANY;
+import static com.example.constants.UserConstants.NEW_PHONE_NO_COMPANY;
+import static com.example.constants.UserConstants.PAGE_SIZE;
+import static com.example.constants.UserConstants.USERNAME_COMPANY;
+import static com.example.constants.UserConstants.ID_COMPANY;
 
 import java.nio.charset.Charset;
 
@@ -46,7 +45,8 @@ import com.jayway.restassured.RestAssured;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = WebEnvironment.DEFINED_PORT)
-public class TenantControllerTest {
+public class CompanyControllerTest {
+	
 	private String accessToken;
 
 	@Autowired
@@ -74,91 +74,65 @@ public class TenantControllerTest {
 				new LoginDTO(USERNAME_ADMIN, PASSWORD_ADMIN), String.class);
 		accessToken = responseEntity.getBody();
 	}
-
 	
+
 	@Test
 	@Transactional
-	@Rollback(true)
-	public void testAddTenant() throws Exception {
-		UserDTO userDTO = new UserDTO(NEW_USERNAME, NEW_EMAIL, NEW_ADDRESS, NEW_PHONE_NO);
-
-		String json = TestUtils.convertObjectToJson(userDTO);
-
-		mockMvc.perform(
-				post("/aparments/1/tenants").header("X-Auth-Token", accessToken)
-										   .contentType(contentType)
-										   .content(json))
-				.andExpect(status().isCreated())
-				.andExpect(jsonPath("$.username").value(NEW_USERNAME))
-				.andExpect(jsonPath("$.email").value(NEW_EMAIL))
-				.andExpect(jsonPath("$.address").value(NEW_ADDRESS))
-				.andExpect(jsonPath("$.phoneNo").value(NEW_PHONE_NO));
-
-	}
-	
-	@Test
-	public void testAddTenantUnauthorized() throws Exception {
-		UserDTO userDTO = new UserDTO(NEW_USERNAME, NEW_EMAIL, NEW_ADDRESS, NEW_PHONE_NO);
-
-		String json = TestUtils.convertObjectToJson(userDTO);
-
-		mockMvc.perform(
-				post("/aparments/1/tenants")
-										   .contentType(contentType)
-										   .content(json))
-				.andExpect(status().is(403));
-
-	}
-	
-	
-	@Test
-	public void testAddTenantBadRequest() throws Exception {
-		UserDTO userDTO = new UserDTO(NEW_USERNAME, NEW_EMAIL, NEW_ADDRESS, NEW_PHONE_NO);
-
-		String json = TestUtils.convertObjectToJson(userDTO);
-
-		mockMvc.perform(
-				post("/aparments/10/tenants").header("X-Auth-Token", accessToken)
-										   .contentType(contentType)
-										   .content(json))
-				.andExpect(status().isBadRequest());
-	}
-	
-	
-	@Test
-	public void testGetTenants() throws Exception{
-		mockMvc.perform(get("/tenants?page=0&size=" + PAGE_SIZE).header("X-Auth-Token", accessToken))
-		.andExpect(status().isOk())
-		.andExpect(jsonPath("$", hasSize(1)))
-		.andExpect(content().contentType(contentType))
-		.andExpect(jsonPath("$.[*].username").value(hasItem(USERNAME)));	
-	}
-	
-	@Test
-	@Transactional
-	@Rollback(true)
-	public void testUpdateTenant() throws Exception{
-		UserDTO userDTO = new UserDTO(ID_USER,NEW_USERNAME, NEW_EMAIL, NEW_ADDRESS, NEW_PHONE_NO);
-		String json = TestUtils.convertObjectToJson(userDTO);
-		
-		mockMvc.perform(put("/tenants")
-				.header("X-Auth-Token", accessToken)
-				.contentType(contentType)
-				.content(json))
-			.andExpect(status().isOk())
-			.andExpect(jsonPath("$.email").value(NEW_EMAIL))
-			.andExpect(jsonPath("$.address").value(NEW_ADDRESS))
-			.andExpect(jsonPath("$.phoneNo").value(NEW_PHONE_NO));
-	}
-	
-	@Test
-    @Transactional
     @Rollback(true)
-	public void testDeleteTenant() throws Exception{
-		mockMvc.perform(delete("/tenants/" + ID_USER.intValue())
-				.header("X-Auth-Token", accessToken))
-		.andExpect(status().isOk());
+	public void testAddCompany() throws Exception{
+		UserDTO userDTO = new UserDTO(NEW_USERNAME_COMPANY, NEW_EMAIL_COMPANY, NEW_ADDRESS_COMPANY, NEW_PHONE_NO_COMPANY);
+		
+		String json = TestUtils.convertObjectToJson(userDTO);
+		
+		mockMvc.perform(post("/companies").header("X-Auth-Token", accessToken)
+										  .contentType(contentType)
+										  .content(json))
+		.andExpect(status().isCreated())
+		.andExpect(content().contentType(contentType))
+		.andExpect(jsonPath("$.username").value(NEW_USERNAME_COMPANY))
+		.andExpect(jsonPath("$.email").value(NEW_EMAIL_COMPANY))
+		.andExpect(jsonPath("$.address").value(NEW_ADDRESS_COMPANY))
+		.andExpect(jsonPath("$.phoneNo").value(NEW_PHONE_NO_COMPANY));		
 		
 	}
+	
+	@Test
+	public void testGetCompanies() throws Exception{
+		
+		mockMvc.perform(get("/companies?page=0&size="+PAGE_SIZE).header("X-Auth-Token", accessToken))
+		.andExpect(status().isOk())
+		.andExpect(content().contentType(contentType))
+		.andExpect(jsonPath("$", hasSize(1)))
+		.andExpect(jsonPath("$.[*].username").value(USERNAME_COMPANY));
+		
+	}
+	
+	@Test
+	@Transactional
+    @Rollback(true)
+	public void testUpdateCompany() throws Exception{
+		UserDTO userDTO = new UserDTO(ID_COMPANY,NEW_USERNAME_COMPANY, NEW_EMAIL_COMPANY, NEW_ADDRESS_COMPANY, NEW_PHONE_NO_COMPANY);
+		
+		String json = TestUtils.convertObjectToJson(userDTO);
+		
+		mockMvc.perform(put("/companies").header("X-Auth-Token", accessToken)
+										 .contentType(contentType)
+										 .content(json))
+		.andExpect(status().isOk())
+		.andExpect(content().contentType(contentType))
+		.andExpect(jsonPath("$.email").value(NEW_EMAIL_COMPANY))
+		.andExpect(jsonPath("$.address").value(NEW_ADDRESS_COMPANY))
+		.andExpect(jsonPath("$.phoneNo").value(NEW_PHONE_NO_COMPANY));
+		
+	}
+	
+	@Test
+	@Transactional
+    @Rollback(true)
+	public void testDeleteCompany() throws Exception{
+		mockMvc.perform(delete("/companies/" + ID_COMPANY.intValue()).header("X-Auth-Token", accessToken))
+		.andExpect(status().isOk());
+	}
+
 
 }

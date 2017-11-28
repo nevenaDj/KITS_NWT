@@ -29,9 +29,9 @@ public class ApartmentController {
 	@Autowired
 	BuildingService buildingService;
 
-	@RequestMapping(value = "/apartments", method = RequestMethod.GET)
-	public ResponseEntity<List<ApartmentDTO>> getApartments(Pageable page) {
-		Page<Apartment> apartments = apartmentService.findAll(page);
+	@RequestMapping(value = "/buildings/{id}/apartments", method = RequestMethod.GET)
+	public ResponseEntity<List<ApartmentDTO>> getApartments(@PathVariable Long id,Pageable page) {
+		Page<Apartment> apartments = apartmentService.findApartments(id, page);
 
 		List<ApartmentDTO> apartmentsDTO = new ArrayList<ApartmentDTO>();
 

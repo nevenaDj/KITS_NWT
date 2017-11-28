@@ -9,7 +9,6 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -23,8 +22,10 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	@Autowired
 	private UserDetailsService userDetailsService;
 
-	public void configureAuthentication(AuthenticationManagerBuilder authenticationManagerBuilder) throws Exception {
-		authenticationManagerBuilder.userDetailsService(this.userDetailsService).passwordEncoder(passwordEncoder());
+	public void configureAuthentication(AuthenticationManagerBuilder authenticationManagerBuilder) 
+			throws Exception {
+		authenticationManagerBuilder.userDetailsService(this.userDetailsService)
+									.passwordEncoder(passwordEncoder());
 	}
 
 	@Bean
@@ -48,12 +49,18 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(HttpSecurity httpSecurity) throws Exception {
 		
-		  httpSecurity.csrf().disable() .sessionManagement()
-		  .sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
-		  .authorizeRequests() .antMatchers("/login").permitAll()
-		  .anyRequest().authenticated();
-		 
-		httpSecurity.addFilterBefore(authenticationTokenFilterBean(), UsernamePasswordAuthenticationFilter.class);
+		httpSecurity.csrf().disable()
+					.authorizeRequests()
+					.antMatchers("/login").permitAll()
+					.antMatchers("/h2_console/**").hasRole("ADMIN")
+					.anyRequest().authenticated().and();
+				
+		//httpSecurity.formLogin().permitAll().and()
+		//			.logout().permitAll();
+		//httpSecurity.headers().frameOptions().disable();
 		
+
+		httpSecurity.addFilterBefore(authenticationTokenFilterBean(), UsernamePasswordAuthenticationFilter.class);
+
 	}
 }

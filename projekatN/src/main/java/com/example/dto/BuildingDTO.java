@@ -14,6 +14,11 @@ public class BuildingDTO {
 		this(building.getId(), building.getAddress());
 	}
 
+	public BuildingDTO(String address) {
+		super();
+		this.address = address;
+	}
+
 	public BuildingDTO(Long id, String address) {
 		super();
 		this.id = id;

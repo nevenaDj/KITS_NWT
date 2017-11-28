@@ -16,6 +16,11 @@ public class MeetingDTO {
 		this(meeting.getId(), meeting.getDateAndTime());
 	}
 
+	public MeetingDTO(Date dateAndTime) {
+		super();
+		this.dateAndTime = dateAndTime;
+	}
+
 	public MeetingDTO(Long id, Date dateAndTime) {
 		super();
 		this.id = id;

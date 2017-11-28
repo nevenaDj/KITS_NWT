@@ -15,6 +15,12 @@ public class ApartmentDTO {
 		this(apartment.getId(), apartment.getNumber(), apartment.getDescription());
 	}
 
+	public ApartmentDTO(Integer number, String description) {
+		super();
+		this.number = number;
+		this.description = description;
+	}
+
 	public ApartmentDTO(Long id, Integer number, String description) {
 		super();
 		this.id = id;

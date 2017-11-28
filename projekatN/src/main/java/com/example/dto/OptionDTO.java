@@ -16,6 +16,11 @@ public class OptionDTO {
 		this(option.getId(), option.getText());
 	}
 
+	public OptionDTO(String text) {
+		super();
+		this.text = text;
+	}
+
 	public OptionDTO(Long id, String text) {
 		super();
 		this.id = id;
