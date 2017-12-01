@@ -5,21 +5,25 @@ import com.example.model.Building;
 public class BuildingDTO {
 
 	private Long id;
-	private String address;
+	private AddressDTO address;
 
 	public BuildingDTO() {
 	}
 
 	public BuildingDTO(Building building) {
-		this(building.getId(), building.getAddress());
+
+		this.id = building.getId();
+		if (building.getAddress() != null) {
+			this.address = new AddressDTO(building.getAddress());
+		}
 	}
 
-	public BuildingDTO(String address) {
+	public BuildingDTO(AddressDTO address) {
 		super();
 		this.address = address;
 	}
 
-	public BuildingDTO(Long id, String address) {
+	public BuildingDTO(Long id, AddressDTO address) {
 		super();
 		this.id = id;
 		this.address = address;
@@ -33,16 +37,21 @@ public class BuildingDTO {
 		this.id = id;
 	}
 
-	public String getAddress() {
+	public AddressDTO getAddress() {
 		return address;
 	}
 
-	public void setAddress(String address) {
+	public void setAddress(AddressDTO address) {
 		this.address = address;
 	}
 
 	public static Building getBuilding(BuildingDTO buildingDTO) {
-		return new Building(buildingDTO.getId(), buildingDTO.getAddress());
+		if (buildingDTO.getAddress() != null) {
+			return new Building(buildingDTO.getId(), AddressDTO.getAddress(buildingDTO.getAddress()));
+		} else {
+			return new Building(buildingDTO.getId(), null);
+
+		}
 	}
 
 }

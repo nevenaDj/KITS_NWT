@@ -6,7 +6,10 @@ import static com.example.constants.UserConstants.NEW_USERNAME;
 import static com.example.constants.UserConstants.PAGE_SIZE;
 import static com.example.constants.UserConstants.NEW_EMAIL;
 import static com.example.constants.UserConstants.NEW_PHONE_NO;
-import static com.example.constants.UserConstants.NEW_ADDRESS;
+import static com.example.constants.UserConstants.NEW_STREET;
+import static com.example.constants.UserConstants.NEW_NUMBER;
+import static com.example.constants.UserConstants.NEW_ZIP_CODE;
+import static com.example.constants.UserConstants.NEW_CITY;
 import static com.example.constants.UserConstants.USERNAME;
 import static com.example.constants.UserConstants.ID_USER;
 import static org.hamcrest.CoreMatchers.hasItem;
@@ -40,6 +43,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
 
 import com.example.TestUtils;
+import com.example.dto.AddressDTO;
 import com.example.dto.LoginDTO;
 import com.example.dto.UserDTO;
 import com.jayway.restassured.RestAssured;
@@ -80,7 +84,8 @@ public class TenantControllerTest {
 	@Transactional
 	@Rollback(true)
 	public void testAddTenant() throws Exception {
-		UserDTO userDTO = new UserDTO(NEW_USERNAME, NEW_EMAIL, NEW_ADDRESS, NEW_PHONE_NO);
+		AddressDTO addressDTO = new AddressDTO(NEW_STREET, NEW_NUMBER, NEW_ZIP_CODE, NEW_CITY);
+		UserDTO userDTO = new UserDTO(NEW_USERNAME, NEW_EMAIL, addressDTO, NEW_PHONE_NO);
 
 		String json = TestUtils.convertObjectToJson(userDTO);
 
@@ -91,14 +96,18 @@ public class TenantControllerTest {
 				.andExpect(status().isCreated())
 				.andExpect(jsonPath("$.username").value(NEW_USERNAME))
 				.andExpect(jsonPath("$.email").value(NEW_EMAIL))
-				.andExpect(jsonPath("$.address").value(NEW_ADDRESS))
+				.andExpect(jsonPath("$.address.street").value(NEW_STREET))
+				.andExpect(jsonPath("$.address.number").value(NEW_NUMBER))
+				.andExpect(jsonPath("$.address.zipCode").value(NEW_ZIP_CODE))
+				.andExpect(jsonPath("$.address.city").value(NEW_CITY))
 				.andExpect(jsonPath("$.phoneNo").value(NEW_PHONE_NO));
 
 	}
 	
 	@Test
 	public void testAddTenantUnauthorized() throws Exception {
-		UserDTO userDTO = new UserDTO(NEW_USERNAME, NEW_EMAIL, NEW_ADDRESS, NEW_PHONE_NO);
+		AddressDTO addressDTO = new AddressDTO(NEW_STREET, NEW_NUMBER, NEW_ZIP_CODE, NEW_CITY);
+		UserDTO userDTO = new UserDTO(NEW_USERNAME, NEW_EMAIL, addressDTO, NEW_PHONE_NO);
 
 		String json = TestUtils.convertObjectToJson(userDTO);
 
@@ -113,7 +122,8 @@ public class TenantControllerTest {
 	
 	@Test
 	public void testAddTenantBadRequest() throws Exception {
-		UserDTO userDTO = new UserDTO(NEW_USERNAME, NEW_EMAIL, NEW_ADDRESS, NEW_PHONE_NO);
+		AddressDTO addressDTO = new AddressDTO(NEW_STREET, NEW_NUMBER, NEW_ZIP_CODE, NEW_CITY);
+		UserDTO userDTO = new UserDTO(NEW_USERNAME, NEW_EMAIL, addressDTO, NEW_PHONE_NO);
 
 		String json = TestUtils.convertObjectToJson(userDTO);
 
@@ -138,7 +148,8 @@ public class TenantControllerTest {
 	@Transactional
 	@Rollback(true)
 	public void testUpdateTenant() throws Exception{
-		UserDTO userDTO = new UserDTO(ID_USER,NEW_USERNAME, NEW_EMAIL, NEW_ADDRESS, NEW_PHONE_NO);
+		AddressDTO addressDTO = new AddressDTO(NEW_STREET, NEW_NUMBER, NEW_ZIP_CODE, NEW_CITY);
+		UserDTO userDTO = new UserDTO(ID_USER,NEW_USERNAME, NEW_EMAIL, addressDTO, NEW_PHONE_NO);
 		String json = TestUtils.convertObjectToJson(userDTO);
 		
 		mockMvc.perform(put("/tenants")
@@ -147,7 +158,10 @@ public class TenantControllerTest {
 				.content(json))
 			.andExpect(status().isOk())
 			.andExpect(jsonPath("$.email").value(NEW_EMAIL))
-			.andExpect(jsonPath("$.address").value(NEW_ADDRESS))
+			.andExpect(jsonPath("$.address.street").value(NEW_STREET))
+			.andExpect(jsonPath("$.address.number").value(NEW_NUMBER))
+			.andExpect(jsonPath("$.address.zipCode").value(NEW_ZIP_CODE))
+			.andExpect(jsonPath("$.address.city").value(NEW_CITY))
 			.andExpect(jsonPath("$.phoneNo").value(NEW_PHONE_NO));
 	}
 	

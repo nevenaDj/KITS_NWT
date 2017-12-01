@@ -9,6 +9,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 
 @Entity
 public class User {
@@ -18,7 +19,8 @@ public class User {
 	private String username;
 	private String password;
 	private String email;
-	private String address;
+	@OneToOne
+	private Address address;
 	private String phoneNo;
 
 	@OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.REFRESH)
@@ -28,10 +30,19 @@ public class User {
 
 	}
 
-	public User(Long id, String username, String email, String address, String phoneNo) {
+	public User(Long id, String username, String email, Address address, String phoneNo) {
 		super();
 		this.id = id;
 		this.username = username;
+		this.email = email;
+		this.address = address;
+		this.phoneNo = phoneNo;
+	}
+
+	public User(String username, String password, String email, Address address, String phoneNo) {
+		super();
+		this.username = username;
+		this.password = password;
 		this.email = email;
 		this.address = address;
 		this.phoneNo = phoneNo;
@@ -69,11 +80,11 @@ public class User {
 		this.username = username;
 	}
 
-	public String getAddress() {
+	public Address getAddress() {
 		return address;
 	}
 
-	public void setAddress(String address) {
+	public void setAddress(Address address) {
 		this.address = address;
 	}
 

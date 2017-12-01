@@ -37,7 +37,7 @@ public class CommnetController {
 	TokenUtils tokenUtils;
 
 	@RequestMapping(value = "glitches/{id}/comments", method = RequestMethod.POST, consumes = "application/json")
-	@PreAuthorize("hasRole('ROLE_COMPANY')")
+	@PreAuthorize("hasAnyRole('ROLE_COMPANY','ROLE_USER')")
 	public ResponseEntity<CommentDTO> addComment(@PathVariable Long id, @RequestBody CommentDTO commentDTO,
 			HttpServletRequest request) {
 		String token = request.getHeader("X-Auth-Token");

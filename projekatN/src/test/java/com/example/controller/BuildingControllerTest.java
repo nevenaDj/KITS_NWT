@@ -5,11 +5,16 @@ import static org.hamcrest.Matchers.hasSize;
 
 import static com.example.constants.UserConstants.PASSWORD_ADMIN;
 import static com.example.constants.UserConstants.USERNAME_ADMIN;
-import static com.example.constants.BuildingConstatnts.BUILDING_ADDRESS_1;
-import static com.example.constants.BuildingConstatnts.BUILDING_ADDRESS_2;
+import static com.example.constants.BuildingConstatnts.STREET;
+import static com.example.constants.BuildingConstatnts.NUMBER;
+import static com.example.constants.BuildingConstatnts.ZIP_CODE;
+import static com.example.constants.BuildingConstatnts.CITY;
 import static com.example.constants.BuildingConstatnts.BUILDING_ID_1;
 import static com.example.constants.BuildingConstatnts.BUILDING_ID_2;
-import static com.example.constants.BuildingConstatnts.NEW_ADDRESS;
+import static com.example.constants.BuildingConstatnts.NEW_STREET;
+import static com.example.constants.BuildingConstatnts.NEW_NUMBER;
+import static com.example.constants.BuildingConstatnts.NEW_ZIP_CODE;
+import static com.example.constants.BuildingConstatnts.NEW_CITY;
 import static com.example.constants.BuildingConstatnts.NEW_ID;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -41,6 +46,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
 
 import com.example.TestUtils;
+import com.example.dto.AddressDTO;
 import com.example.dto.BuildingDTO;
 import com.example.dto.LoginDTO;
 import com.jayway.restassured.RestAssured;
@@ -84,8 +90,10 @@ public class BuildingControllerTest {
 		.andExpect(status().isOk())
 		.andExpect(content().contentType(contentType))
 		.andExpect(jsonPath("$", hasSize(PAGE_SIZE)))
-		.andExpect(jsonPath("$.[*].address").value(hasItem(BUILDING_ADDRESS_1)))
-		.andExpect(jsonPath("$.[*].address").value(hasItem(BUILDING_ADDRESS_2)))
+		.andExpect(jsonPath("$.[*].address.street").value(hasItem(STREET)))
+		.andExpect(jsonPath("$.[*].address.number").value(hasItem(NUMBER)))
+		.andExpect(jsonPath("$.[*].address.city").value(hasItem(CITY)))
+		.andExpect(jsonPath("$.[*].address.zipCode").value(hasItem(ZIP_CODE)))
 		.andExpect(jsonPath("$.[*].id").value(hasItem(BUILDING_ID_1.intValue())))
 		.andExpect(jsonPath("$.[*].id").value(hasItem(BUILDING_ID_2.intValue())));
 	}
@@ -96,14 +104,19 @@ public class BuildingControllerTest {
 		.andExpect(status().isOk())
 		.andExpect(content().contentType(contentType))
 		.andExpect(jsonPath("$.id").value(BUILDING_ID_1))
-		.andExpect(jsonPath("$.address").value(BUILDING_ADDRESS_1));
+		.andExpect(jsonPath("$.address.street").value(STREET))
+		.andExpect(jsonPath("$.address.number").value(NUMBER))
+		.andExpect(jsonPath("$.address.city").value(CITY))
+		.andExpect(jsonPath("$.address.zipCode").value(ZIP_CODE));
+	
 	}
 	
 	@Test
 	@Transactional
 	@Rollback(true)
 	public void testAddBuilding() throws Exception{
-		BuildingDTO buildingDTO = new BuildingDTO(NEW_ADDRESS);
+		AddressDTO addressDTO = new AddressDTO(NEW_STREET, NEW_NUMBER, NEW_ZIP_CODE, NEW_CITY);
+		BuildingDTO buildingDTO = new BuildingDTO(addressDTO);
 		
 		String json = TestUtils.convertObjectToJson(buildingDTO);
 		
@@ -113,7 +126,10 @@ public class BuildingControllerTest {
 		.andExpect(status().isCreated())
 		.andExpect(content().contentType(contentType))
 		.andExpect(jsonPath("$.id").value(NEW_ID))
-		.andExpect(jsonPath("$.address").value(NEW_ADDRESS));
+		.andExpect(jsonPath("$.address.street").value(NEW_STREET))
+		.andExpect(jsonPath("$.address.number").value(NEW_NUMBER))
+		.andExpect(jsonPath("$.address.city").value(NEW_CITY))
+		.andExpect(jsonPath("$.address.zipCode").value(NEW_ZIP_CODE));
 	
 	}
 	
@@ -121,7 +137,8 @@ public class BuildingControllerTest {
 	@Transactional
 	@Rollback(true)
 	public void testUpdateBuilding() throws Exception{
-		BuildingDTO buildingDTO = new BuildingDTO(BUILDING_ID_1, NEW_ADDRESS);
+		AddressDTO addressDTO = new AddressDTO(NEW_STREET, NEW_NUMBER, NEW_ZIP_CODE, NEW_CITY);
+		BuildingDTO buildingDTO = new BuildingDTO(BUILDING_ID_1, addressDTO);
 		
 		String json = TestUtils.convertObjectToJson(buildingDTO);
 		
@@ -130,8 +147,10 @@ public class BuildingControllerTest {
 				.content(json))
 		.andExpect(status().isOk())
 		.andExpect(content().contentType(contentType))
-		.andExpect(jsonPath("$.address").value(NEW_ADDRESS));
-		
+		.andExpect(jsonPath("$.address.street").value(NEW_STREET))
+		.andExpect(jsonPath("$.address.number").value(NEW_NUMBER))
+		.andExpect(jsonPath("$.address.city").value(NEW_CITY))
+		.andExpect(jsonPath("$.address.zipCode").value(NEW_ZIP_CODE));
 	}
 	
 	@Test

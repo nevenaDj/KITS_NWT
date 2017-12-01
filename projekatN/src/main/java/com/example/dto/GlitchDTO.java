@@ -9,7 +9,7 @@ import com.example.model.GlitchType;
 public class GlitchDTO {
 	private Long id;
 	private UserDTO responsiblePerson;
-	private UserDTO company;
+	private Long companyID;
 	private String description;
 	private Date dateOfReport;
 	private ApartmentDTO apartment;
@@ -24,9 +24,6 @@ public class GlitchDTO {
 	public GlitchDTO(Glitch glitch) {
 		this(glitch.getId(), glitch.getDescription(), glitch.getDateOfReport(), glitch.getType(), glitch.getState(),
 				glitch.getDateOfRepair());
-		if (glitch.getCompany() != null) {
-			this.company = new UserDTO(glitch.getCompany());
-		}
 
 		if (glitch.getResponsiblePerson() != null) {
 			this.responsiblePerson = new UserDTO(glitch.getResponsiblePerson());
@@ -64,12 +61,12 @@ public class GlitchDTO {
 		this.responsiblePerson = responsiblePerson;
 	}
 
-	public UserDTO getCompany() {
-		return company;
+	public Long getCompanyID() {
+		return companyID;
 	}
 
-	public void setCompany(UserDTO company) {
-		this.company = company;
+	public void setCompanyID(Long companyID) {
+		this.companyID = companyID;
 	}
 
 	public String getDescription() {
@@ -123,10 +120,6 @@ public class GlitchDTO {
 	public static Glitch getGlitch(GlitchDTO glitchDTO) {
 		Glitch glitch = new Glitch(glitchDTO.getId(), glitchDTO.getDescription(), glitchDTO.getDateOfReport(),
 				glitchDTO.getType(), glitchDTO.getState(), glitchDTO.getDateOfRepair());
-
-		if (glitchDTO.getCompany() != null) {
-			glitch.setCompany(UserDTO.getUser(glitchDTO.getCompany()));
-		}
 
 		if (glitchDTO.getResponsiblePerson() != null) {
 			glitch.setResponsiblePerson(UserDTO.getUser(glitchDTO.getResponsiblePerson()));

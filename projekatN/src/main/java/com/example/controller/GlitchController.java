@@ -18,11 +18,14 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.dto.GlitchDTO;
+import com.example.dto.UserDTO;
 import com.example.model.Apartment;
+import com.example.model.Building;
 import com.example.model.Glitch;
 import com.example.model.User;
 import com.example.security.TokenUtils;
 import com.example.service.ApartmentService;
+import com.example.service.BuildingService;
 import com.example.service.GlitchService;
 import com.example.service.UserService;
 
@@ -41,6 +44,9 @@ public class GlitchController {
 	@Autowired
 	ApartmentService apartmentService;
 
+	@Autowired
+	BuildingService buildingService;
+
 	@RequestMapping(value = "/apartments/{id}/glitches", method = RequestMethod.POST, consumes = "application/json")
 	@PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_OWNER')")
 	public ResponseEntity<GlitchDTO> addGlitch(@PathVariable Long id, @RequestBody GlitchDTO glitchDTO,
@@ -49,6 +55,12 @@ public class GlitchController {
 		String username = tokenUtils.getUsernameFromToken(token);
 
 		Glitch glitch = GlitchDTO.getGlitch(glitchDTO);
+
+		User company = userService.findOne(glitchDTO.getCompanyID());
+
+		if (company != null) {
+			glitch.setCompany(company);
+		}
 
 		User tenant = userService.findByUsername(username);
 		glitch.setTenant(tenant);
@@ -60,6 +72,11 @@ public class GlitchController {
 		}
 
 		glitch.setApartment(apartment);
+
+		if (glitch.getResponsiblePerson() == null) {
+			Building building = buildingService.findOne(apartment.getBuilding().getId());
+			glitch.setResponsiblePerson(building.getPresident());
+		}
 
 		glitch = glitchService.save(glitch);
 
@@ -83,6 +100,25 @@ public class GlitchController {
 		}
 
 		return new ResponseEntity<List<GlitchDTO>>(glitchesDTO, HttpStatus.OK);
+
+	}
+
+	@RequestMapping(value = "/glitches/{id}/responsiblePerson", method = RequestMethod.PUT)
+	@PreAuthorize("hasRole('ROLE_PRESIDENT')")
+	public ResponseEntity<GlitchDTO> changeResponsiblePerson(@PathVariable Long id, @RequestBody UserDTO userDTO) {
+		Glitch glitch = glitchService.findOne(id);
+
+		if (glitch == null) {
+			return new ResponseEntity<GlitchDTO>(HttpStatus.BAD_REQUEST);
+		}
+
+		if (userDTO != null) {
+			glitch.setResponsiblePerson(UserDTO.getUser(userDTO));
+		}
+
+		glitch = glitchService.save(glitch);
+
+		return new ResponseEntity<GlitchDTO>(new GlitchDTO(glitch), HttpStatus.OK);
 
 	}
 }
