@@ -18,10 +18,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.dto.GlitchDTO;
+import com.example.dto.GlitchTypeDTO;
 import com.example.dto.UserDTO;
 import com.example.model.Apartment;
 import com.example.model.Building;
 import com.example.model.Glitch;
+import com.example.model.GlitchType;
 import com.example.model.User;
 import com.example.security.TokenUtils;
 import com.example.service.ApartmentService;
@@ -120,5 +122,15 @@ public class GlitchController {
 
 		return new ResponseEntity<GlitchDTO>(new GlitchDTO(glitch), HttpStatus.OK);
 
+	}
+
+	@RequestMapping(value = "/glitchTypes", method = RequestMethod.POST, consumes = "application/json")
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	public ResponseEntity<GlitchTypeDTO> addGlitchType(@RequestBody GlitchTypeDTO glitchTypeDTO) {
+		GlitchType glitchType = GlitchTypeDTO.getGlitchType(glitchTypeDTO);
+
+		glitchType = glitchService.saveGlitchType(glitchType);
+
+		return new ResponseEntity<GlitchTypeDTO>(new GlitchTypeDTO(glitchType), HttpStatus.CREATED);
 	}
 }

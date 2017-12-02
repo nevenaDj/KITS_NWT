@@ -27,9 +27,12 @@ public class Meeting {
 
 	@OneToMany(mappedBy = "meeting", fetch = FetchType.LAZY)
 	private Set<Survey> surveys = new HashSet<Survey>();
-	
+
 	@OneToMany(mappedBy = "meeting", fetch = FetchType.LAZY)
 	private Set<Notification> notifications = new HashSet<Notification>();
+
+	@OneToMany(mappedBy = "meeting", fetch = FetchType.LAZY)
+	private Set<AgendaPoint> points = new HashSet<AgendaPoint>();
 
 	public Meeting() {
 
@@ -71,6 +74,22 @@ public class Meeting {
 
 	public void setSurveys(Set<Survey> surveys) {
 		this.surveys = surveys;
+	}
+
+	public Set<Notification> getNotifications() {
+		return notifications;
+	}
+
+	public void setNotifications(Set<Notification> notifications) {
+		this.notifications = notifications;
+	}
+
+	public Set<AgendaPoint> getPoints() {
+		return points;
+	}
+
+	public void setPoints(Set<AgendaPoint> points) {
+		this.points = points;
 	}
 
 }

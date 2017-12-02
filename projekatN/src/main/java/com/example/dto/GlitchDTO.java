@@ -4,7 +4,6 @@ import java.util.Date;
 
 import com.example.model.Glitch;
 import com.example.model.GlitchState;
-import com.example.model.GlitchType;
 
 public class GlitchDTO {
 	private Long id;
@@ -13,7 +12,7 @@ public class GlitchDTO {
 	private String description;
 	private Date dateOfReport;
 	private ApartmentDTO apartment;
-	private GlitchType type;
+	private GlitchTypeDTO type;
 	private GlitchState state;
 	private Date dateOfRepair;
 
@@ -22,7 +21,7 @@ public class GlitchDTO {
 	}
 
 	public GlitchDTO(Glitch glitch) {
-		this(glitch.getId(), glitch.getDescription(), glitch.getDateOfReport(), glitch.getType(), glitch.getState(),
+		this(glitch.getId(), glitch.getDescription(), glitch.getDateOfReport(), glitch.getState(),
 				glitch.getDateOfRepair());
 
 		if (glitch.getResponsiblePerson() != null) {
@@ -32,15 +31,28 @@ public class GlitchDTO {
 		if (glitch.getApartment() != null) {
 			this.apartment = new ApartmentDTO(glitch.getApartment());
 		}
+
+		if (glitch.getType() != null) {
+			this.type = new GlitchTypeDTO(glitch.getType());
+		}
 	}
 
-	public GlitchDTO(Long id, String description, Date dateOfReport, GlitchType type, GlitchState state,
+	public GlitchDTO(Long id, String description, Date dateOfReport, GlitchTypeDTO type, GlitchState state,
 			Date dateOfRepair) {
 		super();
 		this.id = id;
 		this.description = description;
 		this.dateOfReport = dateOfReport;
 		this.type = type;
+		this.state = state;
+		this.dateOfRepair = dateOfRepair;
+	}
+
+	public GlitchDTO(Long id, String description, Date dateOfReport, GlitchState state, Date dateOfRepair) {
+		super();
+		this.id = id;
+		this.description = description;
+		this.dateOfReport = dateOfReport;
 		this.state = state;
 		this.dateOfRepair = dateOfRepair;
 	}
@@ -93,11 +105,11 @@ public class GlitchDTO {
 		this.apartment = apartment;
 	}
 
-	public GlitchType getType() {
+	public GlitchTypeDTO getType() {
 		return type;
 	}
 
-	public void setType(GlitchType type) {
+	public void setType(GlitchTypeDTO type) {
 		this.type = type;
 	}
 
@@ -119,7 +131,7 @@ public class GlitchDTO {
 
 	public static Glitch getGlitch(GlitchDTO glitchDTO) {
 		Glitch glitch = new Glitch(glitchDTO.getId(), glitchDTO.getDescription(), glitchDTO.getDateOfReport(),
-				glitchDTO.getType(), glitchDTO.getState(), glitchDTO.getDateOfRepair());
+				glitchDTO.getState(), glitchDTO.getDateOfRepair());
 
 		if (glitchDTO.getResponsiblePerson() != null) {
 			glitch.setResponsiblePerson(UserDTO.getUser(glitchDTO.getResponsiblePerson()));
@@ -127,6 +139,10 @@ public class GlitchDTO {
 
 		if (glitchDTO.getApartment() != null) {
 			glitch.setApartment(ApartmentDTO.getApartment(glitchDTO.getApartment()));
+		}
+
+		if (glitchDTO.getType() != null) {
+			glitch.setType(GlitchTypeDTO.getGlitchType(glitchDTO.getType()));
 		}
 
 		return glitch;
