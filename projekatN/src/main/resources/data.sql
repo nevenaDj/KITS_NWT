@@ -9,7 +9,7 @@ insert into authority (name) values ('ROLE_PRESIDENT');
 -- password is 'admin' (bcrypt encoded) 
 insert into user (username, password) values ('admin', '$2a$04$SwzgBrIJZhfnzOw7KFcdzOTiY6EFVwIpG7fkF/D1w26G1.fWsi.aK');
 -- password is 'user' (bcrypt encoded)
-insert into user (username, password) values ('user', '$2a$04$Amda.Gm4Q.ZbXz9wcohDHOhOBaNQAkSS1QO26Eh8Hovu3uzEpQvcq');
+insert into user (username, password, email, phone_no) values ('user', '$2a$04$Amda.Gm4Q.ZbXz9wcohDHOhOBaNQAkSS1QO26Eh8Hovu3uzEpQvcq', 'user@user.com', '123456');
 -- password is 'vodovod' (bcrypt encoded)
 insert into user (username, password) values ('vodovod', '$2a$10$HM/jd7gMTV9gYs7CzutfSeTNVboWAC7Qv81nWB1F6Og4EKgDodfFe');
 -- password is 'user' (bcrypt encoded)
