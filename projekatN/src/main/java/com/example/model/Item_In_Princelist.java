@@ -17,6 +17,10 @@ public class Item_In_Princelist {
 	
 	@ManyToOne(fetch = FetchType.EAGER)
 	private Pricelist pricelist;
+	
+	@ManyToOne(fetch = FetchType.LAZY)
+	private Bill bill;
+
 
 	public Item_In_Princelist(){
 		

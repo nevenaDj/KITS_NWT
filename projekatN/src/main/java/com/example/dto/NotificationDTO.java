@@ -22,53 +22,53 @@ public class NotificationDTO {
 	public NotificationDTO() {
 	}
 
-		public NotificationDTO(Notification notification) {
-			this(notification.getId(), notification.getDate(), notification.getText());
-		}
+	public NotificationDTO(Notification notification) {
+		this(notification.getId(), notification.getDate(), notification.getText());
+	}
 
-		public NotificationDTO(Long id, Date date, String text) {
-			super();
-			this.id = id;
-			this.date = date;
-			this.text = text;
-			this.status= NotificationStatus.WAITING;
-		}
+	public NotificationDTO(Long id, Date date, String text) {
+		super();
+		this.id = id;
+		this.date = date;
+		this.text = text;
+		this.status= NotificationStatus.WAITING;
+	}
 
-		public Long getId() {
-			return id;
-		}
+	public Long getId() {
+		return id;
+	}
 
-		public void setId(Long id) {
-			this.id = id;
-		}
+	public void setId(Long id) {
+		this.id = id;
+	}
 
-		public Date getDate() {
-			return date;
-		}
+	public Date getDate() {
+		return date;
+	}
 
-		public void setDate(Date date) {
-			this.date = date;
-		}
+	public void setDate(Date date) {
+		this.date = date;
+	}
 
-		public String getText() {
-			return text;
-		}
+	public String getText() {
+		return text;
+	}
 
-		public void setText(String text) {
-			this.text = text;
-		}
+	public void setText(String text) {
+		this.text = text;
+	}
 
-		public NotificationStatus getStatus() {
-			return status;
-		}
+	public NotificationStatus getStatus() {
+		return status;
+	}
 
-		public void setStatus(NotificationStatus status) {
-			this.status = status;
-		}
+	public void setStatus(NotificationStatus status) {
+		this.status = status;
+	}
 
-		public static Notification getNotification(NotificationDTO notificationDTO) {
-			return new Notification(notificationDTO.getId(), notificationDTO.date, notificationDTO.getText());
-		}
+	public static Notification getNotification(NotificationDTO notificationDTO) {
+		return new Notification(notificationDTO.getId(), notificationDTO.date, notificationDTO.getText());
+	}
 	
 
 }

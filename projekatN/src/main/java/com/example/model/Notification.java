@@ -21,8 +21,7 @@ public class Notification {
 	private NotificationStatus status;
 
 	@ManyToOne(fetch = FetchType.EAGER)
-	//@JoinColumn(name="meeting_id")
-	private Meeting meeting;
+	private Building building;
 	
 	@ManyToOne(fetch = FetchType.EAGER)
 	private User writer;
@@ -69,11 +68,11 @@ public class Notification {
 	public void setStatus(NotificationStatus status) {
 		this.status = status;
 	}
-	public Meeting getMeeting() {
-		return meeting;
+	public Building getBuilding() {
+		return building;
 	}
-	public void setMeeting(Meeting meeting) {
-		this.meeting = meeting;
+	public void setBuilding(Building building) {
+		this.building = building;
 	}
 	
 	
