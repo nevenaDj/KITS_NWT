@@ -23,8 +23,8 @@ public class NotificationService {
 		return notificationRepository.findAll(page);
 	}
 	
-	public Page<Notification> findAllByMeeting(Pageable page, Long meeting_id) {
-		return notificationRepository.findByMeeting(meeting_id, page);
+	public Page<Notification> findAllByBuilding(Pageable page, Long building_id) {
+		return notificationRepository.findByBuilding(building_id, page);
 	}
 
 	public Notification save(Notification notification) {

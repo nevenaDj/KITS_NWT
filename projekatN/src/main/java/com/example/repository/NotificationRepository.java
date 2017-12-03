@@ -10,10 +10,10 @@ import com.example.model.Notification;
 
 public interface NotificationRepository extends JpaRepository<Notification, Long>  {
 	
-	@Query(value = "SELECT n.id, n.date, n.status, n.text FROM Notification n WHERE n.meeting.id = ?1",
-		  countQuery = "SELECT count(*) FROM Notification n WHERE n.meeting.id = ?1",
+	@Query(value = "SELECT n.id, n.date, n.status, n.text FROM Notification n WHERE n.building.id = ?1",
+		  countQuery = "SELECT count(*) FROM Notification n WHERE n.building.id = ?1",
 		    nativeQuery = false)
-	public Page<Notification> findByMeeting(Long meetingID, Pageable pageable);
+	public Page<Notification> findByBuilding(Long buildingID, Pageable pageable);
 	
 
 }

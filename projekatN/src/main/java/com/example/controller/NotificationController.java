@@ -85,7 +85,7 @@ public class NotificationController {
 			return new ResponseEntity<List<NotificationDTO>>(HttpStatus.BAD_REQUEST);
 		}
 		
-		Page<Notification> notifications = notificationService.findAllByMeeting(page, id);
+		Page<Notification> notifications = notificationService.findAllByBuilding(page, id);
 		
 		
 		List<NotificationDTO> notificationsDTO = new ArrayList<NotificationDTO>();
