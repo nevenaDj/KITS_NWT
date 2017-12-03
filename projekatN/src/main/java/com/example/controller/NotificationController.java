@@ -38,7 +38,6 @@ import com.example.service.NotificationService;
 import com.example.service.SurveyService;
 import com.example.service.UserService;
 
-@RequestMapping(value = "/buildings/{id}/notifications")
 @RestController
 public class NotificationController {
 	@Autowired
@@ -52,7 +51,7 @@ public class NotificationController {
 	UserService userService;
 	
 	
-	@RequestMapping(method = RequestMethod.POST, consumes = "application/json")
+	@RequestMapping(value = "/buildings/{id}/notifications", method = RequestMethod.POST, consumes = "application/json")
 	public ResponseEntity<NotificationDTO> addNotification(@PathVariable Long id, @RequestBody NotificationDTO notificationDTO, 
 			HttpServletRequest request) {
 		Notification notification = NotificationDTO.getNotification(notificationDTO);
@@ -77,7 +76,7 @@ public class NotificationController {
 	}
 	
 	
-	@RequestMapping(method = RequestMethod.GET, produces= "application/json")
+	@RequestMapping(value = "/buildings/{id}/notifications", method = RequestMethod.GET, produces= "application/json")
 	public ResponseEntity<List<NotificationDTO>> getNotifications(@PathVariable Long id,Pageable page) {
 
 		Building building = buildingService.findOne(id);
@@ -95,7 +94,7 @@ public class NotificationController {
 		return new ResponseEntity<List<NotificationDTO>>(notificationsDTO, HttpStatus.OK);
 	}
 	
-	@RequestMapping(value = "/{not_id}", method = RequestMethod.DELETE)
+	@RequestMapping(value = "/buildings/{id}/notifications/{not_id}", method = RequestMethod.DELETE)
 	public ResponseEntity<Void> deleteNotificaton(@PathVariable("id") Long id, @PathVariable("not_id")  Long notifications_id ) { // da li je dobro tako????
 		Building building = buildingService.findOne(id);
 		if (building == null) {
@@ -111,7 +110,7 @@ public class NotificationController {
 		}
 	}
 	
-	@RequestMapping(value = "/{not_id}", method = RequestMethod.GET, produces= "application/json")
+	@RequestMapping(value = "/buildings/{id}/notifications/{not_id}", method = RequestMethod.GET, produces= "application/json")
 	public ResponseEntity<NotificationDTO> getNotificaton(@PathVariable("id") Long id, @PathVariable("not_id") Long notifications_id) { // da li je dobro tako????
 		Building building = buildingService.findOne(id);
 		if (building == null) {
@@ -125,5 +124,23 @@ public class NotificationController {
 			NotificationDTO notificationDTO= new NotificationDTO(notification);
 			return new ResponseEntity<NotificationDTO>(notificationDTO, HttpStatus.OK);
 		}
+	}
+	
+	@RequestMapping(value = "/notifications", method = RequestMethod.GET, produces= "application/json") // user's own notifications
+	public ResponseEntity<List<NotificationDTO>> getNotifications(Pageable page, HttpServletRequest request) {
+
+		String token = request.getHeader("X-Auth-Token");
+		String username = tokenUtils.getUsernameFromToken(token);
+
+		User writer = userService.findByUsername(username);		
+
+		Page<Notification> notifications = notificationService.findAllByWriter(page, writer.getId());
+		
+		
+		List<NotificationDTO> notificationsDTO = new ArrayList<NotificationDTO>();
+		for (Notification notification : notifications) {
+			notificationsDTO.add(new NotificationDTO(notification));
+		}
+		return new ResponseEntity<List<NotificationDTO>>(notificationsDTO, HttpStatus.OK);
 	}
 }

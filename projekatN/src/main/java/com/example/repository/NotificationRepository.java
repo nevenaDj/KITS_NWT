@@ -15,5 +15,9 @@ public interface NotificationRepository extends JpaRepository<Notification, Long
 		    nativeQuery = false)
 	public Page<Notification> findByBuilding(Long buildingID, Pageable pageable);
 	
-
+	@Query(value = "SELECT n.id, n.date, n.status, n.text FROM Notification n WHERE n.writer.id = ?1",
+			  countQuery = "SELECT count(*) FROM Notification n WHERE n.writer.id = ?1",
+			    nativeQuery = false)
+	public Page<Notification> findByWriter(Long userId, Pageable pageable);
+		
 }
