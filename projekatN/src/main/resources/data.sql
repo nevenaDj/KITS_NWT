@@ -26,7 +26,7 @@ insert into user_authority (user_id, authority_id) values (5, 5); -- user has RO
 insert into address (street,number, zip_code, city) values ('address','1a', 21000, 'Novi Sad');
 insert into address (street,number, zip_code, city) values ('address','1b', 21000, 'Novi Sad');
 
-insert into building (address_id) values (1);
+insert into building (address_id, president_id) values (1,5);
 insert into building (address_id) values (2);
 
 insert into apartment (description,number, building_id, owner_id) values ('description 1', 1, 1, 4);
@@ -47,3 +47,11 @@ insert into question_option (text, question_id) values ('option 4', 1);
 
 insert into question_option (text, question_id) values ('option 1', 2);
 insert into question_option (text, question_id) values ('option 2', 2);
+
+insert into glitch_state (state) values ('REPORTED');
+insert into glitch_state (state) values ('IN PROGRESS');
+insert into glitch_state (state) values ('DONE');
+
+insert into glitch (description, date_of_report, apartment_id, company_id, responsible_person_id, state_id, tenant_id) 
+			values ('glitch','2017-12-03', 1, 1, 5, 1, 2);
+

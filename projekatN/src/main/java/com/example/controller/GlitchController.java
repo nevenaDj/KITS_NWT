@@ -80,7 +80,7 @@ public class GlitchController {
 			glitch.setResponsiblePerson(building.getPresident());
 		}
 
-		glitch = glitchService.save(glitch);
+		glitch = glitchService.saveNewGlitch(glitch, "REPORTED");
 
 		return new ResponseEntity<GlitchDTO>(new GlitchDTO(glitch), HttpStatus.CREATED);
 	}
@@ -114,8 +114,10 @@ public class GlitchController {
 			return new ResponseEntity<GlitchDTO>(HttpStatus.BAD_REQUEST);
 		}
 
-		if (userDTO != null) {
-			glitch.setResponsiblePerson(UserDTO.getUser(userDTO));
+		User user = userService.findByUsername(userDTO.getUsername());
+
+		if (user != null) {
+			glitch.setResponsiblePerson(user);
 		}
 
 		glitch = glitchService.save(glitch);

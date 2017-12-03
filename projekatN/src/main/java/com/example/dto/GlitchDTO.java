@@ -37,6 +37,19 @@ public class GlitchDTO {
 		}
 	}
 
+	public GlitchDTO(Long companyID, String description, GlitchTypeDTO type) {
+		super();
+		this.companyID = companyID;
+		this.description = description;
+		this.type = type;
+	}
+
+	public GlitchDTO(Long companyID, String description) {
+		super();
+		this.companyID = companyID;
+		this.description = description;
+	}
+
 	public GlitchDTO(Long id, String description, Date dateOfReport, GlitchTypeDTO type, GlitchState state,
 			Date dateOfRepair) {
 		super();

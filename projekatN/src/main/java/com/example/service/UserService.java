@@ -83,4 +83,11 @@ public class UserService {
 
 		return false;
 	}
+
+	public UserAuthority saveUserAuthority(User user, String role) {
+		Authority authority = authorityRepository.findByName(role);
+
+		UserAuthority userAuthority = new UserAuthority(user, authority);
+		return userAuthorityRepository.save(userAuthority);
+	}
 }

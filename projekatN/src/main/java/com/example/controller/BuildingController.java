@@ -108,20 +108,25 @@ public class BuildingController {
 
 	@RequestMapping(value = "/{id}/president", method = RequestMethod.POST, consumes = "application/json")
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
-	public ResponseEntity<UserDTO> addPresident(@PathVariable Long id, @RequestBody UserDTO userDTO) {
-		User user = UserDTO.getUser(userDTO);
+	public ResponseEntity<BuildingDTO> addPresident(@PathVariable Long id, @RequestBody UserDTO userDTO) {
+		User user = userService.findOne(userDTO.getId());
 
-		user = userService.save(user, "ROLE_PRESIDENT");
+		if (user == null) {
+			user = UserDTO.getUser(userDTO);
+			user = userService.save(user, "ROLE_PRESIDENT");
+		} else {
+			userService.saveUserAuthority(user, "ROLE_PRESIDENT");
+		}
 
 		Building building = buildingService.findOne(id);
 
 		if (building == null) {
-			return new ResponseEntity<UserDTO>(HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<BuildingDTO>(HttpStatus.BAD_REQUEST);
 		}
+		building.setPresident(user);
+		building = buildingService.save(building);
 
-		buildingService.setPresident(building.getId(), user);
-
-		return new ResponseEntity<UserDTO>(new UserDTO(user), HttpStatus.CREATED);
+		return new ResponseEntity<BuildingDTO>(new BuildingDTO(building), HttpStatus.CREATED);
 	}
 
 }

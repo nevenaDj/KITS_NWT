@@ -17,6 +17,7 @@ public class UserConstants {
 	public static final String NEW_CITY = "Novi Sad";
 
 	public static final String USERNAME = "user";
+	public static final String PASSWORD = "user";
 	public static final String EMAIL = "user@user.com";
 	public static final String PHONE_NO = "123456";
 	public static final Long ID_USER = 2L;

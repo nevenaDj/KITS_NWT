@@ -6,7 +6,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.example.model.Building;
-import com.example.model.User;
 import com.example.repository.AddressRepository;
 import com.example.repository.BuildingRepository;
 
@@ -33,10 +32,6 @@ public class BuildingService {
 
 	public void remove(Long id) {
 		buildingRepository.delete(id);
-	}
-
-	public void setPresident(Long id, User president) {
-		buildingRepository.setPresident(id, president);
 	}
 
 	public Building findByAddress(String street, String number, String city) {

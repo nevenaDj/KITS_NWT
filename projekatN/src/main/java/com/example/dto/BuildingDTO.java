@@ -6,6 +6,7 @@ public class BuildingDTO {
 
 	private Long id;
 	private AddressDTO address;
+	private UserDTO president;
 
 	public BuildingDTO() {
 	}
@@ -15,6 +16,9 @@ public class BuildingDTO {
 		this.id = building.getId();
 		if (building.getAddress() != null) {
 			this.address = new AddressDTO(building.getAddress());
+		}
+		if (building.getPresident() != null) {
+			this.president = new UserDTO(building.getPresident());
 		}
 	}
 
@@ -45,13 +49,27 @@ public class BuildingDTO {
 		this.address = address;
 	}
 
-	public static Building getBuilding(BuildingDTO buildingDTO) {
-		if (buildingDTO.getAddress() != null) {
-			return new Building(buildingDTO.getId(), AddressDTO.getAddress(buildingDTO.getAddress()));
-		} else {
-			return new Building(buildingDTO.getId(), null);
+	public UserDTO getPresident() {
+		return president;
+	}
 
+	public void setPresident(UserDTO president) {
+		this.president = president;
+	}
+
+	public static Building getBuilding(BuildingDTO buildingDTO) {
+		Building building = new Building();
+		building.setId(buildingDTO.getId());
+
+		if (buildingDTO.getAddress() != null) {
+			building.setAddress(AddressDTO.getAddress(buildingDTO.getAddress()));
 		}
+
+		if (buildingDTO.getPresident() != null) {
+			building.setPresident(UserDTO.getUser(buildingDTO.getPresident()));
+		}
+
+		return building;
 	}
 
 }
