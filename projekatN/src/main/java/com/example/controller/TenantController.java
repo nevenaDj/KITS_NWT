@@ -16,7 +16,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.dto.AddressDTO;
 import com.example.dto.UserDTO;
+import com.example.dto.UserPasswordDTO;
 import com.example.model.Apartment;
 import com.example.model.User;
 import com.example.model.UserAparment;
@@ -78,7 +80,7 @@ public class TenantController {
 		}
 
 		user.setEmail(userDTO.getEmail());
-		user.setAddress(userDTO.getAddress());
+		user.setAddress(AddressDTO.getAddress(userDTO.getAddress()));
 		user.setPhoneNo(userDTO.getPhoneNo());
 
 		user = userService.update(user);
@@ -96,6 +98,20 @@ public class TenantController {
 			userService.remove(id, "ROLE_USER");
 			return new ResponseEntity<Void>(HttpStatus.OK);
 		}
+	}
+
+	@RequestMapping(value = "/tenants/{id}/password", method = RequestMethod.PUT, consumes = "application/json")
+	@PreAuthorize("hasRole('ROLE_USER')")
+	public ResponseEntity<Void> changePassword(@PathVariable Long id, @RequestBody UserPasswordDTO userPasswordDTO) {
+		boolean flag = userService.changePassword(id, userPasswordDTO.getCurrentPassword(),
+				userPasswordDTO.getNewPassword1(), userPasswordDTO.getNewPassword2());
+
+		if (flag == true) {
+			return new ResponseEntity<Void>(HttpStatus.OK);
+		} else {
+			return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
+		}
+
 	}
 
 }

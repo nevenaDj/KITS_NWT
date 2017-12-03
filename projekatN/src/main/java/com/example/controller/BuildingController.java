@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.dto.AddressDTO;
 import com.example.dto.BuildingDTO;
 import com.example.dto.UserDTO;
 import com.example.model.Building;
@@ -71,7 +72,7 @@ public class BuildingController {
 			return new ResponseEntity<BuildingDTO>(HttpStatus.BAD_REQUEST);
 		}
 
-		building.setAddress(buildingDTO.getAddress());
+		building.setAddress(AddressDTO.getAddress(buildingDTO.getAddress()));
 		building = buildingService.save(building);
 
 		return new ResponseEntity<BuildingDTO>(new BuildingDTO(building), HttpStatus.OK);
@@ -89,29 +90,43 @@ public class BuildingController {
 		}
 	}
 
-	@RequestMapping(method = RequestMethod.GET, params = "address")
-	public ResponseEntity<List<BuildingDTO>> findByAddress(@RequestParam("address") String address) {
-		System.out.println(address);
-		return new ResponseEntity<List<BuildingDTO>>(HttpStatus.OK);
+	@RequestMapping(method = RequestMethod.GET, params = { "street", "number", "city" })
+	public ResponseEntity<BuildingDTO> findByAddress(@RequestParam("street") String street,
+			@RequestParam("number") String number, @RequestParam("city") String city) {
+		System.out.println(street);
+		System.out.println(number);
+		System.out.println(city);
 
+		Building building = buildingService.findByAddress(street, number, city);
+
+		if (building != null) {
+			return new ResponseEntity<BuildingDTO>(new BuildingDTO(building), HttpStatus.OK);
+		} else {
+			return new ResponseEntity<BuildingDTO>(HttpStatus.NOT_FOUND);
+		}
 	}
 
 	@RequestMapping(value = "/{id}/president", method = RequestMethod.POST, consumes = "application/json")
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
-	public ResponseEntity<UserDTO> addPresident(@PathVariable Long id, @RequestBody UserDTO userDTO) {
-		User user = UserDTO.getUser(userDTO);
+	public ResponseEntity<BuildingDTO> addPresident(@PathVariable Long id, @RequestBody UserDTO userDTO) {
+		User user = userService.findOne(userDTO.getId());
 
-		user = userService.save(user, "ROLE_PRESIDENT");
+		if (user == null) {
+			user = UserDTO.getUser(userDTO);
+			user = userService.save(user, "ROLE_PRESIDENT");
+		} else {
+			userService.saveUserAuthority(user, "ROLE_PRESIDENT");
+		}
 
 		Building building = buildingService.findOne(id);
 
 		if (building == null) {
-			return new ResponseEntity<UserDTO>(HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<BuildingDTO>(HttpStatus.BAD_REQUEST);
 		}
+		building.setPresident(user);
+		building = buildingService.save(building);
 
-		buildingService.setPresident(building.getId(), user);
-
-		return new ResponseEntity<UserDTO>(new UserDTO(user), HttpStatus.CREATED);
+		return new ResponseEntity<BuildingDTO>(new BuildingDTO(building), HttpStatus.CREATED);
 	}
 
 }

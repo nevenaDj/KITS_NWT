@@ -3,11 +3,13 @@ package com.example.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.example.model.Authority;
 import com.example.model.User;
 import com.example.model.UserAuthority;
+import com.example.repository.AddressRepository;
 import com.example.repository.AuthorityRepository;
 import com.example.repository.UserAuthorityRepository;
 import com.example.repository.UserRepository;
@@ -21,8 +23,13 @@ public class UserService {
 	UserAuthorityRepository userAuthorityRepository;
 	@Autowired
 	AuthorityRepository authorityRepository;
+	@Autowired
+	AddressRepository addressRepository;
+	@Autowired
+	PasswordEncoder passwordEncoder;
 
 	public User save(User user, String role) {
+		user.setAddress(addressRepository.save(user.getAddress()));
 		user = userRepository.save(user);
 		Authority authority = authorityRepository.findByName(role);
 
@@ -64,4 +71,23 @@ public class UserService {
 		return userRepository.findByUsernameAndAuthority(username, role);
 	}
 
+	public boolean changePassword(Long id, String currentPassword, String newPassword, String newPassword2) {
+		User user = userRepository.findOne(id);
+
+		if (user.getPassword().equals(passwordEncoder.encode(currentPassword))) {
+			if (newPassword.equals(newPassword2)) {
+				user.setPassword(passwordEncoder.encode(newPassword));
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	public UserAuthority saveUserAuthority(User user, String role) {
+		Authority authority = authorityRepository.findByName(role);
+
+		UserAuthority userAuthority = new UserAuthority(user, authority);
+		return userAuthorityRepository.save(userAuthority);
+	}
 }

@@ -1,13 +1,19 @@
 package com.example.service;
 
+import java.util.Date;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.example.model.Glitch;
+import com.example.model.GlitchState;
+import com.example.model.GlitchType;
 import com.example.model.User;
 import com.example.repository.GlitchRepository;
+import com.example.repository.GlitchStateRepository;
+import com.example.repository.GlitchTypeRepository;
 import com.example.repository.UserRepository;
 
 @Service
@@ -17,6 +23,17 @@ public class GlitchService {
 	GlitchRepository glitchRepository;
 	@Autowired
 	UserRepository userRepository;
+	@Autowired
+	GlitchTypeRepository glitchTypeRepository;
+	@Autowired
+	GlitchStateRepository glitchStateRepository;
+
+	public Glitch saveNewGlitch(Glitch glitch, String state) {
+		GlitchState glitchState = glitchStateRepository.findByState(state);
+		glitch.setState(glitchState);
+		glitch.setDateOfReport(new Date());
+		return glitchRepository.save(glitch);
+	}
 
 	public Glitch save(Glitch glitch) {
 		return glitchRepository.save(glitch);
@@ -33,5 +50,9 @@ public class GlitchService {
 
 	public Glitch findOne(Long id) {
 		return glitchRepository.findOne(id);
+	}
+
+	public GlitchType saveGlitchType(GlitchType glitchType) {
+		return glitchTypeRepository.save(glitchType);
 	}
 }

@@ -7,7 +7,7 @@ public class UserDTO {
 	private String username;
 
 	private String email;
-	private String address;
+	private AddressDTO address;
 	private String phoneNo;
 
 	public UserDTO() {
@@ -15,10 +15,17 @@ public class UserDTO {
 	}
 
 	public UserDTO(User user) {
-		this(user.getId(), user.getUsername(), user.getEmail(), user.getAddress(), user.getPhoneNo());
+		this.id = user.getId();
+		this.username = user.getUsername();
+		this.email = user.getEmail();
+		this.phoneNo = user.getPhoneNo();
+
+		if (user.getAddress() != null) {
+			this.address = new AddressDTO(user.getAddress());
+		}
 	}
 
-	public UserDTO(String username, String email, String address, String phoneNo) {
+	public UserDTO(String username, String email, AddressDTO address, String phoneNo) {
 		super();
 		this.username = username;
 		this.email = email;
@@ -26,7 +33,7 @@ public class UserDTO {
 		this.phoneNo = phoneNo;
 	}
 
-	public UserDTO(Long id, String username, String email, String address, String phoneNo) {
+	public UserDTO(Long id, String username, String email, AddressDTO address, String phoneNo) {
 		super();
 		this.id = id;
 		this.username = username;
@@ -59,11 +66,11 @@ public class UserDTO {
 		this.email = email;
 	}
 
-	public String getAddress() {
+	public AddressDTO getAddress() {
 		return address;
 	}
 
-	public void setAddress(String address) {
+	public void setAddress(AddressDTO address) {
 		this.address = address;
 	}
 
@@ -76,8 +83,13 @@ public class UserDTO {
 	}
 
 	public static User getUser(UserDTO userDTO) {
-		return new User(userDTO.getId(), userDTO.getUsername(), userDTO.getEmail(), userDTO.getAddress(),
-				userDTO.getPhoneNo());
+
+		if (userDTO.getAddress() != null) {
+			return new User(userDTO.getId(), userDTO.getUsername(), userDTO.getEmail(),
+					AddressDTO.getAddress(userDTO.getAddress()), userDTO.getPhoneNo());
+		} else {
+			return new User(userDTO.getId(), userDTO.getUsername(), userDTO.getEmail(), null, userDTO.getPhoneNo());
+		}
 
 	}
 

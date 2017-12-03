@@ -6,7 +6,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.example.model.Building;
-import com.example.model.User;
+import com.example.repository.AddressRepository;
 import com.example.repository.BuildingRepository;
 
 @Service
@@ -14,6 +14,8 @@ public class BuildingService {
 
 	@Autowired
 	BuildingRepository buildingRepository;
+	@Autowired
+	AddressRepository addressRepository;
 
 	public Building findOne(Long id) {
 		return buildingRepository.findOne(id);
@@ -24,6 +26,7 @@ public class BuildingService {
 	}
 
 	public Building save(Building building) {
+		building.setAddress(addressRepository.save(building.getAddress()));
 		return buildingRepository.save(building);
 	}
 
@@ -31,8 +34,8 @@ public class BuildingService {
 		buildingRepository.delete(id);
 	}
 
-	public void setPresident(Long id, User president) {
-		buildingRepository.setPresident(id, president);
+	public Building findByAddress(String street, String number, String city) {
+		return buildingRepository.findByAddress(street, number, city);
 	}
 
 }

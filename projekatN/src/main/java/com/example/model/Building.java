@@ -16,7 +16,8 @@ public class Building {
 	@GeneratedValue
 	private Long id;
 
-	private String address;
+	@OneToOne
+	private Address address;
 
 	@OneToOne(fetch = FetchType.EAGER)
 	private User president;
@@ -30,7 +31,7 @@ public class Building {
 	public Building() {
 	}
 
-	public Building(Long id, String address) {
+	public Building(Long id, Address address) {
 		super();
 		this.id = id;
 		this.address = address;
@@ -44,11 +45,11 @@ public class Building {
 		this.id = id;
 	}
 
-	public String getAddress() {
+	public Address getAddress() {
 		return address;
 	}
 
-	public void setAddress(String address) {
+	public void setAddress(Address address) {
 		this.address = address;
 	}
 

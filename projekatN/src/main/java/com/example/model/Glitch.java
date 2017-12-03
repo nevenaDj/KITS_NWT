@@ -64,6 +64,15 @@ public class Glitch {
 		this.dateOfRepair = dateOfRepair;
 	}
 
+	public Glitch(Long id, String description, Date dateOfReport, GlitchState state, Date dateOfRepair) {
+		super();
+		this.id = id;
+		this.description = description;
+		this.dateOfReport = dateOfReport;
+		this.state = state;
+		this.dateOfRepair = dateOfRepair;
+	}
+
 	public Long getId() {
 		return id;
 	}

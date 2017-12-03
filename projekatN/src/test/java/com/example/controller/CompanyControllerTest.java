@@ -12,7 +12,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static com.example.constants.UserConstants.NEW_USERNAME_COMPANY;
 import static com.example.constants.UserConstants.NEW_EMAIL_COMPANY;
-import static com.example.constants.UserConstants.NEW_ADDRESS_COMPANY;
+import static com.example.constants.UserConstants.NEW_STREET_COMPANY;
+import static com.example.constants.UserConstants.NEW_CITY_COMPANY;
+import static com.example.constants.UserConstants.NEW_NUMBER_COMPANY;
+import static com.example.constants.UserConstants.NEW_ZIP_CODE_COMPANY;
 import static com.example.constants.UserConstants.NEW_PHONE_NO_COMPANY;
 import static com.example.constants.UserConstants.PAGE_SIZE;
 import static com.example.constants.UserConstants.USERNAME_COMPANY;
@@ -39,6 +42,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
 
 import com.example.TestUtils;
+import com.example.dto.AddressDTO;
 import com.example.dto.LoginDTO;
 import com.example.dto.UserDTO;
 import com.jayway.restassured.RestAssured;
@@ -80,7 +84,8 @@ public class CompanyControllerTest {
 	@Transactional
     @Rollback(true)
 	public void testAddCompany() throws Exception{
-		UserDTO userDTO = new UserDTO(NEW_USERNAME_COMPANY, NEW_EMAIL_COMPANY, NEW_ADDRESS_COMPANY, NEW_PHONE_NO_COMPANY);
+		AddressDTO addressDTO = new AddressDTO(NEW_STREET_COMPANY, NEW_NUMBER_COMPANY, NEW_ZIP_CODE_COMPANY, NEW_CITY_COMPANY);
+		UserDTO userDTO = new UserDTO(NEW_USERNAME_COMPANY, NEW_EMAIL_COMPANY, addressDTO, NEW_PHONE_NO_COMPANY);
 		
 		String json = TestUtils.convertObjectToJson(userDTO);
 		
@@ -91,7 +96,10 @@ public class CompanyControllerTest {
 		.andExpect(content().contentType(contentType))
 		.andExpect(jsonPath("$.username").value(NEW_USERNAME_COMPANY))
 		.andExpect(jsonPath("$.email").value(NEW_EMAIL_COMPANY))
-		.andExpect(jsonPath("$.address").value(NEW_ADDRESS_COMPANY))
+		.andExpect(jsonPath("$.address.street").value(NEW_STREET_COMPANY))
+		.andExpect(jsonPath("$.address.number").value(NEW_NUMBER_COMPANY))
+		.andExpect(jsonPath("$.address.zipCode").value(NEW_ZIP_CODE_COMPANY))
+		.andExpect(jsonPath("$.address.city").value(NEW_CITY_COMPANY))
 		.andExpect(jsonPath("$.phoneNo").value(NEW_PHONE_NO_COMPANY));		
 		
 	}
@@ -111,7 +119,8 @@ public class CompanyControllerTest {
 	@Transactional
     @Rollback(true)
 	public void testUpdateCompany() throws Exception{
-		UserDTO userDTO = new UserDTO(ID_COMPANY,NEW_USERNAME_COMPANY, NEW_EMAIL_COMPANY, NEW_ADDRESS_COMPANY, NEW_PHONE_NO_COMPANY);
+		AddressDTO addressDTO = new AddressDTO(NEW_STREET_COMPANY, NEW_NUMBER_COMPANY, NEW_ZIP_CODE_COMPANY, NEW_CITY_COMPANY);
+		UserDTO userDTO = new UserDTO(ID_COMPANY,NEW_USERNAME_COMPANY, NEW_EMAIL_COMPANY, addressDTO, NEW_PHONE_NO_COMPANY);
 		
 		String json = TestUtils.convertObjectToJson(userDTO);
 		
@@ -121,7 +130,10 @@ public class CompanyControllerTest {
 		.andExpect(status().isOk())
 		.andExpect(content().contentType(contentType))
 		.andExpect(jsonPath("$.email").value(NEW_EMAIL_COMPANY))
-		.andExpect(jsonPath("$.address").value(NEW_ADDRESS_COMPANY))
+		.andExpect(jsonPath("$.address.street").value(NEW_STREET_COMPANY))
+		.andExpect(jsonPath("$.address.number").value(NEW_NUMBER_COMPANY))
+		.andExpect(jsonPath("$.address.zipCode").value(NEW_ZIP_CODE_COMPANY))
+		.andExpect(jsonPath("$.address.city").value(NEW_CITY_COMPANY))
 		.andExpect(jsonPath("$.phoneNo").value(NEW_PHONE_NO_COMPANY));
 		
 	}

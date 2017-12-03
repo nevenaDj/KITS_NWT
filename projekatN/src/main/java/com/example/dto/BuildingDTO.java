@@ -5,21 +5,29 @@ import com.example.model.Building;
 public class BuildingDTO {
 
 	private Long id;
-	private String address;
+	private AddressDTO address;
+	private UserDTO president;
 
 	public BuildingDTO() {
 	}
 
 	public BuildingDTO(Building building) {
-		this(building.getId(), building.getAddress());
+
+		this.id = building.getId();
+		if (building.getAddress() != null) {
+			this.address = new AddressDTO(building.getAddress());
+		}
+		if (building.getPresident() != null) {
+			this.president = new UserDTO(building.getPresident());
+		}
 	}
 
-	public BuildingDTO(String address) {
+	public BuildingDTO(AddressDTO address) {
 		super();
 		this.address = address;
 	}
 
-	public BuildingDTO(Long id, String address) {
+	public BuildingDTO(Long id, AddressDTO address) {
 		super();
 		this.id = id;
 		this.address = address;
@@ -33,16 +41,35 @@ public class BuildingDTO {
 		this.id = id;
 	}
 
-	public String getAddress() {
+	public AddressDTO getAddress() {
 		return address;
 	}
 
-	public void setAddress(String address) {
+	public void setAddress(AddressDTO address) {
 		this.address = address;
 	}
 
+	public UserDTO getPresident() {
+		return president;
+	}
+
+	public void setPresident(UserDTO president) {
+		this.president = president;
+	}
+
 	public static Building getBuilding(BuildingDTO buildingDTO) {
-		return new Building(buildingDTO.getId(), buildingDTO.getAddress());
+		Building building = new Building();
+		building.setId(buildingDTO.getId());
+
+		if (buildingDTO.getAddress() != null) {
+			building.setAddress(AddressDTO.getAddress(buildingDTO.getAddress()));
+		}
+
+		if (buildingDTO.getPresident() != null) {
+			building.setPresident(UserDTO.getUser(buildingDTO.getPresident()));
+		}
+
+		return building;
 	}
 
 }
