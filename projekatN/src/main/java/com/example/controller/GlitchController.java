@@ -87,7 +87,7 @@ public class GlitchController {
 
 	@RequestMapping(value = "/glitches", method = RequestMethod.GET)
 	@PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_OWNER', 'ROLE_COMPANY')")
-	public ResponseEntity<List<GlitchDTO>> getGlitchesOfTenant(Pageable page, HttpServletRequest request) {
+	public ResponseEntity<List<GlitchDTO>> getGlitches(Pageable page, HttpServletRequest request) {
 		String token = request.getHeader("X-Auth-Token");
 		String username = tokenUtils.getUsernameFromToken(token);
 

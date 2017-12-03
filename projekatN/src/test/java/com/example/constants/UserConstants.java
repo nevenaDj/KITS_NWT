@@ -15,6 +15,7 @@ public class UserConstants {
 	public static final String NEW_NUMBER = "1a";
 	public static final int NEW_ZIP_CODE = 21000;
 	public static final String NEW_CITY = "Novi Sad";
+	public static final String NEW_PASSWORD = "password";
 
 	public static final String USERNAME = "user";
 	public static final String PASSWORD = "user";
@@ -31,6 +32,7 @@ public class UserConstants {
 	public static final String NEW_CITY_COMPANY = "Novi Sad";
 
 	public static final String USERNAME_COMPANY = "vodovod";
+	public static final String PASSWORD_COMPANY = "vodovod";
 	public static final Long ID_COMPANY = 3L;
 
 	public static final String USERNAME_PRESIDENT = "president";

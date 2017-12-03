@@ -3,6 +3,7 @@ package com.example.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -71,13 +72,18 @@ public class UserService {
 		return userRepository.findByUsernameAndAuthority(username, role);
 	}
 
-	public boolean changePassword(Long id, String currentPassword, String newPassword, String newPassword2) {
-		User user = userRepository.findOne(id);
+	public boolean changePassword(String username, String currentPassword, String newPassword, String newPassword2) {
+		User user = userRepository.findByUsername(username);
 
-		if (user.getPassword().equals(passwordEncoder.encode(currentPassword))) {
-			if (newPassword.equals(newPassword2)) {
-				user.setPassword(passwordEncoder.encode(newPassword));
-				return true;
+		if (user != null) {
+
+			if (BCrypt.checkpw(currentPassword, user.getPassword())) {
+
+				if (newPassword.equals(newPassword2)) {
+					user.setPassword(passwordEncoder.encode(newPassword));
+					userRepository.save(user);
+					return true;
+				}
 			}
 		}
 

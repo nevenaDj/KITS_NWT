@@ -15,16 +15,20 @@ import static com.example.constants.UserConstants.NEW_EMAIL_COMPANY;
 import static com.example.constants.UserConstants.NEW_STREET_COMPANY;
 import static com.example.constants.UserConstants.NEW_CITY_COMPANY;
 import static com.example.constants.UserConstants.NEW_NUMBER_COMPANY;
+import static com.example.constants.UserConstants.NEW_PASSWORD;
 import static com.example.constants.UserConstants.NEW_ZIP_CODE_COMPANY;
 import static com.example.constants.UserConstants.NEW_PHONE_NO_COMPANY;
 import static com.example.constants.UserConstants.PAGE_SIZE;
 import static com.example.constants.UserConstants.USERNAME_COMPANY;
+import static com.example.constants.UserConstants.PASSWORD_COMPANY;
 import static com.example.constants.UserConstants.ID_COMPANY;
+import static com.example.constants.UserConstants.ID_USER;
 
 import java.nio.charset.Charset;
 
 import javax.annotation.PostConstruct;
 
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,6 +49,7 @@ import com.example.TestUtils;
 import com.example.dto.AddressDTO;
 import com.example.dto.LoginDTO;
 import com.example.dto.UserDTO;
+import com.example.dto.UserPasswordDTO;
 import com.jayway.restassured.RestAssured;
 
 @RunWith(SpringRunner.class)
@@ -52,6 +57,7 @@ import com.jayway.restassured.RestAssured;
 public class CompanyControllerTest {
 	
 	private String accessToken;
+	private String accessTokenCompany;
 
 	@Autowired
 	private TestRestTemplate restTemplate;
@@ -144,6 +150,28 @@ public class CompanyControllerTest {
 	public void testDeleteCompany() throws Exception{
 		mockMvc.perform(delete("/companies/" + ID_COMPANY.intValue()).header("X-Auth-Token", accessToken))
 		.andExpect(status().isOk());
+	}
+	
+	@Before
+	public void loginCompany() {
+		ResponseEntity<String> responseEntity = restTemplate.postForEntity("/login",
+				new LoginDTO(USERNAME_COMPANY, PASSWORD_COMPANY), String.class);
+		accessTokenCompany = responseEntity.getBody();
+	}
+	
+	@Test
+	@Transactional
+    @Rollback(true)
+	public void testChangePassword() throws Exception{
+		UserPasswordDTO userPasswordDTO = new UserPasswordDTO(PASSWORD_COMPANY, NEW_PASSWORD, NEW_PASSWORD);
+		
+		String json = TestUtils.convertObjectToJson(userPasswordDTO);
+		
+		mockMvc.perform(put("/companies/" + ID_USER + "/password").header("X-Auth-Token", accessTokenCompany)
+				.contentType(contentType)
+				.content(json))
+		.andExpect(status().isOk());
+		
 	}
 
 

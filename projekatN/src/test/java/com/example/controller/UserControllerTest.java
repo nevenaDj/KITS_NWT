@@ -4,9 +4,19 @@ import static com.example.constants.UserConstants.PAGE_SIZE;
 import static com.example.constants.UserConstants.PASSWORD_ADMIN;
 import static com.example.constants.UserConstants.USERNAME_ADMIN;
 import static com.example.constants.UserConstants.ID_ADMIN;
+import static com.example.constants.UserConstants.NEW_EMAIL;
+import static com.example.constants.UserConstants.NEW_USERNAME;
+import static com.example.constants.UserConstants.NEW_PHONE_NO;
+import static com.example.constants.UserConstants.NEW_PASSWORD;
+import static com.example.constants.UserConstants.NEW_CITY;
+import static com.example.constants.UserConstants.NEW_NUMBER;
+import static com.example.constants.UserConstants.NEW_STREET;
+import static com.example.constants.UserConstants.NEW_ZIP_CODE;
+import static com.example.constants.ApartmentConstants.ID_APARTMENT;
 import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -15,7 +25,6 @@ import java.nio.charset.Charset;
 
 import javax.annotation.PostConstruct;
 
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,13 +35,18 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.web.FilterChainProxy;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
 
 import com.example.TestUtils;
+import com.example.dto.AddressDTO;
 import com.example.dto.LoginDTO;
+import com.example.dto.RegisterDTO;
+import com.example.dto.UserPasswordDTO;
 import com.jayway.restassured.RestAssured;
 
 @RunWith(SpringRunner.class)
@@ -59,6 +73,10 @@ public class UserControllerTest {
 	public void setup() {
 		RestAssured.useRelaxedHTTPSValidation();
 		this.mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).addFilters(springSecurityFilterChain).build();
+		
+		ResponseEntity<String> responseEntity = restTemplate.postForEntity("/login",
+				new LoginDTO(USERNAME_ADMIN, PASSWORD_ADMIN), String.class);
+		accessToken = responseEntity.getBody();
 	}
 
 	@Test
@@ -70,12 +88,6 @@ public class UserControllerTest {
 
 	}
 
-	@Before
-	public void login() {
-		ResponseEntity<String> responseEntity = restTemplate.postForEntity("/login",
-				new LoginDTO(USERNAME_ADMIN, PASSWORD_ADMIN), String.class);
-		accessToken = responseEntity.getBody();
-	}
 
 	@Test
 	public void testGetUsers() throws Exception {
@@ -88,13 +100,6 @@ public class UserControllerTest {
 		.andExpect(jsonPath("$", hasSize(PAGE_SIZE)));
 	}
 	
-	@Before
-	public void loginAdmin() {
-		ResponseEntity<String> responseEntity = restTemplate.postForEntity("/login",
-				new LoginDTO(USERNAME_ADMIN, PASSWORD_ADMIN), String.class);
-		accessToken = responseEntity.getBody();
-	}
-
 	@Test
 	public void testGetUser() throws Exception {
 		HttpHeaders headers = new HttpHeaders();
@@ -105,6 +110,34 @@ public class UserControllerTest {
 		.andExpect(content().contentType(contentType))
 		.andExpect(jsonPath("$.id").value(ID_ADMIN.intValue()))
 		.andExpect(jsonPath("$.username").value(USERNAME_ADMIN));
+	}
+	
+	@Test
+	@Transactional
+	@Rollback(true)
+	public void testRegister() throws Exception{
+		AddressDTO addressDTO = new AddressDTO(NEW_STREET, NEW_NUMBER, NEW_ZIP_CODE, NEW_CITY);
+		RegisterDTO registerDTO = new RegisterDTO(NEW_USERNAME, NEW_PASSWORD, NEW_PASSWORD, NEW_EMAIL, addressDTO, NEW_PHONE_NO);
+		registerDTO.setApartmentId(ID_APARTMENT);
+		String json = TestUtils.convertObjectToJson(registerDTO);
+		
+		mockMvc.perform(post("/register").contentType(contentType).content(json))
+		.andExpect(status().isCreated());
+		
+	}
+	
+	@Test
+	@Transactional
+	@Rollback(true)
+	public void testChangePassword() throws Exception{
+		UserPasswordDTO userPasswordDTO = new UserPasswordDTO(PASSWORD_ADMIN, NEW_PASSWORD, NEW_PASSWORD);
+		
+		String json = TestUtils.convertObjectToJson(userPasswordDTO);
+		
+		mockMvc.perform(put("/admin/" + ID_ADMIN + "/password").header("X-Auth-Token", accessToken)
+				.contentType(contentType)
+				.content(json))
+		.andExpect(status().isOk());
 	}
 	
 
