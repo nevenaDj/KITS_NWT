@@ -4,6 +4,10 @@ public class UserPasswordDTO {
 	private String currentPassword;
 	private String newPassword1;
 	private String newPassword2;
+	
+	public UserPasswordDTO(){
+		
+	}
 
 	public UserPasswordDTO(String currentPassword, String newPassword1, String newPassword2) {
 		super();

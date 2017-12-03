@@ -3,6 +3,8 @@ package com.example.controller;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -118,8 +120,12 @@ public class UserController {
 
 	@RequestMapping(value = "admin/{id}/password", method = RequestMethod.PUT, consumes = "application/json")
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
-	public ResponseEntity<Void> changePassword(@PathVariable Long id, @RequestBody UserPasswordDTO userPasswordDTO) {
-		boolean flag = userService.changePassword(id, userPasswordDTO.getCurrentPassword(),
+	public ResponseEntity<Void> changePassword(@PathVariable Long id, @RequestBody UserPasswordDTO userPasswordDTO,
+			HttpServletRequest request) {
+		String token = request.getHeader("X-Auth-Token");
+		String username = tokenUtils.getUsernameFromToken(token);
+
+		boolean flag = userService.changePassword(username, userPasswordDTO.getCurrentPassword(),
 				userPasswordDTO.getNewPassword1(), userPasswordDTO.getNewPassword2());
 
 		if (flag == true) {

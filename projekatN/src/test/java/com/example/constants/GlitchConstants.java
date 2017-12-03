@@ -11,4 +11,6 @@ public class GlitchConstants {
 
 	public static final Long ID = 1L;
 
+	public static final String NEW_COMMENT = "new comment";
+
 }

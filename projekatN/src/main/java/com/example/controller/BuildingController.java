@@ -93,9 +93,6 @@ public class BuildingController {
 	@RequestMapping(method = RequestMethod.GET, params = { "street", "number", "city" })
 	public ResponseEntity<BuildingDTO> findByAddress(@RequestParam("street") String street,
 			@RequestParam("number") String number, @RequestParam("city") String city) {
-		System.out.println(street);
-		System.out.println(number);
-		System.out.println(city);
 
 		Building building = buildingService.findByAddress(street, number, city);
 

@@ -3,6 +3,8 @@ package com.example.controller;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -22,6 +24,7 @@ import com.example.dto.UserPasswordDTO;
 import com.example.model.Apartment;
 import com.example.model.User;
 import com.example.model.UserAparment;
+import com.example.security.TokenUtils;
 import com.example.service.ApartmentService;
 import com.example.service.UserApartmentService;
 import com.example.service.UserService;
@@ -36,7 +39,9 @@ public class TenantController {
 	ApartmentService apartmentService;
 	@Autowired
 	UserApartmentService userApartmentService;
-
+	@Autowired
+	TokenUtils tokenUtils;
+	
 	@RequestMapping(value = "/aparments/{id}/tenants", method = RequestMethod.POST, consumes = "application/json")
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	public ResponseEntity<UserDTO> addTenant(@PathVariable Long id, @RequestBody UserDTO userDTO) {
@@ -102,8 +107,12 @@ public class TenantController {
 
 	@RequestMapping(value = "/tenants/{id}/password", method = RequestMethod.PUT, consumes = "application/json")
 	@PreAuthorize("hasRole('ROLE_USER')")
-	public ResponseEntity<Void> changePassword(@PathVariable Long id, @RequestBody UserPasswordDTO userPasswordDTO) {
-		boolean flag = userService.changePassword(id, userPasswordDTO.getCurrentPassword(),
+	public ResponseEntity<Void> changePassword(@PathVariable Long id, @RequestBody UserPasswordDTO userPasswordDTO,
+			HttpServletRequest request) {
+		String token = request.getHeader("X-Auth-Token");
+		String username = tokenUtils.getUsernameFromToken(token);
+
+		boolean flag = userService.changePassword(username, userPasswordDTO.getCurrentPassword(),
 				userPasswordDTO.getNewPassword1(), userPasswordDTO.getNewPassword2());
 
 		if (flag == true) {

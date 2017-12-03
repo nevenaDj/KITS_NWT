@@ -1,5 +1,7 @@
 package com.example.service;
 
+import java.util.Collection;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +19,10 @@ public class AgendaPointService {
 
 	public AgendaPoint findOne(Long id) {
 		return agendaPointRepository.findOne(id);
+	}
+
+	public Collection<AgendaPoint> findAllAgendaPoints(Long id) {
+		return agendaPointRepository.findAllAgendaPoints(id);
 	}
 
 }

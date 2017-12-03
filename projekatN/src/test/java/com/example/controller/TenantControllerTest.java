@@ -4,6 +4,7 @@ import static com.example.constants.UserConstants.PASSWORD_ADMIN;
 import static com.example.constants.UserConstants.USERNAME_ADMIN;
 import static com.example.constants.UserConstants.NEW_USERNAME;
 import static com.example.constants.UserConstants.PAGE_SIZE;
+import static com.example.constants.UserConstants.PASSWORD;
 import static com.example.constants.UserConstants.NEW_EMAIL;
 import static com.example.constants.UserConstants.NEW_PHONE_NO;
 import static com.example.constants.UserConstants.NEW_STREET;
@@ -12,6 +13,7 @@ import static com.example.constants.UserConstants.NEW_ZIP_CODE;
 import static com.example.constants.UserConstants.NEW_CITY;
 import static com.example.constants.UserConstants.USERNAME;
 import static com.example.constants.UserConstants.ID_USER;
+import static com.example.constants.UserConstants.NEW_PASSWORD;
 import static org.hamcrest.CoreMatchers.hasItem;
 import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
@@ -26,6 +28,7 @@ import java.nio.charset.Charset;
 
 import javax.annotation.PostConstruct;
 
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,12 +49,14 @@ import com.example.TestUtils;
 import com.example.dto.AddressDTO;
 import com.example.dto.LoginDTO;
 import com.example.dto.UserDTO;
+import com.example.dto.UserPasswordDTO;
 import com.jayway.restassured.RestAssured;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = WebEnvironment.DEFINED_PORT)
 public class TenantControllerTest {
 	private String accessToken;
+	private String accessTokenTenant;
 
 	@Autowired
 	private TestRestTemplate restTemplate;
@@ -171,6 +176,28 @@ public class TenantControllerTest {
 	public void testDeleteTenant() throws Exception{
 		mockMvc.perform(delete("/tenants/" + ID_USER.intValue())
 				.header("X-Auth-Token", accessToken))
+		.andExpect(status().isOk());
+		
+	}
+	
+	@Before
+	public void loginTenant() {
+		ResponseEntity<String> responseEntity = restTemplate.postForEntity("/login",
+				new LoginDTO(USERNAME, PASSWORD), String.class);
+		accessTokenTenant = responseEntity.getBody();
+	}
+	
+	@Test
+    @Transactional
+    @Rollback(true)
+	public void testChangePassword() throws Exception{
+		UserPasswordDTO userPasswordDTO = new UserPasswordDTO(PASSWORD, NEW_PASSWORD, NEW_PASSWORD);
+		
+		String json = TestUtils.convertObjectToJson(userPasswordDTO);
+		
+		mockMvc.perform(put("/tenants/" + ID_USER + "/password").header("X-Auth-Token", accessTokenTenant)
+				.contentType(contentType)
+				.content(json))
 		.andExpect(status().isOk());
 		
 	}
