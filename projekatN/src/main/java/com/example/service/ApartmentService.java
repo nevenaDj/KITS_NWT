@@ -29,4 +29,8 @@ public class ApartmentService {
 		apartmentRepository.delete(id);
 	}
 
+	public Apartment findByAddress(String street, String number, String city, int numberApartment) {
+		return apartmentRepository.findByAddress(street, number, city, numberApartment);
+	}
+
 }

@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.dto.ApartmentDTO;
@@ -30,7 +31,7 @@ public class ApartmentController {
 	BuildingService buildingService;
 
 	@RequestMapping(value = "/buildings/{id}/apartments", method = RequestMethod.GET)
-	public ResponseEntity<List<ApartmentDTO>> getApartments(@PathVariable Long id,Pageable page) {
+	public ResponseEntity<List<ApartmentDTO>> getApartments(@PathVariable Long id, Pageable page) {
 		Page<Apartment> apartments = apartmentService.findApartments(id, page);
 
 		List<ApartmentDTO> apartmentsDTO = new ArrayList<ApartmentDTO>();
@@ -96,6 +97,21 @@ public class ApartmentController {
 			apartmentService.remove(id);
 			return new ResponseEntity<Void>(HttpStatus.OK);
 		}
+
+	}
+
+	@RequestMapping(value = "/apartments", method = RequestMethod.GET, params = { "street", "number", "city",
+			"number_apartment" })
+	public ResponseEntity<ApartmentDTO> findByAddress(@RequestParam("street") String street,
+			@RequestParam("number") String number, @RequestParam("city") String city,
+			@RequestParam("number_apartment") int numberApartment) {
+		Apartment apartment = apartmentService.findByAddress(street, number, city, numberApartment);
+
+		if (apartment == null) {
+			return new ResponseEntity<ApartmentDTO>(HttpStatus.NOT_FOUND);
+		}
+
+		return new ResponseEntity<ApartmentDTO>(new ApartmentDTO(apartment), HttpStatus.OK);
 
 	}
 }

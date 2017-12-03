@@ -1,5 +1,7 @@
 package com.example.service;
 
+import java.util.Collection;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,5 +20,9 @@ public class SurveyService {
 
 	public Survey findOne(Long id) {
 		return surveyRepsotory.findOne(id);
+	}
+
+	public Collection<Survey> findAllSurveys(Long id) {
+		return surveyRepsotory.findAllSurveys(id);
 	}
 }

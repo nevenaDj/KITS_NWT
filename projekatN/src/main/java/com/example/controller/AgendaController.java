@@ -1,23 +1,31 @@
 package com.example.controller;
 
+import java.util.Collection;
+import java.util.HashSet;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.dto.AgendaDTO;
 import com.example.dto.AgendaPointDTO;
+import com.example.dto.SurveyDTO;
 import com.example.model.AgendaPoint;
 import com.example.model.Meeting;
+import com.example.model.Survey;
 import com.example.model.User;
 import com.example.security.TokenUtils;
 import com.example.service.AgendaPointService;
 import com.example.service.MeetingService;
+import com.example.service.SurveyService;
 import com.example.service.UserService;
 
 @RestController
@@ -31,8 +39,11 @@ public class AgendaController {
 	TokenUtils tokenUtils;
 	@Autowired
 	UserService userService;
+	@Autowired
+	SurveyService surveyService;
 
 	@RequestMapping(value = "/agendas/{id}/points", method = RequestMethod.POST, consumes = "application/json")
+	@PreAuthorize("hasRole('ROLE_OWNER')")
 	public ResponseEntity<AgendaPointDTO> addAgendaPoint(@PathVariable Long id,
 			@RequestBody AgendaPointDTO agendaPointDTO, HttpServletRequest request) {
 		String token = request.getHeader("X-Auth-Token");
@@ -56,7 +67,8 @@ public class AgendaController {
 
 	}
 
-	@RequestMapping(value = "/points/{id}", method = RequestMethod.GET, consumes = "application/json")
+	@RequestMapping(value = "/points/{id}", method = RequestMethod.GET)
+	@PreAuthorize("hasAnyRole('ROLE_OWNER', 'ROLE_PRESIDENT')")
 	public ResponseEntity<AgendaPointDTO> getAgendaPoint(@PathVariable Long id) {
 		AgendaPoint agendaPoint = agendaPointService.findOne(id);
 
@@ -65,5 +77,29 @@ public class AgendaController {
 		}
 
 		return new ResponseEntity<AgendaPointDTO>(new AgendaPointDTO(agendaPoint), HttpStatus.OK);
+	}
+
+	@RequestMapping(value = "/agendas/{id}", method = RequestMethod.GET)
+	@PreAuthorize("hasAnyRole('ROLE_OWNER', 'ROLE_PRESIDENT')")
+	public ResponseEntity<AgendaDTO> getAgenda(@PathVariable Long id) {
+		Collection<AgendaPoint> agendaPoints = agendaPointService.findAllAgendaPoints(id);
+
+		HashSet<AgendaPointDTO> agendaPointsDTO = new HashSet<AgendaPointDTO>();
+		for (AgendaPoint agendaPoint : agendaPoints) {
+			agendaPointsDTO.add(new AgendaPointDTO(agendaPoint));
+
+		}
+
+		Collection<Survey> surveys = surveyService.findAllSurveys(id);
+
+		HashSet<SurveyDTO> surveysDTO = new HashSet<SurveyDTO>();
+		for (Survey survey : surveys) {
+			surveysDTO.add(new SurveyDTO(survey));
+		}
+
+		AgendaDTO agendaDTO = new AgendaDTO(id, agendaPointsDTO, surveysDTO);
+
+		return new ResponseEntity<AgendaDTO>(agendaDTO, HttpStatus.OK);
+
 	}
 }
