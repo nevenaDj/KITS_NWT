@@ -52,6 +52,7 @@ public class NotificationController {
 	
 	
 	@RequestMapping(value = "/buildings/{id}/notifications", method = RequestMethod.POST, consumes = "application/json")
+	@PreAuthorize("hasRole('ROLE_PRESIDENT', 'ROLE_USER','ROLE_OWNER')")
 	public ResponseEntity<NotificationDTO> addNotification(@PathVariable Long id, @RequestBody NotificationDTO notificationDTO, 
 			HttpServletRequest request) {
 		Notification notification = NotificationDTO.getNotification(notificationDTO);
@@ -77,6 +78,7 @@ public class NotificationController {
 	
 	
 	@RequestMapping(value = "/buildings/{id}/notifications", method = RequestMethod.GET, produces= "application/json")
+	@PreAuthorize("hasRole('ROLE_PRESIDENT', 'ROLE_USER','ROLE_OWNER')")
 	public ResponseEntity<List<NotificationDTO>> getNotifications(@PathVariable Long id,Pageable page) {
 
 		Building building = buildingService.findOne(id);
@@ -95,7 +97,8 @@ public class NotificationController {
 	}
 	
 	@RequestMapping(value = "/buildings/{id}/notifications/{not_id}", method = RequestMethod.DELETE)
-	public ResponseEntity<Void> deleteNotificaton(@PathVariable("id") Long id, @PathVariable("not_id")  Long notifications_id ) { // da li je dobro tako????
+	@PreAuthorize("hasRole('ROLE_PRESIDENT', 'ROLE_USER','ROLE_OWNER')")
+	public ResponseEntity<Void> deleteNotificaton(@PathVariable("id") Long id, @PathVariable("not_id")  Long notifications_id ) {
 		Building building = buildingService.findOne(id);
 		if (building == null) {
 			return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
@@ -111,7 +114,8 @@ public class NotificationController {
 	}
 	
 	@RequestMapping(value = "/buildings/{id}/notifications/{not_id}", method = RequestMethod.GET, produces= "application/json")
-	public ResponseEntity<NotificationDTO> getNotificaton(@PathVariable("id") Long id, @PathVariable("not_id") Long notifications_id) { // da li je dobro tako????
+	@PreAuthorize("hasRole('ROLE_PRESIDENT', 'ROLE_USER','ROLE_OWNER')")
+	public ResponseEntity<NotificationDTO> getNotificaton(@PathVariable("id") Long id, @PathVariable("not_id") Long notifications_id) {
 		Building building = buildingService.findOne(id);
 		if (building == null) {
 			return new ResponseEntity<NotificationDTO>(HttpStatus.BAD_REQUEST);
@@ -127,6 +131,7 @@ public class NotificationController {
 	}
 	
 	@RequestMapping(value = "/notifications", method = RequestMethod.GET, produces= "application/json") // user's own notifications
+	@PreAuthorize("hasRole('ROLE_PRESIDENT', 'ROLE_USER','ROLE_OWNER')")
 	public ResponseEntity<List<NotificationDTO>> getNotifications(Pageable page, HttpServletRequest request) {
 
 		String token = request.getHeader("X-Auth-Token");

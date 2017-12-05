@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.dto.MeetingDTO;
@@ -40,9 +41,8 @@ public class MeetingController {
 		return new ResponseEntity<MeetingDTO>(new MeetingDTO(meeting), HttpStatus.CREATED);
 	}
 	
-	@RequestMapping(value = "/buildings/{id}/meetings/", method = RequestMethod.POST, produces = "application/json")
-	//@PreAuthorize("hasRole('ROLE_PRESIDENT')")
-	public ResponseEntity<MeetingDTO> getMeetingByDate(@PathVariable Long id, @RequestBody Date date) {
+	@RequestMapping(value = "/buildings/{id}/meetings/", method = RequestMethod.POST, produces = "application/json", params={"date"})
+	public ResponseEntity<MeetingDTO> findMeetingByDate(@PathVariable Long id, @RequestParam("date") Date date) {
 		
 
 		Meeting meeting = meetingService.findMeetingByDate(id, date);
@@ -54,8 +54,7 @@ public class MeetingController {
 	}
 	
 	@RequestMapping(value = "/buildings/{id}/meetings/date", method = RequestMethod.GET, produces = "application/json")
-	//@PreAuthorize("hasRole('ROLE_PRESIDENT')")
-	public ResponseEntity<ArrayList<Date>> getDateOfMeetings(@PathVariable Long id) {
+	public ResponseEntity<ArrayList<Date>> findDateOfMeetings(@PathVariable Long id) {
 		Building building = buildingService.findOne(id);
 		if (building == null) {
 			return new ResponseEntity<ArrayList<Date>>(HttpStatus.BAD_REQUEST);

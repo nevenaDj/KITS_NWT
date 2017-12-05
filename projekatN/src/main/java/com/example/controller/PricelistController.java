@@ -8,6 +8,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -40,6 +41,7 @@ public class PricelistController {
 	ItemInPricelistService itemService;
 	
 	@RequestMapping(method = RequestMethod.POST, consumes = "application/json")
+	@PreAuthorize("hasRole('ROLE_COMPANY')")
 	public ResponseEntity<PricelistDTO> addPricelist(@PathVariable Long id, @RequestBody PricelistDTO itemDTO) {
 		Pricelist item = PricelistDTO.getPricelist(itemDTO);
 
@@ -75,6 +77,7 @@ public class PricelistController {
 	}
 	 
 	@RequestMapping(value = "/items", method = RequestMethod.POST, consumes = "application/json")
+	@PreAuthorize("hasRole('ROLE_COMPANY')")
 	public ResponseEntity<ItemInPricelistDTO> addItem(@PathVariable Long id, @RequestBody ItemInPricelistDTO itemDTO) {
 		Item_In_Princelist item = ItemInPricelistDTO.getItemInPricelist(itemDTO);
 
@@ -110,6 +113,7 @@ public class PricelistController {
 	} 
 	
 	@RequestMapping(value = "/items/{items_id}", method = RequestMethod.DELETE)
+	@PreAuthorize("hasRole('ROLE_COMPANY')")
 	public ResponseEntity<Void> deleteItem(@PathVariable("id") Long id, @PathVariable("items_id")  Long items_id ) { // da li je dobro tako????
 
 		User user = userService.findOne(id);
@@ -126,19 +130,5 @@ public class PricelistController {
 		}
 	}
 	
-	@RequestMapping(value = "/items/{items_id}", method = RequestMethod.GET, produces= "application/json")
-	public ResponseEntity<ItemInPricelistDTO> getNotificaton(@PathVariable("id") Long id, @PathVariable("items_id") Long items_id) { // da li je dobro tako????
-		User user = userService.findOne(id);
-		if (user == null) {
-			return new ResponseEntity<ItemInPricelistDTO>(HttpStatus.BAD_REQUEST);
-		}
-		
-		Item_In_Princelist item = itemService.findOne(items_id);
-		if (item == null) {
-			return new ResponseEntity<ItemInPricelistDTO>(HttpStatus.NOT_FOUND);
-		} else {
-			ItemInPricelistDTO itemDTO= new ItemInPricelistDTO(item);
-			return new ResponseEntity<ItemInPricelistDTO>(itemDTO, HttpStatus.OK);
-		}
-	}
+
 }
