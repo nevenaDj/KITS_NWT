@@ -1,11 +1,12 @@
 package com.example.service;
 
+import java.util.Date;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import com.example.dto.DateDTO;
 import com.example.model.Bill;
 import com.example.repository.BillRepository;
 
@@ -22,8 +23,8 @@ public class BillService {
 		return billRepository.findByGlitch(id);
 	}
 	
-	public Bill findByDate(DateDTO date) {
-		return billRepository.findByDate(date.getStart(), date.getEnd());
+	public Bill findByDate(Date start, Date end) {
+		return billRepository.findByDate(start, end);
 	}
 
 

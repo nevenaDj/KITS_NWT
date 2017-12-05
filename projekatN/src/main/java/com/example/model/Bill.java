@@ -19,9 +19,6 @@ public class Bill {
 	private Long id;
 	
 	@OneToOne(fetch = FetchType.EAGER)
-	private Glitch glitch;
-	
-	@OneToOne(fetch = FetchType.EAGER)
 	private User company;
 
 	@OneToMany(mappedBy = "bill", fetch = FetchType.EAGER)
@@ -32,6 +29,9 @@ public class Bill {
 	private Date date;
 	
 	private boolean approved;
+	
+	@OneToOne(fetch = FetchType.LAZY)
+	private Glitch glitch;
 
 
 	public Double getPrice() {
@@ -67,14 +67,6 @@ public class Bill {
 
 	public void setId(Long id) {
 		this.id = id;
-	}
-
-	public Glitch getGlitch() {
-		return glitch;
-	}
-
-	public void setGlitch(Glitch glitch) {
-		this.glitch = glitch;
 	}
 
 	public User getCompany() {

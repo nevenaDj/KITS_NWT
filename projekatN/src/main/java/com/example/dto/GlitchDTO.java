@@ -15,6 +15,7 @@ public class GlitchDTO {
 	private GlitchTypeDTO type;
 	private GlitchState state;
 	private Date dateOfRepair;
+	private BillDTO bill;
 
 	public GlitchDTO() {
 
@@ -34,6 +35,10 @@ public class GlitchDTO {
 
 		if (glitch.getType() != null) {
 			this.type = new GlitchTypeDTO(glitch.getType());
+		}
+		
+		if (glitch.getBill() != null) {
+			this.bill = new BillDTO(glitch.getBill());
 		}
 	}
 
@@ -142,6 +147,14 @@ public class GlitchDTO {
 		this.dateOfRepair = dateOfRepair;
 	}
 
+	public BillDTO getBill() {
+		return bill;
+	}
+
+	public void setBill(BillDTO bill) {
+		this.bill = bill;
+	}
+
 	public static Glitch getGlitch(GlitchDTO glitchDTO) {
 		Glitch glitch = new Glitch(glitchDTO.getId(), glitchDTO.getDescription(), glitchDTO.getDateOfReport(),
 				glitchDTO.getState(), glitchDTO.getDateOfRepair());
@@ -158,6 +171,10 @@ public class GlitchDTO {
 			glitch.setType(GlitchTypeDTO.getGlitchType(glitchDTO.getType()));
 		}
 
+		if (glitchDTO.getBill() != null) {
+			glitch.setBill(BillDTO.getBill(glitchDTO.getBill()));
+		}
+		
 		return glitch;
 	}
 

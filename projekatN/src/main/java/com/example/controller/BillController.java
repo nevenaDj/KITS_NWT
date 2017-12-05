@@ -1,18 +1,21 @@
 package com.example.controller;
 
+import java.util.Date;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.dto.BillDTO;
-import com.example.dto.DateDTO;
 import com.example.dto.NotificationDTO;
 import com.example.model.Apartment;
 import com.example.model.Bill;
@@ -44,7 +47,7 @@ public class BillController {
 	UserService userService;
 	
 	@RequestMapping(value ="/apartments/{ap_id}/glitches/{glitch_id}/bill", method = RequestMethod.POST, consumes = "application/json") ///value ??????
-	//aut -> company
+	@PreAuthorize("hasRole('ROLE_COMPANY')")
 	public ResponseEntity<BillDTO> addBill(@PathVariable("ap_id") Long apartments_id, @PathVariable("glitch_id") Long glitch_id, @RequestBody BillDTO billDTO, 
 			HttpServletRequest request) {
 		Bill bill = BillDTO.getBill(billDTO);
@@ -65,14 +68,18 @@ public class BillController {
 		User company = userService.findByUsername(username);	
 		bill.setCompany(company);
 		
-		bill.setGlitch(glitch);
+		
 		bill = billService.save(bill);
 		billDTO.setId(bill.getId());
 
+		glitch.setBill(bill);
+		glitchService.save(glitch);
+		
 		return new ResponseEntity<BillDTO>(billDTO, HttpStatus.CREATED);
 	}
 		
 	@RequestMapping(value = "/apartments/{ap_id}/glitches/{glitch_id}/bill", method = RequestMethod.DELETE)
+	@PreAuthorize("hasRole('ROLE_COMPANY')")
 	public ResponseEntity<Void> deleteBill(@PathVariable("ap_id") Long apartments_id, @PathVariable("glitch_id") Long glitch_id) { 
 		Apartment apartment = apService.findOne(apartments_id);
 		if (apartment == null) {
@@ -95,6 +102,7 @@ public class BillController {
 	}
 	
 	@RequestMapping(value = "/bills/{id}", method = RequestMethod.DELETE)
+	@PreAuthorize("hasRole('ROLE_COMPANY')")
 	public ResponseEntity<Void> deleteBill(@PathVariable("id") Long id) { 
 		
 		Bill bill = billService.findOne(id);
@@ -108,7 +116,7 @@ public class BillController {
 
 	
 	@RequestMapping(value = "/bills/{id}", method = RequestMethod.GET, produces="application/json" )
-	public ResponseEntity<BillDTO> getBill(@PathVariable("id") Long id) { 
+	public ResponseEntity<BillDTO> findBill(@PathVariable("id") Long id) { 
 		
 		Bill bill = billService.findOne(id);
 		if (bill == null) {
@@ -120,7 +128,7 @@ public class BillController {
 	}
 	
 	@RequestMapping(value = "/apartments/{ap_id}/glitches/{glitch_id}/bill", method = RequestMethod.GET, produces="application/json")
-	public ResponseEntity<BillDTO> getBillByGlitch(@PathVariable("ap_id") Long apartments_id, @PathVariable("glitch_id") Long glitch_id) { 
+	public ResponseEntity<BillDTO> findBillByGlitch(@PathVariable("ap_id") Long apartments_id, @PathVariable("glitch_id") Long glitch_id) { 
 		Apartment apartment = apService.findOne(apartments_id);
 		if (apartment == null) {
 			return new ResponseEntity<BillDTO>(HttpStatus.BAD_REQUEST);
@@ -141,10 +149,11 @@ public class BillController {
 		}
 	}
 	
-	@RequestMapping(value = "/bills", method = RequestMethod.GET, produces="application/json")
-	public ResponseEntity<BillDTO> getBillByDate(@RequestBody DateDTO dateDTO) { 
+	@RequestMapping(value = "/bills", method = RequestMethod.GET, produces="application/json", params = { "start", "end" })
+	@PreAuthorize("hasRole('ROLE_PRESIDENT')")
+	public ResponseEntity<BillDTO> findBillByDate(@RequestParam("start") Date start, @RequestParam("end") Date end) { 
 			
-		Bill bill = billService.findByDate(dateDTO);
+		Bill bill = billService.findByDate(start, end);
 		if (bill == null) {
 			return new ResponseEntity<BillDTO>(HttpStatus.NOT_FOUND);
 		} else {
@@ -153,7 +162,8 @@ public class BillController {
 		}
 	}
 	
-	@RequestMapping(value = "/apartments/{ap_id}/glitches/{glitch_id}/bill", method = RequestMethod.POST, produces="application/json")
+	@RequestMapping(value = "/apartments/{ap_id}/glitches/{glitch_id}/bill", method = RequestMethod.PUT, produces="application/json")
+	@PreAuthorize("hasRole('ROLE_PRESIDENT')")
 	public ResponseEntity<BillDTO> setBillApprove(@PathVariable("ap_id") Long apartments_id, @PathVariable("glitch_id") Long glitch_id) { 
 			
 		Apartment apartment = apService.findOne(apartments_id);
@@ -178,7 +188,8 @@ public class BillController {
 		}
 	}
 	
-	@RequestMapping(value = "/bills/{id}", method = RequestMethod.POST, produces="application/json")
+	@RequestMapping(value = "/bills/{id}", method = RequestMethod.PUT, produces="application/json")
+	@PreAuthorize("hasRole('ROLE_PRESIDENT')")
 	public ResponseEntity<BillDTO> setBillApprove(@PathVariable("id") Long id) { 
 			
 		Bill bill = billService.findOne(id);

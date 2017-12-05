@@ -48,6 +48,9 @@ public class Glitch {
 
 	@OneToMany(mappedBy = "glitch", fetch = FetchType.LAZY)
 	private Set<Comment> comments = new HashSet<Comment>();
+	
+	@OneToOne(fetch = FetchType.EAGER)
+	private Bill bill;
 
 	public Glitch() {
 
@@ -161,4 +164,13 @@ public class Glitch {
 		this.comments = comments;
 	}
 
+	public Bill getBill() {
+		return bill;
+	}
+
+	public void setBill(Bill bill) {
+		this.bill = bill;
+	}
+
+	
 }
