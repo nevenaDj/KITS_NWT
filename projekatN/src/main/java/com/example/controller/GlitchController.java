@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.dto.GlitchDTO;
@@ -134,5 +135,48 @@ public class GlitchController {
 		glitchType = glitchService.saveGlitchType(glitchType);
 
 		return new ResponseEntity<GlitchTypeDTO>(new GlitchTypeDTO(glitchType), HttpStatus.CREATED);
+	}
+	
+	@RequestMapping(value = "/glitchTypes/{id}", method = RequestMethod.DELETE, consumes = "application/json")
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	public ResponseEntity<Void> deleteGlitchType(@PathVariable Long id) {
+		GlitchType glitchType = glitchService.findOneGlitchType(id);
+		if (glitchType==null){
+			return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
+		}
+		glitchService.removeGlitchType(glitchType.getId());
+
+		return new ResponseEntity<Void>(HttpStatus.OK);
+	}
+	
+	@RequestMapping(value = "/glitchTypes/{id}", method = RequestMethod.GET, consumes = "application/json")
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	public ResponseEntity<GlitchTypeDTO> findGlitchType(@PathVariable Long id) {
+		GlitchType glitchType = glitchService.findOneGlitchType(id);
+
+		if (glitchType==null){
+			return new ResponseEntity<GlitchTypeDTO>(HttpStatus.BAD_REQUEST);
+		}
+
+		return new ResponseEntity<GlitchTypeDTO>(new GlitchTypeDTO(glitchType), HttpStatus.OK);
+	}
+	
+	@RequestMapping(value = "/glitchTypes", method = RequestMethod.GET, consumes = "application/json", params={"name"})
+	public ResponseEntity<GlitchTypeDTO> findGlitchTypeByName(@RequestParam String name) {
+		GlitchType glitchType = glitchService.findOneGlitchTypeByName(name);
+		if (glitchType==null){
+			return new ResponseEntity<GlitchTypeDTO>(HttpStatus.BAD_REQUEST);
+		}
+		return new ResponseEntity<GlitchTypeDTO>(new GlitchTypeDTO(glitchType), HttpStatus.OK);
+	}
+	
+	@RequestMapping(value = "/glitchTypes", method = RequestMethod.GET, consumes = "application/json")
+	public ResponseEntity<ArrayList<GlitchTypeDTO>> findAllGlitchType() {
+		ArrayList<GlitchType> glitchTypes = glitchService.findAllGlitchType();
+		ArrayList<GlitchTypeDTO> glitchTypesDTO = new ArrayList<GlitchTypeDTO>();
+		for (GlitchType glitchT : glitchTypes) {
+			glitchTypesDTO.add(new GlitchTypeDTO(glitchT));
+		}
+		return new ResponseEntity<ArrayList<GlitchTypeDTO>>(glitchTypesDTO, HttpStatus.OK);
 	}
 }

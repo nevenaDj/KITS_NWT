@@ -1,5 +1,6 @@
 package com.example.service;
 
+import java.util.ArrayList;
 import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,5 +55,21 @@ public class GlitchService {
 
 	public GlitchType saveGlitchType(GlitchType glitchType) {
 		return glitchTypeRepository.save(glitchType);
+	}
+	
+	public GlitchType findOneGlitchType(Long id) {
+		return glitchTypeRepository.findOne(id);
+	}
+	
+	public ArrayList<GlitchType> findAllGlitchType() {
+		return (ArrayList<GlitchType>) glitchTypeRepository.findAll();
+	}
+	
+	public void removeGlitchType(Long id) {
+		 glitchTypeRepository.delete(id);
+	}
+
+	public GlitchType findOneGlitchTypeByName(String name) {
+		return glitchTypeRepository.findGlitchTypeByName(name);
 	}
 }
