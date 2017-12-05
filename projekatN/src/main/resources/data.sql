@@ -52,6 +52,6 @@ insert into glitch_state (state) values ('REPORTED');
 insert into glitch_state (state) values ('IN PROGRESS');
 insert into glitch_state (state) values ('DONE');
 
-insert into glitch (description, date_of_report, apartment_id, company_id, responsible_person_id, state_id, tenant_id) 
-			values ('glitch','2017-12-03', 1, 1, 5, 1, 2);
+insert into glitch (description, date_of_report, apartment_id, company_id, responsible_person_id, state_id, tenant_id, date_of_repair_approved) 
+			values ('glitch','2017-12-03', 1, 1, 5, 1, 2, false);
 
