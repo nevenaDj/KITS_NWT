@@ -1,6 +1,7 @@
 package com.example.controller;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -180,7 +181,7 @@ public class GlitchController {
 		return new ResponseEntity<ArrayList<GlitchTypeDTO>>(glitchTypesDTO, HttpStatus.OK);
 	}
 	
-	@RequestMapping(value = "/apartments/{id}/glitches/{glitch_id}/company/{c_id}", method = RequestMethod.PUT, consumes = "application/json")
+	@RequestMapping(value = "/apartments/{id}/glitches/{glitch_id}/company/{c_id}", method = RequestMethod.PUT, produces = "application/json")
 	@PreAuthorize("hasAnyRole('ROLE_PRESIDENT', 'ROLE_COMPANY')")
 	public ResponseEntity<GlitchDTO> changeCompany(@PathVariable("id") Long ap_id, @PathVariable("glitch_id") Long glitch_id, @PathVariable("c_id") Long comp_id) {
 	
@@ -203,6 +204,29 @@ public class GlitchController {
 		}
 		
 		glitch.setCompany(company);
+		glitchService.save(glitch);	
+
+		return new ResponseEntity<GlitchDTO>(new GlitchDTO(glitch), HttpStatus.OK);
+	}
+	
+	
+	@RequestMapping(value = "/apartments/{id}/glitches/{glitch_id}", method = RequestMethod.PUT, produces = "application/json", params={"date"})
+	@PreAuthorize("hasAnyRole('ROLE_COMPANY')")
+	public ResponseEntity<GlitchDTO> changeCompany(@PathVariable("id") Long ap_id, @PathVariable("glitch_id") Long glitch_id, @RequestParam("date") Date dateOfReparing) {
+
+		Apartment apartment = apartmentService.findOne(ap_id);
+
+		if (apartment == null) {
+			return new ResponseEntity<GlitchDTO>(HttpStatus.BAD_REQUEST);
+		}
+		
+		Glitch glitch = glitchService.findOne(glitch_id);
+
+		if (glitch == null) {
+			return new ResponseEntity<GlitchDTO>(HttpStatus.BAD_REQUEST);
+		}
+		
+		glitch.setDateOfRepair(dateOfReparing);
 		glitchService.save(glitch);	
 
 		return new ResponseEntity<GlitchDTO>(new GlitchDTO(glitch), HttpStatus.OK);
