@@ -179,4 +179,33 @@ public class GlitchController {
 		}
 		return new ResponseEntity<ArrayList<GlitchTypeDTO>>(glitchTypesDTO, HttpStatus.OK);
 	}
+	
+	@RequestMapping(value = "/apartments/{id}/glitches/{glitch_id}/company/{c_id}", method = RequestMethod.PUT, consumes = "application/json")
+	@PreAuthorize("hasAnyRole('ROLE_PRESIDENT', 'ROLE_COMPANY')")
+	public ResponseEntity<GlitchDTO> changeCompany(@PathVariable("id") Long ap_id, @PathVariable("glitch_id") Long glitch_id, @PathVariable("c_id") Long comp_id) {
+	
+		User company = userService.findOne(comp_id);
+
+		if (company != null) {
+			return new ResponseEntity<GlitchDTO>(HttpStatus.BAD_REQUEST);
+		}
+
+		Apartment apartment = apartmentService.findOne(ap_id);
+
+		if (apartment == null) {
+			return new ResponseEntity<GlitchDTO>(HttpStatus.BAD_REQUEST);
+		}
+		
+		Glitch glitch = glitchService.findOne(glitch_id);
+
+		if (glitch == null) {
+			return new ResponseEntity<GlitchDTO>(HttpStatus.BAD_REQUEST);
+		}
+		
+		glitch.setCompany(company);
+		glitchService.save(glitch);	
+
+		return new ResponseEntity<GlitchDTO>(new GlitchDTO(glitch), HttpStatus.OK);
+	}
+
 }
