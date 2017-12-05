@@ -16,6 +16,7 @@ public class GlitchDTO {
 	private GlitchState state;
 	private Date dateOfRepair;
 	private BillDTO bill;
+	private boolean dateOfRepairApproved;
 
 	public GlitchDTO() {
 
@@ -23,7 +24,7 @@ public class GlitchDTO {
 
 	public GlitchDTO(Glitch glitch) {
 		this(glitch.getId(), glitch.getDescription(), glitch.getDateOfReport(), glitch.getState(),
-				glitch.getDateOfRepair());
+				glitch.getDateOfRepair(), glitch.isDateOfRepairApproved());
 
 		if (glitch.getResponsiblePerson() != null) {
 			this.responsiblePerson = new UserDTO(glitch.getResponsiblePerson());
@@ -56,7 +57,7 @@ public class GlitchDTO {
 	}
 
 	public GlitchDTO(Long id, String description, Date dateOfReport, GlitchTypeDTO type, GlitchState state,
-			Date dateOfRepair) {
+			Date dateOfRepair, boolean dateOfRepairapproved) {
 		super();
 		this.id = id;
 		this.description = description;
@@ -64,15 +65,17 @@ public class GlitchDTO {
 		this.type = type;
 		this.state = state;
 		this.dateOfRepair = dateOfRepair;
+		this.dateOfRepairApproved=dateOfRepairapproved;
 	}
 
-	public GlitchDTO(Long id, String description, Date dateOfReport, GlitchState state, Date dateOfRepair) {
+	public GlitchDTO(Long id, String description, Date dateOfReport, GlitchState state, Date dateOfRepair,boolean dateOfRepairapproved) {
 		super();
 		this.id = id;
 		this.description = description;
 		this.dateOfReport = dateOfReport;
 		this.state = state;
 		this.dateOfRepair = dateOfRepair;
+		this.dateOfRepairApproved=dateOfRepairapproved;
 	}
 
 	public Long getId() {
@@ -155,9 +158,19 @@ public class GlitchDTO {
 		this.bill = bill;
 	}
 
+	
+	
+	public boolean isDateOfRepairApproved() {
+		return dateOfRepairApproved;
+	}
+
+	public void setDateOfRepairApproved(boolean dateOfRepairApproved) {
+		this.dateOfRepairApproved = dateOfRepairApproved;
+	}
+
 	public static Glitch getGlitch(GlitchDTO glitchDTO) {
 		Glitch glitch = new Glitch(glitchDTO.getId(), glitchDTO.getDescription(), glitchDTO.getDateOfReport(),
-				glitchDTO.getState(), glitchDTO.getDateOfRepair());
+				glitchDTO.getState(), glitchDTO.getDateOfRepair(), glitchDTO.isDateOfRepairApproved());
 
 		if (glitchDTO.getResponsiblePerson() != null) {
 			glitch.setResponsiblePerson(UserDTO.getUser(glitchDTO.getResponsiblePerson()));

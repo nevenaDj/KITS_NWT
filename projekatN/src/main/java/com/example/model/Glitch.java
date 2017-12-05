@@ -45,6 +45,8 @@ public class Glitch {
 
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date dateOfRepair;
+	
+	private boolean dateOfRepairApproved;
 
 	@OneToMany(mappedBy = "glitch", fetch = FetchType.LAZY)
 	private Set<Comment> comments = new HashSet<Comment>();
@@ -57,7 +59,7 @@ public class Glitch {
 	}
 
 	public Glitch(Long id, String description, Date dateOfReport, GlitchType type, GlitchState state,
-			Date dateOfRepair) {
+			Date dateOfRepair, boolean dateOfRepairApproved) {
 		super();
 		this.id = id;
 		this.description = description;
@@ -65,15 +67,17 @@ public class Glitch {
 		this.type = type;
 		this.state = state;
 		this.dateOfRepair = dateOfRepair;
+		this.dateOfRepairApproved=dateOfRepairApproved;
 	}
 
-	public Glitch(Long id, String description, Date dateOfReport, GlitchState state, Date dateOfRepair) {
+	public Glitch(Long id, String description, Date dateOfReport, GlitchState state, Date dateOfRepair, boolean dateOfRepairApproved) {
 		super();
 		this.id = id;
 		this.description = description;
 		this.dateOfReport = dateOfReport;
 		this.state = state;
 		this.dateOfRepair = dateOfRepair;
+		this.dateOfRepairApproved=dateOfRepairApproved;
 	}
 
 	public Long getId() {
@@ -171,6 +175,16 @@ public class Glitch {
 	public void setBill(Bill bill) {
 		this.bill = bill;
 	}
+
+	public boolean isDateOfRepairApproved() {
+		return dateOfRepairApproved;
+	}
+
+	public void setDateOfRepairApproved(boolean dateOfRepairApproved) {
+		this.dateOfRepairApproved = dateOfRepairApproved;
+	}
+	
+	
 
 	
 }

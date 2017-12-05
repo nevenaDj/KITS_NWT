@@ -231,5 +231,35 @@ public class GlitchController {
 
 		return new ResponseEntity<GlitchDTO>(new GlitchDTO(glitch), HttpStatus.OK);
 	}
+	
+	@RequestMapping(value = "/apartments/{id}/glitches/{glitch_id}", method = RequestMethod.PUT, produces = "application/json")
+	@PreAuthorize("hasAnyRole('ROLE_USER')")
+	public ResponseEntity<GlitchDTO> approveTimeOfRepaing(@PathVariable("id") Long ap_id, 
+			@PathVariable("glitch_id") Long glitch_id, HttpServletRequest request) {
+
+		Apartment apartment = apartmentService.findOne(ap_id);
+
+		if (apartment == null) {
+			return new ResponseEntity<GlitchDTO>(HttpStatus.BAD_REQUEST);
+		}
+		
+		Glitch glitch = glitchService.findOne(glitch_id);
+
+		if (glitch == null) {
+			return new ResponseEntity<GlitchDTO>(HttpStatus.BAD_REQUEST);
+		}
+		
+		String token = request.getHeader("X-Auth-Token");
+		String username = tokenUtils.getUsernameFromToken(token);
+		User responsible = userService.findByUsername(username);
+		if (glitch.getResponsiblePerson().getId()!=responsible.getId()){
+			return new ResponseEntity<GlitchDTO>(HttpStatus.UNAUTHORIZED);		
+		}
+		
+		glitch.setDateOfRepairApproved(true);
+		glitchService.save(glitch);	
+
+		return new ResponseEntity<GlitchDTO>(new GlitchDTO(glitch), HttpStatus.OK);
+	}
 
 }
