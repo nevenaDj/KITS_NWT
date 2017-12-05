@@ -30,5 +30,9 @@ public class PricelistService {
 	public void remove(Long id) {
 		pricelistRepository.delete(id);
 	}
+	
+	public Pricelist findOneByCompany(Long id) {
+		return pricelistRepository.findOneByCompany(id);
+	}
 
 }

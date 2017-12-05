@@ -9,6 +9,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 
 @Entity
 public class Pricelist {
@@ -20,6 +21,10 @@ public class Pricelist {
 	
 	@OneToMany(mappedBy = "pricelist", fetch = FetchType.LAZY)
 	private Set<Item_In_Princelist> items = new HashSet<Item_In_Princelist>();
+	
+	@OneToOne(fetch = FetchType.EAGER)
+	private User company;
+
 
 	
 	public Pricelist() {
@@ -59,6 +64,14 @@ public class Pricelist {
 	@Override
 	public String toString() {
 		return "Pricelist [id=" + id + ", dateUpdate=" + dateUpdate + "]";
+	}
+
+	public User getCompany() {
+		return company;
+	}
+
+	public void setCompany(User company) {
+		this.company = company;
 	}
 	
 	

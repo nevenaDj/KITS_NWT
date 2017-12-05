@@ -3,6 +3,8 @@ package com.example.controller;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -23,6 +25,7 @@ import com.example.model.Meeting;
 import com.example.model.Notification;
 import com.example.model.Pricelist;
 import com.example.model.User;
+import com.example.security.TokenUtils;
 import com.example.service.ItemInPricelistService;
 import com.example.service.MeetingService;
 import com.example.service.NotificationService;
@@ -39,6 +42,8 @@ public class PricelistController {
 	PricelistService pricelistService;
 	@Autowired
 	ItemInPricelistService itemService;
+	@Autowired
+	TokenUtils tokenUtils;
 	
 	@RequestMapping(method = RequestMethod.POST, consumes = "application/json")
 	@PreAuthorize("hasRole('ROLE_COMPANY')")
@@ -95,20 +100,23 @@ public class PricelistController {
 	
 	
 	@RequestMapping(value = "/items", method = RequestMethod.GET, produces= "application/json")
-	public ResponseEntity<ItemInPricelistDTO> getItemsInPricelist(@PathVariable Long id,Pageable page) {
+	public ResponseEntity<PricelistDTO> getItemsInPricelist(Pageable page, HttpServletRequest request) {
+		
+		String token = request.getHeader("X-Auth-Token");
+		String username = tokenUtils.getUsernameFromToken(token);
 
-		User user = userService.findOne(id);
-		if (user == null) {
-			return new ResponseEntity<ItemInPricelistDTO>(HttpStatus.BAD_REQUEST);
+		User company = userService.findByUsername(username);	
+		
+		if (company == null) {
+			return new ResponseEntity<PricelistDTO>(HttpStatus.BAD_REQUEST);
 		}
 		
-		Item_In_Princelist item = itemService.findOne(id);
+		Pricelist pricelist = pricelistService.findOneByCompany(company.getId());
 		
-		if (item==null){
-			return new ResponseEntity<ItemInPricelistDTO>(HttpStatus.NOT_FOUND);
+		if (pricelist==null){
+			return new ResponseEntity<PricelistDTO>(HttpStatus.NOT_FOUND);
 		} else {
-			ItemInPricelistDTO itemDTO = new ItemInPricelistDTO(item);
-			return new ResponseEntity<ItemInPricelistDTO>(itemDTO, HttpStatus.OK);
+			return new ResponseEntity<PricelistDTO>(new PricelistDTO(pricelist), HttpStatus.OK);
 		}
 	} 
 	
@@ -130,5 +138,26 @@ public class PricelistController {
 		}
 	}
 	
+	
+	@RequestMapping(value = "/items/{items_id}", method = RequestMethod.PUT, consumes="application/json")
+	@PreAuthorize("hasRole('ROLE_COMPANY')")
+	public ResponseEntity<Void> updateItem(@PathVariable("id") Long id, @PathVariable("items_id")  Long items_id, @RequestBody ItemInPricelistDTO itemDTO ) {
+
+		User user = userService.findOne(id);
+		if (user == null) {
+			return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
+		}
+		
+		Item_In_Princelist item = itemService.findOne(items_id);
+		item= ItemInPricelistDTO.getItemInPricelist(itemDTO);
+		itemService.save(item);
+		///????
+		if (item == null) {
+			return new ResponseEntity<Void>(HttpStatus.NOT_FOUND);
+		} else {
+			itemService.remove(items_id);
+			return new ResponseEntity<Void>(HttpStatus.OK);
+		}
+	}
 
 }

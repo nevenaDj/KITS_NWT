@@ -31,4 +31,5 @@ public class ItemInPricelistService {
 	public void remove(Long id) {
 		itemInPricelistRepository.delete(id);
 	}
+
 }
