@@ -6,6 +6,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static com.example.constants.GlitchConstants.NEW_COMMENT;
 import static com.example.constants.GlitchConstants.ID;
+import static com.example.constants.GlitchConstants.ID_NOT_FOUND;
 
 import java.nio.charset.Charset;
 
@@ -22,6 +23,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.web.FilterChainProxy;
 import org.springframework.test.annotation.Rollback;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -35,6 +37,7 @@ import com.jayway.restassured.RestAssured;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = WebEnvironment.DEFINED_PORT)
+@TestPropertySource(locations="classpath:test.properties")
 public class CommentControllerTest {
 
 	private String accessToken;
@@ -63,7 +66,7 @@ public class CommentControllerTest {
 	
 	@Before
 	public void loginTenant() {
-		ResponseEntity<String> responseEntity = restTemplate.postForEntity("/login",
+		ResponseEntity<String> responseEntity = restTemplate.postForEntity("/api/login",
 				new LoginDTO(USERNAME, PASSWORD), String.class);
 		accessToken = responseEntity.getBody();
 	}
@@ -77,10 +80,24 @@ public class CommentControllerTest {
 		
 		String json = TestUtils.convertObjectToJson(commentDTO);
 		
-		mockMvc.perform(post("/glitches/"+ ID +"/comments").header("X-Auth-Token", accessToken)
+		mockMvc.perform(post("/api/glitches/"+ ID +"/comments").header("X-Auth-Token", accessToken)
 				.contentType(contentType)
 				.content(json))
 		.andExpect(status().isCreated());
+		
+	}
+	
+	@Test
+	public void testAddCommentBadRequest() throws Exception{
+		CommentDTO commentDTO = new CommentDTO();
+		commentDTO.setText(NEW_COMMENT);
+		
+		String json = TestUtils.convertObjectToJson(commentDTO);
+		
+		mockMvc.perform(post("/api/glitches/"+ ID_NOT_FOUND +"/comments").header("X-Auth-Token", accessToken)
+				.contentType(contentType)
+				.content(json))
+		.andExpect(status().isBadRequest());
 		
 	}
 }

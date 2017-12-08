@@ -20,7 +20,7 @@ public class Pricelist {
 	private Date dateUpdate;
 	
 	@OneToMany(mappedBy = "pricelist", fetch = FetchType.LAZY)
-	private Set<Item_In_Princelist> items = new HashSet<Item_In_Princelist>();
+	private Set<ItemInPrincelist> items = new HashSet<>();
 	
 	@OneToOne(fetch = FetchType.EAGER)
 	private User company;
@@ -53,11 +53,11 @@ public class Pricelist {
 		this.dateUpdate = dateUpdate;
 	}
 
-	public Set<Item_In_Princelist> getItems() {
+	public Set<ItemInPrincelist> getItems() {
 		return items;
 	}
 
-	public void setItems(Set<Item_In_Princelist> items) {
+	public void setItems(Set<ItemInPrincelist> items) {
 		this.items = items;
 	}
 

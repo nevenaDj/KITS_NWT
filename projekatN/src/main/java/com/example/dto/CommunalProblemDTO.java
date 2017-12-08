@@ -12,7 +12,7 @@ public class CommunalProblemDTO {
 	private GlitchTypeDTO type;
 	private Date dateOfRepair;
 	private Long companyID;
-	private Set<ApartmentDTO> apartments = new HashSet<ApartmentDTO>();
+	private Set<ApartmentDTO> apartments = new HashSet<>();
 
 	public CommunalProblemDTO() {
 

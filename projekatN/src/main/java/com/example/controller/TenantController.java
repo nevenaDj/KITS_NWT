@@ -29,7 +29,18 @@ import com.example.service.ApartmentService;
 import com.example.service.UserApartmentService;
 import com.example.service.UserService;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
+
+import static com.example.utils.Constants.ROLE_TENANT;
+
 @RestController
+@RequestMapping(value = "/api")
+@Api(value = "tenants")
 public class TenantController {
 	@Autowired
 	PasswordEncoder passwordEncoder;
@@ -43,16 +54,23 @@ public class TenantController {
 	TokenUtils tokenUtils;
 	
 	@RequestMapping(value = "/aparments/{id}/tenants", method = RequestMethod.POST, consumes = "application/json")
+	@ApiOperation(value = "Add tenant to the apartment.", notes = "Returns the tenant.", httpMethod = "POST", produces = "application/json", consumes = "application/json")
+	@ApiImplicitParam(paramType="header", name="X-Auth-Token", required=true, value="JWT token")
+	@ApiResponses(value = { 
+			@ApiResponse(code = 201, message = "Created", response = UserDTO.class),
+			@ApiResponse(code = 400, message = "Bad request") })
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
-	public ResponseEntity<UserDTO> addTenant(@PathVariable Long id, @RequestBody UserDTO userDTO) {
+	public ResponseEntity<UserDTO> addTenant(
+			@ApiParam(value = "The ID of the apartment.", required = true) @PathVariable Long id,
+			@ApiParam(value = "The userDTO object", required = true) @RequestBody UserDTO userDTO) {
 
 		Apartment apartment = apartmentService.findOne(id);
 
 		if (apartment == null) {
-			return new ResponseEntity<UserDTO>(HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 
-		User user = userService.findByUsernameAndAuthority(userDTO.getUsername(), "ROLE_USER");
+		User user = userService.findByUsernameAndAuthority(userDTO.getUsername(), ROLE_TENANT);
 
 		if (user == null) {
 			user = UserDTO.getUser(userDTO);
@@ -62,26 +80,34 @@ public class TenantController {
 		UserAparment userApartment = new UserAparment(user, apartment);
 		userApartmentService.save(userApartment);
 
-		return new ResponseEntity<UserDTO>(new UserDTO(user), HttpStatus.CREATED);
+		return new ResponseEntity<>(new UserDTO(user), HttpStatus.CREATED);
 	}
 
 	@RequestMapping(value = "/tenants", method = RequestMethod.GET)
+	@ApiOperation(value = "Get a list of tenants.", httpMethod = "GET")
+	@ApiImplicitParam(paramType="header", name="X-Auth-Token", required=true, value="JWT token")
 	public ResponseEntity<List<UserDTO>> getTenants(Pageable page) {
-		Page<User> users = userService.find(page, "ROLE_USER");
+		Page<User> users = userService.find(page, ROLE_TENANT);
 
-		List<UserDTO> usersDTO = new ArrayList<UserDTO>();
+		List<UserDTO> usersDTO = new ArrayList<>();
 		for (User user : users) {
 			usersDTO.add(new UserDTO(user));
 		}
-		return new ResponseEntity<List<UserDTO>>(usersDTO, HttpStatus.OK);
+		return new ResponseEntity<>(usersDTO, HttpStatus.OK);
 	}
 
 	@RequestMapping(value = "/tenants", method = RequestMethod.PUT, consumes = "application/json")
-	public ResponseEntity<UserDTO> updateTenant(@RequestBody UserDTO userDTO) {
+	@ApiOperation(value = "Update a tenant.", notes = "Returns the tenant being saved.", httpMethod = "PUT", produces = "application/json", consumes = "application/json")
+	@ApiImplicitParam(paramType="header", name="X-Auth-Token", required=true, value="JWT token")
+	@ApiResponses(value = { 
+			@ApiResponse(code = 200, message = "Success", response = UserDTO.class),
+			@ApiResponse(code = 400, message = "Bad request") })
+	public ResponseEntity<UserDTO> updateTenant(
+			@ApiParam(value = "The userDTO object", required = true)@RequestBody UserDTO userDTO) {
 		User user = userService.findOne(userDTO.getId());
 
 		if (user == null) {
-			return new ResponseEntity<UserDTO>(HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 
 		user.setEmail(userDTO.getEmail());
@@ -90,35 +116,48 @@ public class TenantController {
 
 		user = userService.update(user);
 
-		return new ResponseEntity<UserDTO>(new UserDTO(user), HttpStatus.OK);
+		return new ResponseEntity<>(new UserDTO(user), HttpStatus.OK);
 	}
 
 	@RequestMapping(value = "/tenants/{id}", method = RequestMethod.DELETE)
+	@ApiOperation(value = "Delete a tenant.", httpMethod = "DELETE")
+	@ApiImplicitParam(paramType="header", name="X-Auth-Token", required=true, value="JWT token")
+	@ApiResponses(value = { 
+			@ApiResponse(code = 200, message = "Success"),
+			@ApiResponse(code = 404, message = "Not found")})
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
-	public ResponseEntity<Void> deleteTenant(@PathVariable Long id) {
+	public ResponseEntity<Void> deleteTenant(
+			@ApiParam(value = "The ID of the tenant.", required = true)@PathVariable Long id) {
 		User user = userService.findOne(id);
 		if (user == null) {
-			return new ResponseEntity<Void>(HttpStatus.NOT_FOUND);
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		} else {
-			userService.remove(id, "ROLE_USER");
-			return new ResponseEntity<Void>(HttpStatus.OK);
+			userService.remove(id, ROLE_TENANT);
+			return new ResponseEntity<>(HttpStatus.OK);
 		}
 	}
 
-	@RequestMapping(value = "/tenants/{id}/password", method = RequestMethod.PUT, consumes = "application/json")
+	@RequestMapping(value = "/tenants/password", method = RequestMethod.PUT, consumes = "application/json")
+	@ApiOperation(value = "Change password.", httpMethod = "PUT", produces = "application/json", consumes = "application/json")
+	@ApiImplicitParam(paramType="header", name="X-Auth-Token", required=true, value="JWT token")
+	@ApiResponses(value = { 
+			@ApiResponse(code = 200, message = "Success"),
+			@ApiResponse(code = 400, message = "Bad request") })
 	@PreAuthorize("hasRole('ROLE_USER')")
-	public ResponseEntity<Void> changePassword(@PathVariable Long id, @RequestBody UserPasswordDTO userPasswordDTO,
+	public ResponseEntity<Void> changePassword(
+			@ApiParam(value = "The userPasswordDTO object", required = true)@RequestBody UserPasswordDTO userPasswordDTO,
 			HttpServletRequest request) {
+		
 		String token = request.getHeader("X-Auth-Token");
 		String username = tokenUtils.getUsernameFromToken(token);
 
 		boolean flag = userService.changePassword(username, userPasswordDTO.getCurrentPassword(),
 				userPasswordDTO.getNewPassword1(), userPasswordDTO.getNewPassword2());
 
-		if (flag == true) {
-			return new ResponseEntity<Void>(HttpStatus.OK);
+		if (flag) {
+			return new ResponseEntity<>(HttpStatus.OK);
 		} else {
-			return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 
 	}

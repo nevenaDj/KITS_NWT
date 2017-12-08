@@ -7,7 +7,7 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
 @Entity
-public class Item_In_Princelist {
+public class ItemInPrincelist {
 	@Id
 	@GeneratedValue
 	private Long id;
@@ -22,11 +22,11 @@ public class Item_In_Princelist {
 	private Bill bill;
 
 
-	public Item_In_Princelist(){
+	public ItemInPrincelist(){
 		
 	}
 	
-	public Item_In_Princelist(Long id, String nameOfType, Double price) {
+	public ItemInPrincelist(Long id, String nameOfType, Double price) {
 		super();
 		this.id = id;
 		this.nameOfType = nameOfType;

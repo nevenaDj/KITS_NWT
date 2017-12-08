@@ -52,7 +52,7 @@ public class AgendaController {
 		Meeting meeting = meetingService.findOne(id);
 
 		if (meeting == null) {
-			return new ResponseEntity<AgendaPointDTO>(HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 
 		User user = userService.findByUsername(username);
@@ -63,7 +63,7 @@ public class AgendaController {
 
 		agendaPoint = agendaPointService.save(agendaPoint);
 
-		return new ResponseEntity<AgendaPointDTO>(new AgendaPointDTO(agendaPoint), HttpStatus.CREATED);
+		return new ResponseEntity<>(new AgendaPointDTO(agendaPoint), HttpStatus.CREATED);
 
 	}
 
@@ -73,10 +73,10 @@ public class AgendaController {
 		AgendaPoint agendaPoint = agendaPointService.findOne(id);
 
 		if (agendaPoint == null) {
-			return new ResponseEntity<AgendaPointDTO>(HttpStatus.NOT_FOUND);
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
 
-		return new ResponseEntity<AgendaPointDTO>(new AgendaPointDTO(agendaPoint), HttpStatus.OK);
+		return new ResponseEntity<>(new AgendaPointDTO(agendaPoint), HttpStatus.OK);
 	}
 
 	@RequestMapping(value = "/agendas/{id}", method = RequestMethod.GET)
@@ -84,7 +84,7 @@ public class AgendaController {
 	public ResponseEntity<AgendaDTO> getAgenda(@PathVariable Long id) {
 		Collection<AgendaPoint> agendaPoints = agendaPointService.findAllAgendaPoints(id);
 
-		HashSet<AgendaPointDTO> agendaPointsDTO = new HashSet<AgendaPointDTO>();
+		HashSet<AgendaPointDTO> agendaPointsDTO = new HashSet<>();
 		for (AgendaPoint agendaPoint : agendaPoints) {
 			agendaPointsDTO.add(new AgendaPointDTO(agendaPoint));
 
@@ -92,14 +92,14 @@ public class AgendaController {
 
 		Collection<Survey> surveys = surveyService.findAllSurveys(id);
 
-		HashSet<SurveyDTO> surveysDTO = new HashSet<SurveyDTO>();
+		HashSet<SurveyDTO> surveysDTO = new HashSet<>();
 		for (Survey survey : surveys) {
 			surveysDTO.add(new SurveyDTO(survey));
 		}
 
 		AgendaDTO agendaDTO = new AgendaDTO(id, agendaPointsDTO, surveysDTO);
 
-		return new ResponseEntity<AgendaDTO>(agendaDTO, HttpStatus.OK);
+		return new ResponseEntity<>(agendaDTO, HttpStatus.OK);
 
 	}
 }

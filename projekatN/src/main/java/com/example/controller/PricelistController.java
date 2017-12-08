@@ -1,12 +1,9 @@
 package com.example.controller;
 
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,17 +15,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.dto.ItemInPricelistDTO;
-import com.example.dto.NotificationDTO;
 import com.example.dto.PricelistDTO;
-import com.example.model.Item_In_Princelist;
-import com.example.model.Meeting;
-import com.example.model.Notification;
+import com.example.model.ItemInPrincelist;
 import com.example.model.Pricelist;
 import com.example.model.User;
 import com.example.security.TokenUtils;
 import com.example.service.ItemInPricelistService;
-import com.example.service.MeetingService;
-import com.example.service.NotificationService;
 import com.example.service.PricelistService;
 import com.example.service.UserService;
 
@@ -52,14 +44,14 @@ public class PricelistController {
 
 		User user = userService.findOne(id);
 		if (user == null) {
-			return new ResponseEntity<PricelistDTO>(HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 		
 		// ha mar van 1 egy companyhoz
 		item = pricelistService.save(item);
 		itemDTO.setId(item.getId());
 
-		return new ResponseEntity<PricelistDTO>(itemDTO, HttpStatus.CREATED);
+		return new ResponseEntity<>(itemDTO, HttpStatus.CREATED);
 	}
 	
 	
@@ -68,34 +60,34 @@ public class PricelistController {
 
 		User user = userService.findOne(id);
 		if (user == null) {
-			return new ResponseEntity<PricelistDTO>(HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 		
 		Pricelist item = pricelistService.findOne(id);
 		
 		if (item==null){
-			return new ResponseEntity<PricelistDTO>(HttpStatus.NOT_FOUND);
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		} else {
 			PricelistDTO itemDTO = new PricelistDTO(item);
-			return new ResponseEntity<PricelistDTO>(itemDTO, HttpStatus.OK);
+			return new ResponseEntity<>(itemDTO, HttpStatus.OK);
 		}
 	}
 	 
 	@RequestMapping(value = "/items", method = RequestMethod.POST, consumes = "application/json")
 	@PreAuthorize("hasRole('ROLE_COMPANY')")
 	public ResponseEntity<ItemInPricelistDTO> addItem(@PathVariable Long id, @RequestBody ItemInPricelistDTO itemDTO) {
-		Item_In_Princelist item = ItemInPricelistDTO.getItemInPricelist(itemDTO);
+		ItemInPrincelist item = ItemInPricelistDTO.getItemInPricelist(itemDTO);
 
 		User user = userService.findOne(id);
 		if (user == null) {
-			return new ResponseEntity<ItemInPricelistDTO>(HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 		
 		// ha mar van 1 egy companyhoz
 		item = itemService.save(item);
 		itemDTO.setId(item.getId());
 
-		return new ResponseEntity<ItemInPricelistDTO>(itemDTO, HttpStatus.CREATED);
+		return new ResponseEntity<>(itemDTO, HttpStatus.CREATED);
 	}
 	
 	
@@ -108,55 +100,55 @@ public class PricelistController {
 		User company = userService.findByUsername(username);	
 		
 		if (company == null) {
-			return new ResponseEntity<PricelistDTO>(HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 		
 		Pricelist pricelist = pricelistService.findOneByCompany(company.getId());
 		
 		if (pricelist==null){
-			return new ResponseEntity<PricelistDTO>(HttpStatus.NOT_FOUND);
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		} else {
-			return new ResponseEntity<PricelistDTO>(new PricelistDTO(pricelist), HttpStatus.OK);
+			return new ResponseEntity<>(new PricelistDTO(pricelist), HttpStatus.OK);
 		}
 	} 
 	
 	@RequestMapping(value = "/items/{items_id}", method = RequestMethod.DELETE)
 	@PreAuthorize("hasRole('ROLE_COMPANY')")
-	public ResponseEntity<Void> deleteItem(@PathVariable("id") Long id, @PathVariable("items_id")  Long items_id ) { // da li je dobro tako????
+	public ResponseEntity<Void> deleteItem(@PathVariable("id") Long id, @PathVariable("items_id")  Long itemId ) { // da li je dobro tako????
 
 		User user = userService.findOne(id);
 		if (user == null) {
-			return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 		
-		Item_In_Princelist item = itemService.findOne(items_id);
+		ItemInPrincelist item = itemService.findOne(itemId);
 		if (item == null) {
-			return new ResponseEntity<Void>(HttpStatus.NOT_FOUND);
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		} else {
-			itemService.remove(items_id);
-			return new ResponseEntity<Void>(HttpStatus.OK);
+			itemService.remove(itemId);
+			return new ResponseEntity<>(HttpStatus.OK);
 		}
 	}
 	
 	
 	@RequestMapping(value = "/items/{items_id}", method = RequestMethod.PUT, consumes="application/json")
 	@PreAuthorize("hasRole('ROLE_COMPANY')")
-	public ResponseEntity<Void> updateItem(@PathVariable("id") Long id, @PathVariable("items_id")  Long items_id, @RequestBody ItemInPricelistDTO itemDTO ) {
+	public ResponseEntity<Void> updateItem(@PathVariable("id") Long id, @PathVariable("items_id")  Long itemId, @RequestBody ItemInPricelistDTO itemDTO ) {
 
 		User user = userService.findOne(id);
 		if (user == null) {
-			return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 		
-		Item_In_Princelist item = itemService.findOne(items_id);
+		ItemInPrincelist item = itemService.findOne(itemId);
 		item= ItemInPricelistDTO.getItemInPricelist(itemDTO);
 		itemService.save(item);
 		///????
 		if (item == null) {
-			return new ResponseEntity<Void>(HttpStatus.NOT_FOUND);
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		} else {
-			itemService.remove(items_id);
-			return new ResponseEntity<Void>(HttpStatus.OK);
+			itemService.remove(itemId);
+			return new ResponseEntity<>(HttpStatus.OK);
 		}
 	}
 

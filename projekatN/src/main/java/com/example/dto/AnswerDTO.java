@@ -5,7 +5,7 @@ import java.util.Set;
 
 public class AnswerDTO {
 	private Long questionID;
-	private Set<Long> options = new HashSet<Long>();
+	private Set<Long> options = new HashSet<>();
 
 	public AnswerDTO() {
 

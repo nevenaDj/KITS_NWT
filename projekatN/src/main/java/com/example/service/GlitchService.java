@@ -1,7 +1,7 @@
 package com.example.service;
 
-import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -61,8 +61,8 @@ public class GlitchService {
 		return glitchTypeRepository.findOne(id);
 	}
 	
-	public ArrayList<GlitchType> findAllGlitchType() {
-		return (ArrayList<GlitchType>) glitchTypeRepository.findAll();
+	public List<GlitchType> findAllGlitchType() {
+		return glitchTypeRepository.findAll();
 	}
 	
 	public void removeGlitchType(Long id) {

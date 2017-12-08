@@ -14,6 +14,7 @@ import static com.example.constants.UserConstants.NEW_CITY;
 import static com.example.constants.UserConstants.USERNAME;
 import static com.example.constants.UserConstants.ID_USER;
 import static com.example.constants.UserConstants.NEW_PASSWORD;
+import static com.example.constants.UserConstants.ID_NOT_FOUND;
 import static org.hamcrest.CoreMatchers.hasItem;
 import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
@@ -39,6 +40,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.web.FilterChainProxy;
 import org.springframework.test.annotation.Rollback;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -54,6 +56,7 @@ import com.jayway.restassured.RestAssured;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = WebEnvironment.DEFINED_PORT)
+@TestPropertySource(locations="classpath:test.properties")
 public class TenantControllerTest {
 	private String accessToken;
 	private String accessTokenTenant;
@@ -79,7 +82,7 @@ public class TenantControllerTest {
 									  .addFilters(springSecurityFilterChain)
 									  .build();
 		
-		ResponseEntity<String> responseEntity = restTemplate.postForEntity("/login",
+		ResponseEntity<String> responseEntity = restTemplate.postForEntity("/api/login",
 				new LoginDTO(USERNAME_ADMIN, PASSWORD_ADMIN), String.class);
 		accessToken = responseEntity.getBody();
 	}
@@ -95,7 +98,7 @@ public class TenantControllerTest {
 		String json = TestUtils.convertObjectToJson(userDTO);
 
 		mockMvc.perform(
-				post("/aparments/1/tenants").header("X-Auth-Token", accessToken)
+				post("/api/aparments/1/tenants").header("X-Auth-Token", accessToken)
 										   .contentType(contentType)
 										   .content(json))
 				.andExpect(status().isCreated())
@@ -133,7 +136,7 @@ public class TenantControllerTest {
 		String json = TestUtils.convertObjectToJson(userDTO);
 
 		mockMvc.perform(
-				post("/aparments/10/tenants").header("X-Auth-Token", accessToken)
+				post("/api/aparments/10/tenants").header("X-Auth-Token", accessToken)
 										   .contentType(contentType)
 										   .content(json))
 				.andExpect(status().isBadRequest());
@@ -142,7 +145,7 @@ public class TenantControllerTest {
 	
 	@Test
 	public void testGetTenants() throws Exception{
-		mockMvc.perform(get("/tenants?page=0&size=" + PAGE_SIZE).header("X-Auth-Token", accessToken))
+		mockMvc.perform(get("/api/tenants?page=0&size=" + PAGE_SIZE).header("X-Auth-Token", accessToken))
 		.andExpect(status().isOk())
 		.andExpect(jsonPath("$", hasSize(1)))
 		.andExpect(content().contentType(contentType))
@@ -157,7 +160,7 @@ public class TenantControllerTest {
 		UserDTO userDTO = new UserDTO(ID_USER,NEW_USERNAME, NEW_EMAIL, addressDTO, NEW_PHONE_NO);
 		String json = TestUtils.convertObjectToJson(userDTO);
 		
-		mockMvc.perform(put("/tenants")
+		mockMvc.perform(put("/api/tenants")
 				.header("X-Auth-Token", accessToken)
 				.contentType(contentType)
 				.content(json))
@@ -171,18 +174,40 @@ public class TenantControllerTest {
 	}
 	
 	@Test
+	public void testUpdateTenantBadRequest() throws Exception{
+		AddressDTO addressDTO = new AddressDTO(NEW_STREET, NEW_NUMBER, NEW_ZIP_CODE, NEW_CITY);
+		UserDTO userDTO = new UserDTO(ID_NOT_FOUND,NEW_USERNAME, NEW_EMAIL, addressDTO, NEW_PHONE_NO);
+		String json = TestUtils.convertObjectToJson(userDTO);
+		
+		mockMvc.perform(put("/api/tenants")
+				.header("X-Auth-Token", accessToken)
+				.contentType(contentType)
+				.content(json))
+			.andExpect(status().isBadRequest());
+	}
+	
+	
+	@Test
     @Transactional
     @Rollback(true)
 	public void testDeleteTenant() throws Exception{
-		mockMvc.perform(delete("/tenants/" + ID_USER.intValue())
+		mockMvc.perform(delete("/api/tenants/" + ID_USER.intValue())
 				.header("X-Auth-Token", accessToken))
 		.andExpect(status().isOk());
 		
 	}
 	
+	@Test
+	public void testDeleteTenantNotFound() throws Exception{
+		mockMvc.perform(delete("/api/tenants/" + ID_NOT_FOUND)
+				.header("X-Auth-Token", accessToken))
+		.andExpect(status().isNotFound());
+		
+	}
+	
 	@Before
 	public void loginTenant() {
-		ResponseEntity<String> responseEntity = restTemplate.postForEntity("/login",
+		ResponseEntity<String> responseEntity = restTemplate.postForEntity("/api/login",
 				new LoginDTO(USERNAME, PASSWORD), String.class);
 		accessTokenTenant = responseEntity.getBody();
 	}
@@ -195,10 +220,25 @@ public class TenantControllerTest {
 		
 		String json = TestUtils.convertObjectToJson(userPasswordDTO);
 		
-		mockMvc.perform(put("/tenants/" + ID_USER + "/password").header("X-Auth-Token", accessTokenTenant)
+		mockMvc.perform(put("/api/tenants/password").header("X-Auth-Token", accessTokenTenant)
 				.contentType(contentType)
 				.content(json))
 		.andExpect(status().isOk());
+		
+	}
+	
+	@Test
+    @Transactional
+    @Rollback(true)
+	public void testChangePasswordBadRequest() throws Exception{
+		UserPasswordDTO userPasswordDTO = new UserPasswordDTO(PASSWORD, NEW_PASSWORD, PASSWORD);
+		
+		String json = TestUtils.convertObjectToJson(userPasswordDTO);
+		
+		mockMvc.perform(put("/api/tenants/password").header("X-Auth-Token", accessTokenTenant)
+				.contentType(contentType)
+				.content(json))
+		.andExpect(status().isBadRequest());
 		
 	}
 

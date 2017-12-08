@@ -5,9 +5,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import com.example.model.Apartment;
 import com.example.model.Pricelist;
-import com.example.repository.ApartmentRepository;
 import com.example.repository.PricelistRepository;
 
 @Service

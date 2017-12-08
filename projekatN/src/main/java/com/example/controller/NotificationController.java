@@ -17,25 +17,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.dto.GlitchDTO;
+
 import com.example.dto.NotificationDTO;
-import com.example.dto.OptionDTO;
-import com.example.dto.QuestionDTO;
-import com.example.dto.SurveyDTO;
-import com.example.dto.UserDTO;
 import com.example.model.Building;
-import com.example.model.Glitch;
-import com.example.model.Meeting;
 import com.example.model.Notification;
-import com.example.model.Option;
-import com.example.model.Question;
-import com.example.model.Survey;
 import com.example.model.User;
 import com.example.security.TokenUtils;
 import com.example.service.BuildingService;
-import com.example.service.MeetingService;
 import com.example.service.NotificationService;
-import com.example.service.SurveyService;
 import com.example.service.UserService;
 
 @RestController
@@ -60,7 +49,7 @@ public class NotificationController {
 		
 		Building building = buildingService.findOne(id);
 		if (building == null) {
-			return new ResponseEntity<NotificationDTO>(HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 		
 		String token = request.getHeader("X-Auth-Token");
@@ -73,7 +62,7 @@ public class NotificationController {
 		notification = notificationService.save(notification);
 		notificationDTO.setId(notification.getId());
 
-		return new ResponseEntity<NotificationDTO>(notificationDTO, HttpStatus.CREATED);
+		return new ResponseEntity<>(notificationDTO, HttpStatus.CREATED);
 	}
 	
 	
@@ -83,50 +72,50 @@ public class NotificationController {
 
 		Building building = buildingService.findOne(id);
 		if (building == null) {
-			return new ResponseEntity<List<NotificationDTO>>(HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 		
 		Page<Notification> notifications = notificationService.findAllByBuilding(page, id);
 		
 		
-		List<NotificationDTO> notificationsDTO = new ArrayList<NotificationDTO>();
+		List<NotificationDTO> notificationsDTO = new ArrayList<>();
 		for (Notification notification : notifications) {
 			notificationsDTO.add(new NotificationDTO(notification));
 		}
-		return new ResponseEntity<List<NotificationDTO>>(notificationsDTO, HttpStatus.OK);
+		return new ResponseEntity<>(notificationsDTO, HttpStatus.OK);
 	}
 	
 	@RequestMapping(value = "/buildings/{id}/notifications/{not_id}", method = RequestMethod.DELETE)
 	@PreAuthorize("hasRole('ROLE_PRESIDENT', 'ROLE_USER','ROLE_OWNER')")
-	public ResponseEntity<Void> deleteNotificaton(@PathVariable("id") Long id, @PathVariable("not_id")  Long notifications_id ) {
+	public ResponseEntity<Void> deleteNotificaton(@PathVariable("id") Long id, @PathVariable("not_id")  Long notificationId ) {
 		Building building = buildingService.findOne(id);
 		if (building == null) {
-			return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 		
-		Notification notification = notificationService.findOne(notifications_id);
+		Notification notification = notificationService.findOne(notificationId);
 		if (notification == null) {
-			return new ResponseEntity<Void>(HttpStatus.NOT_FOUND);
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		} else {
-			notificationService.remove(notifications_id);
-			return new ResponseEntity<Void>(HttpStatus.OK);
+			notificationService.remove(notificationId);
+			return new ResponseEntity<>(HttpStatus.OK);
 		}
 	}
 	
 	@RequestMapping(value = "/buildings/{id}/notifications/{not_id}", method = RequestMethod.GET, produces= "application/json")
 	@PreAuthorize("hasRole('ROLE_PRESIDENT', 'ROLE_USER','ROLE_OWNER')")
-	public ResponseEntity<NotificationDTO> getNotificaton(@PathVariable("id") Long id, @PathVariable("not_id") Long notifications_id) {
+	public ResponseEntity<NotificationDTO> getNotificaton(@PathVariable("id") Long id, @PathVariable("not_id") Long notificationId) {
 		Building building = buildingService.findOne(id);
 		if (building == null) {
-			return new ResponseEntity<NotificationDTO>(HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 		
-		Notification notification = notificationService.findOne(notifications_id);
+		Notification notification = notificationService.findOne(notificationId);
 		if (notification == null) {
-			return new ResponseEntity<NotificationDTO>(HttpStatus.NOT_FOUND);
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		} else {
 			NotificationDTO notificationDTO= new NotificationDTO(notification);
-			return new ResponseEntity<NotificationDTO>(notificationDTO, HttpStatus.OK);
+			return new ResponseEntity<>(notificationDTO, HttpStatus.OK);
 		}
 	}
 	
@@ -142,10 +131,10 @@ public class NotificationController {
 		Page<Notification> notifications = notificationService.findAllByWriter(page, writer.getId());
 		
 		
-		List<NotificationDTO> notificationsDTO = new ArrayList<NotificationDTO>();
+		List<NotificationDTO> notificationsDTO = new ArrayList<>();
 		for (Notification notification : notifications) {
 			notificationsDTO.add(new NotificationDTO(notification));
 		}
-		return new ResponseEntity<List<NotificationDTO>>(notificationsDTO, HttpStatus.OK);
+		return new ResponseEntity<>(notificationsDTO, HttpStatus.OK);
 	}
 }

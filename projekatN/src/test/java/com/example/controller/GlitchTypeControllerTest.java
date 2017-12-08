@@ -1,23 +1,14 @@
 package com.example.controller;
 
-import static com.example.constants.UserConstants.PASSWORD_PRESIDENT;
-import static com.example.constants.UserConstants.USERNAME_PRESIDENT;
-import static org.hamcrest.CoreMatchers.hasItem;
+import static com.example.constants.GlitchConstants.NEW_TYPE;
+import static com.example.constants.UserConstants.PASSWORD_ADMIN;
+import static com.example.constants.UserConstants.USERNAME_ADMIN;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static com.example.constants.SurveyConstatnts.ID_MEETING;
-import static com.example.constants.SurveyConstatnts.NEW_TITLE;
-import static com.example.constants.SurveyConstatnts.NEW_END;
-import static com.example.constants.SurveyConstatnts.NEW_OPTION_TEXT_1;
-import static com.example.constants.SurveyConstatnts.NEW_OPTION_TEXT_2;
-import static com.example.constants.SurveyConstatnts.NEW_QUESTION_TEXT;
 
 import java.nio.charset.Charset;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashSet;
 
 import javax.annotation.PostConstruct;
 
@@ -40,25 +31,23 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
 
 import com.example.TestUtils;
+import com.example.dto.GlitchTypeDTO;
 import com.example.dto.LoginDTO;
-import com.example.dto.OptionDTO;
-import com.example.dto.QuestionDTO;
-import com.example.dto.SurveyDTO;
 import com.jayway.restassured.RestAssured;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = WebEnvironment.DEFINED_PORT)
 @TestPropertySource(locations="classpath:test.properties")
-public class SurveyControllerTest {
-	
+public class GlitchTypeControllerTest {
 	private String accessToken;
+	
 
 	@Autowired
 	private TestRestTemplate restTemplate;
 
 	@Autowired
 	private WebApplicationContext webApplicationContext;
-	
+
 	@Autowired
 	FilterChainProxy springSecurityFilterChain;
 
@@ -70,51 +59,33 @@ public class SurveyControllerTest {
 	@PostConstruct
 	public void setup() {
 		RestAssured.useRelaxedHTTPSValidation();
-		this.mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext)
-									  .addFilters(springSecurityFilterChain)
-									  .build();
+		this.mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).addFilters(springSecurityFilterChain)
+				.build();
 	}
 	
 	@Before
-	public void loginPresident() {
+	public void loginAdmin() {
 		ResponseEntity<String> responseEntity = restTemplate.postForEntity("/api/login",
-				new LoginDTO(USERNAME_PRESIDENT, PASSWORD_PRESIDENT), String.class);
+				new LoginDTO(USERNAME_ADMIN, PASSWORD_ADMIN), String.class);
 		accessToken = responseEntity.getBody();
 	}
 	
 	@Test
 	@Transactional
 	@Rollback(true)
-	public void testAddSurvey() throws Exception{
-		Date endDate = new SimpleDateFormat("yyyy-MM-dd").parse(NEW_END);
+	public void testAddGlitchType() throws Exception{
+		GlitchTypeDTO glitchTypeDTO = new GlitchTypeDTO();
+		glitchTypeDTO.setType(NEW_TYPE);
 		
-		HashSet<OptionDTO> options = new HashSet<OptionDTO>();
+		String json = TestUtils.convertObjectToJson(glitchTypeDTO);
 		
-		OptionDTO optionDTO1 = new OptionDTO(NEW_OPTION_TEXT_1);
-		options.add(optionDTO1);
-		OptionDTO optionDTO2 = new OptionDTO(NEW_OPTION_TEXT_2);
-		options.add(optionDTO2);
-		
-		HashSet<QuestionDTO> questions = new HashSet<QuestionDTO>();
-		
-		QuestionDTO questionDTO = new QuestionDTO(NEW_QUESTION_TEXT, options);
-		questions.add(questionDTO);
-		
-		
-		SurveyDTO surveyDTO = new SurveyDTO(NEW_TITLE, endDate, null, questions);
-		
-		String json = TestUtils.convertObjectToJson(surveyDTO);
-		
-		mockMvc.perform(post("/api/meetings/"+ ID_MEETING +  "/surveys")
-				.header("X-Auth-Token", accessToken)
+		mockMvc.perform(post("/api/glitchTypes").header("X-Auth-Token", accessToken)
 				.contentType(contentType)
 				.content(json))
 		.andExpect(status().isCreated())
 		.andExpect(content().contentType(contentType))
-		.andExpect(jsonPath("$.title").value(NEW_TITLE))
-		.andExpect(jsonPath("$.questions.[*].text").value(hasItem(NEW_QUESTION_TEXT)))
-		.andExpect(jsonPath("$.questions.[*].options.[*].text").value(hasItem(NEW_OPTION_TEXT_1)))
-		.andExpect(jsonPath("$.questions.[*].options.[*].text").value(hasItem(NEW_OPTION_TEXT_2)));
+		.andExpect(jsonPath("$.type").value(NEW_TYPE));
+		
 	}
 
 }

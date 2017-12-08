@@ -13,7 +13,7 @@ public class SurveyDTO {
 	private Date end;
 	private SurveyType type;
 
-	private Set<QuestionDTO> questions = new HashSet<QuestionDTO>();
+	private Set<QuestionDTO> questions = new HashSet<>();
 
 	public SurveyDTO() {
 

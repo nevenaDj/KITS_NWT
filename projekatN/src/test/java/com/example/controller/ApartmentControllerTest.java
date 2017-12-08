@@ -9,6 +9,12 @@ import static com.example.constants.ApartmentConstants.DESCRIPTION;
 import static com.example.constants.ApartmentConstants.NUMBER;
 import static com.example.constants.ApartmentConstants.NEW_NUMBER;
 import static com.example.constants.ApartmentConstants.NEW_DESCRIPTION;
+import static com.example.constants.ApartmentConstants.ID_APARTMENT_NOT_FOUND;
+import static com.example.constants.ApartmentConstants.ID_BUILDING_NOT_FOUND;
+import static com.example.constants.BuildingConstatnts.STREET;
+import static com.example.constants.BuildingConstatnts.CITY;
+import static com.example.constants.ApartmentConstants.BUILDING_NUMBER;
+
 import static org.hamcrest.CoreMatchers.hasItem;
 import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
@@ -33,6 +39,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.web.FilterChainProxy;
 import org.springframework.test.annotation.Rollback;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -46,6 +53,7 @@ import com.jayway.restassured.RestAssured;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = WebEnvironment.DEFINED_PORT)
+@TestPropertySource(locations="classpath:test.properties")
 public class ApartmentControllerTest {
 	
 	private String accessToken;
@@ -71,14 +79,14 @@ public class ApartmentControllerTest {
 									  .addFilters(springSecurityFilterChain)
 									  .build();
 		
-		ResponseEntity<String> responseEntity = restTemplate.postForEntity("/login",
+		ResponseEntity<String> responseEntity = restTemplate.postForEntity("/api/login",
 				new LoginDTO(USERNAME_ADMIN, PASSWORD_ADMIN), String.class);
 		accessToken = responseEntity.getBody();
 	}
 	
 	@Test
 	public void testGetApartments() throws Exception{
-		mockMvc.perform(get("/buildings/" + ID_BUILDING + 
+		mockMvc.perform(get("/api/buildings/" + ID_BUILDING + 
 				"/apartments?page=0&size="+PAGE_SIZE )
 				.header("X-Auth-Token", accessToken))
 		.andExpect(status().isOk())
@@ -91,11 +99,18 @@ public class ApartmentControllerTest {
 	
 	@Test
 	public void testGetApartment() throws Exception{
-		mockMvc.perform(get("/apartments/"+ID_APARTMENT.intValue()).header("X-Auth-Token", accessToken))
+		mockMvc.perform(get("/api/apartments/"+ID_APARTMENT.intValue()).header("X-Auth-Token", accessToken))
 		.andExpect(status().isOk())
 		.andExpect(content().contentType(contentType))
 		.andExpect(jsonPath("$.description").value(DESCRIPTION))
 		.andExpect(jsonPath("$.number").value(NUMBER));
+		
+	}
+	
+	@Test
+	public void testGetApartmentNotFound() throws Exception{
+		mockMvc.perform(get("/api/apartments/"+ID_APARTMENT_NOT_FOUND.intValue()).header("X-Auth-Token", accessToken))
+		.andExpect(status().isNotFound());
 		
 	}
 	
@@ -107,7 +122,7 @@ public class ApartmentControllerTest {
 		
 		String json = TestUtils.convertObjectToJson(apartmentDTO);
 		
-		mockMvc.perform(post("/buildings/" + ID_BUILDING + "/apartments")
+		mockMvc.perform(post("/api/buildings/" + ID_BUILDING + "/apartments")
 							.header("X-Auth-Token", accessToken)
 							.contentType(contentType)
 							.content(json))
@@ -118,6 +133,19 @@ public class ApartmentControllerTest {
 	}
 	
 	@Test
+	public void testAddApartmentBadRequest() throws Exception{
+		ApartmentDTO apartmentDTO = new ApartmentDTO(NEW_NUMBER, NEW_DESCRIPTION);
+		
+		String json = TestUtils.convertObjectToJson(apartmentDTO);
+		
+		mockMvc.perform(post("/api/buildings/" + ID_BUILDING_NOT_FOUND + "/apartments")
+							.header("X-Auth-Token", accessToken)
+							.contentType(contentType)
+							.content(json))
+		.andExpect(status().isBadRequest());
+	}
+	
+	@Test
 	@Transactional
 	@Rollback(true)
 	public void testUpdateApartment() throws Exception{
@@ -125,7 +153,7 @@ public class ApartmentControllerTest {
 		
 		String json = TestUtils.convertObjectToJson(apartmentDTO);
 		
-		mockMvc.perform(put("/apartments").header("X-Auth-Token", accessToken)
+		mockMvc.perform(put("/api/apartments").header("X-Auth-Token", accessToken)
 							.contentType(contentType)
 							.content(json))
 		.andExpect(status().isOk())
@@ -137,9 +165,49 @@ public class ApartmentControllerTest {
 	@Test
 	@Transactional
 	@Rollback(true)
+	public void testUpdateApartmentBadRequest() throws Exception{
+		ApartmentDTO apartmentDTO = new ApartmentDTO(ID_APARTMENT_NOT_FOUND,NEW_NUMBER, NEW_DESCRIPTION);
+		
+		String json = TestUtils.convertObjectToJson(apartmentDTO);
+		
+		mockMvc.perform(put("/api/apartments").header("X-Auth-Token", accessToken)
+							.contentType(contentType)
+							.content(json))
+		.andExpect(status().isBadRequest());
+	}
+	
+	@Test
+	@Transactional
+	@Rollback(true)
 	public void testDeleteApartment() throws Exception{
-		mockMvc.perform(delete("/apartments/" + ID_APARTMENT).header("X-Auth-Token", accessToken))
+		mockMvc.perform(delete("/api/apartments/" + ID_APARTMENT).header("X-Auth-Token", accessToken))
 		.andExpect(status().isOk());
 	}
+	
+	@Test
+	@Transactional
+	@Rollback(true)
+	public void testDeleteApartmentNotFound() throws Exception{
+		mockMvc.perform(delete("/api/apartments/" + ID_APARTMENT_NOT_FOUND).header("X-Auth-Token", accessToken))
+		.andExpect(status().isNotFound());
+	}
+	
+	@Test
+	public void testFindByAddress() throws Exception{
+		mockMvc.perform(get("/api/apartments?street=" + STREET +"&number=" + BUILDING_NUMBER 
+				+"&city=" + CITY +"&number_apartment=" + NUMBER)
+				.header("X-Auth-Token", accessToken))
+		.andExpect(status().isOk());
+		
+	}
+	@Test
+	public void testFindByAddressNotFound() throws Exception{
+		mockMvc.perform(get("/api/apartments?street=" + STREET +"&number=" + BUILDING_NUMBER 
+				+"&city=" + CITY +"&number_apartment=" + NEW_NUMBER)
+				.header("X-Auth-Token", accessToken))
+		.andExpect(status().isNotFound());
+		
+	}
+	
 	
 }

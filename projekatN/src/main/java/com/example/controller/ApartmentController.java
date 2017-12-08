@@ -22,7 +22,17 @@ import com.example.model.Building;
 import com.example.service.ApartmentService;
 import com.example.service.BuildingService;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
+
 @RestController
+@RequestMapping(value = "/api")
+@Api(value = "apartments")
 public class ApartmentController {
 
 	@Autowired
@@ -31,51 +41,79 @@ public class ApartmentController {
 	BuildingService buildingService;
 
 	@RequestMapping(value = "/buildings/{id}/apartments", method = RequestMethod.GET)
-	public ResponseEntity<List<ApartmentDTO>> getApartments(@PathVariable Long id, Pageable page) {
+	@ApiOperation(value = "Get a list of apatments in a building.", httpMethod = "GET")
+	@ApiImplicitParams({
+        @ApiImplicitParam(name = "page", dataType = "string", paramType = "query",
+                value = "Results page you want to retrieve (0..N)"),
+        @ApiImplicitParam(name = "size", dataType = "string", paramType = "query",
+                value = "Number of records per page."),
+        @ApiImplicitParam(name = "sort", allowMultiple = true, dataType = "string", paramType = "query",
+                value = "Sorting criteria in the format: property(,asc|desc). " +
+                        "Default sort order is ascending. " +
+                        "Multiple sort criteria are supported."),
+        @ApiImplicitParam(paramType="header", name="X-Auth-Token", required=true, value="JWT token")})
+	public ResponseEntity<List<ApartmentDTO>> getApartments(
+			@ApiParam(value = "The ID of the building.", required = true) @PathVariable Long id, Pageable page) {
 		Page<Apartment> apartments = apartmentService.findApartments(id, page);
 
-		List<ApartmentDTO> apartmentsDTO = new ArrayList<ApartmentDTO>();
+		List<ApartmentDTO> apartmentsDTO = new ArrayList<>();
 
 		for (Apartment apartment : apartments) {
 			apartmentsDTO.add(new ApartmentDTO(apartment));
 		}
 
-		return new ResponseEntity<List<ApartmentDTO>>(apartmentsDTO, HttpStatus.OK);
+		return new ResponseEntity<>(apartmentsDTO, HttpStatus.OK);
 	}
 
 	@RequestMapping(value = "/apartments/{id}", method = RequestMethod.GET)
-	public ResponseEntity<ApartmentDTO> getApartment(@PathVariable Long id) {
+	@ApiOperation(value = "Get a single apartment.", httpMethod = "GET")
+	@ApiImplicitParam(paramType="header", name="X-Auth-Token", required=true, value="JWT token")
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "Success", response = ApartmentDTO.class),
+			@ApiResponse(code = 404, message = "Not found") })
+	public ResponseEntity<ApartmentDTO> getApartment(
+			@ApiParam(value = "The ID of the apartment.", required = true) @PathVariable Long id) {
 		Apartment apartment = apartmentService.findOne(id);
 
 		if (apartment == null) {
-			return new ResponseEntity<ApartmentDTO>(HttpStatus.NOT_FOUND);
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
 
-		return new ResponseEntity<ApartmentDTO>(new ApartmentDTO(apartment), HttpStatus.OK);
+		return new ResponseEntity<>(new ApartmentDTO(apartment), HttpStatus.OK);
 	}
 
 	@RequestMapping(value = "/buildings/{id}/apartments", method = RequestMethod.POST, consumes = "application/json")
+	@ApiOperation(value = "Create an apartment in a building.", notes = "Returns the apartment being saved.", httpMethod = "POST", produces = "application/json", consumes = "application/json")
+	@ApiImplicitParam(paramType="header", name="X-Auth-Token", required=true, value="JWT token")
+	@ApiResponses(value = { @ApiResponse(code = 201, message = "Created", response = ApartmentDTO.class),
+			@ApiResponse(code = 500, message = "Failure") })
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
-	public ResponseEntity<ApartmentDTO> addApartment(@PathVariable Long id, @RequestBody ApartmentDTO apartmentDTO) {
+	public ResponseEntity<ApartmentDTO> addApartment(
+			@ApiParam(value = "The ID of the building.", required = true) @PathVariable Long id,
+			@ApiParam(value = "The apartmentDTO object", required = true) @RequestBody ApartmentDTO apartmentDTO) {
 		Apartment apartment = ApartmentDTO.getApartment(apartmentDTO);
 		Building building = buildingService.findOne(id);
 
 		if (building == null) {
-			return new ResponseEntity<ApartmentDTO>(HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 		apartment.setBuilding(building);
 
 		apartment = apartmentService.save(apartment);
 
-		return new ResponseEntity<ApartmentDTO>(new ApartmentDTO(apartment), HttpStatus.CREATED);
+		return new ResponseEntity<>(new ApartmentDTO(apartment), HttpStatus.CREATED);
 	}
 
 	@RequestMapping(value = "/apartments", method = RequestMethod.PUT, consumes = "application/json")
-	public ResponseEntity<ApartmentDTO> updateApartment(@RequestBody ApartmentDTO apartmentDTO) {
+	@ApiOperation(value = "Update an apartment.", notes = "Returns the apartment being saved.", httpMethod = "PUT", produces = "application/json", consumes = "application/json")
+	@ApiImplicitParam(paramType="header", name="X-Auth-Token", required=true, value="JWT token")
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "Success", response = ApartmentDTO.class),
+			@ApiResponse(code = 500, message = "Failure"), @ApiResponse(code = 400, message = "Bad request") })
+	public ResponseEntity<ApartmentDTO> updateApartment(
+			@ApiParam(value = "The apartmentDTO object", required = true) @RequestBody ApartmentDTO apartmentDTO) {
 		Apartment apartment = apartmentService.findOne(apartmentDTO.getId());
 
 		if (apartment == null) {
-			return new ResponseEntity<ApartmentDTO>(HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 
 		apartment.setDescription(apartmentDTO.getDescription());
@@ -83,35 +121,45 @@ public class ApartmentController {
 
 		apartment = apartmentService.save(apartment);
 
-		return new ResponseEntity<ApartmentDTO>(new ApartmentDTO(apartment), HttpStatus.OK);
+		return new ResponseEntity<>(new ApartmentDTO(apartment), HttpStatus.OK);
 	}
 
 	@RequestMapping(value = "/apartments/{id}", method = RequestMethod.DELETE)
+	@ApiOperation(value = "Delete an apartment.", httpMethod = "DELETE")
+	@ApiImplicitParam(paramType="header", name="X-Auth-Token", required=true, value="JWT token")
+	@ApiResponse(code = 404, message = "Not found")
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
-	public ResponseEntity<Void> deleteApartment(@PathVariable Long id) {
+	public ResponseEntity<Void> deleteApartment(
+			@ApiParam(value = "The ID of the apartment.", required = true) @PathVariable Long id) {
 		Apartment apartment = apartmentService.findOne(id);
 
 		if (apartment == null) {
-			return new ResponseEntity<Void>(HttpStatus.NOT_FOUND);
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		} else {
 			apartmentService.remove(id);
-			return new ResponseEntity<Void>(HttpStatus.OK);
+			return new ResponseEntity<>(HttpStatus.OK);
 		}
 
 	}
 
 	@RequestMapping(value = "/apartments", method = RequestMethod.GET, params = { "street", "number", "city",
 			"number_apartment" })
-	public ResponseEntity<ApartmentDTO> findByAddress(@RequestParam("street") String street,
-			@RequestParam("number") String number, @RequestParam("city") String city,
-			@RequestParam("number_apartment") int numberApartment) {
+	@ApiOperation(value = "Find an apartment by address.", httpMethod = "GET")
+	@ApiImplicitParam(paramType="header", name="X-Auth-Token", required=true, value="JWT token")
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "Success", response = ApartmentDTO.class),
+			@ApiResponse(code = 404, message = "Not found") })
+	public ResponseEntity<ApartmentDTO> findByAddress(
+			@ApiParam(name="street", value="street",required=true) @RequestParam("street") String street,
+			@ApiParam(name="number", value="number",required=true) @RequestParam("number") String number, 
+			@ApiParam(name="city", value="city",required=true) @RequestParam("city") String city,
+			@ApiParam(name="numberApartment", value="number apartment",required=true) @RequestParam("number_apartment") int numberApartment) {
 		Apartment apartment = apartmentService.findByAddress(street, number, city, numberApartment);
 
 		if (apartment == null) {
-			return new ResponseEntity<ApartmentDTO>(HttpStatus.NOT_FOUND);
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
 
-		return new ResponseEntity<ApartmentDTO>(new ApartmentDTO(apartment), HttpStatus.OK);
+		return new ResponseEntity<>(new ApartmentDTO(apartment), HttpStatus.OK);
 
 	}
 }

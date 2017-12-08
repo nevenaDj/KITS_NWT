@@ -37,5 +37,7 @@ public class UserConstants {
 
 	public static final String USERNAME_PRESIDENT = "president";
 	public static final String PASSWORD_PRESIDENT = "user";
+	
+	public static final Long ID_NOT_FOUND = 10L;
 
 }

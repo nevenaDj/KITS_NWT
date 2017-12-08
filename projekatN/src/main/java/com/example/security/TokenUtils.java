@@ -22,42 +22,46 @@ public class TokenUtils {
 	private Long expiration;
 
 	public String getUsernameFromToken(String token) {
-		String username;
+		String username = null;
 
 		try {
 			Claims claims = this.getClaimsFromToken(token);
-			username = claims.getSubject();
+			if (claims != null) {
+				username = claims.getSubject();
+			}
 		} catch (Exception e) {
-			username = null;
+			e.getMessage();
 		}
 		return username;
 	}
 
 	private Claims getClaimsFromToken(String token) {
-		Claims claims;
+		Claims claims = null;
 		try {
 			claims = Jwts.parser().setSigningKey(this.secret).parseClaimsJws(token).getBody();
 		} catch (Exception e) {
-			claims = null;
+			e.getMessage();
 		}
 
 		return claims;
 	}
 
 	public Date getExpirationDateFromToken(String token) {
-		Date expiration;
+		Date expirationDate = null;
 		try {
 			final Claims claims = this.getClaimsFromToken(token);
-			expiration = claims.getExpiration();
+			if (claims != null) {
+				expirationDate = claims.getExpiration();
+			}
 		} catch (Exception e) {
-			expiration = null;
+			e.getMessage();
 		}
-		return expiration;
+		return expirationDate;
 	}
 
 	private boolean isTokenExpired(String token) {
-		final Date expiration = this.getExpirationDateFromToken(token);
-		return expiration.before(new Date(System.currentTimeMillis()));
+		final Date expirationDate = this.getExpirationDateFromToken(token);
+		return expirationDate.before(new Date(System.currentTimeMillis()));
 	}
 
 	public boolean validateToken(String token, UserDetails userDetails) {
@@ -66,7 +70,7 @@ public class TokenUtils {
 	}
 
 	public String generateToken(UserDetails userDetails) {
-		Map<String, Object> claims = new HashMap<String, Object>();
+		Map<String, Object> claims = new HashMap<>();
 		claims.put("sub", userDetails.getUsername());
 		claims.put("created", new Date(System.currentTimeMillis()));
 		return Jwts.builder().setClaims(claims).setExpiration(new Date(System.currentTimeMillis() + expiration * 1000))

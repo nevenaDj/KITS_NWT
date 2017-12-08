@@ -36,7 +36,16 @@ import com.example.service.ApartmentService;
 import com.example.service.UserApartmentService;
 import com.example.service.UserService;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
+
 @RestController
+@RequestMapping(value = "/api")
+@Api(value = "users")
 public class UserController {
 	@Autowired
 	AuthenticationManager authenticationManager;
@@ -60,30 +69,41 @@ public class UserController {
 	UserApartmentService userApartmentService;
 
 	@RequestMapping(value = "/login", method = RequestMethod.POST, consumes = "application/json")
-	public ResponseEntity<String> login(@RequestBody LoginDTO loginDTO) {
+	@ApiOperation(value = "Log in.", notes = "Returns the JWT token.", httpMethod = "POST", consumes = "application/json")
+	@ApiResponses(value = { 
+			@ApiResponse(code = 200, message = "Success"),
+			@ApiResponse(code = 400, message = "Bad request") })
+	public ResponseEntity<String> login(
+			@ApiParam(value = "The loginDTO object", required = true) @RequestBody LoginDTO loginDTO) {
+		
 		try {
 			UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(loginDTO.getUsername(),
 					loginDTO.getPassword());
 			Authentication authentication = authenticationManager.authenticate(token);
 			SecurityContextHolder.getContext().setAuthentication(authentication);
 			UserDetails details = userDetailsService.loadUserByUsername(loginDTO.getUsername());
-			return new ResponseEntity<String>(tokenUtils.generateToken(details), HttpStatus.OK);
+			return new ResponseEntity<>(tokenUtils.generateToken(details), HttpStatus.OK);
 
 		} catch (Exception e) {
-			return new ResponseEntity<String>("Invalid login", HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<>("Invalid login", HttpStatus.BAD_REQUEST);
 		}
 	}
 
 	@RequestMapping(value = "/register", method = RequestMethod.POST, consumes = "application/json")
-	public ResponseEntity<Void> register(@RequestBody RegisterDTO registerDTO) {
+	@ApiOperation(value = "Registration.", httpMethod = "POST", consumes = "application/json")
+	@ApiResponses(value = { 
+			@ApiResponse(code = 201, message = "Created"),
+			@ApiResponse(code = 400, message = "Bad request") })
+	public ResponseEntity<Void> register(
+			@ApiParam(value = "The registerDTO object", required = true) @RequestBody RegisterDTO registerDTO) {
 		if (!registerDTO.getPassword().equals(registerDTO.getPassword2())) {
-			return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 
 		Apartment apartment = aparmentService.findOne(registerDTO.getApartmentId());
 
 		if (apartment == null) {
-			return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 
 		User user = RegisterDTO.getTenant(registerDTO);
@@ -92,46 +112,61 @@ public class UserController {
 		UserAparment userApartment = new UserAparment(user, apartment);
 		userApartmentService.save(userApartment);
 
-		return new ResponseEntity<Void>(HttpStatus.CREATED);
+		return new ResponseEntity<>(HttpStatus.CREATED);
 
 	}
 
 	@RequestMapping(value = "/users", method = RequestMethod.GET)
+	@ApiOperation(value = "Get a list of users.", httpMethod = "GET")
+	@ApiImplicitParam(paramType="header", name="X-Auth-Token", required=true, value="JWT token")
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	public ResponseEntity<List<UserDTO>> getUsers(Pageable page) {
 		Page<User> users = userService.findAll(page);
 
-		List<UserDTO> usersDTO = new ArrayList<UserDTO>();
+		List<UserDTO> usersDTO = new ArrayList<>();
 		for (User user : users) {
 			usersDTO.add(new UserDTO(user));
 		}
 
-		return new ResponseEntity<List<UserDTO>>(usersDTO, HttpStatus.OK);
+		return new ResponseEntity<>(usersDTO, HttpStatus.OK);
 	}
 
 	@RequestMapping(value = "/users/{id}", method = RequestMethod.GET)
-	public ResponseEntity<UserDTO> getUser(@PathVariable Long id) {
+	@ApiOperation(value = "Get a user.", httpMethod = "GET")
+	@ApiImplicitParam(paramType="header", name="X-Auth-Token", required=true, value="JWT token")
+	@ApiResponses(value = { 
+			@ApiResponse(code = 200, message = "Success", response=UserDTO.class),
+			@ApiResponse(code = 404, message = "Not found") })
+	public ResponseEntity<UserDTO> getUser(
+			@ApiParam(value = "The ID of the user.", required = true) @PathVariable Long id) {
 		User user = userService.findOne(id);
 		if (user == null) {
-			return new ResponseEntity<UserDTO>(HttpStatus.NOT_FOUND);
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
-		return new ResponseEntity<UserDTO>(new UserDTO(user), HttpStatus.OK);
+		return new ResponseEntity<>(new UserDTO(user), HttpStatus.OK);
 	}
 
-	@RequestMapping(value = "admin/{id}/password", method = RequestMethod.PUT, consumes = "application/json")
+	@RequestMapping(value = "/admin/password", method = RequestMethod.PUT, consumes = "application/json")
+	@ApiOperation(value = "Change password.", httpMethod = "PUT", produces = "application/json", consumes = "application/json")
+	@ApiImplicitParam(paramType="header", name="X-Auth-Token", required=true, value="JWT token")
+	@ApiResponses(value = { 
+			@ApiResponse(code = 200, message = "Success"),
+			@ApiResponse(code = 400, message = "Bad request") })
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
-	public ResponseEntity<Void> changePassword(@PathVariable Long id, @RequestBody UserPasswordDTO userPasswordDTO,
+	public ResponseEntity<Void> changePasswordAdmin(
+			@ApiParam(value = "The userPasswordDTO object", required = true) @RequestBody UserPasswordDTO userPasswordDTO,
 			HttpServletRequest request) {
+		
 		String token = request.getHeader("X-Auth-Token");
 		String username = tokenUtils.getUsernameFromToken(token);
 
 		boolean flag = userService.changePassword(username, userPasswordDTO.getCurrentPassword(),
 				userPasswordDTO.getNewPassword1(), userPasswordDTO.getNewPassword2());
 
-		if (flag == true) {
-			return new ResponseEntity<Void>(HttpStatus.OK);
+		if (flag) {
+			return new ResponseEntity<>(HttpStatus.OK);
 		} else {
-			return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 
 	}

@@ -23,13 +23,13 @@ public class Building {
 	private User president;
 
 	@OneToMany(mappedBy = "building", fetch = FetchType.LAZY)
-	private Set<Apartment> apartments = new HashSet<Apartment>();
+	private Set<Apartment> apartments = new HashSet<>();
 
 	@OneToMany(mappedBy = "building", fetch = FetchType.LAZY)
-	private Set<Meeting> meetings = new HashSet<Meeting>();
+	private Set<Meeting> meetings = new HashSet<>();
 	
 	@OneToMany(mappedBy = "building", fetch = FetchType.LAZY)
-	private Set<Notification> notifications = new HashSet<Notification>();
+	private Set<Notification> notifications = new HashSet<>();
 
 	public Building() {
 	}

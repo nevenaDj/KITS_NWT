@@ -19,7 +19,7 @@ public class Authority {
 	private String name;
 
 	@OneToMany(mappedBy = "authority", fetch = FetchType.LAZY, cascade = CascadeType.REFRESH)
-	private Set<UserAuthority> userAuthorities = new HashSet<UserAuthority>();
+	private Set<UserAuthority> userAuthorities = new HashSet<>();
 
 	public Long getId() {
 		return id;

@@ -35,7 +35,7 @@ public class CommunalProblem {
 	private User company;
 
 	@ManyToMany(fetch = FetchType.EAGER)
-	private Set<Apartment> apartments = new HashSet<Apartment>();
+	private Set<Apartment> apartments = new HashSet<>();
 
 	public CommunalProblem() {
 

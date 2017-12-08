@@ -5,8 +5,8 @@ import java.util.Set;
 
 public class AgendaDTO {
 	private Long id;
-	private Set<AgendaPointDTO> agendaPoints = new HashSet<AgendaPointDTO>();
-	private Set<SurveyDTO> surveys = new HashSet<SurveyDTO>();
+	private Set<AgendaPointDTO> agendaPoints = new HashSet<>();
+	private Set<SurveyDTO> surveys = new HashSet<>();
 
 	public AgendaDTO() {
 

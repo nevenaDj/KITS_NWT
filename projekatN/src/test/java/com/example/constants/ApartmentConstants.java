@@ -11,5 +11,10 @@ public class ApartmentConstants {
 	
 	public static final String NEW_DESCRIPTION = "new description";
 	public static final int NEW_NUMBER = 3;
+	
+	public static final Long ID_APARTMENT_NOT_FOUND = 10L;
+	public static final Long ID_BUILDING_NOT_FOUND = 10L;
+	
+	public static final String BUILDING_NUMBER = "1a";
 
 }

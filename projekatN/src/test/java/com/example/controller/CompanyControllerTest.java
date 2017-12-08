@@ -22,7 +22,6 @@ import static com.example.constants.UserConstants.PAGE_SIZE;
 import static com.example.constants.UserConstants.USERNAME_COMPANY;
 import static com.example.constants.UserConstants.PASSWORD_COMPANY;
 import static com.example.constants.UserConstants.ID_COMPANY;
-import static com.example.constants.UserConstants.ID_USER;
 
 import java.nio.charset.Charset;
 
@@ -39,6 +38,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.web.FilterChainProxy;
 import org.springframework.test.annotation.Rollback;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -54,6 +54,7 @@ import com.jayway.restassured.RestAssured;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = WebEnvironment.DEFINED_PORT)
+@TestPropertySource(locations="classpath:test.properties")
 public class CompanyControllerTest {
 	
 	private String accessToken;
@@ -80,7 +81,7 @@ public class CompanyControllerTest {
 									  .addFilters(springSecurityFilterChain)
 									  .build();
 		
-		ResponseEntity<String> responseEntity = restTemplate.postForEntity("/login",
+		ResponseEntity<String> responseEntity = restTemplate.postForEntity("/api/login",
 				new LoginDTO(USERNAME_ADMIN, PASSWORD_ADMIN), String.class);
 		accessToken = responseEntity.getBody();
 	}
@@ -95,7 +96,7 @@ public class CompanyControllerTest {
 		
 		String json = TestUtils.convertObjectToJson(userDTO);
 		
-		mockMvc.perform(post("/companies").header("X-Auth-Token", accessToken)
+		mockMvc.perform(post("/api/companies").header("X-Auth-Token", accessToken)
 										  .contentType(contentType)
 										  .content(json))
 		.andExpect(status().isCreated())
@@ -113,7 +114,7 @@ public class CompanyControllerTest {
 	@Test
 	public void testGetCompanies() throws Exception{
 		
-		mockMvc.perform(get("/companies?page=0&size="+PAGE_SIZE).header("X-Auth-Token", accessToken))
+		mockMvc.perform(get("/api/companies?page=0&size="+PAGE_SIZE).header("X-Auth-Token", accessToken))
 		.andExpect(status().isOk())
 		.andExpect(content().contentType(contentType))
 		.andExpect(jsonPath("$", hasSize(1)))
@@ -130,7 +131,7 @@ public class CompanyControllerTest {
 		
 		String json = TestUtils.convertObjectToJson(userDTO);
 		
-		mockMvc.perform(put("/companies").header("X-Auth-Token", accessToken)
+		mockMvc.perform(put("/api/companies").header("X-Auth-Token", accessToken)
 										 .contentType(contentType)
 										 .content(json))
 		.andExpect(status().isOk())
@@ -148,13 +149,13 @@ public class CompanyControllerTest {
 	@Transactional
     @Rollback(true)
 	public void testDeleteCompany() throws Exception{
-		mockMvc.perform(delete("/companies/" + ID_COMPANY.intValue()).header("X-Auth-Token", accessToken))
+		mockMvc.perform(delete("/api/companies/" + ID_COMPANY.intValue()).header("X-Auth-Token", accessToken))
 		.andExpect(status().isOk());
 	}
 	
 	@Before
 	public void loginCompany() {
-		ResponseEntity<String> responseEntity = restTemplate.postForEntity("/login",
+		ResponseEntity<String> responseEntity = restTemplate.postForEntity("/api/login",
 				new LoginDTO(USERNAME_COMPANY, PASSWORD_COMPANY), String.class);
 		accessTokenCompany = responseEntity.getBody();
 	}
@@ -167,7 +168,7 @@ public class CompanyControllerTest {
 		
 		String json = TestUtils.convertObjectToJson(userPasswordDTO);
 		
-		mockMvc.perform(put("/companies/" + ID_USER + "/password").header("X-Auth-Token", accessTokenCompany)
+		mockMvc.perform(put("/api/companies/password").header("X-Auth-Token", accessTokenCompany)
 				.contentType(contentType)
 				.content(json))
 		.andExpect(status().isOk());

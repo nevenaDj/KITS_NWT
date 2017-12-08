@@ -13,6 +13,7 @@ import static com.example.constants.UserConstants.NEW_NUMBER;
 import static com.example.constants.UserConstants.NEW_STREET;
 import static com.example.constants.UserConstants.NEW_ZIP_CODE;
 import static com.example.constants.ApartmentConstants.ID_APARTMENT;
+import static com.example.constants.UserConstants.ID_NOT_FOUND;
 import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -36,6 +37,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.web.FilterChainProxy;
 import org.springframework.test.annotation.Rollback;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -51,6 +53,7 @@ import com.jayway.restassured.RestAssured;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = WebEnvironment.DEFINED_PORT)
+@TestPropertySource(locations="classpath:test.properties")
 public class UserControllerTest {
 
 	private String accessToken;
@@ -74,7 +77,7 @@ public class UserControllerTest {
 		RestAssured.useRelaxedHTTPSValidation();
 		this.mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).addFilters(springSecurityFilterChain).build();
 		
-		ResponseEntity<String> responseEntity = restTemplate.postForEntity("/login",
+		ResponseEntity<String> responseEntity = restTemplate.postForEntity("/api/login",
 				new LoginDTO(USERNAME_ADMIN, PASSWORD_ADMIN), String.class);
 		accessToken = responseEntity.getBody();
 	}
@@ -84,7 +87,16 @@ public class UserControllerTest {
 		LoginDTO loginDTO = new LoginDTO(USERNAME_ADMIN, PASSWORD_ADMIN);
 		String json = TestUtils.convertObjectToJson(loginDTO);
 
-		mockMvc.perform(post("/login").contentType(contentType).content(json)).andExpect(status().isOk());
+		mockMvc.perform(post("/api/login").contentType(contentType).content(json)).andExpect(status().isOk());
+
+	}
+	
+	@Test
+	public void testLoginBadRequest() throws Exception {
+		LoginDTO loginDTO = new LoginDTO(NEW_USERNAME, PASSWORD_ADMIN);
+		String json = TestUtils.convertObjectToJson(loginDTO);
+
+		mockMvc.perform(post("/api/login").contentType(contentType).content(json)).andExpect(status().isBadRequest());
 
 	}
 
@@ -94,7 +106,7 @@ public class UserControllerTest {
 		HttpHeaders headers = new HttpHeaders();
 		headers.add("X-Auth-Token", accessToken);
 		
-		mockMvc.perform(get("/users?page=0&size=" + PAGE_SIZE).headers(headers))
+		mockMvc.perform(get("/api/users?page=0&size=" + PAGE_SIZE).headers(headers))
 		.andExpect(status().isOk())
 		.andExpect(content().contentType(contentType))
 		.andExpect(jsonPath("$", hasSize(PAGE_SIZE)));
@@ -105,11 +117,20 @@ public class UserControllerTest {
 		HttpHeaders headers = new HttpHeaders();
 		headers.add("X-Auth-Token", accessToken);
 		
-		mockMvc.perform(get("/users/"+ID_ADMIN.intValue()).headers(headers))
+		mockMvc.perform(get("/api/users/"+ID_ADMIN.intValue()).headers(headers))
 		.andExpect(status().isOk())
 		.andExpect(content().contentType(contentType))
 		.andExpect(jsonPath("$.id").value(ID_ADMIN.intValue()))
 		.andExpect(jsonPath("$.username").value(USERNAME_ADMIN));
+	}
+	
+	@Test
+	public void testGetUserNotFound() throws Exception {
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("X-Auth-Token", accessToken);
+		
+		mockMvc.perform(get("/api/users/"+ID_NOT_FOUND).headers(headers))
+		.andExpect(status().isNotFound());
 	}
 	
 	@Test
@@ -121,8 +142,22 @@ public class UserControllerTest {
 		registerDTO.setApartmentId(ID_APARTMENT);
 		String json = TestUtils.convertObjectToJson(registerDTO);
 		
-		mockMvc.perform(post("/register").contentType(contentType).content(json))
+		mockMvc.perform(post("/api/register").contentType(contentType).content(json))
 		.andExpect(status().isCreated());
+		
+	}
+	
+	@Test
+	@Transactional
+	@Rollback(true)
+	public void testRegisterBadRequest() throws Exception{
+		AddressDTO addressDTO = new AddressDTO(NEW_STREET, NEW_NUMBER, NEW_ZIP_CODE, NEW_CITY);
+		RegisterDTO registerDTO = new RegisterDTO(NEW_USERNAME, PASSWORD_ADMIN, NEW_PASSWORD, NEW_EMAIL, addressDTO, NEW_PHONE_NO);
+		registerDTO.setApartmentId(ID_APARTMENT);
+		String json = TestUtils.convertObjectToJson(registerDTO);
+		
+		mockMvc.perform(post("/api/register").contentType(contentType).content(json))
+		.andExpect(status().isBadRequest());
 		
 	}
 	
@@ -134,10 +169,24 @@ public class UserControllerTest {
 		
 		String json = TestUtils.convertObjectToJson(userPasswordDTO);
 		
-		mockMvc.perform(put("/admin/" + ID_ADMIN + "/password").header("X-Auth-Token", accessToken)
+		mockMvc.perform(put("/api/admin/password").header("X-Auth-Token", accessToken)
 				.contentType(contentType)
 				.content(json))
 		.andExpect(status().isOk());
+	}
+	
+	@Test
+	@Transactional
+	@Rollback(true)
+	public void testChangePasswordBadRequest() throws Exception{
+		UserPasswordDTO userPasswordDTO = new UserPasswordDTO(PASSWORD_ADMIN, PASSWORD_ADMIN, NEW_PASSWORD);
+		
+		String json = TestUtils.convertObjectToJson(userPasswordDTO);
+		
+		mockMvc.perform(put("/api/admin/password").header("X-Auth-Token", accessToken)
+				.contentType(contentType)
+				.content(json))
+		.andExpect(status().isBadRequest());
 	}
 	
 
