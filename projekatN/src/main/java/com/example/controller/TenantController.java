@@ -19,13 +19,16 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.dto.AddressDTO;
+import com.example.dto.GlitchDTO;
 import com.example.dto.UserDTO;
 import com.example.dto.UserPasswordDTO;
 import com.example.model.Apartment;
+import com.example.model.Glitch;
 import com.example.model.User;
 import com.example.model.UserAparment;
 import com.example.security.TokenUtils;
 import com.example.service.ApartmentService;
+import com.example.service.GlitchService;
 import com.example.service.UserApartmentService;
 import com.example.service.UserService;
 
@@ -39,6 +42,8 @@ public class TenantController {
 	ApartmentService apartmentService;
 	@Autowired
 	UserApartmentService userApartmentService;
+	@Autowired
+	GlitchService glitchService;
 	@Autowired
 	TokenUtils tokenUtils;
 	
@@ -120,6 +125,22 @@ public class TenantController {
 		} else {
 			return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
 		}
+
+	}
+	
+	@RequestMapping(value = "/responsibleGlitches", method = RequestMethod.GET, produces = "application/json")
+	@PreAuthorize("hasRole('ROLE_USER')")
+	public ResponseEntity<List<GlitchDTO>> getGlitches(@PathVariable Long id,
+			HttpServletRequest request, Pageable page) {
+		String token = request.getHeader("X-Auth-Token");
+		String username = tokenUtils.getUsernameFromToken(token);
+
+		User tenant = userService.findByUsername(username);
+		
+		Page<Glitch> glitches= glitchService.findByResponsibility(page, tenant.getId());
+		
+		return new ResponseEntity<List<GlitchDTO>>(HttpStatus.OK);
+		
 
 	}
 

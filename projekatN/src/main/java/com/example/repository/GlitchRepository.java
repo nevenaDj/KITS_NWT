@@ -15,4 +15,9 @@ public interface GlitchRepository extends JpaRepository<Glitch, Long> {
 	@Query("SELECT g FROM Glitch g WHERE g.company.id = ?1")
 	public Page<Glitch> findGlitchesOfCompany(Long id, Pageable page);
 
+	@Query(value = "SELECT g FROM Glitch g WHERE g.responsiblePerson.id = ?1",
+			  countQuery = "SELECT count(*) FROM Glitch g WHERE g.responsiblePerson.id = ?1",
+			    nativeQuery = false)
+	public Page<Glitch> findGlitchByResponsiblePerson(Long id, Pageable page);
+
 }

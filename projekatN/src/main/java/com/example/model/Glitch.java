@@ -80,6 +80,7 @@ public class Glitch {
 		this.dateOfRepairApproved=dateOfRepairApproved;
 	}
 
+	
 	public Long getId() {
 		return id;
 	}
