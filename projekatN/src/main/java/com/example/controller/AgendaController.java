@@ -7,6 +7,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -33,6 +35,7 @@ import com.example.model.ItemComment;
 import com.example.model.Meeting;
 import com.example.model.Notification;
 import com.example.model.Survey;
+import com.example.model.User;
 import com.example.security.TokenUtils;
 import com.example.service.AgendaItemService;
 import com.example.service.BuildingService;
