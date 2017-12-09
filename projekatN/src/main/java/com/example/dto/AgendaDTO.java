@@ -5,31 +5,31 @@ import java.util.Set;
 
 public class AgendaDTO {
 	private Long id;
-	private Set<AgendaPointDTO> agendaPoints = new HashSet<>();
+	private Set<AgendaItemDTO> agendaPoints = new HashSet<>();
 	private Set<SurveyDTO> surveys = new HashSet<>();
 
 	public AgendaDTO() {
 
 	}
 
-	public AgendaDTO(Long id, Set<AgendaPointDTO> agendaPoints, Set<SurveyDTO> surveys) {
+	public AgendaDTO(Long id, Set<AgendaItemDTO> agendaPoints, Set<SurveyDTO> surveys) {
 		super();
 		this.id = id;
 		this.agendaPoints = agendaPoints;
 		this.surveys = surveys;
 	}
 
-	public AgendaDTO(Set<AgendaPointDTO> agendaPoints, Set<SurveyDTO> surveys) {
+	public AgendaDTO(Set<AgendaItemDTO> agendaPoints, Set<SurveyDTO> surveys) {
 		super();
 		this.agendaPoints = agendaPoints;
 		this.surveys = surveys;
 	}
 
-	public Set<AgendaPointDTO> getAgendaPoints() {
+	public Set<AgendaItemDTO> getAgendaPoints() {
 		return agendaPoints;
 	}
 
-	public void setAgendaPoints(Set<AgendaPointDTO> agendaPoints) {
+	public void setAgendaPoints(Set<AgendaItemDTO> agendaPoints) {
 		this.agendaPoints = agendaPoints;
 	}
 

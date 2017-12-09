@@ -7,6 +7,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 
 @Entity
 public class Notification {
@@ -23,6 +24,9 @@ public class Notification {
 	
 	@ManyToOne(fetch = FetchType.EAGER)
 	private User writer;
+	
+	@OneToOne(fetch = FetchType.LAZY)
+	private AgendaItem item;
 	
 	public Notification(){
 		

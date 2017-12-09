@@ -1,5 +1,7 @@
 package com.example.repository;
 
+import java.util.List;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -19,5 +21,8 @@ public interface GlitchRepository extends JpaRepository<Glitch, Long> {
 			  countQuery = "SELECT count(*) FROM Glitch g WHERE g.responsiblePerson.id = ?1",
 			    nativeQuery = false)
 	public Page<Glitch> findGlitchByResponsiblePerson(Long id, Pageable page);
+
+	@Query(value = "SELECT g FROM Glitch g WHERE g.item.id IS NULL")
+	public List<Glitch> findWithoutMeeting();
 
 }

@@ -56,6 +56,9 @@ public class Glitch {
 	@OneToMany(mappedBy = "glitch", fetch = FetchType.LAZY)
 	private Set<Comment> comments = new HashSet<>();
 	
+	@OneToOne(fetch = FetchType.LAZY)
+	private AgendaItem item;
+	
 	@OneToOne(fetch = FetchType.EAGER)
 	private Bill bill;
 
