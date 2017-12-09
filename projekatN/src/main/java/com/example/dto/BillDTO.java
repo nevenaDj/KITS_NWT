@@ -87,11 +87,11 @@ public class BillDTO {
 	}
 
 	public static Bill getBill(BillDTO billDTO) {
-		Set<ItemInPrincelist> new_items = new HashSet<ItemInPrincelist>();
-		for (ItemInPricelistDTO item_In_Princelist : billDTO.getItems()) {
-			new_items.add(item_In_Princelist.getItemInPricelist(item_In_Princelist));
+		Set<ItemInPrincelist> newItems = new HashSet<>();
+		for (ItemInPricelistDTO itemInPrincelist : billDTO.getItems()) {
+			newItems.add(ItemInPricelistDTO.getItemInPricelist(itemInPrincelist));
 		}
-		return new Bill(billDTO.getId(), billDTO.getPrice(), billDTO.getDate(), billDTO.isApproved(), new_items );
+		return new Bill(billDTO.getId(), billDTO.getPrice(), billDTO.getDate(), billDTO.isApproved(), newItems);
 	}
 
 }

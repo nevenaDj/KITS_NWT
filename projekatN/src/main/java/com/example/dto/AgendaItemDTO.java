@@ -4,12 +4,8 @@ import java.util.HashSet;
 import java.util.Set;
 
 import com.example.model.AgendaItem;
-import com.example.model.CommunalProblem;
-import com.example.model.Glitch;
 import com.example.model.ItemComment;
 import com.example.model.ItemType;
-import com.example.model.Meeting;
-import com.example.model.Notification;
 
 public class AgendaItemDTO {
 	private Long id;
@@ -19,7 +15,7 @@ public class AgendaItemDTO {
 	private MeetingDTO meeting;
 
 	private String conclusion;
-	private Set<ItemCommentDTO> comments = new HashSet<ItemCommentDTO>();
+	private Set<ItemCommentDTO> comments = new HashSet<>();
 	
 	private int number;
 
@@ -37,7 +33,7 @@ public class AgendaItemDTO {
 		this.number= agendaPoint.getNumber();
 		this.type= agendaPoint.getType();
 		this.title=agendaPoint.getTitle();
-		if (agendaPoint.getComments().size()!=0){
+		if (agendaPoint.getComments().isEmpty()){
 			for (ItemComment itemComment : agendaPoint.getComments()) {
 				this.comments.add(new ItemCommentDTO(itemComment));
 			}
@@ -157,8 +153,8 @@ public class AgendaItemDTO {
 
 	public static AgendaItem getAgendaPoint(AgendaItemDTO agendaPointDTO) {
 		AgendaItem item= new AgendaItem(agendaPointDTO.getId(), agendaPointDTO.getNumber(), agendaPointDTO.getType(), agendaPointDTO.getTitle());
-		Set<ItemComment> comments= new HashSet<ItemComment>();
-		if (agendaPointDTO.getComments().size()!=0){
+		Set<ItemComment> comments= new HashSet<>();
+		if (agendaPointDTO.getComments().isEmpty()){
 			for (ItemCommentDTO comment : agendaPointDTO.getComments()) {
 				comments.add(ItemCommentDTO.getComment(comment));
 			}

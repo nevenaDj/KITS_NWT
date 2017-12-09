@@ -47,14 +47,6 @@ public class SurveyDTO {
 		this.id = id;
 	}
 
-	public String getTitle() {
-		return title;
-	}
-
-	public void setTitle(String title) {
-		this.title = title;
-	}
-
 	public SurveyType getType() {
 		return type;
 	}
@@ -69,6 +61,14 @@ public class SurveyDTO {
 
 	public void setEnd(Date end) {
 		this.end = end;
+	}
+
+	public String getTitle() {
+		return title;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
 	}
 
 	public Set<QuestionDTO> getQuestions() {

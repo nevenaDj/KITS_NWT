@@ -14,7 +14,7 @@ public class MeetingDTO {
 	}
 
 	public MeetingDTO(Meeting meeting) {
-		this(meeting.getId(), meeting.getDateAndTime(), meeting.isActive());
+		this(meeting.getId(), meeting.getDateAndTime());
 	}
 
 	public MeetingDTO(Date dateAndTime) {
@@ -22,19 +22,10 @@ public class MeetingDTO {
 		this.dateAndTime = dateAndTime;
 	}
 
-	public MeetingDTO(Long id, Date dateAndTime, boolean active) {
+	public MeetingDTO(Long id, Date dateAndTime) {
 		super();
 		this.id = id;
 		this.dateAndTime = dateAndTime;
-		this.active=active;
-	}
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
 	}
 
 	public Date getDateAndTime() {
@@ -44,7 +35,14 @@ public class MeetingDTO {
 	public void setDateAndTime(Date dateAndTime) {
 		this.dateAndTime = dateAndTime;
 	}
-	
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
 
 	public boolean isActive() {
 		return active;

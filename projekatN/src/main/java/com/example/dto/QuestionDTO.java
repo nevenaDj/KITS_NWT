@@ -25,15 +25,23 @@ public class QuestionDTO {
 		this.options = options;
 	}
 
+	public QuestionDTO(Long id, String text) {
+		super();
+		this.id = id;
+		this.text = text;
+	}
+
 	public QuestionDTO(String text, Set<OptionDTO> options) {
 		super();
 		this.text = text;
 		this.options = options;
 	}
 
-	public QuestionDTO(Long id, String text) {
-		super();
-		this.id = id;
+	public String getText() {
+		return text;
+	}
+
+	public void setText(String text) {
 		this.text = text;
 	}
 
@@ -43,14 +51,6 @@ public class QuestionDTO {
 
 	public void setId(Long id) {
 		this.id = id;
-	}
-
-	public String getText() {
-		return text;
-	}
-
-	public void setText(String text) {
-		this.text = text;
 	}
 
 	public Set<OptionDTO> getOptions() {

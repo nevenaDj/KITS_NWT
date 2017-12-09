@@ -23,7 +23,6 @@ import com.example.dto.NotificationDTO;
 import com.example.dto.PricelistDTO;
 import com.example.dto.UserDTO;
 import com.example.model.Glitch;
-import com.example.model.GlitchType;
 import com.example.model.ItemInPrincelist;
 import com.example.model.Pricelist;
 import com.example.model.User;

@@ -1,15 +1,13 @@
 package com.example.dto;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 public class ContentWithoutAgendaDTO {
 
-	List<GlitchDTO> glitches = new ArrayList<GlitchDTO>();
-	List<NotificationDTO> notifications = new ArrayList<NotificationDTO>();
-	List<CommunalProblemDTO> problems = new ArrayList<CommunalProblemDTO>();
+	List<GlitchDTO> glitches = new ArrayList<>();
+	List<NotificationDTO> notifications = new ArrayList<>();
+	List<CommunalProblemDTO> problems = new ArrayList<>();
 	
 	public ContentWithoutAgendaDTO(List<GlitchDTO> glitches, List<NotificationDTO> notifications,
 			List<CommunalProblemDTO> problems) {

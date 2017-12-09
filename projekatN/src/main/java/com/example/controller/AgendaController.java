@@ -7,8 +7,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import javax.servlet.http.HttpServletRequest;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -35,7 +33,6 @@ import com.example.model.ItemComment;
 import com.example.model.Meeting;
 import com.example.model.Notification;
 import com.example.model.Survey;
-import com.example.model.User;
 import com.example.security.TokenUtils;
 import com.example.service.AgendaItemService;
 import com.example.service.BuildingService;
@@ -76,10 +73,10 @@ public class AgendaController {
 
 	@RequestMapping(value = "/buildings/{building_id}/meetings/{id}/points", method = RequestMethod.POST, consumes = "application/json")
 	@PreAuthorize("hasRole('ROLE_PRESIDENT')")
-	public ResponseEntity<AgendaItemDTO> addAgendaItem(@PathVariable("id") Long id, @PathVariable("building_id") Long b_id,
-			@RequestBody AgendaItemDTO agendaPointDTO) {
-		
-		Building building = buildingService.findOne(b_id);
+	public ResponseEntity<AgendaItemDTO> addAgendaItem(@PathVariable("id") Long id,
+			@PathVariable("building_id") Long buildingId, @RequestBody AgendaItemDTO agendaPointDTO) {
+
+		Building building = buildingService.findOne(buildingId);
 		if (building == null) {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
@@ -131,47 +128,47 @@ public class AgendaController {
 		return new ResponseEntity<>(agendaDTO, HttpStatus.OK);
 
 	}
-	
+
 	@RequestMapping(value = "/agendas/no_meeting", method = RequestMethod.GET)
 	@PreAuthorize("hasAnyRole( 'ROLE_PRESIDENT')")
 	public ResponseEntity<ContentWithoutAgendaDTO> getAgendaWithoutMeeting(@PathVariable Long id) {
-		
+
 		ContentWithoutAgendaDTO no_meeting = new ContentWithoutAgendaDTO();
 		List<Notification> notifications = notificationService.findWithoutMeeting();
 		List<Glitch> glitches = glitchService.findWithoutMeeting();
 		List<CommunalProblem> problems = comProblemsService.findWithoutMeeting();
-		List<NotificationDTO> notificationsDTO = new ArrayList<NotificationDTO>();
-		List<GlitchDTO> glitchesDTO =new ArrayList<GlitchDTO>();
-		List<CommunalProblemDTO> problemsDTO = new ArrayList<CommunalProblemDTO>();	
-		for (Notification n: notifications){
+		List<NotificationDTO> notificationsDTO = new ArrayList<>();
+		List<GlitchDTO> glitchesDTO = new ArrayList<>();
+		List<CommunalProblemDTO> problemsDTO = new ArrayList<>();
+		for (Notification n : notifications) {
 			notificationsDTO.add(new NotificationDTO(n));
 		}
-		for (Glitch g: glitches){
+		for (Glitch g : glitches) {
 			glitchesDTO.add(new GlitchDTO(g));
-		}		
-		for (CommunalProblem cp: problems){
+		}
+		for (CommunalProblem cp : problems) {
 			problemsDTO.add(new CommunalProblemDTO(cp));
 		}
-		
+
 		no_meeting.setGlitches(glitchesDTO);
 		no_meeting.setNotifications(notificationsDTO);
 		no_meeting.setProblems(problemsDTO);
-		return new ResponseEntity<ContentWithoutAgendaDTO>(no_meeting, HttpStatus.OK);
+		return new ResponseEntity<>(no_meeting, HttpStatus.OK);
 
 	}
-	
+
 	@RequestMapping(value = "/agendas/{id}", method = RequestMethod.DELETE)
 	@PreAuthorize("hasAnyRole('ROLE_PRESIDENT')")
 	public ResponseEntity<Void> deleteAgenda(@PathVariable Long id) {
 		AgendaItem agendaItem = agendaPointService.findOne(id);
 
-		if (agendaItem==null){
-			return new ResponseEntity<Void>( HttpStatus.NOT_FOUND);
+		if (agendaItem == null) {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
 		agendaPointService.delete(id);
 		// glich.item????
-		
-		return new ResponseEntity<Void>( HttpStatus.OK);
+
+		return new ResponseEntity<>(HttpStatus.OK);
 
 	}
 	

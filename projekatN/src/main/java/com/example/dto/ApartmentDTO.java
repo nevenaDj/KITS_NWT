@@ -33,14 +33,6 @@ public class ApartmentDTO {
 		this.description = description;
 	}
 
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
 	public Integer getNumber() {
 		return number;
 	}
@@ -49,12 +41,12 @@ public class ApartmentDTO {
 		this.number = number;
 	}
 
-	public String getDescription() {
-		return description;
+	public Long getId() {
+		return id;
 	}
 
-	public void setDescription(String description) {
-		this.description = description;
+	public void setId(Long id) {
+		this.id = id;
 	}
 
 	public UserDTO getOwner() {
@@ -65,9 +57,18 @@ public class ApartmentDTO {
 		this.owner = owner;
 	}
 
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
 	public static Apartment getApartment(ApartmentDTO apartmentDTO) {
-		Apartment apartment = new Apartment(apartmentDTO.getId(), apartmentDTO.getNumber(), apartmentDTO.getDescription());
-		if (apartmentDTO.getOwner() != null){
+		Apartment apartment = new Apartment(apartmentDTO.getId(), apartmentDTO.getNumber(),
+				apartmentDTO.getDescription());
+		if (apartmentDTO.getOwner() != null) {
 			apartment.setOwner(UserDTO.getUser(apartmentDTO.getOwner()));
 		}
 		return apartment;

@@ -42,14 +42,6 @@ public class UserDTO {
 		this.phoneNo = phoneNo;
 	}
 
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
 	public String getUsername() {
 		return username;
 	}
@@ -58,12 +50,12 @@ public class UserDTO {
 		this.username = username;
 	}
 
-	public String getEmail() {
-		return email;
+	public Long getId() {
+		return id;
 	}
 
-	public void setEmail(String email) {
-		this.email = email;
+	public void setId(Long id) {
+		this.id = id;
 	}
 
 	public AddressDTO getAddress() {
@@ -72,6 +64,14 @@ public class UserDTO {
 
 	public void setAddress(AddressDTO address) {
 		this.address = address;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
 	}
 
 	public String getPhoneNo() {

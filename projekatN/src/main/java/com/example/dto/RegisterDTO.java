@@ -27,18 +27,6 @@ public class RegisterDTO {
 		this.phoneNo = phoneNo;
 	}
 
-	public RegisterDTO(String username, String password, String password2, String email, AddressDTO address,
-			String phoneNo, Long apartmentId) {
-		super();
-		this.username = username;
-		this.password = password;
-		this.password2 = password2;
-		this.email = email;
-		this.address = address;
-		this.phoneNo = phoneNo;
-		this.apartmentId = apartmentId;
-	}
-
 	public String getUsername() {
 		return username;
 	}
@@ -71,20 +59,20 @@ public class RegisterDTO {
 		this.email = email;
 	}
 
-	public AddressDTO getAddress() {
-		return address;
-	}
-
-	public void setAddress(AddressDTO address) {
-		this.address = address;
-	}
-
 	public String getPhoneNo() {
 		return phoneNo;
 	}
 
 	public void setPhoneNo(String phoneNo) {
 		this.phoneNo = phoneNo;
+	}
+
+	public AddressDTO getAddress() {
+		return address;
+	}
+
+	public void setAddress(AddressDTO address) {
+		this.address = address;
 	}
 
 	public Long getApartmentId() {

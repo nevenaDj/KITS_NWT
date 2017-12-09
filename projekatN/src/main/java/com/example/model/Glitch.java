@@ -4,7 +4,6 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -47,18 +46,18 @@ public class Glitch {
 
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date dateOfRepair;
-	
+
 	private boolean dateOfRepairApproved;
-	
+
 	@Lob
-    private Set<byte[]> images;
+	private Set<byte[]> images;
 
 	@OneToMany(mappedBy = "glitch", fetch = FetchType.LAZY)
 	private Set<Comment> comments = new HashSet<>();
-	
+
 	@OneToOne(fetch = FetchType.LAZY)
 	private AgendaItem item;
-	
+
 	@OneToOne(fetch = FetchType.EAGER)
 	private Bill bill;
 
@@ -66,8 +65,8 @@ public class Glitch {
 
 	}
 
-	public Glitch(Long id, String description, Date dateOfReport, GlitchType type, GlitchState state,
-			Date dateOfRepair, boolean dateOfRepairApproved) {
+	public Glitch(Long id, String description, Date dateOfReport, GlitchType type, GlitchState state, Date dateOfRepair,
+			boolean dateOfRepairApproved) {
 		super();
 		this.id = id;
 		this.description = description;
@@ -75,20 +74,20 @@ public class Glitch {
 		this.type = type;
 		this.state = state;
 		this.dateOfRepair = dateOfRepair;
-		this.dateOfRepairApproved=dateOfRepairApproved;
+		this.dateOfRepairApproved = dateOfRepairApproved;
 	}
 
-	public Glitch(Long id, String description, Date dateOfReport, GlitchState state, Date dateOfRepair, boolean dateOfRepairApproved) {
+	public Glitch(Long id, String description, Date dateOfReport, GlitchState state, Date dateOfRepair,
+			boolean dateOfRepairApproved) {
 		super();
 		this.id = id;
 		this.description = description;
 		this.dateOfReport = dateOfReport;
 		this.state = state;
 		this.dateOfRepair = dateOfRepair;
-		this.dateOfRepairApproved=dateOfRepairApproved;
+		this.dateOfRepairApproved = dateOfRepairApproved;
 	}
 
-	
 	public Long getId() {
 		return id;
 	}
@@ -200,9 +199,5 @@ public class Glitch {
 	public void setImage(Set<byte[]> image) {
 		this.images = image;
 	}
-	
-	
-	
 
-	
 }

@@ -4,15 +4,13 @@ import java.util.Date;
 import com.example.model.Notification;
 import com.example.model.NotificationStatus;
 
-
 public class NotificationDTO {
 
 	private Long id;
-	
+
 	private Date date;
 	private String text;
 	private NotificationStatus status;
-
 
 	public NotificationDTO() {
 	}
@@ -26,23 +24,7 @@ public class NotificationDTO {
 		this.id = id;
 		this.date = date;
 		this.text = text;
-		this.status= NotificationStatus.WAITING;
-	}
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	public Date getDate() {
-		return date;
-	}
-
-	public void setDate(Date date) {
-		this.date = date;
+		this.status = NotificationStatus.WAITING;
 	}
 
 	public String getText() {
@@ -53,6 +35,14 @@ public class NotificationDTO {
 		this.text = text;
 	}
 
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
 	public NotificationStatus getStatus() {
 		return status;
 	}
@@ -61,9 +51,16 @@ public class NotificationDTO {
 		this.status = status;
 	}
 
+	public Date getDate() {
+		return date;
+	}
+
+	public void setDate(Date date) {
+		this.date = date;
+	}
+
 	public static Notification getNotification(NotificationDTO notificationDTO) {
 		return new Notification(notificationDTO.getId(), notificationDTO.date, notificationDTO.getText());
 	}
-	
 
 }

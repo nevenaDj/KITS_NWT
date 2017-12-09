@@ -2,17 +2,15 @@ package com.example.dto;
 
 import java.util.Date;
 
-import com.example.model.Address;
 import com.example.model.ItemComment;
-import com.example.model.User;
 
 public class ItemCommentDTO {
 	Long id;
-	
-	UserDTO writer;	
+
+	UserDTO writer;
 	String text;
 	Date date;
-	
+
 	public ItemCommentDTO() {
 
 	}
@@ -26,9 +24,9 @@ public class ItemCommentDTO {
 		this.id = id;
 		this.writer = writer;
 		this.text = text;
-		this.date=date;
+		this.date = date;
 	}
- 
+
 	public Long getId() {
 		return id;
 	}
@@ -62,7 +60,8 @@ public class ItemCommentDTO {
 	}
 
 	public static ItemComment getComment(ItemCommentDTO commentDTO) {
-		return new ItemComment(commentDTO.getId(), UserDTO.getUser(commentDTO.getWriter()) , commentDTO.getText(), commentDTO.getDate());
+		return new ItemComment(commentDTO.getId(), UserDTO.getUser(commentDTO.getWriter()), commentDTO.getText(),
+				commentDTO.getDate());
 
 	}
 }

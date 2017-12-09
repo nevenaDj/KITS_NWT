@@ -18,17 +18,17 @@ public class AddressDTO {
 		this(address.getId(), address.getStreet(), address.getNumber(), address.getZipCode(), address.getCity());
 	}
 
-	public AddressDTO(String street, String number, int zipCode, String city) {
+	public AddressDTO(Long id, String street, String number, int zipCode, String city) {
 		super();
+		this.id = id;
 		this.street = street;
 		this.number = number;
 		this.zipCode = zipCode;
 		this.city = city;
 	}
 
-	public AddressDTO(Long id, String street, String number, int zipCode, String city) {
+	public AddressDTO(String street, String number, int zipCode, String city) {
 		super();
-		this.id = id;
 		this.street = street;
 		this.number = number;
 		this.zipCode = zipCode;
@@ -43,14 +43,6 @@ public class AddressDTO {
 		this.id = id;
 	}
 
-	public String getStreet() {
-		return street;
-	}
-
-	public void setStreet(String street) {
-		this.street = street;
-	}
-
 	public String getNumber() {
 		return number;
 	}
@@ -59,12 +51,12 @@ public class AddressDTO {
 		this.number = number;
 	}
 
-	public int getZipCode() {
-		return zipCode;
+	public String getStreet() {
+		return street;
 	}
 
-	public void setZipCode(int zipCode) {
-		this.zipCode = zipCode;
+	public void setStreet(String street) {
+		this.street = street;
 	}
 
 	public String getCity() {
@@ -73,6 +65,14 @@ public class AddressDTO {
 
 	public void setCity(String city) {
 		this.city = city;
+	}
+
+	public int getZipCode() {
+		return zipCode;
+	}
+
+	public void setZipCode(int zipCode) {
+		this.zipCode = zipCode;
 	}
 
 	public static Address getAddress(AddressDTO addressDTO) {
