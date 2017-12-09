@@ -192,18 +192,18 @@ public class PricelistController {
 
 		Glitch glitch = glitchService.findOne(id);
 		if (glitch== null) {
-			return new ResponseEntity<List<PricelistDTO>>(HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 		
 		List<Pricelist> pricelist = pricelistService.findbyGlitchType(glitch.getType().getId());
-		List<PricelistDTO> pricelistDTO = new ArrayList<PricelistDTO>();
+		List<PricelistDTO> pricelistDTO = new ArrayList<>();
 		for (Pricelist p : pricelist){
 			PricelistDTO pDTO= new PricelistDTO(p);
 			pDTO.setCompany(new UserDTO(p.getCompany()));
 			pricelistDTO.add(pDTO);
 		}
 		
-		return new ResponseEntity<List<PricelistDTO>>(pricelistDTO, HttpStatus.OK);		
+		return new ResponseEntity<>(pricelistDTO, HttpStatus.OK);		
 	}
 
 
@@ -213,14 +213,14 @@ public class PricelistController {
 
 		Glitch glitch = glitchService.findOne(id);
 		if (glitch== null) {
-			return new ResponseEntity<GlitchDTO>(HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 		
 		User company= userService.findOne(companyDTO.getId());
 		glitch.setCompany(company);
 		glitch= glitchService.save(glitch);
 		
-		return new ResponseEntity<GlitchDTO>(new GlitchDTO(glitch), HttpStatus.OK);		
+		return new ResponseEntity<>(new GlitchDTO(glitch), HttpStatus.OK);		
 	}
 
 }

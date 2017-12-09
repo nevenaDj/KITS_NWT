@@ -103,5 +103,14 @@ public class User {
 	public void setUserAuthorities(Set<UserAuthority> userAuthorities) {
 		this.userAuthorities = userAuthorities;
 	}
+	
+	public boolean hasAuthority(String authority){
+		for (UserAuthority userAuthority : userAuthorities) {
+			if (userAuthority.getAuthority().getName().equals(authority)){
+				return true;
+			}
+		}
+		return false;
+	}
 
 }

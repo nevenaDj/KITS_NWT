@@ -16,5 +16,7 @@ public class ApartmentConstants {
 	public static final Long ID_BUILDING_NOT_FOUND = 10L;
 	
 	public static final String BUILDING_NUMBER = "1a";
+	
+	public static final Long ID_NOT_FOUND = 50L;
 
 }

@@ -18,5 +18,7 @@ public class BuildingConstatnts {
 	public static final Long NEW_ID = 3L;
 	
 	public static final String STREET_NOT_FOUND = "street";
+	
+	public static final Long ID_NOT_FOUND = 40L;
 
 }
