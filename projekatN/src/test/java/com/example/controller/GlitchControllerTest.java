@@ -20,10 +20,10 @@ import static com.example.constants.GlitchConstants.ID;
 import static com.example.constants.ApartmentConstants.ID_APARTMENT_NOT_FOUND;
 import static com.example.constants.GlitchConstants.ID_NOT_FOUND;
 import static com.example.constants.BuildingConstatnts.PAGE_SIZE;
-import static com.example.constants.UserConstants.NEW_USERNAME;
 import static com.example.constants.UserConstants.ID_PRESIDENT;
 import static com.example.constants.GlitchConstants.ID_GLITCH;
 import static com.example.constants.GlitchConstants.DESCRIPTION;
+import static com.example.constants.UserConstants.USERNAME_NOT_EXIST;
 
 
 import java.nio.charset.Charset;
@@ -165,7 +165,7 @@ public class GlitchControllerTest {
 	@Rollback(true)
 	public void testChangeResponsiblePersonNotExistUsername() throws Exception{
 		UserDTO userDTO = new UserDTO();
-		userDTO.setUsername(NEW_USERNAME);
+		userDTO.setUsername(USERNAME_NOT_EXIST);
 		
 		String json = TestUtils.convertObjectToJson(userDTO);
 		

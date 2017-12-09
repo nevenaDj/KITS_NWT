@@ -33,6 +33,8 @@ import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 
+import static com.example.utils.Constants.ROLE_PRESIDENT;
+
 @RestController
 @RequestMapping(value = "/api/buildings")
 @Api(value = "buildings")
@@ -167,7 +169,7 @@ public class BuildingController {
 		if (userDTO.getId() == null){
 			user = UserDTO.getUser(userDTO);
 			user.setPassword(passwordEncoder.encode("password"));
-			user = userService.save(user, "ROLE_PRESIDENT");
+			user = userService.save(user, ROLE_PRESIDENT);
 		}else{
 			user = userService.findOne(userDTO.getId());
 			
@@ -175,7 +177,7 @@ public class BuildingController {
 				return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 			}
 			
-			userService.saveUserAuthority(user, "ROLE_PRESIDENT");
+			userService.saveUserAuthority(user, ROLE_PRESIDENT);
 		}
 		
 		Building building = buildingService.findOne(id);

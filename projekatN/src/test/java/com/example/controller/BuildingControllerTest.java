@@ -22,7 +22,7 @@ import static com.example.constants.UserConstants.EMAIL;
 import static com.example.constants.ApartmentConstants.ID_BUILDING_NOT_FOUND;
 import static com.example.constants.BuildingConstatnts.STREET_NOT_FOUND;
 import static com.example.constants.UserConstants.NEW_USERNAME;
-import static com.example.constants.UserConstants.ID_NOT_FOUND;
+import static com.example.constants.BuildingConstatnts.ID_NOT_FOUND;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;

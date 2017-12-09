@@ -4,6 +4,7 @@ import static com.example.utils.Constants.TOKEN;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
@@ -43,6 +44,7 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+
 @RestController
 @RequestMapping(value = "/api")
 @Api(value = "glitches")
@@ -63,10 +65,9 @@ public class GlitchController {
 	@Autowired
 	BuildingService buildingService;
 
-
 	@RequestMapping(value = "/apartments/{id}/glitches", method = RequestMethod.POST, consumes = "application/json")
 	@ApiOperation(value = "Create a glitch in an apartment.", notes = "Returns the glitch being saved.", httpMethod = "POST", produces = "application/json", consumes = "application/json")
-	@ApiImplicitParam(paramType="header", name="X-Auth-Token", required=true, value="JWT token")
+	@ApiImplicitParam(paramType = "header", name = "X-Auth-Token", required = true, value = "JWT token")
 	@ApiResponses(value = { @ApiResponse(code = 201, message = "Created", response = GlitchDTO.class),
 			@ApiResponse(code = 500, message = "Failure") })
 	@PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_OWNER')")
@@ -109,7 +110,7 @@ public class GlitchController {
 	@RequestMapping(value = "/glitches", method = RequestMethod.GET)
 	@PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_OWNER', 'ROLE_COMPANY')")
 	@ApiOperation(value = "Get a list of glitches.", httpMethod = "GET")
-	@ApiImplicitParam(paramType="header", name="X-Auth-Token", required=true, value="JWT token")
+	@ApiImplicitParam(paramType = "header", name = "X-Auth-Token", required = true, value = "JWT token")
 	public ResponseEntity<List<GlitchDTO>> getGlitches(Pageable page, HttpServletRequest request) {
 		String token = request.getHeader(TOKEN);
 		String username = tokenUtils.getUsernameFromToken(token);
@@ -130,7 +131,7 @@ public class GlitchController {
 
 	@RequestMapping(value = "/glitches/{id}/responsiblePerson", method = RequestMethod.PUT)
 	@ApiOperation(value = "Change the responsible person for the glitch.", notes = "Returns the glitch being saved.", httpMethod = "PUT", produces = "application/json", consumes = "application/json")
-	@ApiImplicitParam(paramType="header", name="X-Auth-Token", required=true, value="JWT token")
+	@ApiImplicitParam(paramType = "header", name = "X-Auth-Token", required = true, value = "JWT token")
 	@ApiResponses(value = { @ApiResponse(code = 200, message = "Success", response = GlitchDTO.class),
 			@ApiResponse(code = 500, message = "Failure"), @ApiResponse(code = 400, message = "Bad request") })
 	@PreAuthorize("hasRole('ROLE_PRESIDENT')")
@@ -156,11 +157,9 @@ public class GlitchController {
 
 	@RequestMapping(value = "/apartments/{id}/glitches/{glitch_id}/company/{c_id}", method = RequestMethod.PUT, produces = "application/json")
 	@ApiOperation(value = "Change the company for the glitch.", notes = "Returns the glitch being saved.", httpMethod = "PUT", produces = "application/json", consumes = "application/json")
-	@ApiImplicitParam(paramType="header", name="X-Auth-Token", required=true, value="JWT token")
-	@ApiResponses(value = { 
-			@ApiResponse(code = 200, message = "Success", response = GlitchDTO.class),
-			@ApiResponse(code = 500, message = "Failure"), 
-			@ApiResponse(code = 400, message = "Bad request") })
+	@ApiImplicitParam(paramType = "header", name = "X-Auth-Token", required = true, value = "JWT token")
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "Success", response = GlitchDTO.class),
+			@ApiResponse(code = 500, message = "Failure"), @ApiResponse(code = 400, message = "Bad request") })
 	@PreAuthorize("hasAnyRole('ROLE_PRESIDENT', 'ROLE_COMPANY')")
 	public ResponseEntity<GlitchDTO> changeCompany(@PathVariable("id") Long apartmentId,
 			@PathVariable("glitch_id") Long glitchId, @PathVariable("c_id") Long companyId) {
@@ -248,8 +247,9 @@ public class GlitchController {
 
 		return new ResponseEntity<>(new GlitchDTO(glitch), HttpStatus.OK);
 	}
-	
-	@RequestMapping(value = "/apartments/{id}/glitches/{glitch_id}/photo", method = RequestMethod.PUT, params={"image"})
+
+	@RequestMapping(value = "/apartments/{id}/glitches/{glitch_id}/photo", method = RequestMethod.PUT, params = {
+			"image" })
 	@PreAuthorize("hasAnyRole('ROLE_USER')")
 	public ResponseEntity<GlitchDTO> addPhoto(@PathVariable("id") Long apartmentId,
 			@PathVariable("glitch_id") Long glitchId, HttpServletRequest request, @RequestParam("image") String image) {
@@ -267,22 +267,20 @@ public class GlitchController {
 		}
 
 		File file = new File(image);
-	    byte[] bFile = new byte[(int) file.length()];
-	 
-	    try {
-	        FileInputStream fileInputStream = new FileInputStream(file);
-	        fileInputStream.read(bFile);
-	        fileInputStream.close();
-	    } catch (Exception e) {
-	        e.printStackTrace();
-	    }
+		byte[] bFile = new byte[(int) file.length()];
 
-	    Set<byte[]> images = null;
-	    if (glitch.getImage().size()==0){
-	    	images = new HashSet<byte[]>();}
-	    images.add(bFile);
-	    
-	    glitch.setImage(images);		
+		try (FileInputStream fileInputStream = new FileInputStream(file)) {
+
+			int count = fileInputStream.read(bFile);
+			
+		} catch (IOException e) {
+			e.getMessage();
+		}
+
+		Set<byte[]> images = new HashSet<>();
+		images.add(bFile);
+
+		glitch.setImage(images);
 		glitchService.save(glitch);
 
 		return new ResponseEntity<>(new GlitchDTO(glitch), HttpStatus.OK);
