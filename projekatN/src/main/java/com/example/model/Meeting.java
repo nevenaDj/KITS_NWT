@@ -26,10 +26,10 @@ public class Meeting {
 	private Building building;
 
 	@OneToMany(mappedBy = "meeting", fetch = FetchType.LAZY)
-	private Set<Survey> surveys = new HashSet<Survey>();
+	private Set<Survey> surveys = new HashSet<>();
 
 	@OneToMany(mappedBy = "meeting", fetch = FetchType.LAZY)
-	private Set<AgendaPoint> points = new HashSet<AgendaPoint>();
+	private Set<AgendaPoint> points = new HashSet<>();
 
 	public Meeting() {
 

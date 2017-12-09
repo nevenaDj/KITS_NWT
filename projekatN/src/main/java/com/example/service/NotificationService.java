@@ -6,9 +6,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.example.model.Notification;
-import com.example.model.Pricelist;
 import com.example.repository.NotificationRepository;
-import com.example.repository.PricelistRepository;
 
 @Service
 public class NotificationService {
@@ -23,12 +21,12 @@ public class NotificationService {
 		return notificationRepository.findAll(page);
 	}
 	
-	public Page<Notification> findAllByBuilding(Pageable page, Long building_id) {
-		return notificationRepository.findByBuilding(building_id, page);
+	public Page<Notification> findAllByBuilding(Pageable page, Long buildingId) {
+		return notificationRepository.findByBuilding(buildingId, page);
 	}
 	
-	public Page<Notification> findAllByWriter(Pageable page, Long writer_id) {
-		return notificationRepository.findByWriter(writer_id, page);
+	public Page<Notification> findAllByWriter(Pageable page, Long writerId) {
+		return notificationRepository.findByWriter(writerId, page);
 	}
 
 	public Notification save(Notification notification) {

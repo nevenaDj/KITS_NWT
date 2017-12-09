@@ -5,7 +5,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
-import com.example.model.Building;
 import com.example.model.Notification;
 
 public interface NotificationRepository extends JpaRepository<Notification, Long>  {

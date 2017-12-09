@@ -5,15 +5,13 @@ import java.util.HashSet;
 import java.util.Set;
 
 import com.example.model.Pricelist;
-import com.example.model.Survey;
-import com.example.model.SurveyType;
 
 public class PricelistDTO {
 	
 	private Long id;
 	private Date dateUpdate;
 
-	private Set<ItemInPricelistDTO> items = new HashSet<ItemInPricelistDTO>();
+	private Set<ItemInPricelistDTO> items = new HashSet<>();
 
 	public PricelistDTO() {
 

@@ -28,13 +28,6 @@ public class UserAparment {
 		this.apartment = aparment;
 	}
 
-	public UserAparment(Long id, User tenant, Apartment aparment) {
-		super();
-		this.id = id;
-		this.tenant = tenant;
-		this.apartment = aparment;
-	}
-
 	public Long getId() {
 		return id;
 	}

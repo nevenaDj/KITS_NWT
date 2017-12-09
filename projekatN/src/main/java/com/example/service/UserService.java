@@ -30,13 +30,17 @@ public class UserService {
 	PasswordEncoder passwordEncoder;
 
 	public User save(User user, String role) {
-		user.setAddress(addressRepository.save(user.getAddress()));
+		if (user.getAddress() != null) {
+			user.setAddress(addressRepository.save(user.getAddress()));
+		}
 		user = userRepository.save(user);
 		Authority authority = authorityRepository.findByName(role);
 
-		UserAuthority userAuthority = new UserAuthority(user, authority);
-		userAuthority = userAuthorityRepository.save(userAuthority);
+		if (authority != null) {
+			UserAuthority userAuthority = new UserAuthority(user, authority);
+			userAuthority = userAuthorityRepository.save(userAuthority);
 
+		}
 		return user;
 	}
 
@@ -75,16 +79,12 @@ public class UserService {
 	public boolean changePassword(String username, String currentPassword, String newPassword, String newPassword2) {
 		User user = userRepository.findByUsername(username);
 
-		if (user != null) {
+		if (user != null && BCrypt.checkpw(currentPassword, user.getPassword()) && newPassword.equals(newPassword2)) {
 
-			if (BCrypt.checkpw(currentPassword, user.getPassword())) {
+			user.setPassword(passwordEncoder.encode(newPassword));
+			userRepository.save(user);
+			return true;
 
-				if (newPassword.equals(newPassword2)) {
-					user.setPassword(passwordEncoder.encode(newPassword));
-					userRepository.save(user);
-					return true;
-				}
-			}
 		}
 
 		return false;

@@ -1,14 +1,9 @@
 package com.example.dto;
 
 import java.util.Date;
-
-import javax.persistence.FetchType;
-import javax.persistence.ManyToOne;
-
-import com.example.model.Meeting;
 import com.example.model.Notification;
 import com.example.model.NotificationStatus;
-import com.example.model.User;
+
 
 public class NotificationDTO {
 

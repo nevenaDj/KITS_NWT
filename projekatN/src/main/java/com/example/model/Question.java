@@ -21,16 +21,10 @@ public class Question {
 	@ManyToOne(fetch = FetchType.LAZY)
 	private Survey survey;
 	@OneToMany(mappedBy = "question", fetch = FetchType.EAGER)
-	private Set<Option> options = new HashSet<Option>();
+	private Set<Option> options = new HashSet<>();
 
 	public Question() {
 
-	}
-
-	public Question(Long id, String text) {
-		super();
-		this.id = id;
-		this.text = text;
 	}
 
 	public Question(Long id, String text, Survey survey) {

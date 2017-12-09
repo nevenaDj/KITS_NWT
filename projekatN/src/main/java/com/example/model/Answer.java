@@ -26,14 +26,6 @@ public class Answer {
 
 	}
 
-	public Answer(Long id, Question question, Option option, User user) {
-		super();
-		this.id = id;
-		this.question = question;
-		this.option = option;
-		this.user = user;
-	}
-
 	public Answer(Survey survey, Question question, Option option, User user) {
 		super();
 		this.survey = survey;

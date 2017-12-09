@@ -5,10 +5,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import com.example.model.Item_In_Princelist;
-import com.example.model.Pricelist;
+import com.example.model.ItemInPrincelist;
 import com.example.repository.ItemInPricelistRepository;
-import com.example.repository.PricelistRepository;
 
 @Service
 public class ItemInPricelistService {
@@ -16,16 +14,16 @@ public class ItemInPricelistService {
 	@Autowired
 	ItemInPricelistRepository itemInPricelistRepository;
 
-	public Item_In_Princelist findOne(Long id) {
+	public ItemInPrincelist findOne(Long id) {
 		return itemInPricelistRepository.findOne(id);
 	}
 
-	public Page<Item_In_Princelist> findAll(Pageable page) {
+	public Page<ItemInPrincelist> findAll(Pageable page) {
 		return itemInPricelistRepository.findAll(page);
 	}
 
-	public Item_In_Princelist save(Item_In_Princelist item_In_Princelist) {
-		return itemInPricelistRepository.save(item_In_Princelist);
+	public ItemInPrincelist save(ItemInPrincelist itemInPrincelist) {
+		return itemInPricelistRepository.save(itemInPrincelist);
 	}
 
 	public void remove(Long id) {

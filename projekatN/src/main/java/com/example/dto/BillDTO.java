@@ -5,9 +5,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import com.example.model.Bill;
-import com.example.model.Item_In_Princelist;
-import com.example.model.Notification;
-import com.example.model.NotificationStatus;
+import com.example.model.ItemInPrincelist;
 
 public class BillDTO {
 
@@ -17,7 +15,7 @@ public class BillDTO {
 	private Double price;
 	private Date date;	
 	private boolean approved;
-	private Set<ItemInPricelistDTO> items = new HashSet<ItemInPricelistDTO>();
+	private Set<ItemInPricelistDTO> items = new HashSet<>();
 	
 	
 	public BillDTO() {
@@ -25,7 +23,7 @@ public class BillDTO {
 	
 	public BillDTO(Bill bill) {
 		this(bill.getId(), bill.getPrice(), bill.getDate(), bill.isApproved());
-		for (Item_In_Princelist item : bill.getItems()) {
+		for (ItemInPrincelist item : bill.getItems()) {
 			items.add(new ItemInPricelistDTO(item));
 		}		
 		
@@ -89,7 +87,7 @@ public class BillDTO {
 	}
 
 	public static Bill getBill(BillDTO billDTO) {
-		Set<Item_In_Princelist> new_items = new HashSet<Item_In_Princelist>();
+		Set<ItemInPrincelist> new_items = new HashSet<ItemInPrincelist>();
 		for (ItemInPricelistDTO item_In_Princelist : billDTO.getItems()) {
 			new_items.add(item_In_Princelist.getItemInPricelist(item_In_Princelist));
 		}

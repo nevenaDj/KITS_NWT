@@ -49,7 +49,7 @@ public class Glitch {
 	private boolean dateOfRepairApproved;
 
 	@OneToMany(mappedBy = "glitch", fetch = FetchType.LAZY)
-	private Set<Comment> comments = new HashSet<Comment>();
+	private Set<Comment> comments = new HashSet<>();
 	
 	@OneToOne(fetch = FetchType.EAGER)
 	private Bill bill;

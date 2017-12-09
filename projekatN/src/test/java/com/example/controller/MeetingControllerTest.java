@@ -3,6 +3,7 @@ package com.example.controller;
 import static com.example.constants.UserConstants.PASSWORD_PRESIDENT;
 import static com.example.constants.UserConstants.USERNAME_PRESIDENT;
 import static com.example.constants.BuildingConstatnts.BUILDING_ID_1;
+import static com.example.constants.ApartmentConstants.ID_BUILDING_NOT_FOUND;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -23,6 +24,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.web.FilterChainProxy;
 import org.springframework.test.annotation.Rollback;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -36,6 +38,7 @@ import com.jayway.restassured.RestAssured;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = WebEnvironment.DEFINED_PORT)
+@TestPropertySource(locations="classpath:test.properties")
 public class MeetingControllerTest {
 	
 	private String accessToken;
@@ -64,7 +67,7 @@ public class MeetingControllerTest {
 	
 	@Before
 	public void loginPresident() {
-		ResponseEntity<String> responseEntity = restTemplate.postForEntity("/login",
+		ResponseEntity<String> responseEntity = restTemplate.postForEntity("/api/login",
 				new LoginDTO(USERNAME_PRESIDENT, PASSWORD_PRESIDENT), String.class);
 		accessToken = responseEntity.getBody();
 	}
@@ -78,10 +81,25 @@ public class MeetingControllerTest {
 		
 		String json = TestUtils.convertObjectToJson(meetingDTO);
 		
-		mockMvc.perform(post("/buildings/" + BUILDING_ID_1 + "/meetings").header("X-Auth-Token", accessToken)
+		mockMvc.perform(post("/api/buildings/" + BUILDING_ID_1 + "/meetings").header("X-Auth-Token", accessToken)
 				.contentType(contentType)
 				.content(json))
 		.andExpect(status().isCreated());
+	}
+	
+	@Test
+	@Transactional
+	@Rollback(true)
+	public void testAddMeetingBadRequest() throws Exception{
+		Date dateAndTime = new SimpleDateFormat("yyyy-MM-dd").parse("2017-12-12");
+		MeetingDTO meetingDTO = new MeetingDTO(dateAndTime);
+		
+		String json = TestUtils.convertObjectToJson(meetingDTO);
+		
+		mockMvc.perform(post("/api/buildings/" + ID_BUILDING_NOT_FOUND + "/meetings").header("X-Auth-Token", accessToken)
+				.contentType(contentType)
+				.content(json))
+		.andExpect(status().isBadRequest());
 	}
 	
 

@@ -1,6 +1,6 @@
 package com.example.dto;
 
-import com.example.model.Item_In_Princelist;
+import com.example.model.ItemInPrincelist;
 public class ItemInPricelistDTO {
 	private Long id;
 	
@@ -11,7 +11,7 @@ public class ItemInPricelistDTO {
 
 	}
 
-	public ItemInPricelistDTO(Item_In_Princelist itemInPricelist) {
+	public ItemInPricelistDTO(ItemInPrincelist itemInPricelist) {
 		this(itemInPricelist.getId(), itemInPricelist.getNameOfType(), itemInPricelist.getPrice());
 	}
 
@@ -46,7 +46,7 @@ public class ItemInPricelistDTO {
 		this.price = price;
 	}
 
-	public static Item_In_Princelist getItemInPricelist(ItemInPricelistDTO itemInPricelistDTO) {
-		return new Item_In_Princelist(itemInPricelistDTO.getId(), itemInPricelistDTO.getNameOfType(), itemInPricelistDTO.getPrice());
+	public static ItemInPrincelist getItemInPricelist(ItemInPricelistDTO itemInPricelistDTO) {
+		return new ItemInPrincelist(itemInPricelistDTO.getId(), itemInPricelistDTO.getNameOfType(), itemInPricelistDTO.getPrice());
 	}
 }

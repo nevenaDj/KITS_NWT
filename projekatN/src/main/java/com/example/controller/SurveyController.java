@@ -32,7 +32,16 @@ import com.example.service.QuestionService;
 import com.example.service.SurveyService;
 import com.example.service.UserService;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
+
 @RestController
+@RequestMapping(value = "/api")
+@Api(value = "surveys")
 public class SurveyController {
 	@Autowired
 	MeetingService meetingService;
@@ -50,13 +59,21 @@ public class SurveyController {
 	UserService userService;
 
 	@RequestMapping(value = "/meetings/{id}/surveys", method = RequestMethod.POST, consumes = "application/json")
+	@ApiOperation(value = "Create a survey.", notes = "Returns the survey being saved.", httpMethod = "POST", 
+				produces = "application/json", consumes = "application/json")
+	@ApiImplicitParam(paramType="header", name="X-Auth-Token", required=true, value="JWT token")
+	@ApiResponses(value = { 
+			@ApiResponse(code = 201, message = "Created", response = SurveyDTO.class),
+			@ApiResponse(code = 400, message = "Bad request") })
 	@PreAuthorize("hasRole('ROLE_PRESIDENT')")
-	public ResponseEntity<SurveyDTO> addSurvey(@PathVariable Long id, @RequestBody SurveyDTO surveyDTO) {
+	public ResponseEntity<SurveyDTO> addSurvey(
+			@ApiParam(value = "The ID of the meeting.", required = true) @PathVariable Long id,
+			@ApiParam(value = "The surveyDTO object", required = true) @RequestBody SurveyDTO surveyDTO) {
 		Survey survey = SurveyDTO.getSurvey(surveyDTO);
 
 		Meeting meeting = meetingService.findOne(id);
 		if (meeting == null) {
-			return new ResponseEntity<SurveyDTO>(HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 		survey.setMeeting(meeting);
 		survey = surveyService.save(survey);
@@ -76,12 +93,20 @@ public class SurveyController {
 
 		}
 
-		return new ResponseEntity<SurveyDTO>(surveyDTO, HttpStatus.CREATED);
+		return new ResponseEntity<>(surveyDTO, HttpStatus.CREATED);
 	}
 
 	@RequestMapping(value = "/surveys/{id}/answers", method = RequestMethod.POST, consumes = "application/json")
+	@ApiOperation(value = "Create an answer.", httpMethod = "POST", 
+	produces = "application/json", consumes = "application/json")
+	@ApiImplicitParam(paramType="header", name="X-Auth-Token", required=true, value="JWT token")
+	@ApiResponses(value = { 
+			@ApiResponse(code = 201, message = "Created"),
+			@ApiResponse(code = 400, message = "Bad request") })
 	@PreAuthorize("hasRole('ROLE_OWNER')")
-	public ResponseEntity<List<AnswerDTO>> addAnswers(@PathVariable Long id, @RequestBody List<AnswerDTO> answersDTO,
+	public ResponseEntity<List<AnswerDTO>> addAnswers(
+			@ApiParam(value = "The ID of the survey.", required = true) @PathVariable Long id, 
+			@ApiParam(value = "The list of answerDTOs objects", required = true) @RequestBody List<AnswerDTO> answersDTO,
 			HttpServletRequest request) {
 		String token = request.getHeader("X-Auth-Token");
 		String username = tokenUtils.getUsernameFromToken(token);
@@ -91,19 +116,19 @@ public class SurveyController {
 		Survey survey = surveyService.findOne(id);
 
 		if (survey == null) {
-			return new ResponseEntity<List<AnswerDTO>>(HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 
 		for (AnswerDTO answerDTO : answersDTO) {
 			Question question = questionService.findOne(answerDTO.getQuestionID());
 			if (question == null) {
-				return new ResponseEntity<List<AnswerDTO>>(HttpStatus.BAD_REQUEST);
+				return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 			}
 
 			for (Long optionID : answerDTO.getOptions()) {
 				Option option = optionService.findOne(optionID);
 				if (option == null) {
-					return new ResponseEntity<List<AnswerDTO>>(HttpStatus.BAD_REQUEST);
+					return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 				}
 
 				Answer answer = new Answer(survey, question, option, owner);
@@ -111,7 +136,7 @@ public class SurveyController {
 			}
 		}
 
-		return new ResponseEntity<List<AnswerDTO>>(HttpStatus.OK);
+		return new ResponseEntity<>(HttpStatus.CREATED);
 	}
 
 }

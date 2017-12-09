@@ -10,7 +10,7 @@ public class QuestionDTO {
 	private Long id;
 	private String text;
 
-	private Set<OptionDTO> options = new HashSet<OptionDTO>();
+	private Set<OptionDTO> options = new HashSet<>();
 
 	public QuestionDTO() {
 
@@ -20,7 +20,7 @@ public class QuestionDTO {
 		this(question.getId(), question.getText());
 	}
 
-	public QuestionDTO(Question question, HashSet<OptionDTO> options) {
+	public QuestionDTO(Question question, Set<OptionDTO> options) {
 		this(question.getId(), question.getText());
 		this.options = options;
 	}

@@ -3,8 +3,6 @@ package com.example.controller;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -18,15 +16,23 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.dto.AddressDTO;
 import com.example.dto.UserDTO;
-import com.example.dto.UserPasswordDTO;
 import com.example.model.User;
 import com.example.security.TokenUtils;
 import com.example.service.UserService;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
+
+import static com.example.utils.Constants.ROLE_COMPANY;
+
 @RestController
-@RequestMapping(value = "/companies")
+@RequestMapping(value = "/api/companies")
+@Api(value = "companies")
 public class CompanyController {
 	@Autowired
 	PasswordEncoder passwordEncoder;
@@ -36,73 +42,53 @@ public class CompanyController {
 
 	@Autowired
 	TokenUtils tokenUtils;
+	
+	
 
 	@RequestMapping(method = RequestMethod.POST, consumes = "application/json")
+	@ApiOperation(value = "Add a company.", notes = "Returns the company.", httpMethod = "POST",
+				produces = "application/json", consumes = "application/json")
+	@ApiImplicitParam(paramType="header", name="X-Auth-Token", required=true, value="JWT token")
+	@ApiResponse(code = 201, message = "Created", response = UserDTO.class)
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
-	public ResponseEntity<UserDTO> addCompany(@RequestBody UserDTO userDTO) {
+	public ResponseEntity<UserDTO> addCompany(
+			@ApiParam(value = "The userDTO object", required = true) @RequestBody UserDTO userDTO) {
 		User user = UserDTO.getUser(userDTO);
 		user.setPassword(passwordEncoder.encode("password"));
 
-		user = userService.save(user, "ROLE_COMPANY");
-		return new ResponseEntity<UserDTO>(new UserDTO(user), HttpStatus.CREATED);
+		user = userService.save(user, ROLE_COMPANY);
+		return new ResponseEntity<>(new UserDTO(user), HttpStatus.CREATED);
 	}
 
 	@RequestMapping(method = RequestMethod.GET)
+	@ApiOperation(value = "Get a list of companies.", httpMethod = "GET")
+	@ApiImplicitParam(paramType="header", name="X-Auth-Token", required=true, value="JWT token")
 	public ResponseEntity<List<UserDTO>> getCompanies(Pageable page) {
-		Page<User> users = userService.find(page, "ROLE_COMPANY");
+		Page<User> users = userService.find(page, ROLE_COMPANY);
 
-		List<UserDTO> usersDTO = new ArrayList<UserDTO>();
+		List<UserDTO> usersDTO = new ArrayList<>();
 		for (User user : users) {
 			usersDTO.add(new UserDTO(user));
 		}
-		return new ResponseEntity<List<UserDTO>>(usersDTO, HttpStatus.OK);
+		return new ResponseEntity<>(usersDTO, HttpStatus.OK);
 	}
 
-	@RequestMapping(method = RequestMethod.PUT, consumes = "application/json")
-	public ResponseEntity<UserDTO> updateCompany(@RequestBody UserDTO userDTO) {
-		User user = userService.findOne(userDTO.getId());
-
-		if (user == null) {
-			return new ResponseEntity<UserDTO>(HttpStatus.BAD_REQUEST);
-		}
-
-		user.setEmail(userDTO.getEmail());
-		user.setAddress(AddressDTO.getAddress(userDTO.getAddress()));
-		user.setPhoneNo(userDTO.getPhoneNo());
-
-		user = userService.update(user);
-
-		return new ResponseEntity<UserDTO>(new UserDTO(user), HttpStatus.OK);
-	}
-
+	
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+	@ApiOperation(value = "Delete a company.", httpMethod = "DELETE")
+	@ApiImplicitParam(paramType="header", name="X-Auth-Token", required=true, value="JWT token")
+	@ApiResponses(value = { 
+			@ApiResponse(code = 200, message = "Success"),
+			@ApiResponse(code = 404, message = "Not found")})
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
-	public ResponseEntity<Void> deleteCompany(@PathVariable Long id) {
+	public ResponseEntity<Void> deleteCompany(
+			@ApiParam(value = "The ID of the company.", required = true)@PathVariable Long id) {
 		User user = userService.findOne(id);
 		if (user == null) {
-			return new ResponseEntity<Void>(HttpStatus.NOT_FOUND);
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		} else {
-			userService.remove(id, "ROLE_COMPANY");
-			return new ResponseEntity<Void>(HttpStatus.OK);
+			userService.remove(id, ROLE_COMPANY);
+			return new ResponseEntity<>(HttpStatus.OK);
 		}
 	}
-
-	@RequestMapping(value = "/{id}/password", method = RequestMethod.PUT, consumes = "application/json")
-	@PreAuthorize("hasRole('ROLE_COMPANY')")
-	public ResponseEntity<Void> changePassword(@PathVariable Long id, @RequestBody UserPasswordDTO userPasswordDTO,
-			HttpServletRequest request) {
-		String token = request.getHeader("X-Auth-Token");
-		String username = tokenUtils.getUsernameFromToken(token);
-
-		boolean flag = userService.changePassword(username, userPasswordDTO.getCurrentPassword(),
-				userPasswordDTO.getNewPassword1(), userPasswordDTO.getNewPassword2());
-
-		if (flag == true) {
-			return new ResponseEntity<Void>(HttpStatus.OK);
-		} else {
-			return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
-		}
-
-	}
-
 }

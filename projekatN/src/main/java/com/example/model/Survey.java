@@ -31,7 +31,7 @@ public class Survey {
 	private Meeting meeting;
 
 	@OneToMany(mappedBy = "survey", fetch = FetchType.EAGER)
-	private Set<Question> questions = new HashSet<Question>();
+	private Set<Question> questions = new HashSet<>();
 
 	public Survey() {
 

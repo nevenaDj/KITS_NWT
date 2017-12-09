@@ -22,7 +22,7 @@ public class Bill {
 	private User company;
 
 	@OneToMany(mappedBy = "bill", fetch = FetchType.EAGER)
-	private Set<Item_In_Princelist> items = new HashSet<Item_In_Princelist>();
+	private Set<ItemInPrincelist> items = new HashSet<>();
 	
 	private Double price;
 	
@@ -77,17 +77,17 @@ public class Bill {
 		this.company = company;
 	}
 
-	public Set<Item_In_Princelist> getItems() {
+	public Set<ItemInPrincelist> getItems() {
 		return items;
 	}
 
-	public void setItems(Set<Item_In_Princelist> items) {
+	public void setItems(Set<ItemInPrincelist> items) {
 		this.items = items;
 	}
 
 	
 	public Bill(Long id, Double price, Date date,
-			boolean approved, Set<Item_In_Princelist> items) {
+			boolean approved, Set<ItemInPrincelist> items) {
 		super();
 		this.id = id;
 		this.price = price;

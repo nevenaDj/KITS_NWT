@@ -1,6 +1,5 @@
 package com.example.service;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -62,8 +61,8 @@ public class GlitchService {
 		return glitchTypeRepository.findOne(id);
 	}
 	
-	public ArrayList<GlitchType> findAllGlitchType() {
-		return (ArrayList<GlitchType>) glitchTypeRepository.findAll();
+	public List<GlitchType> findAllGlitchType() {
+		return glitchTypeRepository.findAll();
 	}
 	
 	public void removeGlitchType(Long id) {
