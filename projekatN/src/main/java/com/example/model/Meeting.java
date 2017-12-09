@@ -29,7 +29,7 @@ public class Meeting {
 	private Set<Survey> surveys = new HashSet<>();
 
 	@OneToMany(mappedBy = "meeting", fetch = FetchType.LAZY)
-	private Set<AgendaPoint> points = new HashSet<>();
+	private Set<AgendaItem> points = new HashSet<>();
 
 	public Meeting() {
 
@@ -73,11 +73,11 @@ public class Meeting {
 		this.surveys = surveys;
 	}
 
-	public Set<AgendaPoint> getPoints() {
+	public Set<AgendaItem> getPoints() {
 		return points;
 	}
 
-	public void setPoints(Set<AgendaPoint> points) {
+	public void setPoints(Set<AgendaItem> points) {
 		this.points = points;
 	}
 

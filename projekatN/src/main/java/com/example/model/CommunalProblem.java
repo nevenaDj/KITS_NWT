@@ -36,6 +36,10 @@ public class CommunalProblem {
 
 	@ManyToMany(fetch = FetchType.EAGER)
 	private Set<Apartment> apartments = new HashSet<>();
+	
+	@OneToOne(fetch = FetchType.LAZY)
+	private AgendaItem item;
+	
 
 	public CommunalProblem() {
 

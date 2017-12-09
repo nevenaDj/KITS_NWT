@@ -1,5 +1,7 @@
 package com.example.repository;
 
+import java.util.List;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -18,5 +20,8 @@ public interface NotificationRepository extends JpaRepository<Notification, Long
 			  countQuery = "SELECT count(*) FROM Notification n WHERE n.writer.id = ?1",
 			    nativeQuery = false)
 	public Page<Notification> findByWriter(Long userId, Pageable pageable);
+
+	@Query(value = "SELECT n FROM Notification n WHERE n.item.id IS NULL")
+	public List<Notification> findWithoutMeeting();
 		
 }

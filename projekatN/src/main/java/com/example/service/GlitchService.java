@@ -77,4 +77,8 @@ public class GlitchService {
 	public Page<Glitch> findByResponsibility(Pageable page, Long id) {
 		return glitchRepository.findGlitchByResponsiblePerson(id, page);
 	}
+
+	public List<Glitch> findWithoutMeeting() {
+		return glitchRepository.findWithoutMeeting();
+	}
 }
