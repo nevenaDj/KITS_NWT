@@ -136,8 +136,8 @@ public class TenantController {
 		
 		Page<Glitch> glitches= glitchService.findByResponsibility(page, tenant.getId());
 		if (glitches==null)
-			return new ResponseEntity<List<GlitchDTO>>(HttpStatus.NOT_FOUND);
-		return new ResponseEntity<List<GlitchDTO>>(HttpStatus.OK);
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		return new ResponseEntity<>(HttpStatus.OK);
 		
 
 	}
