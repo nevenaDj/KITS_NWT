@@ -120,7 +120,9 @@ public class BuildingController {
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
 	@ApiOperation(value = "Delete a buildig.", httpMethod = "DELETE")
 	@ApiImplicitParam(paramType="header", name="X-Auth-Token", required=true, value="JWT token")
-	@ApiResponse(code = 404, message = "Not found")
+	@ApiResponses(value = { 
+			@ApiResponse(code = 200, message = "Success"),
+			@ApiResponse(code = 404, message = "Not found")})
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	public ResponseEntity<Void> deleteBuilding(
 			@ApiParam(value = "The ID of the building.", required = true) @PathVariable Long id) {

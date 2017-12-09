@@ -26,7 +26,11 @@ import com.example.service.BillService;
 import com.example.service.GlitchService;
 import com.example.service.UserService;
 
+import io.swagger.annotations.Api;
+
 @RestController
+@RequestMapping(value = "/api")
+@Api(value = "bill")
 public class BillController {
 
 	@Autowired

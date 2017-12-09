@@ -28,7 +28,11 @@ import com.example.service.MeetingService;
 import com.example.service.SurveyService;
 import com.example.service.UserService;
 
+import io.swagger.annotations.Api;
+
 @RestController
+@RequestMapping(value = "/api")
+@Api(value = "agenda")
 public class AgendaController {
 
 	@Autowired

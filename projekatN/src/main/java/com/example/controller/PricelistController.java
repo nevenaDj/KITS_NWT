@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.dto.ItemInPricelistDTO;
+import com.example.dto.NotificationDTO;
 import com.example.dto.PricelistDTO;
 import com.example.model.ItemInPrincelist;
 import com.example.model.Pricelist;
@@ -24,9 +25,16 @@ import com.example.service.ItemInPricelistService;
 import com.example.service.PricelistService;
 import com.example.service.UserService;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 
-@RequestMapping(value = "/company/{id}/pricelist")
+
+@RequestMapping(value = "/api/company/{id}/pricelist")
 @RestController
+@Api(value = "priceList")
 public class PricelistController {
 	@Autowired
 	UserService userService;
@@ -38,6 +46,11 @@ public class PricelistController {
 	TokenUtils tokenUtils;
 	
 	@RequestMapping(method = RequestMethod.POST, consumes = "application/json")
+	@ApiOperation(value = "Create a priceList.", notes = "Returns the price list being saved.", httpMethod = "POST", produces = "application/json", consumes = "application/json")
+	@ApiImplicitParam(paramType="header", name="X-Auth-Token", required=true, value="JWT token")
+	@ApiResponses(value = { 
+			@ApiResponse(code = 201, message = "Created", response = PricelistDTO.class),
+			@ApiResponse(code = 400, message = "Bad request") })
 	@PreAuthorize("hasRole('ROLE_COMPANY')")
 	public ResponseEntity<PricelistDTO> addPricelist(@PathVariable Long id, @RequestBody PricelistDTO itemDTO) {
 		Pricelist item = PricelistDTO.getPricelist(itemDTO);
@@ -74,6 +87,11 @@ public class PricelistController {
 	}
 	 
 	@RequestMapping(value = "/items", method = RequestMethod.POST, consumes = "application/json")
+	@ApiOperation(value = "Create new item in price list.", notes = "Returns the item being saved.", httpMethod = "POST", produces = "application/json", consumes = "application/json")
+	@ApiImplicitParam(paramType="header", name="X-Auth-Token", required=true, value="JWT token")
+	@ApiResponses(value = { 
+			@ApiResponse(code = 201, message = "Created", response = NotificationDTO.class),
+			@ApiResponse(code = 500, message = "Failure") })
 	@PreAuthorize("hasRole('ROLE_COMPANY')")
 	public ResponseEntity<ItemInPricelistDTO> addItem(@PathVariable Long id, @RequestBody ItemInPricelistDTO itemDTO) {
 		ItemInPrincelist item = ItemInPricelistDTO.getItemInPricelist(itemDTO);
@@ -113,6 +131,12 @@ public class PricelistController {
 	} 
 	
 	@RequestMapping(value = "/items/{items_id}", method = RequestMethod.DELETE)
+	@ApiOperation(value = "Delete item in price list.", httpMethod = "DELETE")
+	@ApiImplicitParam(paramType="header", name="X-Auth-Token", required=true, value="JWT token")
+	@ApiResponses(value = { 
+			@ApiResponse(code = 200, message = "Success"),
+			@ApiResponse(code = 404, message = "Not found"),
+			@ApiResponse(code = 400, message = "Bad request")})
 	@PreAuthorize("hasRole('ROLE_COMPANY')")
 	public ResponseEntity<Void> deleteItem(@PathVariable("id") Long id, @PathVariable("items_id")  Long itemId ) { // da li je dobro tako????
 
