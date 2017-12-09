@@ -33,4 +33,8 @@ public class PricelistService {
 		return pricelistRepository.findOneByCompany(id);
 	}
 
+	public java.util.List<Pricelist> findbyGlitchType(Long id) {
+		return pricelistRepository.findOneByGlitchType(id);
+	}
+
 }

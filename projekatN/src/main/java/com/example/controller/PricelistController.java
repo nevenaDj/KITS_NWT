@@ -1,6 +1,9 @@
 package com.example.controller;
 
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,13 +17,18 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.dto.GlitchDTO;
 import com.example.dto.ItemInPricelistDTO;
 import com.example.dto.NotificationDTO;
 import com.example.dto.PricelistDTO;
+import com.example.dto.UserDTO;
+import com.example.model.Glitch;
+import com.example.model.GlitchType;
 import com.example.model.ItemInPrincelist;
 import com.example.model.Pricelist;
 import com.example.model.User;
 import com.example.security.TokenUtils;
+import com.example.service.GlitchService;
 import com.example.service.ItemInPricelistService;
 import com.example.service.PricelistService;
 import com.example.service.UserService;
@@ -42,6 +50,8 @@ public class PricelistController {
 	PricelistService pricelistService;
 	@Autowired
 	ItemInPricelistService itemService;
+	@Autowired
+	GlitchService glitchService;
 	@Autowired
 	TokenUtils tokenUtils;
 	
@@ -174,6 +184,43 @@ public class PricelistController {
 			itemService.remove(itemId);
 			return new ResponseEntity<>(HttpStatus.OK);
 		}
+	}
+	
+	@RequestMapping(value = "/glitches/{id}/company", method = RequestMethod.GET, produces= "application/json")
+	@PreAuthorize("hasRole('ROLE_PRESIDENT')")
+	public ResponseEntity<List<PricelistDTO>> findPricelistsByGlitchType(@PathVariable Long id) {
+
+		Glitch glitch = glitchService.findOne(id);
+		if (glitch== null) {
+			return new ResponseEntity<List<PricelistDTO>>(HttpStatus.BAD_REQUEST);
+		}
+		
+		List<Pricelist> pricelist = pricelistService.findbyGlitchType(glitch.getType().getId());
+		List<PricelistDTO> pricelistDTO = new ArrayList<PricelistDTO>();
+		for (Pricelist p : pricelist){
+			PricelistDTO pDTO= new PricelistDTO(p);
+			pDTO.setCompany(new UserDTO(p.getCompany()));
+			pricelistDTO.add(pDTO);
+		}
+		
+		return new ResponseEntity<List<PricelistDTO>>(pricelistDTO, HttpStatus.OK);		
+	}
+
+
+	@RequestMapping(value = "/glitches/{id}/company", method = RequestMethod.PUT, consumes= "application/json")
+	@PreAuthorize("hasRole('ROLE_PRESIDENT')")
+	public ResponseEntity<GlitchDTO> chooseCompany(@PathVariable Long id, @RequestBody UserDTO companyDTO) {
+
+		Glitch glitch = glitchService.findOne(id);
+		if (glitch== null) {
+			return new ResponseEntity<GlitchDTO>(HttpStatus.BAD_REQUEST);
+		}
+		
+		User company= userService.findOne(companyDTO.getId());
+		glitch.setCompany(company);
+		glitch= glitchService.save(glitch);
+		
+		return new ResponseEntity<GlitchDTO>(new GlitchDTO(glitch), HttpStatus.OK);		
 	}
 
 }

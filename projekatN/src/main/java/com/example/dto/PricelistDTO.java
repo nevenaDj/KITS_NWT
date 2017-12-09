@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
+import com.example.model.ItemInPrincelist;
 import com.example.model.Pricelist;
 
 public class PricelistDTO {
@@ -11,7 +12,10 @@ public class PricelistDTO {
 	private Long id;
 	private Date dateUpdate;
 
-	private Set<ItemInPricelistDTO> items = new HashSet<>();
+	private Set<ItemInPricelistDTO> items = new HashSet<ItemInPricelistDTO>();
+	private UserDTO company;
+	private GlitchTypeDTO type;
+	
 
 	public PricelistDTO() {
 
@@ -51,7 +55,31 @@ public class PricelistDTO {
 		this.items = items;
 	}
 
+	public UserDTO getCompany() {
+		return company;
+	}
+
+	public void setCompany(UserDTO company) {
+		this.company = company;
+	}
+
+	public GlitchTypeDTO getType() {
+		return type;
+	}
+
+	public void setType(GlitchTypeDTO type) {
+		this.type = type;
+	}
+
 	public static Pricelist getPricelist(PricelistDTO pricelistDTO) {
-		return new Pricelist(pricelistDTO.getId(), pricelistDTO.getDateUpdate());
+		Pricelist p = new Pricelist(pricelistDTO.getId(), pricelistDTO.getDateUpdate());
+		p.setCompany(UserDTO.getUser(pricelistDTO.getCompany()));
+		p.setType(GlitchTypeDTO.getGlitchType(pricelistDTO.getType()));
+		Set<ItemInPrincelist> items = new HashSet<ItemInPrincelist>();
+		for (ItemInPricelistDTO itemDTO : pricelistDTO.getItems()) {
+			items.add(ItemInPricelistDTO.getItemInPricelist(itemDTO));
+		}
+		p.setItems(items);
+		return p;
 	}
 }
