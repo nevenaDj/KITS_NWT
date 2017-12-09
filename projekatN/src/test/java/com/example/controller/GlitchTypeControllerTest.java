@@ -3,6 +3,12 @@ package com.example.controller;
 import static com.example.constants.GlitchConstants.NEW_TYPE;
 import static com.example.constants.UserConstants.PASSWORD_ADMIN;
 import static com.example.constants.UserConstants.USERNAME_ADMIN;
+import static com.example.constants.GlitchConstants.ID_GLITCH_TYPE;
+import static com.example.constants.GlitchConstants.ID_NOT_FOUND;
+import static com.example.constants.GlitchConstants.TYPE;
+import static org.hamcrest.CoreMatchers.hasItem;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -12,7 +18,6 @@ import java.nio.charset.Charset;
 
 import javax.annotation.PostConstruct;
 
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,10 +66,6 @@ public class GlitchTypeControllerTest {
 		RestAssured.useRelaxedHTTPSValidation();
 		this.mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).addFilters(springSecurityFilterChain)
 				.build();
-	}
-	
-	@Before
-	public void loginAdmin() {
 		ResponseEntity<String> responseEntity = restTemplate.postForEntity("/api/login",
 				new LoginDTO(USERNAME_ADMIN, PASSWORD_ADMIN), String.class);
 		accessToken = responseEntity.getBody();
@@ -87,5 +88,51 @@ public class GlitchTypeControllerTest {
 		.andExpect(jsonPath("$.type").value(NEW_TYPE));
 		
 	}
+	
+	@Test
+	@Transactional
+	@Rollback(true)
+	public void testDeleteGlitchType() throws Exception{
+		mockMvc.perform(delete("/api/glitchTypes/" + ID_GLITCH_TYPE).header("X-Auth-Token", accessToken))
+		.andExpect(status().isOk());
+	}
 
+	@Test
+	public void testDeleteGlitchTypeNotFound() throws Exception{
+		mockMvc.perform(delete("/api/glitchTypes/" + ID_NOT_FOUND).header("X-Auth-Token", accessToken))
+		.andExpect(status().isNotFound());
+	}
+	
+	@Test
+	public void testGetGliychType() throws Exception{
+		mockMvc.perform(get("/api/glitchTypes/" + ID_GLITCH_TYPE).header("X-Auth-Token", accessToken))
+		.andExpect(status().isOk())
+		.andExpect(jsonPath("$.type").value(TYPE));
+	}
+	
+	@Test
+	public void testGetGliychTypeNotFound() throws Exception{
+		mockMvc.perform(get("/api/glitchTypes/" + ID_NOT_FOUND).header("X-Auth-Token", accessToken))
+		.andExpect(status().isNotFound());
+	}
+	
+	@Test
+	public void testFindGlitchTypeByName() throws Exception{
+		mockMvc.perform(get("/api/glitchTypes?name=" + TYPE).header("X-Auth-Token", accessToken))
+		.andExpect(status().isOk())
+		.andExpect(jsonPath("$.id").value(ID_GLITCH_TYPE));
+	}
+	
+	@Test
+	public void testFindGlitchTypeByNameNotFound() throws Exception{
+		mockMvc.perform(get("/api/glitchTypes?name=" + NEW_TYPE).header("X-Auth-Token", accessToken))
+		.andExpect(status().isNotFound());
+	}
+	
+	@Test
+	public void testGetAllGlitchTypes() throws Exception{
+		mockMvc.perform(get("/api/glitchTypes").header("X-Auth-Token", accessToken))
+		.andExpect(status().isOk())
+		.andExpect(jsonPath("$.[*].type").value(hasItem(TYPE)));
+	}
 }

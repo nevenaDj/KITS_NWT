@@ -30,11 +30,13 @@ public class UserService {
 	PasswordEncoder passwordEncoder;
 
 	public User save(User user, String role) {
-		user.setAddress(addressRepository.save(user.getAddress()));
+		if (user.getAddress() != null) {
+			user.setAddress(addressRepository.save(user.getAddress()));
+		}
 		user = userRepository.save(user);
 		Authority authority = authorityRepository.findByName(role);
 
-		if (authority != null && user != null) {
+		if (authority != null) {
 			UserAuthority userAuthority = new UserAuthority(user, authority);
 			userAuthority = userAuthorityRepository.save(userAuthority);
 

@@ -45,7 +45,7 @@ public class GlitchTypeController {
 		return new ResponseEntity<>(new GlitchTypeDTO(glitchType), HttpStatus.CREATED);
 	}
 
-	@RequestMapping(value = "/glitchTypes/{id}", method = RequestMethod.DELETE, consumes = "application/json")
+	@RequestMapping(value = "/glitchTypes/{id}", method = RequestMethod.DELETE)
 	@ApiOperation(value = "Delete a glitch type.", httpMethod = "DELETE")
 	@ApiResponse(code = 404, message = "Not found")
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
@@ -59,7 +59,7 @@ public class GlitchTypeController {
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 
-	@RequestMapping(value = "/glitchTypes/{id}", method = RequestMethod.GET, consumes = "application/json")
+	@RequestMapping(value = "/glitchTypes/{id}", method = RequestMethod.GET)
 	@ApiOperation(value = "Get a glitch type.", httpMethod = "GET")
 	@ApiImplicitParam(paramType="header", name="X-Auth-Token", required=true, value="JWT token")
 	@ApiResponses(value = { @ApiResponse(code = 200, message = "Success", response = GlitchTypeDTO.class),
@@ -75,7 +75,7 @@ public class GlitchTypeController {
 		return new ResponseEntity<>(new GlitchTypeDTO(glitchType), HttpStatus.OK);
 	}
 
-	@RequestMapping(value = "/glitchTypes", method = RequestMethod.GET, consumes = "application/json", params = {
+	@RequestMapping(value = "/glitchTypes", method = RequestMethod.GET, params = {
 			"name" })
 	@ApiOperation(value = "Find a glitch type by name.", httpMethod = "GET")
 	@ApiImplicitParam(paramType="header", name="X-Auth-Token", required=true, value="JWT token")
@@ -89,7 +89,7 @@ public class GlitchTypeController {
 		return new ResponseEntity<>(new GlitchTypeDTO(glitchType), HttpStatus.OK);
 	}
 
-	@RequestMapping(value = "/glitchTypes", method = RequestMethod.GET, consumes = "application/json")
+	@RequestMapping(value = "/glitchTypes", method = RequestMethod.GET)
 	@ApiOperation(value = "Get a list of glitch types.", httpMethod = "GET")
 	@ApiImplicitParam(paramType="header", name="X-Auth-Token", required=true, value="JWT token")
 	public ResponseEntity<List<GlitchTypeDTO>> findAllGlitchType() {

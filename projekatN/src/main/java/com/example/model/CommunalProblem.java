@@ -48,17 +48,6 @@ public class CommunalProblem {
 		this.dateOfRepair = dateOfRepair;
 	}
 
-	public CommunalProblem(Long id, String description, GlitchType type, Date dateOfRepair, User company,
-			Set<Apartment> apartments) {
-		super();
-		this.id = id;
-		this.description = description;
-		this.type = type;
-		this.dateOfRepair = dateOfRepair;
-		this.company = company;
-		this.apartments = apartments;
-	}
-
 	public Long getId() {
 		return id;
 	}

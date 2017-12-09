@@ -33,17 +33,6 @@ public class CommunalProblemDTO {
 		this.dateOfRepair = dateOfRepair;
 	}
 
-	public CommunalProblemDTO(Long id, String description, GlitchTypeDTO type, Date dateOfRepair, Long companyID,
-			Set<ApartmentDTO> apartments) {
-		super();
-		this.id = id;
-		this.description = description;
-		this.type = type;
-		this.dateOfRepair = dateOfRepair;
-		this.companyID = companyID;
-		this.apartments = apartments;
-	}
-
 	public Long getId() {
 		return id;
 	}

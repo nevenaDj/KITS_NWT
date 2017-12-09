@@ -22,12 +22,6 @@ public class Option {
 
 	}
 
-	public Option(Long id, String text) {
-		super();
-		this.id = id;
-		this.text = text;
-	}
-
 	public Option(Long id, String text, Question question) {
 		super();
 		this.id = id;

@@ -21,6 +21,8 @@ import static com.example.constants.UserConstants.USERNAME;
 import static com.example.constants.UserConstants.EMAIL;
 import static com.example.constants.ApartmentConstants.ID_BUILDING_NOT_FOUND;
 import static com.example.constants.BuildingConstatnts.STREET_NOT_FOUND;
+import static com.example.constants.UserConstants.NEW_USERNAME;
+import static com.example.constants.UserConstants.ID_NOT_FOUND;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -199,6 +201,38 @@ public class BuildingControllerTest {
 
 	}
 	
+	@Test
+	@Transactional
+	@Rollback(true)
+	public void testAddPresidentBadUserId() throws Exception {
+		UserDTO userDTO = new UserDTO();
+		userDTO.setId(ID_NOT_FOUND);
+
+		String json = TestUtils.convertObjectToJson(userDTO);
+
+		mockMvc.perform(post("/api/buildings/" + BUILDING_ID_2 + "/president").header("X-Auth-Token", accessToken)
+				.contentType(contentType).content(json))
+				.andExpect(status().isBadRequest());
+
+	}
+	
+	@Test
+	@Transactional
+	@Rollback(true)
+	public void testAddPresidentNewUser() throws Exception {
+		UserDTO userDTO = new UserDTO();
+		userDTO.setUsername(NEW_USERNAME);
+		userDTO.setId(null);
+
+		String json = TestUtils.convertObjectToJson(userDTO);
+
+		mockMvc.perform(post("/api/buildings/" + BUILDING_ID_2 + "/president").header("X-Auth-Token", accessToken)
+				.contentType(contentType).content(json))
+				.andExpect(status().isCreated())
+				.andExpect(content().contentType(contentType)).andExpect(jsonPath("$.id").value(BUILDING_ID_2))
+				.andExpect(jsonPath("$.president.username").value(NEW_USERNAME));
+
+	}
 	
 	@Test
 	@Transactional

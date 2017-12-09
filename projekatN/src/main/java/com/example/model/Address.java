@@ -29,14 +29,6 @@ public class Address {
 		this.city = city;
 	}
 
-	public Address(String street, String number, int zipCode, String city) {
-		super();
-		this.street = street;
-		this.number = number;
-		this.zipCode = zipCode;
-		this.city = city;
-	}
-
 	public Long getId() {
 		return id;
 	}

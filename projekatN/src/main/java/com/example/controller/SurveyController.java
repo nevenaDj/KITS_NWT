@@ -136,7 +136,7 @@ public class SurveyController {
 			}
 		}
 
-		return new ResponseEntity<>(HttpStatus.OK);
+		return new ResponseEntity<>(HttpStatus.CREATED);
 	}
 
 }

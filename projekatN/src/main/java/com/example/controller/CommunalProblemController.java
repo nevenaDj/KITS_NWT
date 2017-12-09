@@ -60,11 +60,13 @@ public class CommunalProblemController {
 		}
 
 		communalProblem.setBuilding(building);
+		
+		if (communalProblemDTO.getCompanyID() != null){
+			User company = userService.findOne(communalProblemDTO.getCompanyID());
 
-		User company = userService.findOne(communalProblemDTO.getCompanyID());
-
-		if (company != null) {
-			communalProblem.setCompany(company);
+			if (company != null) {
+				communalProblem.setCompany(company);
+			}
 		}
 
 		communalProblemService.save(communalProblem);
@@ -73,11 +75,12 @@ public class CommunalProblemController {
 
 	}
 
-	@RequestMapping(value = "/communalProblems/{id}/apartments/{id_apartment}", method = RequestMethod.PUT, consumes = "application/json")
+	@RequestMapping(value = "/communalProblems/{id}/apartments/{id_apartment}", method = RequestMethod.PUT)
 	@ApiOperation(value = "Add communal problem in apartment.", httpMethod = "PUT", produces = "application/json", consumes = "application/json")
 	@ApiResponses(value = { 
 			@ApiResponse(code = 200, message = "Success", response = CommunalProblemDTO.class),
 			@ApiResponse(code = 400, message = "Bad request") })
+	@PreAuthorize("hasAnyRole('ROLE_PRESIDENT', 'ROLE_OWNER')")
 	public ResponseEntity<CommunalProblemDTO> addCommunalProblemApartment(
 			@ApiParam(value = "The ID of the communal problem.", required = true) @PathVariable("id") Long id,
 			@ApiParam(value = "The ID of the apartment.", required = true) @PathVariable("id_apartment") Long idApartment) {

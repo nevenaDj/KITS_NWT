@@ -3,8 +3,6 @@ package com.example.controller;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -18,9 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.dto.AddressDTO;
 import com.example.dto.UserDTO;
-import com.example.dto.UserPasswordDTO;
 import com.example.model.User;
 import com.example.security.TokenUtils;
 import com.example.service.UserService;
@@ -31,6 +27,8 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+
+import static com.example.utils.Constants.ROLE_COMPANY;
 
 @RestController
 @RequestMapping(value = "/api/companies")
@@ -45,7 +43,7 @@ public class CompanyController {
 	@Autowired
 	TokenUtils tokenUtils;
 	
-	private static final String ROLE_COMPANY = "ROLE_COMPANY";
+	
 
 	@RequestMapping(method = RequestMethod.POST, consumes = "application/json")
 	@ApiOperation(value = "Add a company.", notes = "Returns the company.", httpMethod = "POST",
@@ -75,30 +73,7 @@ public class CompanyController {
 		return new ResponseEntity<>(usersDTO, HttpStatus.OK);
 	}
 
-	@RequestMapping(method = RequestMethod.PUT, consumes = "application/json")
-	@ApiOperation(value = "Update a company.", notes = "Returns the company being saved.", httpMethod = "PUT", 
-				produces = "application/json", consumes = "application/json")
-	@ApiImplicitParam(paramType="header", name="X-Auth-Token", required=true, value="JWT token")
-	@ApiResponses(value = { 
-			@ApiResponse(code = 200, message = "Success", response = UserDTO.class),
-			@ApiResponse(code = 400, message = "Bad request") })
-	public ResponseEntity<UserDTO> updateCompany(
-			@ApiParam(value = "The userDTO object", required = true)@RequestBody UserDTO userDTO) {
-		User user = userService.findOne(userDTO.getId());
-
-		if (user == null) {
-			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-		}
-
-		user.setEmail(userDTO.getEmail());
-		user.setAddress(AddressDTO.getAddress(userDTO.getAddress()));
-		user.setPhoneNo(userDTO.getPhoneNo());
-
-		user = userService.update(user);
-
-		return new ResponseEntity<>(new UserDTO(user), HttpStatus.OK);
-	}
-
+	
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
 	@ApiOperation(value = "Delete a company.", httpMethod = "DELETE")
 	@ApiImplicitParam(paramType="header", name="X-Auth-Token", required=true, value="JWT token")
@@ -116,29 +91,4 @@ public class CompanyController {
 			return new ResponseEntity<>(HttpStatus.OK);
 		}
 	}
-
-	@RequestMapping(value = "/password", method = RequestMethod.PUT, consumes = "application/json")
-	@ApiOperation(value = "Change password.", httpMethod = "PUT", produces = "application/json", consumes = "application/json")
-	@ApiImplicitParam(paramType="header", name="X-Auth-Token", required=true, value="JWT token")
-	@ApiResponses(value = { 
-			@ApiResponse(code = 200, message = "Success"),
-			@ApiResponse(code = 400, message = "Bad request") })
-	@PreAuthorize("hasRole('ROLE_COMPANY')")
-	public ResponseEntity<Void> changePassword(
-			@ApiParam(value = "The userPasswordDTO object", required = true) @RequestBody UserPasswordDTO userPasswordDTO,
-			HttpServletRequest request) {
-		String token = request.getHeader("X-Auth-Token");
-		String username = tokenUtils.getUsernameFromToken(token);
-
-		boolean flag = userService.changePassword(username, userPasswordDTO.getCurrentPassword(),
-				userPasswordDTO.getNewPassword1(), userPasswordDTO.getNewPassword2());
-
-		if (flag) {
-			return new ResponseEntity<>(HttpStatus.OK);
-		} else {
-			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-		}
-
-	}
-
 }

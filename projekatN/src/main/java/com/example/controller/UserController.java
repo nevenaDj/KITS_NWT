@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.dto.AddressDTO;
 import com.example.dto.LoginDTO;
 import com.example.dto.RegisterDTO;
 import com.example.dto.UserDTO;
@@ -145,14 +146,38 @@ public class UserController {
 		}
 		return new ResponseEntity<>(new UserDTO(user), HttpStatus.OK);
 	}
+	
+	@RequestMapping(value="/users", method = RequestMethod.PUT, consumes = "application/json")
+	@ApiOperation(value = "Update a user.", notes = "Returns the company being saved.", httpMethod = "PUT", 
+				produces = "application/json", consumes = "application/json")
+	@ApiImplicitParam(paramType="header", name="X-Auth-Token", required=true, value="JWT token")
+	@ApiResponses(value = { 
+			@ApiResponse(code = 200, message = "Success", response = UserDTO.class),
+			@ApiResponse(code = 400, message = "Bad request") })
+	public ResponseEntity<UserDTO> updateUser(
+			@ApiParam(value = "The userDTO object", required = true)@RequestBody UserDTO userDTO) {
+		User user = userService.findOne(userDTO.getId());
 
-	@RequestMapping(value = "/admin/password", method = RequestMethod.PUT, consumes = "application/json")
+		if (user == null) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+
+		user.setEmail(userDTO.getEmail());
+		user.setAddress(AddressDTO.getAddress(userDTO.getAddress()));
+		user.setPhoneNo(userDTO.getPhoneNo());
+
+		user = userService.update(user);
+
+		return new ResponseEntity<>(new UserDTO(user), HttpStatus.OK);
+	}
+
+
+	@RequestMapping(value = "/users/password", method = RequestMethod.PUT, consumes = "application/json")
 	@ApiOperation(value = "Change password.", httpMethod = "PUT", produces = "application/json", consumes = "application/json")
 	@ApiImplicitParam(paramType="header", name="X-Auth-Token", required=true, value="JWT token")
 	@ApiResponses(value = { 
 			@ApiResponse(code = 200, message = "Success"),
 			@ApiResponse(code = 400, message = "Bad request") })
-	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	public ResponseEntity<Void> changePasswordAdmin(
 			@ApiParam(value = "The userPasswordDTO object", required = true) @RequestBody UserPasswordDTO userPasswordDTO,
 			HttpServletRequest request) {

@@ -3,8 +3,6 @@ package com.example.controller;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -18,9 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.dto.AddressDTO;
 import com.example.dto.UserDTO;
-import com.example.dto.UserPasswordDTO;
 import com.example.model.Apartment;
 import com.example.model.User;
 import com.example.model.UserAparment;
@@ -75,7 +71,7 @@ public class TenantController {
 		if (user == null) {
 			user = UserDTO.getUser(userDTO);
 			user.setPassword(passwordEncoder.encode("password"));
-			user = userService.save(user, "ROLE_USER");
+			user = userService.save(user, ROLE_TENANT);
 		}
 		UserAparment userApartment = new UserAparment(user, apartment);
 		userApartmentService.save(userApartment);
@@ -96,28 +92,6 @@ public class TenantController {
 		return new ResponseEntity<>(usersDTO, HttpStatus.OK);
 	}
 
-	@RequestMapping(value = "/tenants", method = RequestMethod.PUT, consumes = "application/json")
-	@ApiOperation(value = "Update a tenant.", notes = "Returns the tenant being saved.", httpMethod = "PUT", produces = "application/json", consumes = "application/json")
-	@ApiImplicitParam(paramType="header", name="X-Auth-Token", required=true, value="JWT token")
-	@ApiResponses(value = { 
-			@ApiResponse(code = 200, message = "Success", response = UserDTO.class),
-			@ApiResponse(code = 400, message = "Bad request") })
-	public ResponseEntity<UserDTO> updateTenant(
-			@ApiParam(value = "The userDTO object", required = true)@RequestBody UserDTO userDTO) {
-		User user = userService.findOne(userDTO.getId());
-
-		if (user == null) {
-			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-		}
-
-		user.setEmail(userDTO.getEmail());
-		user.setAddress(AddressDTO.getAddress(userDTO.getAddress()));
-		user.setPhoneNo(userDTO.getPhoneNo());
-
-		user = userService.update(user);
-
-		return new ResponseEntity<>(new UserDTO(user), HttpStatus.OK);
-	}
 
 	@RequestMapping(value = "/tenants/{id}", method = RequestMethod.DELETE)
 	@ApiOperation(value = "Delete a tenant.", httpMethod = "DELETE")
@@ -137,29 +111,6 @@ public class TenantController {
 		}
 	}
 
-	@RequestMapping(value = "/tenants/password", method = RequestMethod.PUT, consumes = "application/json")
-	@ApiOperation(value = "Change password.", httpMethod = "PUT", produces = "application/json", consumes = "application/json")
-	@ApiImplicitParam(paramType="header", name="X-Auth-Token", required=true, value="JWT token")
-	@ApiResponses(value = { 
-			@ApiResponse(code = 200, message = "Success"),
-			@ApiResponse(code = 400, message = "Bad request") })
-	@PreAuthorize("hasRole('ROLE_USER')")
-	public ResponseEntity<Void> changePassword(
-			@ApiParam(value = "The userPasswordDTO object", required = true)@RequestBody UserPasswordDTO userPasswordDTO,
-			HttpServletRequest request) {
-		
-		String token = request.getHeader("X-Auth-Token");
-		String username = tokenUtils.getUsernameFromToken(token);
-
-		boolean flag = userService.changePassword(username, userPasswordDTO.getCurrentPassword(),
-				userPasswordDTO.getNewPassword1(), userPasswordDTO.getNewPassword2());
-
-		if (flag) {
-			return new ResponseEntity<>(HttpStatus.OK);
-		} else {
-			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-		}
-
-	}
+	
 
 }

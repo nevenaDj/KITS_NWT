@@ -27,12 +27,6 @@ public class Question {
 
 	}
 
-	public Question(Long id, String text) {
-		super();
-		this.id = id;
-		this.text = text;
-	}
-
 	public Question(Long id, String text, Survey survey) {
 		super();
 		this.id = id;

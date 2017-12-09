@@ -160,16 +160,22 @@ public class BuildingController {
 			@ApiResponse(code = 400, message = "Bad request"), @ApiResponse(code = 500, message = "Failure") })
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	public ResponseEntity<BuildingDTO> addPresident(@PathVariable Long id, @RequestBody UserDTO userDTO) {
-		User user = userService.findOne(userDTO.getId());
-
-		if (user == null) {
+		
+		User user = null;
+		if (userDTO.getId() == null){
 			user = UserDTO.getUser(userDTO);
 			user.setPassword(passwordEncoder.encode("password"));
 			user = userService.save(user, "ROLE_PRESIDENT");
-		} else {
+		}else{
+			user = userService.findOne(userDTO.getId());
+			
+			if (user == null){
+				return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+			}
+			
 			userService.saveUserAuthority(user, "ROLE_PRESIDENT");
 		}
-
+		
 		Building building = buildingService.findOne(id);
 
 		if (building == null) {
