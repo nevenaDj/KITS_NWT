@@ -4,10 +4,12 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
@@ -47,6 +49,9 @@ public class Glitch {
 	private Date dateOfRepair;
 	
 	private boolean dateOfRepairApproved;
+	
+	@Lob
+    private Set<byte[]> images;
 
 	@OneToMany(mappedBy = "glitch", fetch = FetchType.LAZY)
 	private Set<Comment> comments = new HashSet<>();
@@ -184,6 +189,15 @@ public class Glitch {
 	public void setDateOfRepairApproved(boolean dateOfRepairApproved) {
 		this.dateOfRepairApproved = dateOfRepairApproved;
 	}
+
+	public Set<byte[]> getImage() {
+		return images;
+	}
+
+	public void setImage(Set<byte[]> image) {
+		this.images = image;
+	}
+	
 	
 	
 

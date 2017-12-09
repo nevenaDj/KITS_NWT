@@ -2,9 +2,13 @@ package com.example.controller;
 
 import static com.example.utils.Constants.TOKEN;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -240,6 +244,45 @@ public class GlitchController {
 		}
 
 		glitch.setDateOfRepairApproved(true);
+		glitchService.save(glitch);
+
+		return new ResponseEntity<>(new GlitchDTO(glitch), HttpStatus.OK);
+	}
+	
+	@RequestMapping(value = "/apartments/{id}/glitches/{glitch_id}/photo", method = RequestMethod.PUT, params={"image"})
+	@PreAuthorize("hasAnyRole('ROLE_USER')")
+	public ResponseEntity<GlitchDTO> addPhoto(@PathVariable("id") Long apartmentId,
+			@PathVariable("glitch_id") Long glitchId, HttpServletRequest request, @RequestParam("image") String image) {
+
+		Apartment apartment = apartmentService.findOne(apartmentId);
+
+		if (apartment == null) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+
+		Glitch glitch = glitchService.findOne(glitchId);
+
+		if (glitch == null) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+
+		File file = new File(image);
+	    byte[] bFile = new byte[(int) file.length()];
+	 
+	    try {
+	        FileInputStream fileInputStream = new FileInputStream(file);
+	        fileInputStream.read(bFile);
+	        fileInputStream.close();
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
+
+	    Set<byte[]> images = null;
+	    if (glitch.getImage().size()==0){
+	    	images = new HashSet<byte[]>();}
+	    images.add(bFile);
+	    
+	    glitch.setImage(images);		
 		glitchService.save(glitch);
 
 		return new ResponseEntity<>(new GlitchDTO(glitch), HttpStatus.OK);
