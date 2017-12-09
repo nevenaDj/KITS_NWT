@@ -88,5 +88,49 @@ public class MeetingController {
 		List<Date> dates = meetingService.getDates(id);
 		return new ResponseEntity<>(dates, HttpStatus.CREATED);
 	}
+	
+	@RequestMapping(value = "/buildings/{b_id}/meeting/{m_id}/active", method = RequestMethod.PUT, produces = "application/json")
+	@ApiImplicitParam(paramType="header", name="X-Auth-Token", required=true, value="JWT token")
+	@ApiResponses(value = { 
+		@ApiResponse(code = 201, message = "Created", response = MeetingDTO.class),
+		@ApiResponse(code = 400, message = "Bad request") })
+	public ResponseEntity<MeetingDTO> setMeetingActive(@PathVariable("b_id") Long buildingId, @PathVariable("m_id") Long meetingId) {
+	
+		Building building = buildingService.findOne(buildingId);
+		if (building == null) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+	
+		Meeting meeting = meetingService.findOne(meetingId);
+		if (meeting == null) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+		
+		meeting.setActive(true);
+		meeting= meetingService.save(meeting);
+		return new ResponseEntity<>(new MeetingDTO(meeting), HttpStatus.OK);
+	}
+
+	@RequestMapping(value = "/buildings/{b_id}/meeting/{m_id}/deactive", method = RequestMethod.PUT, produces = "application/json")
+	@ApiImplicitParam(paramType="header", name="X-Auth-Token", required=true, value="JWT token")
+	@ApiResponses(value = { 
+		@ApiResponse(code = 201, message = "Created", response = MeetingDTO.class),
+		@ApiResponse(code = 400, message = "Bad request") })
+	public ResponseEntity<MeetingDTO> deactivateMeeting(@PathVariable("b_id") Long buildingId, @PathVariable("m_id") Long meetingId) {
+	
+		Building building = buildingService.findOne(buildingId);
+		if (building == null) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+	
+		Meeting meeting = meetingService.findOne(meetingId);
+		if (meeting == null) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+		
+		meeting.setActive(false);
+		meeting= meetingService.save(meeting);
+		return new ResponseEntity<>(new MeetingDTO(meeting), HttpStatus.OK);
+	}
 
 }

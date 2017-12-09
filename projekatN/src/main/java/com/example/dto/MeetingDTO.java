@@ -7,6 +7,7 @@ import com.example.model.Meeting;
 public class MeetingDTO {
 	private Long id;
 	private Date dateAndTime;
+	private boolean active;
 
 	public MeetingDTO() {
 
@@ -43,8 +44,16 @@ public class MeetingDTO {
 		this.id = id;
 	}
 
+	public boolean isActive() {
+		return active;
+	}
+
+	public void setActive(boolean active) {
+		this.active = active;
+	}
+
 	public static Meeting getMeeting(MeetingDTO meetingDTO) {
-		return new Meeting(meetingDTO.getId(), meetingDTO.getDateAndTime());
+		return new Meeting(meetingDTO.getId(), meetingDTO.getDateAndTime(), meetingDTO.isActive());
 
 	}
 
