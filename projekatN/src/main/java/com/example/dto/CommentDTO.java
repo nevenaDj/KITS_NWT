@@ -10,13 +10,21 @@ public class CommentDTO {
 
 	}
 
+	public CommentDTO(Long id, String text) {
+		super();
+		this.id = id;
+		this.text = text;
+	}
+
 	public CommentDTO(Comment comment) {
 		this(comment.getId(), comment.getText());
 	}
 
-	public CommentDTO(Long id, String text) {
-		super();
-		this.id = id;
+	public String getText() {
+		return text;
+	}
+
+	public void setText(String text) {
 		this.text = text;
 	}
 
@@ -26,14 +34,6 @@ public class CommentDTO {
 
 	public void setId(Long id) {
 		this.id = id;
-	}
-
-	public String getText() {
-		return text;
-	}
-
-	public void setText(String text) {
-		this.text = text;
 	}
 
 	public static Comment getComment(CommentDTO commnetDTO) {

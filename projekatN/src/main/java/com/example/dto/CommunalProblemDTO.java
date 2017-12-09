@@ -41,14 +41,6 @@ public class CommunalProblemDTO {
 		this.id = id;
 	}
 
-	public String getDescription() {
-		return description;
-	}
-
-	public void setDescription(String description) {
-		this.description = description;
-	}
-
 	public GlitchTypeDTO getType() {
 		return type;
 	}
@@ -57,20 +49,28 @@ public class CommunalProblemDTO {
 		this.type = type;
 	}
 
-	public Date getDateOfRepair() {
-		return dateOfRepair;
-	}
-
-	public void setDateOfRepair(Date dateOfRepair) {
-		this.dateOfRepair = dateOfRepair;
-	}
-
 	public Long getCompanyID() {
 		return companyID;
 	}
 
 	public void setCompanyID(Long companyID) {
 		this.companyID = companyID;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public Date getDateOfRepair() {
+		return dateOfRepair;
+	}
+
+	public void setDateOfRepair(Date dateOfRepair) {
+		this.dateOfRepair = dateOfRepair;
 	}
 
 	public Set<ApartmentDTO> getApartments() {

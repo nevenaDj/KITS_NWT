@@ -27,20 +27,20 @@ public class MeetingDTO {
 		this.dateAndTime = dateAndTime;
 	}
 
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
 	public Date getDateAndTime() {
 		return dateAndTime;
 	}
 
 	public void setDateAndTime(Date dateAndTime) {
 		this.dateAndTime = dateAndTime;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
 	}
 
 	public static Meeting getMeeting(MeetingDTO meetingDTO) {
