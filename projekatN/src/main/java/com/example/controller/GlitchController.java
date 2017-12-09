@@ -143,9 +143,8 @@ public class GlitchController {
 
 		if (user != null) {
 			glitch.setResponsiblePerson(user);
+			glitch = glitchService.save(glitch);
 		}
-
-		glitch = glitchService.save(glitch);
 
 		return new ResponseEntity<>(new GlitchDTO(glitch), HttpStatus.OK);
 

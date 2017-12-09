@@ -18,5 +18,8 @@ public class GlitchConstants {
 	public static final Long ID_GLITCH_TYPE = 1L;
 	
 	public static final String TYPE = "TYPE";
+	
+	public static final Long ID_GLITCH = 1L;
+	public static final String DESCRIPTION = "glitch";
 
 }
