@@ -31,14 +31,17 @@ public class Meeting {
 	@OneToMany(mappedBy = "meeting", fetch = FetchType.LAZY)
 	private Set<AgendaItem> points = new HashSet<>();
 
+	private boolean active= false;
+	
 	public Meeting() {
 
 	}
 
-	public Meeting(Long id, Date dateAndTime) {
+	public Meeting(Long id, Date dateAndTime, boolean active) {
 		super();
 		this.id = id;
 		this.dateAndTime = dateAndTime;
+		this.active=active;
 	}
 
 	public Long getId() {
@@ -81,4 +84,13 @@ public class Meeting {
 		this.points = points;
 	}
 
+	public boolean isActive() {
+		return active;
+	}
+
+	public void setActive(boolean active) {
+		this.active = active;
+	}
+
+	
 }
