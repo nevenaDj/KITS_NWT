@@ -24,6 +24,9 @@ public class Pricelist {
 	
 	@OneToOne(fetch = FetchType.EAGER)
 	private User company;
+	
+	@OneToOne(fetch = FetchType.EAGER)
+	private GlitchType type;
 
 
 	
@@ -73,9 +76,13 @@ public class Pricelist {
 	public void setCompany(User company) {
 		this.company = company;
 	}
-	
-	
-	
-	
+
+	public GlitchType getType() {
+		return type;
+	}
+
+	public void setType(GlitchType type) {
+		this.type = type;
+	}
 
 }
