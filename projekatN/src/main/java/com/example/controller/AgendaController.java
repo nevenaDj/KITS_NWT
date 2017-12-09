@@ -286,6 +286,7 @@ public class AgendaController {
 		if (agendaItem==null){
 			return new ResponseEntity<Void>( HttpStatus.NOT_FOUND);
 		}
+
 		Set<ItemComment> comments= agendaItem.getComments();
 		for (ItemComment com : comments) {
 			if (com.getId()==commentId){
