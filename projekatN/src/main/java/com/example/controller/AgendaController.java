@@ -189,4 +189,22 @@ public class AgendaController {
 		
 		return new ResponseEntity<AgendaItemDTO>(new AgendaItemDTO(agendaItem), HttpStatus.OK);
 	}
+	
+	@RequestMapping(value = "/agendas/", method = RequestMethod.PUT, consumes="application/json" , produces="application/json")
+	@PreAuthorize("hasAnyRole('ROLE_PRESIDENT')")
+	public ResponseEntity<AgendaDTO> updateAgendaItemNumber(@PathVariable Long id, @RequestBody AgendaDTO agendaDTO) {
+		
+		for (AgendaItemDTO itemDTO : agendaDTO.getAgendaPoints()) {
+			AgendaItem agendaItem = agendaPointService.findOne(itemDTO.getId());
+			if (agendaItem==null){
+				return new ResponseEntity<AgendaDTO>( HttpStatus.NOT_FOUND);
+			}
+			if (itemDTO.getNumber()!=agendaItem.getNumber())
+				agendaItem.setNumber(itemDTO.getNumber());
+			agendaPointService.save(agendaItem);
+		}
+		
+		
+		return new ResponseEntity<AgendaDTO>(agendaDTO, HttpStatus.OK);
+	}
 }
