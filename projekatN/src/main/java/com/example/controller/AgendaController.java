@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -23,12 +24,14 @@ import com.example.dto.AgendaItemDTO;
 import com.example.dto.CommunalProblemDTO;
 import com.example.dto.ContentWithoutAgendaDTO;
 import com.example.dto.GlitchDTO;
+import com.example.dto.ItemCommentDTO;
 import com.example.dto.NotificationDTO;
 import com.example.dto.SurveyDTO;
 import com.example.model.AgendaItem;
 import com.example.model.Building;
 import com.example.model.CommunalProblem;
 import com.example.model.Glitch;
+import com.example.model.ItemComment;
 import com.example.model.Meeting;
 import com.example.model.Notification;
 import com.example.model.Survey;
@@ -38,6 +41,7 @@ import com.example.service.AgendaItemService;
 import com.example.service.BuildingService;
 import com.example.service.CommunalProblemService;
 import com.example.service.GlitchService;
+import com.example.service.ItemCommentService;
 import com.example.service.MeetingService;
 import com.example.service.NotificationService;
 import com.example.service.SurveyService;
@@ -67,6 +71,8 @@ public class AgendaController {
 	GlitchService glitchService;
 	@Autowired
 	CommunalProblemService comProblemsService;
+	@Autowired
+	ItemCommentService commentService;
 
 	@RequestMapping(value = "/buildings/{building_id}/meetings/{id}/points", method = RequestMethod.POST, consumes = "application/json")
 	@PreAuthorize("hasRole('ROLE_PRESIDENT')")
@@ -223,5 +229,74 @@ public class AgendaController {
 		
 		
 		return new ResponseEntity<AgendaDTO>(agendaDTO, HttpStatus.OK);
+	}
+	
+	@RequestMapping(value = "/agendas/{id}/comments", method = RequestMethod.POST, consumes="application/json" , produces="application/json")
+	@PreAuthorize("hasAnyRole('ROLE_OWNER')")
+	public ResponseEntity<AgendaItemDTO> addComment(@PathVariable Long id, @RequestBody ItemCommentDTO commentDTO,
+			HttpServletRequest request) {
+		AgendaItem agendaItem = agendaPointService.findOne(id);
+
+		if (agendaItem==null){
+			return new ResponseEntity<AgendaItemDTO>( HttpStatus.NOT_FOUND);
+		}
+	
+		String token = request.getHeader("X-Auth-Token");
+		String username = tokenUtils.getUsernameFromToken(token);
+
+		User writer = userService.findByUsername(username);		
+		ItemComment comment= ItemCommentDTO.getComment(commentDTO);
+		comment.setWriter(writer);
+		Set<ItemComment> comments= agendaItem.getComments();
+		if (comments==null)
+			comments= new HashSet<ItemComment>();
+		comments.add(comment);
+		agendaItem.setComments(comments);
+		
+		agendaPointService.save(agendaItem);
+	
+		
+		return new ResponseEntity<AgendaItemDTO>(new AgendaItemDTO(agendaItem), HttpStatus.OK);
+	}
+	
+	@RequestMapping(value = "/agendas/{id}/comments", method = RequestMethod.GET, consumes="application/json" , produces="application/json")
+	@PreAuthorize("hasAnyRole('ROLE_OWNER', 'ROLE_PRESIDENT', 'ROLE_TENANT')")
+	public ResponseEntity<List<ItemCommentDTO>> getComments(@PathVariable Long id) {
+		AgendaItem agendaItem = agendaPointService.findOne(id);
+
+		if (agendaItem==null){
+			return new ResponseEntity<List<ItemCommentDTO>>( HttpStatus.NOT_FOUND);
+		}
+		Set<ItemComment> comments= agendaItem.getComments();
+		if (comments==null)
+			comments= new HashSet<ItemComment>();
+		List<ItemCommentDTO> commentsDTO= new ArrayList<ItemCommentDTO>();
+		for (ItemComment itemComment : comments) {
+			commentsDTO.add(new ItemCommentDTO(itemComment));
+		}
+		
+		return new ResponseEntity<List<ItemCommentDTO>>(commentsDTO, HttpStatus.OK);
+	}
+	
+	@RequestMapping(value = "/agendas/{id}/comments/{comment_id}", method = RequestMethod.GET, consumes="application/json" , produces="application/json")
+	@PreAuthorize("hasAnyRole('ROLE_OWNER', 'ROLE_PRESIDENT')")
+	public ResponseEntity<Void>deleteComment(@PathVariable("id") Long id, @PathVariable("comment_id") Long commentId) {
+		AgendaItem agendaItem = agendaPointService.findOne(id);
+
+		if (agendaItem==null){
+			return new ResponseEntity<Void>( HttpStatus.NOT_FOUND);
+		}
+		Set<ItemComment> comments= agendaItem.getComments();
+		for (ItemComment com : comments) {
+			if (com.getId()==commentId){
+				comments.remove(com);
+			}
+		}
+		
+		agendaItem.setComments(comments);
+		agendaPointService.save(agendaItem);
+	
+		commentService.delete(commentId);	
+		return new ResponseEntity<Void>(HttpStatus.OK);
 	}
 }
