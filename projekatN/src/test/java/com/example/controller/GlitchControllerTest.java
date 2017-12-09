@@ -5,6 +5,8 @@ import static com.example.constants.UserConstants.USERNAME;
 import static com.example.constants.UserConstants.USERNAME_PRESIDENT;
 import static com.example.constants.UserConstants.PASSWORD_PRESIDENT;
 import static com.example.constants.UserConstants.ID_USER;
+import static org.hamcrest.CoreMatchers.hasItem;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -17,6 +19,12 @@ import static com.example.constants.GlitchConstants.STATE_REPORTED;
 import static com.example.constants.GlitchConstants.ID;
 import static com.example.constants.ApartmentConstants.ID_APARTMENT_NOT_FOUND;
 import static com.example.constants.GlitchConstants.ID_NOT_FOUND;
+import static com.example.constants.BuildingConstatnts.PAGE_SIZE;
+import static com.example.constants.UserConstants.NEW_USERNAME;
+import static com.example.constants.UserConstants.ID_PRESIDENT;
+import static com.example.constants.GlitchConstants.ID_GLITCH;
+import static com.example.constants.GlitchConstants.DESCRIPTION;
+
 
 import java.nio.charset.Charset;
 
@@ -72,10 +80,6 @@ public class GlitchControllerTest {
 		RestAssured.useRelaxedHTTPSValidation();
 		this.mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).addFilters(springSecurityFilterChain)
 				.build();
-	}
-	
-	@Before
-	public void loginTenant() {
 		ResponseEntity<String> responseEntity = restTemplate.postForEntity("/api/login",
 				new LoginDTO(USERNAME, PASSWORD), String.class);
 		accessTokenTenant = responseEntity.getBody();
@@ -153,6 +157,34 @@ public class GlitchControllerTest {
 				.contentType(contentType)
 				.content(json))
 		.andExpect(status().isBadRequest());
+		
+	}
+	
+	@Test
+	@Transactional
+	@Rollback(true)
+	public void testChangeResponsiblePersonNotExistUsername() throws Exception{
+		UserDTO userDTO = new UserDTO();
+		userDTO.setUsername(NEW_USERNAME);
+		
+		String json = TestUtils.convertObjectToJson(userDTO);
+		
+		mockMvc.perform(put("/api/glitches/"+ ID +"/responsiblePerson").header("X-Auth-Token", accessTokenPresident)
+				.contentType(contentType)
+				.content(json))
+		.andExpect(status().isOk())
+		.andExpect(content().contentType(contentType))
+		.andExpect(jsonPath("$.responsiblePerson.id").value(ID_PRESIDENT.intValue()))
+		.andExpect(jsonPath("$.responsiblePerson.username").value(USERNAME_PRESIDENT));
+		
+	}
+	
+	@Test
+	public void testGetGlitches() throws Exception{
+		mockMvc.perform(get("/api/glitches?page=0&size=" + PAGE_SIZE).header("X-Auth-Token", accessTokenTenant))
+		.andExpect(status().isOk())
+		.andExpect(jsonPath("$.[*].id").value(hasItem(ID_GLITCH.intValue())))
+		.andExpect(jsonPath("$.[*].description").value(hasItem(DESCRIPTION)));
 		
 	}
 	
