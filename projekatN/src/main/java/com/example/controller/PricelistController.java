@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.dto.GlitchDTO;
 import com.example.dto.ItemInPricelistDTO;
-import com.example.dto.NotificationDTO;
 import com.example.dto.PricelistDTO;
 import com.example.dto.UserDTO;
 import com.example.model.Glitch;

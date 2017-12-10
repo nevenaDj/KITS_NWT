@@ -1,12 +1,13 @@
 package com.example.dto;
 
 import com.example.model.ItemInPrincelist;
+
 public class ItemInPricelistDTO {
 	private Long id;
-	
-	private String nameOfType;	
+
+	private String nameOfType;
 	private Double price;
-	
+
 	public ItemInPricelistDTO() {
 
 	}
@@ -19,7 +20,15 @@ public class ItemInPricelistDTO {
 		super();
 		this.id = id;
 		this.nameOfType = nameOfType;
-		this.price= price;
+		this.price = price;
+	}
+
+	public Double getPrice() {
+		return price;
+	}
+
+	public void setPrice(Double price) {
+		this.price = price;
 	}
 
 	public Long getId() {
@@ -38,15 +47,8 @@ public class ItemInPricelistDTO {
 		this.nameOfType = nameOfType;
 	}
 
-	public Double getPrice() {
-		return price;
-	}
-
-	public void setPrice(Double price) {
-		this.price = price;
-	}
-
 	public static ItemInPrincelist getItemInPricelist(ItemInPricelistDTO itemInPricelistDTO) {
-		return new ItemInPrincelist(itemInPricelistDTO.getId(), itemInPricelistDTO.getNameOfType(), itemInPricelistDTO.getPrice());
+		return new ItemInPrincelist(itemInPricelistDTO.getId(), itemInPricelistDTO.getNameOfType(),
+				itemInPricelistDTO.getPrice());
 	}
 }

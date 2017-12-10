@@ -9,56 +9,37 @@ import com.example.model.ItemInPrincelist;
 
 public class BillDTO {
 
-		
 	private Long id;
-	
+
 	private Double price;
-	private Date date;	
+	private Date date;
 	private boolean approved;
 	private Set<ItemInPricelistDTO> items = new HashSet<>();
-	
-	
+
 	public BillDTO() {
 	}
-	
+
 	public BillDTO(Bill bill) {
 		this(bill.getId(), bill.getPrice(), bill.getDate(), bill.isApproved());
 		for (ItemInPrincelist item : bill.getItems()) {
 			items.add(new ItemInPricelistDTO(item));
-		}		
-		
+		}
+
 	}
-	
+
 	public BillDTO(Long id, Double price, Set<ItemInPricelistDTO> items) {
 		super();
 		this.id = id;
 		this.date = new Date();
 		this.approved = false;
-		this.items=items;
+		this.items = items;
 	}
-	
+
 	public BillDTO(Long id, Double price, Date date, boolean approved) {
 		super();
 		this.id = id;
 		this.date = date;
 		this.approved = approved;
-	}
-
-	
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	public Double getPrice() {
-		return price;
-	}
-
-	public void setPrice(Double price) {
-		this.price = price;
 	}
 
 	public Date getDate() {
@@ -69,6 +50,14 @@ public class BillDTO {
 		this.date = date;
 	}
 
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
 	public boolean isApproved() {
 		return approved;
 	}
@@ -77,7 +66,14 @@ public class BillDTO {
 		this.approved = approved;
 	}
 
-	
+	public Double getPrice() {
+		return price;
+	}
+
+	public void setPrice(Double price) {
+		this.price = price;
+	}
+
 	public Set<ItemInPricelistDTO> getItems() {
 		return items;
 	}
