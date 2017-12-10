@@ -57,10 +57,10 @@ insert into glitch_type (type) values ('TYPE');
 
 insert into bill(company_id, price, date, approved) values (3, 1000, '2017-12-03', false);
 
-insert into glitch (description, date_of_report, apartment_id, company_id, responsible_person_id, state_id, tenant_id, date_of_repair_approved, bill_id) 
-			values ('glitch','2017-12-03', 1, 1, 5, 1, 2, false, 1);
-insert into glitch (description, date_of_report, apartment_id, company_id, responsible_person_id, state_id, tenant_id, date_of_repair_approved) 
-			values ('glitch2','2017-12-03', 1, 1, 5, 1, 2, false);
+insert into glitch (description, date_of_report, apartment_id, company_id, responsible_person_id, state_id, tenant_id, date_of_repair_approved, bill_id, type_id) 
+			values ('glitch','2017-12-03', 1, 1, 5, 1, 2, false, 1,1);
+insert into glitch (description, date_of_report, apartment_id, company_id, responsible_person_id, state_id, tenant_id, date_of_repair_approved, type_id) 
+			values ('glitch2','2017-12-03', 1, 1, 5, 1, 2, false,1);
 			
 insert into agenda_item(title, meeting_id, number, glitch_id ) values ('Title',1, 1, 1);
 insert into item_comment(writer_id, text, date) values (1, 'text', '2017-12-03');

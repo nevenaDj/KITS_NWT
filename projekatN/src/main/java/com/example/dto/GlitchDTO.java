@@ -41,6 +41,10 @@ public class GlitchDTO {
 		if (glitch.getBill() != null) {
 			this.bill = new BillDTO(glitch.getBill());
 		}
+		if (glitch.getCompany() != null) {
+			this.companyID= glitch.getCompany().getId();
+		}
+		
 	}
 
 	public GlitchDTO(Long companyID, String description, GlitchTypeDTO type) {

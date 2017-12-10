@@ -11,7 +11,6 @@ public class PricelistDTO {
 	
 	private Long id;
 	private Date dateUpdate;
-	private String name;
 
 	private Set<ItemInPricelistDTO> items = new HashSet<>();
 	private UserDTO company;

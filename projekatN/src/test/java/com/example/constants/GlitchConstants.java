@@ -16,8 +16,11 @@ public class GlitchConstants {
 	public static final Long ID_NOT_FOUND = 10L;
 	
 	public static final Long ID_GLITCH_TYPE = 1L;
+	public static final Long ID_COMPANY = 3L;
 	
 	public static final String TYPE = "TYPE";
+	
+	public static final String IMAGE_UPLOAD = "https://static.pexels.com/photos/34950/pexels-photo.jpg";
 	
 	public static final Long ID_GLITCH = 1L;
 	public static final String DESCRIPTION = "glitch";

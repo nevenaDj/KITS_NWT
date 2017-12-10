@@ -178,7 +178,7 @@ public class GlitchController {
 
 		User company = userService.findOne(companyId);
 
-		if (company != null) {
+		if (company == null) {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 
