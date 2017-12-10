@@ -54,10 +54,10 @@ public class NotificationController {
 	@ApiImplicitParam(paramType="header", name="X-Auth-Token", required=true, value="JWT token")
 	@ApiResponses(value = { 
 			@ApiResponse(code = 201, message = "Created", response = NotificationDTO.class),
-			@ApiResponse(code = 500, message = "Failure") })
+			@ApiResponse(code = 400, message = "Bad request") })
 	@PreAuthorize("hasRole('ROLE_PRESIDENT', 'ROLE_USER','ROLE_OWNER')")
 	public ResponseEntity<NotificationDTO> addNotification(
-			@ApiParam(value = "The ID of the building.", required = true)@PathVariable Long id, 
+			@ApiParam(value = "The ID of the building.", required = true) @PathVariable Long id, 
 			@ApiParam(value = "The notificationDTO object", required = true) @RequestBody NotificationDTO notificationDTO, 
 			HttpServletRequest request) {
 		Notification notification = NotificationDTO.getNotification(notificationDTO);
@@ -94,6 +94,9 @@ public class NotificationController {
                         "Default sort order is ascending. " +
                         "Multiple sort criteria are supported."),
         @ApiImplicitParam(paramType="header", name="X-Auth-Token", required=true, value="JWT token")})
+	@ApiResponses(value = { 
+			@ApiResponse(code = 201, message = "Created", response = NotificationDTO.class, responseContainer="List"),
+			@ApiResponse(code = 400, message = "Bad request") })
 	@PreAuthorize("hasRole('ROLE_PRESIDENT', 'ROLE_USER','ROLE_OWNER')")
 	public ResponseEntity<List<NotificationDTO>> getNotifications(
 			@ApiParam(value = "The ID of the building.", required = true) @PathVariable Long id,Pageable page) {
@@ -118,6 +121,7 @@ public class NotificationController {
 	@ApiImplicitParam(paramType="header", name="X-Auth-Token", required=true, value="JWT token")
 	@ApiResponses(value = { 
 			@ApiResponse(code = 200, message = "Success"),
+			@ApiResponse(code = 400, message = "Bad request"),
 			@ApiResponse(code = 404, message = "Not found")})
 	@PreAuthorize("hasRole('ROLE_PRESIDENT', 'ROLE_USER','ROLE_OWNER')")
 	public ResponseEntity<Void> deleteNotificaton(
@@ -140,7 +144,8 @@ public class NotificationController {
 	@RequestMapping(value = "/buildings/{id}/notifications/{not_id}", method = RequestMethod.GET, produces= "application/json")
 	@ApiOperation(value = "Get a notification.", httpMethod = "GET")
 	@ApiImplicitParam(paramType="header", name="X-Auth-Token", required=true, value="JWT token")
-	@ApiResponses(value = { @ApiResponse(code = 200, message = "Success", response = NotificationDTO.class),
+	@ApiResponses(value = { 
+			@ApiResponse(code = 200, message = "Success", response = NotificationDTO.class),
 			@ApiResponse(code = 404, message = "Not found") })
 	@PreAuthorize("hasRole('ROLE_PRESIDENT', 'ROLE_USER','ROLE_OWNER')")
 	public ResponseEntity<NotificationDTO> getNotificaton(

@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.dto.BillDTO;
+import com.example.dto.GlitchDTO;
 import com.example.model.Apartment;
 import com.example.model.Bill;
 import com.example.model.Glitch;
@@ -27,6 +28,11 @@ import com.example.service.GlitchService;
 import com.example.service.UserService;
 
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 
 @RestController
 @RequestMapping(value = "/api")
@@ -45,11 +51,19 @@ public class BillController {
 	@Autowired
 	UserService userService;
 
-	@RequestMapping(value = "/apartments/{ap_id}/glitches/{glitch_id}/bill", method = RequestMethod.POST, consumes = "application/json") /// value
-																																			/// ??????
+	@RequestMapping(value = "/apartments/{ap_id}/glitches/{glitch_id}/bill", method = RequestMethod.POST, consumes = "application/json", produces = "application/json") /// value
+	@ApiOperation(value = "Create a bill for the glitch.", notes = "Returns the bill being saved.",
+		httpMethod = "POST", produces = "application/json", consumes = "application/json")
+	@ApiImplicitParam(paramType = "header", name = "X-Auth-Token", required = true, value = "JWT token")
+	@ApiResponses(value = { 
+			@ApiResponse(code = 201, message = "Created", response = BillDTO.class),
+			@ApiResponse(code = 400, message = "Bad request") })																														/// ??????
 	@PreAuthorize("hasRole('ROLE_COMPANY')")
-	public ResponseEntity<BillDTO> addBill(@PathVariable("ap_id") Long apartmentId,
-			@PathVariable("glitch_id") Long glitchId, @RequestBody BillDTO billDTO, HttpServletRequest request) {
+	public ResponseEntity<BillDTO> addBill(
+			@ApiParam(value = "The ID of the apartment.", required = true) @PathVariable("ap_id") Long apartmentId,
+			@ApiParam(value = "The ID of the bill.", required = true) @PathVariable("glitch_id") Long glitchId,
+			@ApiParam(value = "The BillDTO Object.", required = true) @RequestBody BillDTO billDTO, 
+			HttpServletRequest request) {
 		Bill bill = BillDTO.getBill(billDTO);
 
 		Apartment apartment = apService.findOne(apartmentId);
@@ -78,9 +92,17 @@ public class BillController {
 	}
 
 	@RequestMapping(value = "/apartments/{ap_id}/glitches/{glitch_id}/bill", method = RequestMethod.DELETE)
+	@ApiOperation(value = "Delete the bill.", notes = "Returns the bill being saved.",
+		httpMethod = "DELETE", produces = "application/json", consumes = "application/json")
+	@ApiImplicitParam(paramType = "header", name = "X-Auth-Token", required = true, value = "JWT token")
+	@ApiResponses(value = { 
+		@ApiResponse(code = 200, message = "Ok"),
+		@ApiResponse(code = 400, message = "Bad request"),
+		@ApiResponse(code = 404, message = "Not found")})
 	@PreAuthorize("hasRole('ROLE_COMPANY')")
-	public ResponseEntity<Void> deleteBill(@PathVariable("ap_id") Long apartmentId,
-			@PathVariable("glitch_id") Long glitchId) {
+	public ResponseEntity<Void> deleteBill(
+			@ApiParam(value = "The ID of the apartment.", required = true) @PathVariable("ap_id") Long apartmentId,
+			@ApiParam(value = "The ID of the glitch.", required = true) @PathVariable("glitch_id") Long glitchId) {
 		Apartment apartment = apService.findOne(apartmentId);
 		if (apartment == null) {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -101,8 +123,15 @@ public class BillController {
 	}
 
 	@RequestMapping(value = "/bills/{id}", method = RequestMethod.DELETE)
+	@ApiOperation(value = "Delete the bill.", notes = "Returns the bill being saved.",
+		httpMethod = "DELETE", produces = "application/json", consumes = "application/json")
+	@ApiImplicitParam(paramType = "header", name = "X-Auth-Token", required = true, value = "JWT token")
+	@ApiResponses(value = { 
+		@ApiResponse(code = 200, message = "Ok"),
+		@ApiResponse(code = 400, message = "Bad request"),
+		@ApiResponse(code = 404, message = "Not found")})
 	@PreAuthorize("hasRole('ROLE_COMPANY')")
-	public ResponseEntity<Void> deleteBill(@PathVariable("id") Long id) {
+	public ResponseEntity<Void> deleteBill(@ApiParam(value = "The ID of the bill.", required = true) @PathVariable("id") Long id) {
 
 		Bill bill = billService.findOne(id);
 		if (bill == null) {
@@ -114,7 +143,13 @@ public class BillController {
 	}
 
 	@RequestMapping(value = "/bills/{id}", method = RequestMethod.GET, produces = "application/json")
-	public ResponseEntity<BillDTO> findBill(@PathVariable("id") Long id) {
+	@ApiOperation(value = "Get the bill by id.", notes = "Returns the bill being saved.",
+		httpMethod = "GET", produces = "application/json", consumes = "application/json")
+	@ApiResponses(value = { 
+		@ApiResponse(code = 200, message = "Ok", response=BillDTO.class),
+		@ApiResponse(code = 404, message = "Not found")})
+	public ResponseEntity<BillDTO> findBill(
+			@ApiParam(value = "The ID of the bill.", required = true) @PathVariable("id") Long id) {
 
 		Bill bill = billService.findOne(id);
 		if (bill == null) {
@@ -125,9 +160,16 @@ public class BillController {
 		}
 	}
 
+	
 	@RequestMapping(value = "/apartments/{ap_id}/glitches/{glitch_id}/bill", method = RequestMethod.GET, produces = "application/json")
-	public ResponseEntity<BillDTO> findBillByGlitch(@PathVariable("ap_id") Long apartmentId,
-			@PathVariable("glitch_id") Long glitchId) {
+	@ApiOperation(value = "Get the bill by id.", notes = "Returns the bill being saved.",
+		httpMethod = "GET", produces = "application/json", consumes = "application/json")
+	@ApiResponses(value = { 
+		@ApiResponse(code = 200, message = "Ok", response=BillDTO.class),
+		@ApiResponse(code = 404, message = "Not found")})
+	public ResponseEntity<BillDTO> findBillByGlitch(
+			@ApiParam(value = "The ID of the apartment.", required = true) @PathVariable("ap_id") Long apartmentId,
+			@ApiParam(value = "The ID of the glitch.", required = true) @PathVariable("glitch_id") Long glitchId) {
 		Apartment apartment = apService.findOne(apartmentId);
 		if (apartment == null) {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -140,7 +182,7 @@ public class BillController {
 
 		Bill bill = billService.findByGlitch(glitchId);
 		if (bill == null) {
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		} else {
 			BillDTO billDTO = new BillDTO(bill);
 			return new ResponseEntity<>(billDTO, HttpStatus.OK);
@@ -149,8 +191,16 @@ public class BillController {
 
 	@RequestMapping(value = "/bills", method = RequestMethod.GET, produces = "application/json", params = { "start",
 			"end" })
+	@ApiOperation(value = "Get the bill by id.", notes = "Returns the bill being saved.",
+		httpMethod = "GET", produces = "application/json", consumes = "application/json")
+	@ApiImplicitParam(paramType = "header", name = "X-Auth-Token", required = true, value = "JWT token")
+	@ApiResponses(value = { 
+		@ApiResponse(code = 200, message = "Ok", response=BillDTO.class),
+		@ApiResponse(code = 404, message = "Not found")})
 	@PreAuthorize("hasRole('ROLE_PRESIDENT')")
-	public ResponseEntity<BillDTO> findBillByDate(@RequestParam("start") Date start, @RequestParam("end") Date end) {
+	public ResponseEntity<BillDTO> findBillByDate(
+			@ApiParam(name="start", value = "Period which starts that day", required = true) @RequestParam("start") Date start,
+			@ApiParam(name="end", value = "Period which ends that day", required = true)@RequestParam("end") Date end) {
 
 		Bill bill = billService.findByDate(start, end);
 		if (bill == null) {
@@ -162,9 +212,16 @@ public class BillController {
 	}
 
 	@RequestMapping(value = "/apartments/{ap_id}/glitches/{glitch_id}/bill", method = RequestMethod.PUT, produces = "application/json")
+	@ApiOperation(value = "Approve the bill.", notes = "Returns the bill being saved.",
+		httpMethod = "PUT", produces = "application/json", consumes = "application/json")
+	@ApiImplicitParam(paramType = "header", name = "X-Auth-Token", required = true, value = "JWT token")
+	@ApiResponses(value = { 
+		@ApiResponse(code = 200, message = "Ok", response=BillDTO.class),
+		@ApiResponse(code = 400, message = "Bad request")})
 	@PreAuthorize("hasRole('ROLE_PRESIDENT')")
-	public ResponseEntity<BillDTO> setBillApprove(@PathVariable("ap_id") Long apartmentId,
-			@PathVariable("glitch_id") Long glitchId) {
+	public ResponseEntity<BillDTO> setBillApprove(
+			@ApiParam(value = "The ID of the apartment.", required = true) @PathVariable("ap_id") Long apartmentId,
+			@ApiParam(value = "The ID of the glitch.", required = true) @PathVariable("glitch_id") Long glitchId) {
 
 		Apartment apartment = apService.findOne(apartmentId);
 		if (apartment == null) {
@@ -178,7 +235,7 @@ public class BillController {
 
 		Bill bill = billService.findByGlitch(glitchId);
 		if (bill == null) {
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		} else {
 			bill.setApproved(true);
 			billService.save(bill); // update good????
@@ -188,8 +245,15 @@ public class BillController {
 	}
 
 	@RequestMapping(value = "/bills/{id}", method = RequestMethod.PUT, produces = "application/json")
+	@ApiOperation(value = "Approve the bill.", notes = "Returns the bill being saved.",
+		httpMethod = "PUT", produces = "application/json", consumes = "application/json")
+	@ApiImplicitParam(paramType = "header", name = "X-Auth-Token", required = true, value = "JWT token")
+	@ApiResponses(value = { 
+		@ApiResponse(code = 200, message = "Ok", response=BillDTO.class),
+		@ApiResponse(code = 404, message = "Not found")})
 	@PreAuthorize("hasRole('ROLE_PRESIDENT')")
-	public ResponseEntity<BillDTO> setBillApprove(@PathVariable("id") Long id) {
+	public ResponseEntity<BillDTO> setBillApprove(
+			@ApiParam(value = "The ID of the bill.", required = true) @PathVariable("id") Long id) {
 
 		Bill bill = billService.findOne(id);
 		if (bill == null) {

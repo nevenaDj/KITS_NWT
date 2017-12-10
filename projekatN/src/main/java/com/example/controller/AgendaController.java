@@ -74,15 +74,10 @@ public class AgendaController {
 	@Autowired
 	ItemCommentService commentService;
 
-	@RequestMapping(value = "/buildings/{building_id}/meetings/{id}/points", method = RequestMethod.POST, consumes = "application/json")
+	@RequestMapping(value = "/meetings/{id}/points", method = RequestMethod.POST, consumes = "application/json")
 	@PreAuthorize("hasRole('ROLE_PRESIDENT')")
 	public ResponseEntity<AgendaItemDTO> addAgendaItem(@PathVariable("id") Long id,
-			@PathVariable("building_id") Long buildingId, @RequestBody AgendaItemDTO agendaPointDTO) {
-
-		Building building = buildingService.findOne(buildingId);
-		if (building == null) {
-			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-		}
+			 @RequestBody AgendaItemDTO agendaPointDTO) {
 
 		Meeting meeting = meetingService.findOne(id);
 		if (meeting == null) {
@@ -98,9 +93,14 @@ public class AgendaController {
 
 	}
 
-	@RequestMapping(value = "/points/{id}", method = RequestMethod.GET)
+	@RequestMapping(value = "/meetings/{m_id}/points/{id}", method = RequestMethod.GET)
 	@PreAuthorize("hasAnyRole('ROLE_OWNER', 'ROLE_PRESIDENT')")
-	public ResponseEntity<AgendaItemDTO> getAgendaPoint(@PathVariable Long id) {
+	public ResponseEntity<AgendaItemDTO> getAgendaPoint(@PathVariable("id") Long id,@PathVariable("m_id") Long meetingId ) {
+		Meeting meeting = meetingService.findOne(meetingId);
+		if (meeting == null) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+		
 		AgendaItem agendaPoint = agendaPointService.findOne(id);
 
 		if (agendaPoint == null) {
@@ -160,11 +160,16 @@ public class AgendaController {
 
 	}
 
-	@RequestMapping(value = "/agendas/{id}", method = RequestMethod.DELETE)
+	@RequestMapping(value = "/meetings/{m_id}/points/{id}", method = RequestMethod.DELETE)
 	@PreAuthorize("hasAnyRole('ROLE_PRESIDENT')")
-	public ResponseEntity<Void> deleteAgenda(@PathVariable Long id) {
+	public ResponseEntity<Void> deleteAgenda(@PathVariable("id") Long id, @PathVariable("m_id") Long meetingId) {
 		AgendaItem agendaItem = agendaPointService.findOne(id);
 
+		Meeting meeting = meetingService.findOne(meetingId);
+		if (meeting == null) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+		
 		if (agendaItem == null) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
@@ -175,9 +180,15 @@ public class AgendaController {
 
 	}
 	
-	@RequestMapping(value = "/agendas/{id}", method = RequestMethod.PUT, consumes="application/json" , produces="application/json")
+	@RequestMapping(value = "/meetings/{m_id}/points/{id}", method = RequestMethod.PUT, consumes="application/json" , produces="application/json")
 	@PreAuthorize("hasAnyRole('ROLE_PRESIDENT')")
-	public ResponseEntity<AgendaItemDTO> updateAgenda(@PathVariable Long id, @RequestBody AgendaItemDTO itemDTO) {
+	public ResponseEntity<AgendaItemDTO> updateAgenda(@PathVariable("id") Long id, @PathVariable("m_id") Long meetingId,
+			@RequestBody AgendaItemDTO itemDTO) {
+		Meeting meeting = meetingService.findOne(meetingId);
+		if (meeting == null) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+		
 		AgendaItem agendaItem = agendaPointService.findOne(id);
 
 		if (agendaItem==null){
@@ -196,9 +207,14 @@ public class AgendaController {
 		return new ResponseEntity<AgendaItemDTO>(new AgendaItemDTO(agendaItem), HttpStatus.OK);
 	}
 	
-	@RequestMapping(value = "/agendas/{id}/conclusion", method = RequestMethod.PUT, consumes="application/json" , produces="application/json")
+	@RequestMapping(value = "/meetings/{m_id}/points/{id}/conclusion", method = RequestMethod.PUT, consumes="application/json" , produces="application/json")
 	@PreAuthorize("hasAnyRole('ROLE_PRESIDENT')")
-	public ResponseEntity<AgendaItemDTO> updateConclusionAgenda(@PathVariable Long id, @RequestBody AgendaItemDTO itemDTO) {
+	public ResponseEntity<AgendaItemDTO> updateConclusionAgenda(@PathVariable("id") Long id, @PathVariable("m_id") Long meetingId,
+			@RequestBody AgendaItemDTO itemDTO) {
+		Meeting meeting = meetingService.findOne(meetingId);
+		if (meeting == null) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
 		AgendaItem agendaItem = agendaPointService.findOne(id);
 
 		if (agendaItem==null){
@@ -231,12 +247,16 @@ public class AgendaController {
 		return new ResponseEntity<AgendaDTO>(agendaDTO, HttpStatus.OK);
 	}
 	
-	@RequestMapping(value = "/agendas/{id}/comments", method = RequestMethod.POST, consumes="application/json" , produces="application/json")
+	@RequestMapping(value = "/meetings/{m_id}/points/{id}/comments", method = RequestMethod.POST, 
+			consumes="application/json" , produces="application/json")
 	@PreAuthorize("hasAnyRole('ROLE_OWNER')")
-	public ResponseEntity<AgendaItemDTO> addComment(@PathVariable Long id, @RequestBody ItemCommentDTO commentDTO,
-			HttpServletRequest request) {
+	public ResponseEntity<AgendaItemDTO> addComment(@PathVariable("id") Long id, @PathVariable("m_id") Long meetingId,
+			@RequestBody ItemCommentDTO commentDTO,	HttpServletRequest request) {
 		AgendaItem agendaItem = agendaPointService.findOne(id);
-
+		Meeting meeting = meetingService.findOne(meetingId);
+		if (meeting == null) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
 		if (agendaItem==null){
 			return new ResponseEntity<AgendaItemDTO>( HttpStatus.NOT_FOUND);
 		}
@@ -259,9 +279,15 @@ public class AgendaController {
 		return new ResponseEntity<AgendaItemDTO>(new AgendaItemDTO(agendaItem), HttpStatus.OK);
 	}
 	
-	@RequestMapping(value = "/agendas/{id}/comments", method = RequestMethod.GET, consumes="application/json" , produces="application/json")
+	@RequestMapping(value = "/meetings/{m_id}/points/{id}/comments", method = RequestMethod.GET,
+			consumes="application/json" , produces="application/json")
 	@PreAuthorize("hasAnyRole('ROLE_OWNER', 'ROLE_PRESIDENT', 'ROLE_TENANT')")
-	public ResponseEntity<List<ItemCommentDTO>> getComments(@PathVariable Long id) {
+	public ResponseEntity<List<ItemCommentDTO>> getComments(@PathVariable("id") Long id, @PathVariable("m_id") Long meetingId) {
+		Meeting meeting = meetingService.findOne(meetingId);
+		if (meeting == null) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+		
 		AgendaItem agendaItem = agendaPointService.findOne(id);
 
 		if (agendaItem==null){
@@ -278,11 +304,18 @@ public class AgendaController {
 		return new ResponseEntity<List<ItemCommentDTO>>(commentsDTO, HttpStatus.OK);
 	}
 	
-	@RequestMapping(value = "/agendas/{id}/comments/{comment_id}", method = RequestMethod.GET, consumes="application/json" , produces="application/json")
+	@RequestMapping(value = "/meetings/{m_id}/points/{id}/comments/{comment_id}", method = RequestMethod.GET,
+			consumes="application/json" , produces="application/json")
 	@PreAuthorize("hasAnyRole('ROLE_OWNER', 'ROLE_PRESIDENT')")
-	public ResponseEntity<Void>deleteComment(@PathVariable("id") Long id, @PathVariable("comment_id") Long commentId) {
+	public ResponseEntity<Void>deleteComment(@PathVariable("id") Long id, @PathVariable("comment_id") Long commentId,
+			@PathVariable("m_id") Long meetingId) {
 		AgendaItem agendaItem = agendaPointService.findOne(id);
 
+		Meeting meeting = meetingService.findOne(meetingId);
+		if (meeting == null) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+		
 		if (agendaItem==null){
 			return new ResponseEntity<Void>( HttpStatus.NOT_FOUND);
 		}

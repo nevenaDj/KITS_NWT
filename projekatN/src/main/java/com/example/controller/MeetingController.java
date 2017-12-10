@@ -60,11 +60,15 @@ public class MeetingController {
 
 	@RequestMapping(value = "/buildings/{id}/meetings", method = RequestMethod.GET, produces = "application/json", params = {
 			"date" })
+	@ApiOperation(value = "Get meeting by a date.", notes = "Returns the meeting", httpMethod = "POST", 
+	produces = "application/json", consumes = "application/json")
 	@ApiImplicitParam(paramType="header", name="X-Auth-Token", required=true, value="JWT token")
 	@ApiResponses(value = { 
 			@ApiResponse(code = 201, message = "Created", response = MeetingDTO.class),
 			@ApiResponse(code = 400, message = "Bad request") })
-	public ResponseEntity<MeetingDTO> findMeetingByDate(@PathVariable Long id, @RequestParam("date") Date date) {
+	public ResponseEntity<MeetingDTO> findMeetingByDate(
+			@ApiParam(value = "The ID of the building.", required = true) @PathVariable Long id,
+			@ApiParam(name = "date", value = "Date of the meeting",required=true) @RequestParam("date") Date date) {
 
 		Meeting meeting = meetingService.findMeetingByDate(id, date);
 
@@ -75,11 +79,14 @@ public class MeetingController {
 	}
 
 	@RequestMapping(value = "/buildings/{id}/meetings/date", method = RequestMethod.GET, produces = "application/json")
+	@ApiOperation(value = "Get the dates where are meetings.", notes = "Returns the list of date.", httpMethod = "POST", 
+	produces = "application/json")
 	@ApiImplicitParam(paramType="header", name="X-Auth-Token", required=true, value="JWT token")
 	@ApiResponses(value = { 
-			@ApiResponse(code = 201, message = "Created", response = MeetingDTO.class),
+			@ApiResponse(code = 201, message = "Created", response = Date.class, responseContainer="List"),
 			@ApiResponse(code = 400, message = "Bad request") })
-	public ResponseEntity<List<Date>> findDateOfMeetings(@PathVariable Long id) {
+	public ResponseEntity<List<Date>> findDateOfMeetings(
+			@ApiParam(value = "The ID of the building.", required = true) @PathVariable Long id) {
 		Building building = buildingService.findOne(id);
 		if (building == null) {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -90,11 +97,15 @@ public class MeetingController {
 	}
 	
 	@RequestMapping(value = "/buildings/{b_id}/meeting/{m_id}/active", method = RequestMethod.PUT, produces = "application/json")
+	@ApiOperation(value = "Set the agenda active.", notes = "Returns the meeting being saved.", httpMethod = "POST", 
+	produces = "application/json")
 	@ApiImplicitParam(paramType="header", name="X-Auth-Token", required=true, value="JWT token")
 	@ApiResponses(value = { 
-		@ApiResponse(code = 201, message = "Created", response = MeetingDTO.class),
+		@ApiResponse(code = 200, message = "Created", response = MeetingDTO.class),
 		@ApiResponse(code = 400, message = "Bad request") })
-	public ResponseEntity<MeetingDTO> setMeetingActive(@PathVariable("b_id") Long buildingId, @PathVariable("m_id") Long meetingId) {
+	public ResponseEntity<MeetingDTO> setMeetingActive(
+			@ApiParam(value = "The ID of the building.", required = true) @PathVariable("b_id") Long buildingId,
+			@ApiParam(value = "The ID of the meeting.", required = true) @PathVariable("m_id") Long meetingId) {
 	
 		Building building = buildingService.findOne(buildingId);
 		if (building == null) {
@@ -112,11 +123,15 @@ public class MeetingController {
 	}
 
 	@RequestMapping(value = "/buildings/{b_id}/meeting/{m_id}/deactive", method = RequestMethod.PUT, produces = "application/json")
+	@ApiOperation(value = "Set the agenda deactive.", notes = "Returns the meeting being saved.", httpMethod = "POST", 
+	produces = "application/json")
 	@ApiImplicitParam(paramType="header", name="X-Auth-Token", required=true, value="JWT token")
 	@ApiResponses(value = { 
-		@ApiResponse(code = 201, message = "Created", response = MeetingDTO.class),
+		@ApiResponse(code = 200, message = "Ok", response = MeetingDTO.class),
 		@ApiResponse(code = 400, message = "Bad request") })
-	public ResponseEntity<MeetingDTO> deactivateMeeting(@PathVariable("b_id") Long buildingId, @PathVariable("m_id") Long meetingId) {
+	public ResponseEntity<MeetingDTO> deactivateMeeting(
+			@ApiParam(value = "The ID of the building.", required = true) @PathVariable("b_id") Long buildingId,
+			@ApiParam(value = "The ID of the meeting.", required = true) @PathVariable("m_id") Long meetingId) {
 	
 		Building building = buildingService.findOne(buildingId);
 		if (building == null) {

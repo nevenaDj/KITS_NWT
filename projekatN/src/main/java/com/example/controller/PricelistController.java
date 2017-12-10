@@ -35,6 +35,7 @@ import com.example.service.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 
@@ -54,14 +55,16 @@ public class PricelistController {
 	@Autowired
 	TokenUtils tokenUtils;
 	
-	@RequestMapping(method = RequestMethod.POST, consumes = "application/json")
-	@ApiOperation(value = "Create a priceList.", notes = "Returns the price list being saved.", httpMethod = "POST", produces = "application/json", consumes = "application/json")
+	@RequestMapping(method = RequestMethod.POST, consumes = "application/json", produces = "application/json")
+	@ApiOperation(value = "Create the priceList.", notes = "Returns the pricelist being saved.", httpMethod = "POST", produces = "application/json", consumes = "application/json")
 	@ApiImplicitParam(paramType="header", name="X-Auth-Token", required=true, value="JWT token")
 	@ApiResponses(value = { 
 			@ApiResponse(code = 201, message = "Created", response = PricelistDTO.class),
 			@ApiResponse(code = 400, message = "Bad request") })
 	@PreAuthorize("hasRole('ROLE_COMPANY')")
-	public ResponseEntity<PricelistDTO> addPricelist(@PathVariable Long id, @RequestBody PricelistDTO itemDTO) {
+	public ResponseEntity<PricelistDTO> addPricelist(
+			@ApiParam(value = "The ID of the company.", required = true) @PathVariable Long id,
+			@ApiParam(value = "The PricelistDTO object", required = true) @RequestBody PricelistDTO itemDTO) {
 		Pricelist item = PricelistDTO.getPricelist(itemDTO);
 
 		User user = userService.findOne(id);
@@ -76,13 +79,17 @@ public class PricelistController {
 		return new ResponseEntity<>(itemDTO, HttpStatus.CREATED);
 	}
 	
-	
+	@ApiOperation(value = "Get a priceList.", notes = "Returns the price list being saved.", httpMethod = "POST", produces = "application/json", consumes = "application/json")
+	@ApiResponses(value = { 
+			@ApiResponse(code = 200, message = "Ok", response = PricelistDTO.class),
+			@ApiResponse(code = 404, message = "Not found") })
 	@RequestMapping(method = RequestMethod.GET, produces= "application/json")
-	public ResponseEntity<PricelistDTO> getPricelists(@PathVariable Long id,Pageable page) {
+	public ResponseEntity<PricelistDTO> getPricelists(
+			@ApiParam(value = "The ID of the company.", required = true) @PathVariable Long id,Pageable page) {
 
 		User user = userService.findOne(id);
 		if (user == null) {
-			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
 		
 		Pricelist item = pricelistService.findOne(id);
@@ -96,13 +103,15 @@ public class PricelistController {
 	}
 	 
 	@RequestMapping(value = "/items", method = RequestMethod.POST, consumes = "application/json")
-	@ApiOperation(value = "Create new item in price list.", notes = "Returns the item being saved.", httpMethod = "POST", produces = "application/json", consumes = "application/json")
+	@ApiOperation(value = "Create new item in pricelist.", notes = "Returns the item being saved.", httpMethod = "POST", produces = "application/json", consumes = "application/json")
 	@ApiImplicitParam(paramType="header", name="X-Auth-Token", required=true, value="JWT token")
 	@ApiResponses(value = { 
-			@ApiResponse(code = 201, message = "Created", response = NotificationDTO.class),
-			@ApiResponse(code = 500, message = "Failure") })
+			@ApiResponse(code = 201, message = "Created", response = ItemInPricelistDTO.class),
+			@ApiResponse(code = 400, message = "Bad request") })
 	@PreAuthorize("hasRole('ROLE_COMPANY')")
-	public ResponseEntity<ItemInPricelistDTO> addItem(@PathVariable Long id, @RequestBody ItemInPricelistDTO itemDTO) {
+	public ResponseEntity<ItemInPricelistDTO> addItem(
+			@ApiParam(value = "The ID of the company.", required = true) @PathVariable Long id,
+			@ApiParam(value = "The ItemInPricelistDTO object", required = true)  @RequestBody ItemInPricelistDTO itemDTO) {
 		ItemInPrincelist item = ItemInPricelistDTO.getItemInPricelist(itemDTO);
 
 		User user = userService.findOne(id);
@@ -119,6 +128,11 @@ public class PricelistController {
 	
 	
 	@RequestMapping(value = "/items", method = RequestMethod.GET, produces= "application/json")
+	@ApiOperation(value = "Get all item from the pricelist.", notes = "Returns the pricelist.", httpMethod = "GET")
+	@ApiResponses(value = { 
+			@ApiResponse(code = 200, message = "Success", response=PricelistDTO.class),
+			@ApiResponse(code = 404, message = "Not found"),
+			@ApiResponse(code = 400, message = "Bad request")})
 	public ResponseEntity<PricelistDTO> getItemsInPricelist(Pageable page, HttpServletRequest request) {
 		
 		String token = request.getHeader("X-Auth-Token");
@@ -140,14 +154,16 @@ public class PricelistController {
 	} 
 	
 	@RequestMapping(value = "/items/{items_id}", method = RequestMethod.DELETE)
-	@ApiOperation(value = "Delete item in price list.", httpMethod = "DELETE")
+	@ApiOperation(value = "Delete item from pricelist.", httpMethod = "DELETE")
 	@ApiImplicitParam(paramType="header", name="X-Auth-Token", required=true, value="JWT token")
 	@ApiResponses(value = { 
 			@ApiResponse(code = 200, message = "Success"),
 			@ApiResponse(code = 404, message = "Not found"),
 			@ApiResponse(code = 400, message = "Bad request")})
 	@PreAuthorize("hasRole('ROLE_COMPANY')")
-	public ResponseEntity<Void> deleteItem(@PathVariable("id") Long id, @PathVariable("items_id")  Long itemId ) { // da li je dobro tako????
+	public ResponseEntity<Void> deleteItem(
+			@ApiParam(value = "The ID of the company.", required = true) @PathVariable("id") Long id,
+			@ApiParam(value = "The ID of the item in the pricelist.", required = true) @PathVariable("items_id")  Long itemId ) { 
 
 		User user = userService.findOne(id);
 		if (user == null) {
@@ -165,8 +181,16 @@ public class PricelistController {
 	
 	
 	@RequestMapping(value = "/items/{items_id}", method = RequestMethod.PUT, consumes="application/json")
+	@ApiOperation(value = "Update item in the pricelist", httpMethod = "PUT", consumes = "application/json")
+	@ApiImplicitParam(paramType="header", name="X-Auth-Token", required=true, value="JWT token")
+	@ApiResponses(value = { 
+			@ApiResponse(code = 200, message = "Ok"),
+			@ApiResponse(code = 400, message = "Bad request") })
 	@PreAuthorize("hasRole('ROLE_COMPANY')")
-	public ResponseEntity<Void> updateItem(@PathVariable("id") Long id, @PathVariable("items_id")  Long itemId, @RequestBody ItemInPricelistDTO itemDTO ) {
+	public ResponseEntity<Void> updateItem(
+			@ApiParam(value = "The ID of the company.", required = true) @PathVariable("id") Long id,
+			@ApiParam(value = "The ID of the item in the pricelist.", required = true) @PathVariable("items_id")  Long itemId,
+			@ApiParam(value = "The ItemInPricelistDTO object", required = true) @RequestBody ItemInPricelistDTO itemDTO ) {
 
 		User user = userService.findOne(id);
 		if (user == null) {
@@ -178,7 +202,7 @@ public class PricelistController {
 		itemService.save(item);
 		///????
 		if (item == null) {
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		} else {
 			itemService.remove(itemId);
 			return new ResponseEntity<>(HttpStatus.OK);
@@ -186,8 +210,13 @@ public class PricelistController {
 	}
 	
 	@RequestMapping(value = "/glitches/{id}/company", method = RequestMethod.GET, produces= "application/json")
-	@PreAuthorize("hasRole('ROLE_PRESIDENT')")
-	public ResponseEntity<List<PricelistDTO>> findPricelistsByGlitchType(@PathVariable Long id) {
+	@ApiOperation(value = "Find pricelists by glitchtype.", notes = "Returns lists of pricelist by glitchtype.",
+		httpMethod = "GET", produces = "application/json")
+	@ApiResponses(value = { 
+			@ApiResponse(code = 200, message = "Ok", response = PricelistDTO.class, responseContainer="List"),
+			@ApiResponse(code = 400, message = "Bad request") })
+	public ResponseEntity<List<PricelistDTO>> findPricelistsByGlitchType(
+			@ApiParam(value = "The ID of the company.", required = true) @PathVariable Long id) {
 
 		Glitch glitch = glitchService.findOne(id);
 		if (glitch== null) {
@@ -206,9 +235,16 @@ public class PricelistController {
 	}
 
 
-	@RequestMapping(value = "/glitches/{id}/company", method = RequestMethod.PUT, consumes= "application/json")
+	@RequestMapping(value = "/glitches/{id}/company", method = RequestMethod.PUT, produces = "application/json", consumes= "application/json")
+	@ApiOperation(value = "Choose a componany for a glitch.", notes = "Returns the glitch that was saved.", httpMethod = "PUT", produces = "application/json", consumes = "application/json")
+	@ApiImplicitParam(paramType="header", name="X-Auth-Token", required=true, value="JWT token")
+	@ApiResponses(value = { 
+			@ApiResponse(code = 200, message = "Ok", response = GlitchDTO.class),
+			@ApiResponse(code = 400, message = "Bad request") })
 	@PreAuthorize("hasRole('ROLE_PRESIDENT')")
-	public ResponseEntity<GlitchDTO> chooseCompany(@PathVariable Long id, @RequestBody UserDTO companyDTO) {
+	public ResponseEntity<GlitchDTO> chooseCompany(
+			@ApiParam(value = "The ID of the company.", required = true) @PathVariable Long id,
+			@ApiParam(value = "The UserDTO object", required = true) @RequestBody UserDTO companyDTO) {
 
 		Glitch glitch = glitchService.findOne(id);
 		if (glitch== null) {
