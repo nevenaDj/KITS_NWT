@@ -48,6 +48,7 @@ public class CommunalProblemController {
 			@ApiResponse(code = 201, message = "Created", response = CommunalProblemDTO.class),
 			@ApiResponse(code = 400, message = "Bad request") })
 	@PreAuthorize("hasRole('ROLE_PRESIDENT')")
+	/*** add a communal problem ***/
 	public ResponseEntity<CommunalProblemDTO> addCommunalProblem(
 			@ApiParam(value = "The ID of the building.", required = true) @PathVariable Long id,
 			@ApiParam(value = "The communalProblemDTO object", required = true) @RequestBody CommunalProblemDTO communalProblemDTO) {
@@ -81,6 +82,7 @@ public class CommunalProblemController {
 			@ApiResponse(code = 200, message = "Success", response = CommunalProblemDTO.class),
 			@ApiResponse(code = 400, message = "Bad request") })
 	@PreAuthorize("hasAnyRole('ROLE_PRESIDENT', 'ROLE_OWNER')")
+	/*** add communal problem apartment ***/
 	public ResponseEntity<CommunalProblemDTO> addCommunalProblemApartment(
 			@ApiParam(value = "The ID of the communal problem.", required = true) @PathVariable("id") Long id,
 			@ApiParam(value = "The ID of the apartment.", required = true) @PathVariable("id_apartment") Long idApartment) {

@@ -85,4 +85,12 @@ public class Survey {
 		this.meeting = meeting;
 	}
 
+	public Set<Question> getQuestions() {
+		return questions;
+	}
+
+	public void setQuestions(Set<Question> questions) {
+		this.questions = questions;
+	}
+
 }

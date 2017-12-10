@@ -53,6 +53,7 @@ public class CommnetController {
 			@ApiResponse(code = 201, message = "Created", response = CommentDTO.class),
 			@ApiResponse(code = 400, message = "Bad request") })
 	@PreAuthorize("hasAnyRole('ROLE_COMPANY','ROLE_USER')")
+	/*** add a new comment to the glitch ***/
 	public ResponseEntity<CommentDTO> addComment(
 			@ApiParam(value = "The ID of the glitch.", required = true) @PathVariable Long id, 
 			@ApiParam(value = "The commentDTO object", required = true) @RequestBody CommentDTO commentDTO,

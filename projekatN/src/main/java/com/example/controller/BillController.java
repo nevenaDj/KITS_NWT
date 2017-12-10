@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.dto.BillDTO;
-import com.example.dto.GlitchDTO;
 import com.example.model.Apartment;
 import com.example.model.Bill;
 import com.example.model.Glitch;

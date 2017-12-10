@@ -5,6 +5,7 @@ import static com.example.constants.UserConstants.USERNAME_PRESIDENT;
 import static com.example.constants.UserConstants.USERNAME_OWNER;
 import static com.example.constants.UserConstants.PASSWORD_OWNER;
 import static org.hamcrest.CoreMatchers.hasItem;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -247,6 +248,23 @@ public class SurveyControllerTest {
 				.contentType(contentType)
 				.content(json)).andExpect(status().isBadRequest());
 		
+	}
+	
+	@Test
+	public void testGetSurvey() throws Exception{
+		mockMvc.perform(get("/api/surveys/" + ID_SURVEY).header("X-Auth-Token", accessToken))
+		.andExpect(status().isOk())
+		.andExpect(content().contentType(contentType))
+		.andExpect(jsonPath("$.id").value(ID_SURVEY))
+		.andExpect(jsonPath("$.questions.[*].id").value(hasItem(ID_QUESTION_1.intValue())))
+		.andExpect(jsonPath("$.questions.[*].id").value(hasItem(ID_QUESTION_2.intValue())))
+		.andExpect(jsonPath("$.questions.[*].options.[*].id").value(hasItem(ID_OPTION_1_1.intValue())));
+	}
+	
+	@Test
+	public void testGetSurveyNotFound() throws Exception{
+		mockMvc.perform(get("/api/surveys/" + ID_SURVEY_NOT_FOUND).header("X-Auth-Token", accessToken))
+		.andExpect(status().isNotFound());
 	}
 
 }

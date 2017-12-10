@@ -61,6 +61,7 @@ public class BuildingController {
                         "Default sort order is ascending. " +
                         "Multiple sort criteria are supported."),
 		@ApiImplicitParam(paramType="header", name="X-Auth-Token", required=true, value="JWT token")})
+	/*** get a list of the buildings ***/
 	public ResponseEntity<List<BuildingDTO>> getBuildings(Pageable page) {
 		Page<Building> buildings = buildingService.findAll(page);
 
@@ -76,6 +77,7 @@ public class BuildingController {
 	@ApiImplicitParam(paramType="header", name="X-Auth-Token", required=true, value="JWT token")
 	@ApiResponses(value = { @ApiResponse(code = 200, message = "Success", response = BuildingDTO.class),
 			@ApiResponse(code = 404, message = "Not found") })
+	/*** get a building ***/
 	public ResponseEntity<BuildingDTO> getBuilding(
 			@ApiParam(value = "The ID of the building.", required = true) @PathVariable Long id) {
 		Building building = buildingService.findOne(id);
@@ -91,6 +93,7 @@ public class BuildingController {
 	@ApiResponses(value = { @ApiResponse(code = 201, message = "Created", response = BuildingDTO.class),
 			@ApiResponse(code = 500, message = "Failure") })
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	/*** add a building ***/
 	public ResponseEntity<BuildingDTO> addBuilding(
 			@ApiParam(value = "The bulidingDTO object", required = true) @RequestBody BuildingDTO buildingDTO) {
 		Building building = BuildingDTO.getBuilding(buildingDTO);
@@ -105,6 +108,7 @@ public class BuildingController {
 	@ApiOperation(value = "Update a building.", notes = "Returns the building being saved.", httpMethod = "PUT", produces = "application/json", consumes = "application/json")
 	@ApiResponses(value = { @ApiResponse(code = 200, message = "Success", response = BuildingDTO.class),
 			@ApiResponse(code = 500, message = "Failure"), @ApiResponse(code = 400, message = "Bad request") })
+	/*** update a building ***/
 	public ResponseEntity<BuildingDTO> updateBuilding(
 			@ApiParam(value = "The bulidingDTO object", required = true) @RequestBody BuildingDTO buildingDTO) {
 		Building building = buildingService.findOne(buildingDTO.getId());
@@ -126,6 +130,7 @@ public class BuildingController {
 			@ApiResponse(code = 200, message = "Success"),
 			@ApiResponse(code = 404, message = "Not found")})
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	/*** delete a building ***/
 	public ResponseEntity<Void> deleteBuilding(
 			@ApiParam(value = "The ID of the building.", required = true) @PathVariable Long id) {
 		Building building = buildingService.findOne(id);
@@ -143,6 +148,7 @@ public class BuildingController {
 	@ApiResponses(value = { 
 			@ApiResponse(code = 200, message = "Success", response = BuildingDTO.class),
 			@ApiResponse(code = 404, message = "Not found") })
+	/*** find builidng by address ***/
 	public ResponseEntity<BuildingDTO> findBuildingByAddress(
 			@ApiParam(name = "street", value = "street",required=true) @RequestParam("street") String street,
 			@ApiParam(name = "number", value = "number of street",required=true) @RequestParam("number") String number,
@@ -163,6 +169,7 @@ public class BuildingController {
 	@ApiResponses(value = { @ApiResponse(code = 201, message = "Created", response = BuildingDTO.class),
 			@ApiResponse(code = 400, message = "Bad request"), @ApiResponse(code = 500, message = "Failure") })
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	/*** add a builidng president **/
 	public ResponseEntity<BuildingDTO> addPresident(@PathVariable Long id, @RequestBody UserDTO userDTO) {
 		
 		User user = null;

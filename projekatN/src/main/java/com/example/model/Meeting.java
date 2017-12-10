@@ -33,7 +33,7 @@ public class Meeting {
 	private Set<AgendaItem> points = new HashSet<>();
 
 	@Column(name="active")
-	private boolean active= false;
+	private boolean active;
 	
 	public Meeting() {
 

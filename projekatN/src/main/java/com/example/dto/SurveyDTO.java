@@ -22,6 +22,11 @@ public class SurveyDTO {
 	public SurveyDTO(Survey survey) {
 		this(survey.getId(), survey.getTitle(), survey.getEnd(), survey.getType());
 	}
+	
+	public SurveyDTO(Survey survey, Set<QuestionDTO> questionDTOs) {
+		this(survey.getId(), survey.getTitle(), survey.getEnd(), survey.getType());
+		this.questions = questionDTOs;
+	}
 
 	public SurveyDTO(String title, Date end, SurveyType type, Set<QuestionDTO> questions) {
 		super();

@@ -45,6 +45,7 @@ public class MeetingController {
 			@ApiResponse(code = 201, message = "Created", response = MeetingDTO.class),
 			@ApiResponse(code = 400, message = "Bad request") })
 	@PreAuthorize("hasRole('ROLE_PRESIDENT')")
+	/*** add a meeting ***/
 	public ResponseEntity<MeetingDTO> addMeeting(
 			@ApiParam(value = "The ID of the building.", required = true) @PathVariable Long id,
 			@ApiParam(value = "The meetingDTO object", required = true) @RequestBody MeetingDTO meetingDTO) {
@@ -66,6 +67,7 @@ public class MeetingController {
 	@ApiResponses(value = { 
 			@ApiResponse(code = 201, message = "Created", response = MeetingDTO.class),
 			@ApiResponse(code = 400, message = "Bad request") })
+	/*** get meeting by date ***/
 	public ResponseEntity<MeetingDTO> findMeetingByDate(
 			@ApiParam(value = "The ID of the building.", required = true) @PathVariable Long id,
 			@ApiParam(name = "date", value = "Date of the meeting",required=true) @RequestParam("date") Date date) {
@@ -85,6 +87,7 @@ public class MeetingController {
 	@ApiResponses(value = { 
 			@ApiResponse(code = 201, message = "Created", response = Date.class, responseContainer="List"),
 			@ApiResponse(code = 400, message = "Bad request") })
+	/*** get the dates where are meetings ***/
 	public ResponseEntity<List<Date>> findDateOfMeetings(
 			@ApiParam(value = "The ID of the building.", required = true) @PathVariable Long id) {
 		Building building = buildingService.findOne(id);
@@ -103,6 +106,7 @@ public class MeetingController {
 	@ApiResponses(value = { 
 		@ApiResponse(code = 200, message = "Created", response = MeetingDTO.class),
 		@ApiResponse(code = 400, message = "Bad request") })
+	/*** set the agenda active ***/
 	public ResponseEntity<MeetingDTO> setMeetingActive(
 			@ApiParam(value = "The ID of the building.", required = true) @PathVariable("b_id") Long buildingId,
 			@ApiParam(value = "The ID of the meeting.", required = true) @PathVariable("m_id") Long meetingId) {
@@ -129,6 +133,7 @@ public class MeetingController {
 	@ApiResponses(value = { 
 		@ApiResponse(code = 200, message = "Ok", response = MeetingDTO.class),
 		@ApiResponse(code = 400, message = "Bad request") })
+	/*** set the agenda deactive ***/
 	public ResponseEntity<MeetingDTO> deactivateMeeting(
 			@ApiParam(value = "The ID of the building.", required = true) @PathVariable("b_id") Long buildingId,
 			@ApiParam(value = "The ID of the meeting.", required = true) @PathVariable("m_id") Long meetingId) {
