@@ -68,19 +68,20 @@ public class PricelistController {
 
 		User user = userService.findOne(id);
 		if (user == null) {
-			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<PricelistDTO>(HttpStatus.BAD_REQUEST);
 		}
 		
 		// ha mar van 1 egy companyhoz
 		item = pricelistService.save(item);
 		itemDTO.setId(item.getId());
 
-		return new ResponseEntity<>(itemDTO, HttpStatus.CREATED);
+		return new ResponseEntity<PricelistDTO>(itemDTO, HttpStatus.CREATED);
 	}
 	
 	@ApiOperation(value = "Get a priceList.", notes = "Returns the price list being saved.", httpMethod = "POST", produces = "application/json", consumes = "application/json")
 	@ApiResponses(value = { 
 			@ApiResponse(code = 200, message = "Ok", response = PricelistDTO.class),
+			@ApiResponse(code = 400, message = "Bad request") ,
 			@ApiResponse(code = 404, message = "Not found") })
 	@RequestMapping(method = RequestMethod.GET, produces= "application/json")
 	public ResponseEntity<PricelistDTO> getPricelists(
@@ -88,7 +89,7 @@ public class PricelistController {
 
 		User user = userService.findOne(id);
 		if (user == null) {
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 		
 		Pricelist item = pricelistService.findOne(id);
@@ -132,16 +133,20 @@ public class PricelistController {
 			@ApiResponse(code = 200, message = "Success", response=PricelistDTO.class),
 			@ApiResponse(code = 404, message = "Not found"),
 			@ApiResponse(code = 400, message = "Bad request")})
-	public ResponseEntity<PricelistDTO> getItemsInPricelist(Pageable page, HttpServletRequest request) {
+	public ResponseEntity<PricelistDTO> getItemsInPricelist(
+			@ApiParam(value = "The ID of the company.", required = true) @PathVariable Long id,
+			Pageable page, HttpServletRequest request) {
 		
-		String token = request.getHeader("X-Auth-Token");
-		String username = tokenUtils.getUsernameFromToken(token);
+		//String token = request.getHeader("X-Auth-Token");
+	//	String username = tokenUtils.getUsernameFromToken(token);
 
-		User company = userService.findByUsername(username);	
+		User company = userService.findOne(id);
 		
 		if (company == null) {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
+		
+	
 		
 		Pricelist pricelist = pricelistService.findOneByCompany(company.getId());
 		
@@ -208,53 +213,4 @@ public class PricelistController {
 		}
 	}
 	
-	@RequestMapping(value = "/glitches/{id}/company", method = RequestMethod.GET, produces= "application/json")
-	@ApiOperation(value = "Find pricelists by glitchtype.", notes = "Returns lists of pricelist by glitchtype.",
-		httpMethod = "GET", produces = "application/json")
-	@ApiResponses(value = { 
-			@ApiResponse(code = 200, message = "Ok", response = PricelistDTO.class, responseContainer="List"),
-			@ApiResponse(code = 400, message = "Bad request") })
-	public ResponseEntity<List<PricelistDTO>> findPricelistsByGlitchType(
-			@ApiParam(value = "The ID of the company.", required = true) @PathVariable Long id) {
-
-		Glitch glitch = glitchService.findOne(id);
-		if (glitch== null) {
-			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-		}
-		
-		List<Pricelist> pricelist = pricelistService.findbyGlitchType(glitch.getType().getId());
-		List<PricelistDTO> pricelistDTO = new ArrayList<>();
-		for (Pricelist p : pricelist){
-			PricelistDTO pDTO= new PricelistDTO(p);
-			pDTO.setCompany(new UserDTO(p.getCompany()));
-			pricelistDTO.add(pDTO);
-		}
-		
-		return new ResponseEntity<>(pricelistDTO, HttpStatus.OK);		
-	}
-
-
-	@RequestMapping(value = "/glitches/{id}/company", method = RequestMethod.PUT, produces = "application/json", consumes= "application/json")
-	@ApiOperation(value = "Choose a componany for a glitch.", notes = "Returns the glitch that was saved.", httpMethod = "PUT", produces = "application/json", consumes = "application/json")
-	@ApiImplicitParam(paramType="header", name="X-Auth-Token", required=true, value="JWT token")
-	@ApiResponses(value = { 
-			@ApiResponse(code = 200, message = "Ok", response = GlitchDTO.class),
-			@ApiResponse(code = 400, message = "Bad request") })
-	@PreAuthorize("hasRole('ROLE_PRESIDENT')")
-	public ResponseEntity<GlitchDTO> chooseCompany(
-			@ApiParam(value = "The ID of the company.", required = true) @PathVariable Long id,
-			@ApiParam(value = "The UserDTO object", required = true) @RequestBody UserDTO companyDTO) {
-
-		Glitch glitch = glitchService.findOne(id);
-		if (glitch== null) {
-			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-		}
-		
-		User company= userService.findOne(companyDTO.getId());
-		glitch.setCompany(company);
-		glitch= glitchService.save(glitch);
-		
-		return new ResponseEntity<>(new GlitchDTO(glitch), HttpStatus.OK);		
-	}
-
 }

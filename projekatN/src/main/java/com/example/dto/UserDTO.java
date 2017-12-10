@@ -83,7 +83,6 @@ public class UserDTO {
 	}
 
 	public static User getUser(UserDTO userDTO) {
-
 		if (userDTO.getAddress() != null) {
 			return new User(userDTO.getId(), userDTO.getUsername(), userDTO.getEmail(),
 					AddressDTO.getAddress(userDTO.getAddress()), userDTO.getPhoneNo());
