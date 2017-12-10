@@ -80,15 +80,15 @@ public class MeetingController {
 		return new ResponseEntity<>(new MeetingDTO(meeting), HttpStatus.CREATED);
 	}
 
-	@RequestMapping(value = "/buildings/{id}/meetings/date", method = RequestMethod.GET, produces = "application/json")
+	@RequestMapping(value = "/buildings/{id}/meetings/dates", method = RequestMethod.GET, produces = "application/json")
 	@ApiOperation(value = "Get the dates where are meetings.", notes = "Returns the list of date.", httpMethod = "POST", 
 	produces = "application/json")
 	@ApiImplicitParam(paramType="header", name="X-Auth-Token", required=true, value="JWT token")
 	@ApiResponses(value = { 
-			@ApiResponse(code = 201, message = "Created", response = Date.class, responseContainer="List"),
+			@ApiResponse(code = 200, message = "Ok", response = Date.class, responseContainer="List"),
 			@ApiResponse(code = 400, message = "Bad request") })
 	/*** get the dates where are meetings ***/
-	public ResponseEntity<List<Date>> findDateOfMeetings(
+	public ResponseEntity<List<Date>> findDatesOfMeetings(
 			@ApiParam(value = "The ID of the building.", required = true) @PathVariable Long id) {
 		Building building = buildingService.findOne(id);
 		if (building == null) {
@@ -96,7 +96,7 @@ public class MeetingController {
 		}
 
 		List<Date> dates = meetingService.getDates(id);
-		return new ResponseEntity<>(dates, HttpStatus.CREATED);
+		return new ResponseEntity<>(dates, HttpStatus.OK);
 	}
 	
 	@RequestMapping(value = "/buildings/{b_id}/meeting/{m_id}/active", method = RequestMethod.PUT, produces = "application/json")

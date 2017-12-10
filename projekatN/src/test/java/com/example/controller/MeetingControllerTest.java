@@ -3,8 +3,18 @@ package com.example.controller;
 import static com.example.constants.UserConstants.PASSWORD_PRESIDENT;
 import static com.example.constants.UserConstants.USERNAME_PRESIDENT;
 import static com.example.constants.BuildingConstatnts.BUILDING_ID_1;
+import static com.example.constants.MeetingConstants.*;
+import static com.example.constants.AgendaItemConstants.ID;
+import static com.example.constants.AgendaItemConstants.ID_ITEM_NOT_FOUND;
+import static com.example.constants.AgendaItemConstants.ID_MEETING;
+import static com.example.constants.AgendaItemConstants.NUMBER;
+import static com.example.constants.AgendaItemConstants.TITLE;
 import static com.example.constants.ApartmentConstants.ID_BUILDING_NOT_FOUND;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.nio.charset.Charset;
@@ -102,5 +112,59 @@ public class MeetingControllerTest {
 		.andExpect(status().isBadRequest());
 	}
 	
+	@Test
+	public void testGetMeetingByDate() throws Exception{
+		Date dateAndTime = new SimpleDateFormat("yyyy-MM-dd").parse("2017-11-11");
+		
+		mockMvc.perform(get("/api/buildings/"+BUILDING_ID_1+"/meetings?date="+dateAndTime).header("X-Auth-Token", accessToken))
+		.andExpect(status().isOk())
+		.andExpect(jsonPath("$.id").value(ID_MEETING));
+		
+	}
+	
+	@Test
+	public void testGetDatesOfMeeting() throws Exception{	
+		mockMvc.perform(get("/api/buildings/"+BUILDING_ID_1+"/meetings/dates").header("X-Auth-Token", accessToken))
+		.andExpect(status().isOk());
+		
+	}
+	
+	@Test
+	@Transactional
+	@Rollback(true)
+	public void testSetMeetingActive() throws Exception{
+
+		mockMvc.perform(put("/api/buildings/"+BUILDING_ID_1+"/meeting/"+ID_MEETING+"/active").header("X-Auth-Token", accessToken))
+		.andExpect(status().isOk())
+		.andExpect(jsonPath("$.active").value(true));
+	}
+	
+	@Test
+	@Transactional
+	@Rollback(true)
+	public void testSetMeetingActiveBadRequest() throws Exception{
+
+		mockMvc.perform(put("/api/buildings/"+ID_BUILDING_NOT_FOUND+"/meeting/"+ID_MEETING+"/active").header("X-Auth-Token", accessToken))
+		.andExpect(status().isBadRequest());
+	}
+	
+	@Test
+	@Transactional
+	@Rollback(true)
+	public void testSetMeetingDeActive() throws Exception{
+
+		mockMvc.perform(put("/api/buildings/"+BUILDING_ID_1+"/meeting/"+ID_MEETING+"/deactive").header("X-Auth-Token", accessToken))
+		.andExpect(status().isOk())
+		.andExpect(jsonPath("$.active").value(false));
+	}
+	
+	@Test
+	@Transactional
+	@Rollback(true)
+	public void testSetMeetingDeActiveBadRequest() throws Exception{
+
+		mockMvc.perform(put("/api/buildings/"+ID_BUILDING_NOT_FOUND+"/meeting/"+ID_MEETING+"/deactive").header("X-Auth-Token", accessToken))
+		.andExpect(status().isBadRequest());
+	}
 
 }
