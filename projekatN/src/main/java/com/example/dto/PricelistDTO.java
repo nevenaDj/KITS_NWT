@@ -11,6 +11,7 @@ public class PricelistDTO {
 	
 	private Long id;
 	private Date dateUpdate;
+	private String name;
 
 	private Set<ItemInPricelistDTO> items = new HashSet<>();
 	private UserDTO company;
@@ -73,8 +74,10 @@ public class PricelistDTO {
 
 	public static Pricelist getPricelist(PricelistDTO pricelistDTO) {
 		Pricelist p = new Pricelist(pricelistDTO.getId(), pricelistDTO.getDateUpdate());
-		p.setCompany(UserDTO.getUser(pricelistDTO.getCompany()));
-		p.setType(GlitchTypeDTO.getGlitchType(pricelistDTO.getType()));
+		if (pricelistDTO.getCompany()!=null)
+			p.setCompany(UserDTO.getUser(pricelistDTO.getCompany()));
+		if (pricelistDTO.getType()!=null)
+			p.setType(GlitchTypeDTO.getGlitchType(pricelistDTO.getType()));
 		Set<ItemInPrincelist> items = new HashSet<>();
 		for (ItemInPricelistDTO itemDTO : pricelistDTO.getItems()) {
 			items.add(ItemInPricelistDTO.getItemInPricelist(itemDTO));
