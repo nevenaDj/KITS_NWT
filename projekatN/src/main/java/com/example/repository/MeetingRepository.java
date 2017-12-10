@@ -13,7 +13,7 @@ public interface MeetingRepository extends JpaRepository<Meeting, Long> {
 	@Query(value = "SELECT m FROM Meeting m WHERE m.building.id=?1 AND m.dateAndTime=?2", nativeQuery = false)
 	public Meeting findByDate(Long buildingId, Date date);
 
-	@Query(value = "SELECT m.dateAndTime FROM Meeting m WHERE m.dateAndTime=?1", nativeQuery = false)
+	@Query(value = "SELECT m.dateAndTime FROM Meeting m WHERE m.id=?1", nativeQuery = false)
 	public List<Date> getDates(Long id);
 
 }

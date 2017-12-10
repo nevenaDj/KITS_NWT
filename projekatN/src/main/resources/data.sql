@@ -68,8 +68,7 @@ insert into agenda_item_comments(agenda_item_id, comments_id) values (1,1);
 
 insert into communal_problem (description) values ('communal problem');
 
-
-
+insert into notification(text, building_id, writer_id ) values ('text', 1, 1);
 
 
 
