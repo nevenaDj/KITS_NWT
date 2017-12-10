@@ -5,11 +5,11 @@ import java.util.Date;
 import com.example.model.ItemComment;
 
 public class ItemCommentDTO {
-	Long id;
+	private Long id;
 
-	UserDTO writer;
-	String text;
-	Date date;
+	private UserDTO writer;
+	private String text;
+	private Date date;
 
 	public ItemCommentDTO() {
 

@@ -32,8 +32,7 @@ public class Meeting {
 	@OneToMany(mappedBy = "meeting", fetch = FetchType.LAZY)
 	private Set<AgendaItem> points = new HashSet<>();
 
-	@Column(name="active")
-	private boolean active= false;
+	private boolean active;
 	
 	public Meeting() {
 

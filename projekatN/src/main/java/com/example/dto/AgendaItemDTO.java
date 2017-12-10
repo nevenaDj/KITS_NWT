@@ -60,6 +60,16 @@ public class AgendaItemDTO {
 		this.type = type;
 		this.title=title;
 	}
+	
+
+	public AgendaItemDTO(Long id, int number, ItemType type, String title, String conclusion) {
+		super();
+		this.id = id;
+		this.number = number;
+		this.type = type;
+		this.title=title;
+		this.conclusion= conclusion;
+	}
 
 	public Long getId() {
 		return id;

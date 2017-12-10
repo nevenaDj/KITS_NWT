@@ -16,7 +16,8 @@ public class ItemComment {
 	private Long id;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
-	private User writer;	
+	private User writer;
+	
 	private String text;
 	private Date date;
 	

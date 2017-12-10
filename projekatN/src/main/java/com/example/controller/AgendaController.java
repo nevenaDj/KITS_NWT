@@ -113,7 +113,7 @@ public class AgendaController {
 	@ApiResponses(value = { 
 			@ApiResponse(code = 200, message = "Ok", response = AgendaItemDTO.class),
 			@ApiResponse(code = 400, message = "Bad request"),
-			@ApiResponse(code = 400, message = "Not found")})	
+			@ApiResponse(code = 404, message = "Not found")})	
 	@PreAuthorize("hasAnyRole('ROLE_OWNER', 'ROLE_PRESIDENT')")
 	public ResponseEntity<AgendaItemDTO> getAgendaPoint(
 			@ApiParam(value = "The ID of the item.", required = true) @PathVariable("id") Long id,
@@ -245,11 +245,12 @@ public class AgendaController {
 		if (agendaItem==null){
 			return new ResponseEntity<AgendaItemDTO>( HttpStatus.NOT_FOUND);
 		}
-		
-		if (!itemDTO.getConclusion().equals(agendaItem.getConclusion()))
-			agendaItem.setConclusion(itemDTO.getConclusion());
-		if (!itemDTO.getTitle().equals(agendaItem.getTitle()))
-			agendaItem.setTitle(itemDTO.getTitle());
+		if (itemDTO.getConclusion()!=null & agendaItem.getConclusion()!=null )
+			if (!itemDTO.getConclusion().equals(agendaItem.getConclusion()))
+				agendaItem.setConclusion(itemDTO.getConclusion());
+		if (itemDTO.getTitle()!=null & agendaItem.getTitle()!=null)
+			if (!itemDTO.getTitle().equals(agendaItem.getTitle()))
+				agendaItem.setTitle(itemDTO.getTitle());
 		if (itemDTO.getNumber()!=agendaItem.getNumber())
 			agendaItem.setNumber(itemDTO.getNumber());
 		agendaPointService.save(agendaItem);
@@ -281,11 +282,9 @@ public class AgendaController {
 			return new ResponseEntity<AgendaItemDTO>( HttpStatus.NOT_FOUND);
 		}
 		
-		if (!itemDTO.getConclusion().equals(agendaItem.getConclusion()))
-			agendaItem.setConclusion(itemDTO.getConclusion());
+		agendaItem.setConclusion(itemDTO.getConclusion());
 		agendaPointService.save(agendaItem);
-	
-		
+
 		return new ResponseEntity<AgendaItemDTO>(new AgendaItemDTO(agendaItem), HttpStatus.OK);
 	}
 	
@@ -362,8 +361,7 @@ public class AgendaController {
 	@ApiImplicitParam(paramType = "header", name = "X-Auth-Token", required = true, value = "JWT token")
 	@ApiResponses(value = { 
 			@ApiResponse(code = 200, message = "Ok", response = ItemCommentDTO.class, responseContainer="List"),
-			@ApiResponse(code = 400, message = "Bad request"),
-			@ApiResponse(code = 404, message = "Not found")})
+			@ApiResponse(code = 400, message = "Bad request")})
 	@PreAuthorize("hasAnyRole('ROLE_OWNER', 'ROLE_PRESIDENT', 'ROLE_TENANT')")
 	public ResponseEntity<List<ItemCommentDTO>> getComments(
 			@ApiParam(value = "The ID of the item.", required = true) @PathVariable("id") Long id,
@@ -376,7 +374,7 @@ public class AgendaController {
 		AgendaItem agendaItem = agendaPointService.findOne(id);
 
 		if (agendaItem==null){
-			return new ResponseEntity<List<ItemCommentDTO>>( HttpStatus.NOT_FOUND);
+			return new ResponseEntity<List<ItemCommentDTO>>( HttpStatus.BAD_REQUEST);
 		}
 		Set<ItemComment> comments= agendaItem.getComments();
 		if (comments==null)
@@ -410,7 +408,7 @@ public class AgendaController {
 		}
 		
 		if (agendaItem==null){
-			return new ResponseEntity<Void>( HttpStatus.NOT_FOUND);
+			return new ResponseEntity<Void>( HttpStatus.BAD_REQUEST);
 		}
 
 		Set<ItemComment> comments= agendaItem.getComments();

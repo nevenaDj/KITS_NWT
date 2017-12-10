@@ -33,7 +33,7 @@ insert into apartment (description,number, building_id, owner_id) values ('descr
 insert into apartment (description,number, building_id) values ('description 2', 2, 1);
 insert into apartment (description,number, building_id) values ('description 3', 1, 2);
 
-insert into meeting (building_id, date_and_time) values (1,'2017-11-11');
+insert into meeting (building_id, date_and_time, active) values (1,'2017-11-11', false);
 
 insert into survey (title, end, meeting_id) values ('survey','2017-12-12',1);
 
@@ -62,8 +62,11 @@ insert into glitch (description, date_of_report, apartment_id, company_id, respo
 			values ('glitch2','2017-12-03', 1, 1, 5, 1, 2, false);
 			
 insert into agenda_item(title, meeting_id, number, glitch_id ) values ('Title',1, 1, 1);
-			
+insert into item_comment(writer_id, text, date) values (1, 'text', '2017-12-03');
+insert into agenda_item_comments(agenda_item_id, comments_id) values (1,1);
+
 insert into communal_problem (description) values ('communal problem');
+
 
 
 
