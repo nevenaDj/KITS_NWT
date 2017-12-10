@@ -127,7 +127,6 @@ public class BillController {
 	@ApiImplicitParam(paramType = "header", name = "X-Auth-Token", required = true, value = "JWT token")
 	@ApiResponses(value = { 
 		@ApiResponse(code = 200, message = "Ok"),
-		@ApiResponse(code = 400, message = "Bad request"),
 		@ApiResponse(code = 404, message = "Not found")})
 	@PreAuthorize("hasRole('ROLE_COMPANY')")
 	public ResponseEntity<Void> deleteBill(@ApiParam(value = "The ID of the bill.", required = true) @PathVariable("id") Long id) {
@@ -165,6 +164,7 @@ public class BillController {
 		httpMethod = "GET", produces = "application/json", consumes = "application/json")
 	@ApiResponses(value = { 
 		@ApiResponse(code = 200, message = "Ok", response=BillDTO.class),
+		@ApiResponse(code = 400, message = "Bad request"),
 		@ApiResponse(code = 404, message = "Not found")})
 	public ResponseEntity<BillDTO> findBillByGlitch(
 			@ApiParam(value = "The ID of the apartment.", required = true) @PathVariable("ap_id") Long apartmentId,
@@ -181,7 +181,7 @@ public class BillController {
 
 		Bill bill = billService.findByGlitch(glitchId);
 		if (bill == null) {
-			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		} else {
 			BillDTO billDTO = new BillDTO(bill);
 			return new ResponseEntity<>(billDTO, HttpStatus.OK);
@@ -216,7 +216,8 @@ public class BillController {
 	@ApiImplicitParam(paramType = "header", name = "X-Auth-Token", required = true, value = "JWT token")
 	@ApiResponses(value = { 
 		@ApiResponse(code = 200, message = "Ok", response=BillDTO.class),
-		@ApiResponse(code = 400, message = "Bad request")})
+		@ApiResponse(code = 400, message = "Bad request"),
+		@ApiResponse(code = 404, message = "Not found")})
 	@PreAuthorize("hasRole('ROLE_PRESIDENT')")
 	public ResponseEntity<BillDTO> setBillApprove(
 			@ApiParam(value = "The ID of the apartment.", required = true) @PathVariable("ap_id") Long apartmentId,
@@ -234,7 +235,7 @@ public class BillController {
 
 		Bill bill = billService.findByGlitch(glitchId);
 		if (bill == null) {
-			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		} else {
 			bill.setApproved(true);
 			billService.save(bill); // update good????
