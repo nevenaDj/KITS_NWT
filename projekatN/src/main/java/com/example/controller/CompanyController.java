@@ -51,6 +51,7 @@ public class CompanyController {
 	@ApiImplicitParam(paramType="header", name="X-Auth-Token", required=true, value="JWT token")
 	@ApiResponse(code = 201, message = "Created", response = UserDTO.class)
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	/*** add a company ***/
 	public ResponseEntity<UserDTO> addCompany(
 			@ApiParam(value = "The userDTO object", required = true) @RequestBody UserDTO userDTO) {
 		User user = UserDTO.getUser(userDTO);
@@ -63,6 +64,7 @@ public class CompanyController {
 	@RequestMapping(method = RequestMethod.GET)
 	@ApiOperation(value = "Get a list of companies.", httpMethod = "GET")
 	@ApiImplicitParam(paramType="header", name="X-Auth-Token", required=true, value="JWT token")
+	/***  get a list of companies ***/
 	public ResponseEntity<List<UserDTO>> getCompanies(Pageable page) {
 		Page<User> users = userService.find(page, ROLE_COMPANY);
 
@@ -81,6 +83,7 @@ public class CompanyController {
 			@ApiResponse(code = 200, message = "Success"),
 			@ApiResponse(code = 404, message = "Not found")})
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	/*** delete a company ***/
 	public ResponseEntity<Void> deleteCompany(
 			@ApiParam(value = "The ID of the company.", required = true)@PathVariable Long id) {
 		User user = userService.findOne(id);

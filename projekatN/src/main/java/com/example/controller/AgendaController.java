@@ -21,7 +21,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.dto.AgendaDTO;
 import com.example.dto.AgendaItemDTO;
-import com.example.dto.BillDTO;
 import com.example.dto.CommunalProblemDTO;
 import com.example.dto.ContentWithoutAgendaDTO;
 import com.example.dto.GlitchDTO;
@@ -29,7 +28,6 @@ import com.example.dto.ItemCommentDTO;
 import com.example.dto.NotificationDTO;
 import com.example.dto.SurveyDTO;
 import com.example.model.AgendaItem;
-import com.example.model.Building;
 import com.example.model.CommunalProblem;
 import com.example.model.Glitch;
 import com.example.model.ItemComment;
@@ -170,7 +168,7 @@ public class AgendaController {
 	@PreAuthorize("hasAnyRole( 'ROLE_PRESIDENT')")
 	public ResponseEntity<ContentWithoutAgendaDTO> getAgendaWithoutMeeting() {
 
-		ContentWithoutAgendaDTO no_meeting = new ContentWithoutAgendaDTO();
+		ContentWithoutAgendaDTO noMeeting = new ContentWithoutAgendaDTO();
 		List<Notification> notifications = notificationService.findWithoutMeeting();
 		List<Glitch> glitches = glitchService.findWithoutMeeting();
 		List<CommunalProblem> problems = comProblemsService.findWithoutMeeting();
@@ -187,10 +185,10 @@ public class AgendaController {
 			problemsDTO.add(new CommunalProblemDTO(cp));
 		}
 
-		no_meeting.setGlitches(glitchesDTO);
-		no_meeting.setNotifications(notificationsDTO);
-		no_meeting.setProblems(problemsDTO);
-		return new ResponseEntity<>(no_meeting, HttpStatus.OK);
+		noMeeting.setGlitches(glitchesDTO);
+		noMeeting.setNotifications(notificationsDTO);
+		noMeeting.setProblems(problemsDTO);
+		return new ResponseEntity<>(noMeeting, HttpStatus.OK);
 
 	}
 
@@ -243,7 +241,7 @@ public class AgendaController {
 		AgendaItem agendaItem = agendaPointService.findOne(id);
 
 		if (agendaItem==null){
-			return new ResponseEntity<AgendaItemDTO>( HttpStatus.NOT_FOUND);
+			return new ResponseEntity<>( HttpStatus.NOT_FOUND);
 		}
 		if (itemDTO.getConclusion()!=null & agendaItem.getConclusion()!=null )
 			if (!itemDTO.getConclusion().equals(agendaItem.getConclusion()))
@@ -256,7 +254,7 @@ public class AgendaController {
 		agendaPointService.save(agendaItem);
 	
 		
-		return new ResponseEntity<AgendaItemDTO>(new AgendaItemDTO(agendaItem), HttpStatus.OK);
+		return new ResponseEntity<>(new AgendaItemDTO(agendaItem), HttpStatus.OK);
 	}
 	
 	@RequestMapping(value = "/meetings/{m_id}/items/{id}/conclusion", method = RequestMethod.PUT, consumes="application/json" , produces="application/json")
@@ -279,13 +277,14 @@ public class AgendaController {
 		AgendaItem agendaItem = agendaPointService.findOne(id);
 
 		if (agendaItem==null){
-			return new ResponseEntity<AgendaItemDTO>( HttpStatus.NOT_FOUND);
+			return new ResponseEntity<>( HttpStatus.NOT_FOUND);
 		}
 		
 		agendaItem.setConclusion(itemDTO.getConclusion());
 		agendaPointService.save(agendaItem);
 
 		return new ResponseEntity<AgendaItemDTO>(new AgendaItemDTO(agendaItem), HttpStatus.OK);
+
 	}
 	
 	@RequestMapping(value = "/agendas/", method = RequestMethod.PUT, consumes="application/json" , produces="application/json")
@@ -302,14 +301,14 @@ public class AgendaController {
 		for (AgendaItemDTO itemDTO : agendaDTO.getAgendaPoints()) {
 			AgendaItem agendaItem = agendaPointService.findOne(itemDTO.getId());
 			if (agendaItem==null){
-				return new ResponseEntity<AgendaDTO>( HttpStatus.NOT_FOUND);
+				return new ResponseEntity<>( HttpStatus.NOT_FOUND);
 			}
 			if (itemDTO.getNumber()!=agendaItem.getNumber())
 				agendaItem.setNumber(itemDTO.getNumber());
 			agendaPointService.save(agendaItem);
 		}
 	
-		return new ResponseEntity<AgendaDTO>(agendaDTO, HttpStatus.OK);
+		return new ResponseEntity<>(agendaDTO, HttpStatus.OK);
 	}
 	
 	@RequestMapping(value = "/meetings/{m_id}/items/{id}/comments", method = RequestMethod.POST, 
@@ -333,7 +332,7 @@ public class AgendaController {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 		if (agendaItem==null){
-			return new ResponseEntity<AgendaItemDTO>( HttpStatus.NOT_FOUND);
+			return new ResponseEntity<>( HttpStatus.NOT_FOUND);
 		}
 	
 		String token = request.getHeader("X-Auth-Token");
@@ -344,14 +343,14 @@ public class AgendaController {
 		comment.setWriter(writer);
 		Set<ItemComment> comments= agendaItem.getComments();
 		if (comments==null)
-			comments= new HashSet<ItemComment>();
+			comments= new HashSet<>();
 		comments.add(comment);
 		agendaItem.setComments(comments);
 		
 		agendaPointService.save(agendaItem);
 	
 		
-		return new ResponseEntity<AgendaItemDTO>(new AgendaItemDTO(agendaItem), HttpStatus.CREATED);
+		return new ResponseEntity<>(new AgendaItemDTO(agendaItem), HttpStatus.CREATED);
 	}
 	
 	@RequestMapping(value = "/meetings/{m_id}/items/{id}/comments", method = RequestMethod.GET,
@@ -375,16 +374,17 @@ public class AgendaController {
 
 		if (agendaItem==null){
 			return new ResponseEntity<List<ItemCommentDTO>>( HttpStatus.BAD_REQUEST);
+
 		}
 		Set<ItemComment> comments= agendaItem.getComments();
 		if (comments==null)
-			comments= new HashSet<ItemComment>();
-		List<ItemCommentDTO> commentsDTO= new ArrayList<ItemCommentDTO>();
+			comments= new HashSet<>();
+		List<ItemCommentDTO> commentsDTO= new ArrayList<>();
 		for (ItemComment itemComment : comments) {
 			commentsDTO.add(new ItemCommentDTO(itemComment));
 		}
 		
-		return new ResponseEntity<List<ItemCommentDTO>>(commentsDTO, HttpStatus.OK);
+		return new ResponseEntity<>(commentsDTO, HttpStatus.OK);
 	}
 	
 	@RequestMapping(value = "/meetings/{m_id}/items/{id}/comments/{comment_id}", method = RequestMethod.DELETE)
@@ -422,6 +422,6 @@ public class AgendaController {
 		agendaPointService.save(agendaItem);
 	
 		commentService.delete(commentId);	
-		return new ResponseEntity<Void>(HttpStatus.OK);
+		return new ResponseEntity<>(HttpStatus.OK);
 	}
 }

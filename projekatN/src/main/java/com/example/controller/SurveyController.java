@@ -1,6 +1,8 @@
 package com.example.controller;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -66,6 +68,7 @@ public class SurveyController {
 			@ApiResponse(code = 201, message = "Created", response = SurveyDTO.class),
 			@ApiResponse(code = 400, message = "Bad request") })
 	@PreAuthorize("hasRole('ROLE_PRESIDENT')")
+	/*** add new survey ***/
 	public ResponseEntity<SurveyDTO> addSurvey(
 			@ApiParam(value = "The ID of the meeting.", required = true) @PathVariable Long id,
 			@ApiParam(value = "The surveyDTO object", required = true) @RequestBody SurveyDTO surveyDTO) {
@@ -104,6 +107,7 @@ public class SurveyController {
 			@ApiResponse(code = 201, message = "Created"),
 			@ApiResponse(code = 400, message = "Bad request") })
 	@PreAuthorize("hasRole('ROLE_OWNER')")
+	/*** add answer to the survey ***/
 	public ResponseEntity<List<AnswerDTO>> addAnswers(
 			@ApiParam(value = "The ID of the survey.", required = true) @PathVariable Long id, 
 			@ApiParam(value = "The list of answerDTOs objects", required = true) @RequestBody List<AnswerDTO> answersDTO,
@@ -137,6 +141,35 @@ public class SurveyController {
 		}
 
 		return new ResponseEntity<>(HttpStatus.CREATED);
+	}
+	
+	@RequestMapping(value = "/surveys/{id}", method = RequestMethod.GET)
+	@ApiOperation(value = "Get a survey.", httpMethod = "GET")
+	@ApiImplicitParam(paramType = "header", name = "X-Auth-Token", required = true, value = "JWT token")
+	@ApiResponses(value = { 
+			@ApiResponse(code = 200, message = "Success", response = SurveyDTO.class),
+			@ApiResponse(code = 404, message = "Not found") })
+	/*** get survey by id ***/
+	public ResponseEntity<SurveyDTO> getSurvey(
+			@ApiParam(value = "The ID of the survey.", required = true) @PathVariable Long id){
+		Survey survey = surveyService.findOne(id);
+		
+		if (survey == null){
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+		
+		Set<QuestionDTO> questions = new HashSet<>();
+		
+		for (Question question : survey.getQuestions()) {
+			Set<OptionDTO> options = new HashSet<>();
+			for (Option option : question.getOptions()) {
+				options.add(new OptionDTO(option));
+			}
+			questions.add(new QuestionDTO(question,options));
+		}
+
+		return new ResponseEntity<>(new SurveyDTO(survey, questions), HttpStatus.OK);
+		
 	}
 
 }

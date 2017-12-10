@@ -71,6 +71,7 @@ public class GlitchController {
 	@ApiResponses(value = { @ApiResponse(code = 201, message = "Created", response = GlitchDTO.class),
 			@ApiResponse(code = 500, message = "Failure") })
 	@PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_OWNER')")
+	/*** add a glitch ***/
 	public ResponseEntity<GlitchDTO> addGlitch(
 			@ApiParam(value = "The ID of the apartment.", required = true) @PathVariable Long id,
 			@ApiParam(value = "The glitchDTO object", required = true) @RequestBody GlitchDTO glitchDTO,
@@ -111,6 +112,7 @@ public class GlitchController {
 	@PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_OWNER', 'ROLE_COMPANY')")
 	@ApiOperation(value = "Get a list of glitches.", httpMethod = "GET")
 	@ApiImplicitParam(paramType = "header", name = "X-Auth-Token", required = true, value = "JWT token")
+	/*** get a list of glitches (for a user) ***/
 	public ResponseEntity<List<GlitchDTO>> getGlitches(Pageable page, HttpServletRequest request) {
 		String token = request.getHeader(TOKEN);
 		String username = tokenUtils.getUsernameFromToken(token);
@@ -135,6 +137,7 @@ public class GlitchController {
 	@ApiResponses(value = { @ApiResponse(code = 200, message = "Success", response = GlitchDTO.class),
 			@ApiResponse(code = 500, message = "Failure"), @ApiResponse(code = 400, message = "Bad request") })
 	@PreAuthorize("hasRole('ROLE_PRESIDENT')")
+	/*** change the responsible person ***/
 	public ResponseEntity<GlitchDTO> changeResponsiblePerson(
 			@ApiParam(value = "The ID of the glitch.", required = true) @PathVariable Long id,
 			@ApiParam(value = "The userDTO object", required = true) @RequestBody UserDTO userDTO) {
@@ -161,6 +164,7 @@ public class GlitchController {
 	@ApiResponses(value = { @ApiResponse(code = 200, message = "Success", response = GlitchDTO.class),
 			@ApiResponse(code = 500, message = "Failure"), @ApiResponse(code = 400, message = "Bad request") })
 	@PreAuthorize("hasAnyRole('ROLE_PRESIDENT', 'ROLE_COMPANY')")
+	/*** change the company for the glitch ***/
 	public ResponseEntity<GlitchDTO> changeCompany(
 			@ApiParam(value = "The ID of the apartment.", required = true) @PathVariable("id") Long apartmentId,
 			@ApiParam(value = "The ID of the glitch.", required = true) @PathVariable("glitch_id") Long glitchId, 
@@ -197,6 +201,7 @@ public class GlitchController {
 	@ApiResponses(value = { @ApiResponse(code = 200, message = "Success", response = GlitchDTO.class),
 			@ApiResponse(code = 500, message = "Failure"), @ApiResponse(code = 400, message = "Bad request") })
 	@PreAuthorize("hasAnyRole('ROLE_COMPANY')")
+	/*** change a date of repair for the glitch ***/
 	public ResponseEntity<GlitchDTO> changeDateOfRepair(
 			@ApiParam(value = "The ID of the apartment.", required = true) @PathVariable("id") Long apartmentId,
 			@ApiParam(value = "The ID of the glitch.", required = true) @PathVariable("glitch_id") Long glitchId,
@@ -226,6 +231,7 @@ public class GlitchController {
 	@ApiResponses(value = { @ApiResponse(code = 200, message = "Success", response = GlitchDTO.class),
 			@ApiResponse(code = 500, message = "Failure"), @ApiResponse(code = 400, message = "Bad request") })
 	@PreAuthorize("hasAnyRole('ROLE_USER')")
+	/*** approve time of repair for the glitch ***/
 	public ResponseEntity<GlitchDTO> approveTimeOfRepaing(
 			@ApiParam(value = "The ID of the apartment.", required = true) @PathVariable("id") Long apartmentId,
 			@ApiParam(value = "The ID of the glitch.", required = true) @PathVariable("glitch_id") Long glitchId,

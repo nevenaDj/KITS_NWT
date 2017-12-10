@@ -37,6 +37,7 @@ public class GlitchTypeController {
 	@ApiResponses(value = { @ApiResponse(code = 201, message = "Created", response = GlitchTypeDTO.class),
 			@ApiResponse(code = 500, message = "Failure") })
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	/*** add a glitch type***/
 	public ResponseEntity<GlitchTypeDTO> addGlitchType(@RequestBody GlitchTypeDTO glitchTypeDTO) {
 		GlitchType glitchType = GlitchTypeDTO.getGlitchType(glitchTypeDTO);
 
@@ -49,6 +50,7 @@ public class GlitchTypeController {
 	@ApiOperation(value = "Delete a glitch type.", httpMethod = "DELETE")
 	@ApiResponse(code = 404, message = "Not found")
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	/*** delete a glitch type ***/
 	public ResponseEntity<Void> deleteGlitchType(@PathVariable Long id) {
 		GlitchType glitchType = glitchService.findOneGlitchType(id);
 		if (glitchType == null) {
@@ -65,6 +67,7 @@ public class GlitchTypeController {
 	@ApiResponses(value = { @ApiResponse(code = 200, message = "Success", response = GlitchTypeDTO.class),
 			@ApiResponse(code = 404, message = "Not found") })
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	/*** get a glitch type ***/
 	public ResponseEntity<GlitchTypeDTO> getGlitchType(@PathVariable Long id) {
 		GlitchType glitchType = glitchService.findOneGlitchType(id);
 
@@ -81,6 +84,7 @@ public class GlitchTypeController {
 	@ApiImplicitParam(paramType="header", name="X-Auth-Token", required=true, value="JWT token")
 	@ApiResponses(value = { @ApiResponse(code = 200, message = "Success", response = GlitchTypeDTO.class),
 			@ApiResponse(code = 404, message = "Not found") })
+	/*** find glitch type by name ***/
 	public ResponseEntity<GlitchTypeDTO> findGlitchTypeByName(@RequestParam String name) {
 		GlitchType glitchType = glitchService.findOneGlitchTypeByName(name);
 		if (glitchType == null) {
@@ -92,6 +96,7 @@ public class GlitchTypeController {
 	@RequestMapping(value = "/glitchTypes", method = RequestMethod.GET)
 	@ApiOperation(value = "Get a list of glitch types.", httpMethod = "GET")
 	@ApiImplicitParam(paramType="header", name="X-Auth-Token", required=true, value="JWT token")
+	/*** find all glitch types ***/
 	public ResponseEntity<List<GlitchTypeDTO>> findAllGlitchType() {
 		List<GlitchType> glitchTypes = glitchService.findAllGlitchType();
 		ArrayList<GlitchTypeDTO> glitchTypesDTO = new ArrayList<>();

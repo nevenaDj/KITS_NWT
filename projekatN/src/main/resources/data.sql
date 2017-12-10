@@ -33,7 +33,8 @@ insert into apartment (description,number, building_id, owner_id) values ('descr
 insert into apartment (description,number, building_id) values ('description 2', 2, 1);
 insert into apartment (description,number, building_id) values ('description 3', 1, 2);
 
-insert into meeting (building_id, date_and_time, active) values (1,'2017-11-11', false);
+insert into meeting (building_id, date_and_time, active) values (1,'2017-11-11', true);
+
 
 insert into survey (title, end, meeting_id) values ('survey','2017-12-12',1);
 

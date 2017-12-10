@@ -16,19 +16,18 @@ import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import com.example.model.AgendaItem;
-import com.example.model.Building;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = WebEnvironment.DEFINED_PORT)
-@TestPropertySource(locations="classpath:test.properties")
+@TestPropertySource(locations = "classpath:test.properties")
 public class AgendaItemRepositoryIntegrationTest {
 	@Autowired
 	AgendaItemRepository agendaItemRepository;
-	
+
 	@Test
-	public void testFindAllAgendaItems(){
+	public void testFindAllAgendaItems() {
 		List<AgendaItem> item = (List<AgendaItem>) agendaItemRepository.findAllAgendaItems(ID_MEETING);
-		
+
 		assertNotNull(item);
 		assertEquals(item.size(), 1);
 		assertEquals(ID_GLITCH, item.get(0).getGlitch().getId());

@@ -64,6 +64,7 @@ public class TenantController {
 			@ApiResponse(code = 201, message = "Created", response = UserDTO.class),
 			@ApiResponse(code = 400, message = "Bad request") })
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	/*** add tenant ***/
 	public ResponseEntity<UserDTO> addTenant(
 			@ApiParam(value = "The ID of the apartment.", required = true) @PathVariable Long id,
 			@ApiParam(value = "The userDTO object", required = true) @RequestBody UserDTO userDTO) {
@@ -90,6 +91,7 @@ public class TenantController {
 	@RequestMapping(value = "/tenants", method = RequestMethod.GET)
 	@ApiOperation(value = "Get a list of tenants.", httpMethod = "GET")
 	@ApiImplicitParam(paramType="header", name="X-Auth-Token", required=true, value="JWT token")
+	/*** get list of tenants ***/
 	public ResponseEntity<List<UserDTO>> getTenants(Pageable page) {
 		Page<User> users = userService.find(page, ROLE_TENANT);
 
@@ -108,6 +110,7 @@ public class TenantController {
 			@ApiResponse(code = 200, message = "Success"),
 			@ApiResponse(code = 404, message = "Not found")})
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	/*** delete tenant ***/
 	public ResponseEntity<Void> deleteTenant(
 			@ApiParam(value = "The ID of the tenant.", required = true)@PathVariable Long id) {
 		User user = userService.findOne(id);

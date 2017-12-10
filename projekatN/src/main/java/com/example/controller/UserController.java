@@ -74,6 +74,7 @@ public class UserController {
 	@ApiResponses(value = { 
 			@ApiResponse(code = 200, message = "Success"),
 			@ApiResponse(code = 400, message = "Bad request") })
+	/*** login ***/
 	public ResponseEntity<String> login(
 			@ApiParam(value = "The loginDTO object", required = true) @RequestBody LoginDTO loginDTO) {
 		
@@ -95,6 +96,7 @@ public class UserController {
 	@ApiResponses(value = { 
 			@ApiResponse(code = 201, message = "Created"),
 			@ApiResponse(code = 400, message = "Bad request") })
+	/*** registration ***/
 	public ResponseEntity<Void> register(
 			@ApiParam(value = "The registerDTO object", required = true) @RequestBody RegisterDTO registerDTO) {
 		if (!registerDTO.getPassword().equals(registerDTO.getPassword2())) {
@@ -121,6 +123,7 @@ public class UserController {
 	@ApiOperation(value = "Get a list of users.", httpMethod = "GET")
 	@ApiImplicitParam(paramType="header", name="X-Auth-Token", required=true, value="JWT token")
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	/*** get list of users ***/
 	public ResponseEntity<List<UserDTO>> getUsers(Pageable page) {
 		Page<User> users = userService.findAll(page);
 
@@ -138,6 +141,7 @@ public class UserController {
 	@ApiResponses(value = { 
 			@ApiResponse(code = 200, message = "Success", response=UserDTO.class),
 			@ApiResponse(code = 404, message = "Not found") })
+	/*** get user by id ***/
 	public ResponseEntity<UserDTO> getUser(
 			@ApiParam(value = "The ID of the user.", required = true) @PathVariable Long id) {
 		User user = userService.findOne(id);
@@ -154,6 +158,7 @@ public class UserController {
 	@ApiResponses(value = { 
 			@ApiResponse(code = 200, message = "Success", response = UserDTO.class),
 			@ApiResponse(code = 400, message = "Bad request") })
+	/*** update user ***/
 	public ResponseEntity<UserDTO> updateUser(
 			@ApiParam(value = "The userDTO object", required = true)@RequestBody UserDTO userDTO) {
 		User user = userService.findOne(userDTO.getId());
@@ -178,7 +183,8 @@ public class UserController {
 	@ApiResponses(value = { 
 			@ApiResponse(code = 200, message = "Success"),
 			@ApiResponse(code = 400, message = "Bad request") })
-	public ResponseEntity<Void> changePasswordAdmin(
+	/*** change user password ***/
+	public ResponseEntity<Void> changePassword(
 			@ApiParam(value = "The userPasswordDTO object", required = true) @RequestBody UserPasswordDTO userPasswordDTO,
 			HttpServletRequest request) {
 		

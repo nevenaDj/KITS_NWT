@@ -58,6 +58,7 @@ public class ApartmentController {
 			@ApiImplicitParam(name = "sort", allowMultiple = true, dataType = "string", paramType = "query", value = "Sorting criteria in the format: property(,asc|desc). "
 					+ "Default sort order is ascending. " + "Multiple sort criteria are supported."),
 			@ApiImplicitParam(paramType = "header", name = "X-Auth-Token", required = true, value = "JWT token") })
+	/*** Get list of apartments in a building  ***/
 	public ResponseEntity<List<ApartmentDTO>> getApartments(
 			@ApiParam(value = "The ID of the building.", required = true) @PathVariable Long id, Pageable page) {
 		Page<Apartment> apartments = apartmentService.findApartments(id, page);
@@ -76,6 +77,7 @@ public class ApartmentController {
 	@ApiImplicitParam(paramType = "header", name = "X-Auth-Token", required = true, value = "JWT token")
 	@ApiResponses(value = { @ApiResponse(code = 200, message = "Success", response = ApartmentDTO.class),
 			@ApiResponse(code = 404, message = "Not found") })
+	/*** get apartment by id ***/
 	public ResponseEntity<ApartmentDTO> getApartment(
 			@ApiParam(value = "The ID of the apartment.", required = true) @PathVariable Long id) {
 		Apartment apartment = apartmentService.findOne(id);
@@ -93,6 +95,7 @@ public class ApartmentController {
 	@ApiResponses(value = { @ApiResponse(code = 201, message = "Created", response = ApartmentDTO.class),
 			@ApiResponse(code = 500, message = "Failure") })
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	/*** add new apartment in a building ***/
 	public ResponseEntity<ApartmentDTO> addApartment(
 			@ApiParam(value = "The ID of the building.", required = true) @PathVariable Long id,
 			@ApiParam(value = "The apartmentDTO object", required = true) @RequestBody ApartmentDTO apartmentDTO) {
@@ -114,6 +117,7 @@ public class ApartmentController {
 	@ApiImplicitParam(paramType = "header", name = "X-Auth-Token", required = true, value = "JWT token")
 	@ApiResponses(value = { @ApiResponse(code = 200, message = "Success", response = ApartmentDTO.class),
 			@ApiResponse(code = 500, message = "Failure"), @ApiResponse(code = 400, message = "Bad request") })
+	/*** update an a apartment***/
 	public ResponseEntity<ApartmentDTO> updateApartment(
 			@ApiParam(value = "The apartmentDTO object", required = true) @RequestBody ApartmentDTO apartmentDTO) {
 		Apartment apartment = apartmentService.findOne(apartmentDTO.getId());
@@ -136,6 +140,7 @@ public class ApartmentController {
 	@ApiResponses(value = { @ApiResponse(code = 200, message = "Success"),
 			@ApiResponse(code = 404, message = "Not found") })
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	/*** delete an apartment ***/
 	public ResponseEntity<Void> deleteApartment(
 			@ApiParam(value = "The ID of the apartment.", required = true) @PathVariable Long id) {
 		Apartment apartment = apartmentService.findOne(id);
@@ -155,6 +160,7 @@ public class ApartmentController {
 	@ApiImplicitParam(paramType = "header", name = "X-Auth-Token", required = true, value = "JWT token")
 	@ApiResponses(value = { @ApiResponse(code = 200, message = "Success", response = ApartmentDTO.class),
 			@ApiResponse(code = 404, message = "Not found") })
+	/**** find an apartment by address ***/
 	public ResponseEntity<ApartmentDTO> findByAddress(
 			@ApiParam(name = "street", value = "street", required = true) @RequestParam("street") String street,
 			@ApiParam(name = "number", value = "number", required = true) @RequestParam("number") String number,
@@ -171,11 +177,12 @@ public class ApartmentController {
 	}
 
 	@RequestMapping(value = "/apartments/{id}/owner", method = RequestMethod.POST, consumes = "application/json")
-	@ApiOperation(value = "Add a apartment owner.", httpMethod = "POST", produces = "application/json", consumes = "application/json")
+	@ApiOperation(value = "Add an apartment owner.", httpMethod = "POST", produces = "application/json", consumes = "application/json")
 	@ApiImplicitParam(paramType = "header", name = "X-Auth-Token", required = true, value = "JWT token")
 	@ApiResponses(value = { @ApiResponse(code = 201, message = "Created", response = ApartmentDTO.class),
 			@ApiResponse(code = 400, message = "Bad request") })
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	/*** add apartment owner ***/
 	public ResponseEntity<ApartmentDTO> addOwner(@PathVariable Long id, @RequestBody UserDTO userDTO) {
 		User owner = null;
 		if (userDTO.getId() == null) {
