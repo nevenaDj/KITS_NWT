@@ -283,7 +283,7 @@ public class AgendaController {
 		agendaItem.setConclusion(itemDTO.getConclusion());
 		agendaPointService.save(agendaItem);
 
-		return new ResponseEntity<AgendaItemDTO>(new AgendaItemDTO(agendaItem), HttpStatus.OK);
+		return new ResponseEntity<>(new AgendaItemDTO(agendaItem), HttpStatus.OK);
 
 	}
 	
@@ -373,7 +373,7 @@ public class AgendaController {
 		AgendaItem agendaItem = agendaPointService.findOne(id);
 
 		if (agendaItem==null){
-			return new ResponseEntity<List<ItemCommentDTO>>( HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<>( HttpStatus.BAD_REQUEST);
 
 		}
 		Set<ItemComment> comments= agendaItem.getComments();
@@ -408,7 +408,7 @@ public class AgendaController {
 		}
 		
 		if (agendaItem==null){
-			return new ResponseEntity<Void>( HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<>( HttpStatus.BAD_REQUEST);
 		}
 
 		Set<ItemComment> comments= agendaItem.getComments();
