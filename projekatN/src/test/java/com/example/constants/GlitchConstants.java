@@ -21,5 +21,10 @@ public class GlitchConstants {
 	
 	public static final Long ID_GLITCH = 1L;
 	public static final String DESCRIPTION = "glitch";
+	
+	public static final Long ID_TENANT = 2L;
+	
+	public final int PAGE_NUMBER = 1;
+	public final int PAGE_SIZE = 5;
 
 }

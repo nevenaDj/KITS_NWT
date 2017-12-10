@@ -33,7 +33,7 @@ insert into apartment (description,number, building_id, owner_id) values ('descr
 insert into apartment (description,number, building_id) values ('description 2', 2, 1);
 insert into apartment (description,number, building_id) values ('description 3', 1, 2);
 
-insert into meeting (building_id, date_and_time, active) values (1,'2017-11-11', false);
+insert into meeting (building_id, date_and_time) values (1,'2017-11-11');
 
 insert into survey (title, end, meeting_id) values ('survey','2017-12-12',1);
 
@@ -54,12 +54,18 @@ insert into glitch_state (state) values ('DONE');
 
 insert into glitch_type (type) values ('TYPE');
 
-insert into glitch (description, date_of_report, apartment_id, company_id, responsible_person_id, state_id, tenant_id, date_of_repair_approved) 
-			values ('glitch','2017-12-03', 1, 1, 5, 1, 2, false);
+insert into bill(company_id, price, date, approved) values (3, 1000, '2017-12-03', false);
+
+insert into glitch (description, date_of_report, apartment_id, company_id, responsible_person_id, state_id, tenant_id, date_of_repair_approved, bill_id) 
+			values ('glitch','2017-12-03', 1, 1, 5, 1, 2, false, 1);
 insert into glitch (description, date_of_report, apartment_id, company_id, responsible_person_id, state_id, tenant_id, date_of_repair_approved) 
 			values ('glitch2','2017-12-03', 1, 1, 5, 1, 2, false);
 			
 insert into agenda_item(title, meeting_id, number, glitch_id ) values ('Title',1, 1, 1);
 			
 insert into communal_problem (description) values ('communal problem');
+
+
+
+
 

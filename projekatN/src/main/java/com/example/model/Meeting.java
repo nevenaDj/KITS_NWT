@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -31,6 +32,7 @@ public class Meeting {
 	@OneToMany(mappedBy = "meeting", fetch = FetchType.LAZY)
 	private Set<AgendaItem> points = new HashSet<>();
 
+	@Column(name="active")
 	private boolean active= false;
 	
 	public Meeting() {
