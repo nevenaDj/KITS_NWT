@@ -1,20 +1,10 @@
 package com.example.controller;
 
-import static com.example.constants.ApartmentConstants.BUILDING_NUMBER;
-import static com.example.constants.ApartmentConstants.DESCRIPTION;
 import static com.example.constants.ApartmentConstants.ID_APARTMENT;
 import static com.example.constants.ApartmentConstants.ID_APARTMENT_NOT_FOUND;
-import static com.example.constants.ApartmentConstants.ID_BUILDING;
-import static com.example.constants.ApartmentConstants.ID_BUILDING_NOT_FOUND;
-import static com.example.constants.ApartmentConstants.ID_NOT_FOUND;
-import static com.example.constants.ApartmentConstants.NEW_DESCRIPTION;
-import static com.example.constants.ApartmentConstants.NEW_NUMBER;
-import static com.example.constants.ApartmentConstants.NUMBER;
-import static com.example.constants.ApartmentConstants.PAGE_SIZE;
+
 import static com.example.constants.BillConstants.*;
 import static com.example.constants.UserConstants.*;
-import static org.hamcrest.CoreMatchers.hasItem;
-import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -142,6 +132,17 @@ public class BillControllerTest {
 	@Test
 	@Transactional
 	@Rollback(true)
+	public void testDeleteBillBadRequestGlitch() throws Exception{
+	
+		mockMvc.perform(delete("/api/apartments/"+ID_APARTMENT+"/glitches/"+ID_GLITCH_NOT_FOUND+"/bill")
+							.header("X-Auth-Token", accessToken)
+							.contentType(contentType))
+		.andExpect(status().isBadRequest());
+	}
+	
+	@Test
+	@Transactional
+	@Rollback(true)
 	public void testDeleteBill2() throws Exception{
 		mockMvc.perform(delete("/api/bills/"+ID)
 							.header("X-Auth-Token", accessToken)
@@ -200,6 +201,13 @@ public class BillControllerTest {
 				.andExpect(status().isBadRequest());
 	}
 	
+	@Test
+	public void testGetBill2BadRequestApartmenr() throws Exception{
+		mockMvc.perform(get("/api/apartments/"+ID_APARTMENT_NOT_FOUND+"/glitches/"+ID_GLITCH+"/bill")
+				.header("X-Auth-Token", accessToken))
+				.andExpect(status().isBadRequest());
+	}
+	
 	@Before
 	public void loginPresident() {
 		ResponseEntity<String> responseEntity = restTemplate.postForEntity("/api/login",
@@ -208,6 +216,8 @@ public class BillControllerTest {
 	}
 	
 	@Test
+	@Transactional
+	@Rollback(true)
 	public void testSetBillApprove() throws Exception{
 		mockMvc.perform(put("/api/apartments/"+ID_APARTMENT+"/glitches/"+ID_GLITCH+"/bill")
 				.header("X-Auth-Token", accessTokenPresident))
@@ -216,10 +226,48 @@ public class BillControllerTest {
 	}
 	
 	@Test
+	@Transactional
+	@Rollback(true)
+	public void testSetBillApproveBadRequestApartmant() throws Exception{
+		mockMvc.perform(put("/api/apartments/"+ID_APARTMENT_NOT_FOUND+"/glitches/"+ID_GLITCH+"/bill")
+				.header("X-Auth-Token", accessTokenPresident))
+				.andExpect(status().isBadRequest());
+	}
+	
+	@Test
+	@Transactional
+	@Rollback(true)
+	public void testSetBillApproveBadRequestGlitch() throws Exception{
+		mockMvc.perform(put("/api/apartments/"+ID_APARTMENT+"/glitches/"+ID_GLITCH_NOT_FOUND+"/bill")
+				.header("X-Auth-Token", accessTokenPresident))
+				.andExpect(status().isBadRequest());
+	}
+	
+	@Test
+	@Transactional
+	@Rollback(true)
+	public void testSetBillApproveNotFound() throws Exception{
+		mockMvc.perform(put("/api/apartments/"+ID_APARTMENT+"/glitches/"+ID_GLITCH_WITHOUT_BILL+"/bill")
+				.header("X-Auth-Token", accessTokenPresident))
+				.andExpect(status().isNotFound());
+	}
+	
+	@Test
+	@Transactional
+	@Rollback(true)
 	public void testSetBillApprove2() throws Exception{
 		mockMvc.perform(put("/api/bills/"+ID)
 				.header("X-Auth-Token", accessTokenPresident))
 				.andExpect(status().isOk())
 				.andExpect(jsonPath("$.approved").value(true));
+	}
+	
+	@Test
+	@Transactional
+	@Rollback(true)
+	public void testSetBillApprove2NotFound() throws Exception{
+		mockMvc.perform(put("/api/bills/"+NEW_ID)
+				.header("X-Auth-Token", accessTokenPresident))
+				.andExpect(status().isNotFound());
 	}
 }

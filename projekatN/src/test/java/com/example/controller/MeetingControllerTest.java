@@ -4,16 +4,11 @@ import static com.example.constants.UserConstants.PASSWORD_PRESIDENT;
 import static com.example.constants.UserConstants.USERNAME_PRESIDENT;
 import static com.example.constants.BuildingConstatnts.BUILDING_ID_1;
 import static com.example.constants.MeetingConstants.*;
-import static com.example.constants.AgendaItemConstants.ID;
-import static com.example.constants.AgendaItemConstants.ID_ITEM_NOT_FOUND;
 import static com.example.constants.AgendaItemConstants.ID_MEETING;
-import static com.example.constants.AgendaItemConstants.NUMBER;
-import static com.example.constants.AgendaItemConstants.TITLE;
 import static com.example.constants.ApartmentConstants.ID_BUILDING_NOT_FOUND;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -112,6 +107,16 @@ public class MeetingControllerTest {
 		.andExpect(status().isBadRequest());
 	}
 	
+	
+	@Test
+	@Transactional
+	@Rollback(true)
+	public void testGetMeetingsBadRequest() throws Exception{
+		
+		mockMvc.perform(get("/api/buildings/" + ID_BUILDING_NOT_FOUND + "/meetings").header("X-Auth-Token", accessToken))
+		.andExpect(status().isBadRequest());
+	}
+	
 	@Test
 	public void testGetMeetingByDateBadRequest() throws Exception{
 		Date dateAndTime = new SimpleDateFormat("yyyy-MM-dd").parse("2017-11-14");
@@ -125,6 +130,14 @@ public class MeetingControllerTest {
 	public void testGetDatesOfMeeting() throws Exception{	
 		mockMvc.perform(get("/api/buildings/"+BUILDING_ID_1+"/meetings/dates").header("X-Auth-Token", accessToken))
 		.andExpect(status().isOk());
+		
+	}
+	
+	
+	@Test
+	public void testGetDatesOfMeetingBadRequest() throws Exception{	
+		mockMvc.perform(get("/api/buildings/"+ID_BUILDING_NOT_FOUND+"/meetings/dates").header("X-Auth-Token", accessToken))
+		.andExpect(status().isBadRequest());
 		
 	}
 	
@@ -150,6 +163,15 @@ public class MeetingControllerTest {
 	@Test
 	@Transactional
 	@Rollback(true)
+	public void testSetMeetingActiveBadRequestMeeting() throws Exception{
+
+		mockMvc.perform(put("/api/buildings/"+BUILDING_ID_1+"/meeting/"+ID_MEETING_NOT_FOUND+"/active").header("X-Auth-Token", accessToken))
+		.andExpect(status().isBadRequest());
+	}
+	
+	@Test
+	@Transactional
+	@Rollback(true)
 	public void testSetMeetingDeActive() throws Exception{
 
 		mockMvc.perform(put("/api/buildings/"+BUILDING_ID_1+"/meeting/"+ID_MEETING+"/deactive").header("X-Auth-Token", accessToken))
@@ -165,5 +187,15 @@ public class MeetingControllerTest {
 		mockMvc.perform(put("/api/buildings/"+ID_BUILDING_NOT_FOUND+"/meeting/"+ID_MEETING+"/deactive").header("X-Auth-Token", accessToken))
 		.andExpect(status().isBadRequest());
 	}
+	
+	@Test
+	@Transactional
+	@Rollback(true)
+	public void testSetMeetingDeActiveBadRequestMeeting() throws Exception{
+
+		mockMvc.perform(put("/api/buildings/"+BUILDING_ID_1+"/meeting/"+ID_MEETING_NOT_FOUND+"/deactive").header("X-Auth-Token", accessToken))
+		.andExpect(status().isBadRequest());
+	}
+
 
 }

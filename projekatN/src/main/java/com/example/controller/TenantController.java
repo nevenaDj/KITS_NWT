@@ -130,7 +130,7 @@ public class TenantController {
 			@ApiResponse(code = 200, message = "Success"),
 			@ApiResponse(code = 404, message = "Not found")})
 	@PreAuthorize("hasRole('ROLE_USER')")
-	public ResponseEntity<List<GlitchDTO>> getGlitches(@PathVariable Long id,
+	public ResponseEntity<List<GlitchDTO>> getGlitches(
 			HttpServletRequest request, Pageable page) {
 		String token = request.getHeader("X-Auth-Token");
 		String username = tokenUtils.getUsernameFromToken(token);

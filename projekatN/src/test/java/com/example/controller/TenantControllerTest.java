@@ -4,6 +4,7 @@ import static com.example.constants.UserConstants.PASSWORD_ADMIN;
 import static com.example.constants.UserConstants.USERNAME_ADMIN;
 import static com.example.constants.UserConstants.NEW_USERNAME;
 import static com.example.constants.UserConstants.PAGE_SIZE;
+import static com.example.constants.UserConstants.PASSWORD;
 import static com.example.constants.UserConstants.NEW_EMAIL;
 import static com.example.constants.UserConstants.NEW_PHONE_NO;
 import static com.example.constants.UserConstants.NEW_STREET;
@@ -28,6 +29,7 @@ import java.nio.charset.Charset;
 
 import javax.annotation.PostConstruct;
 
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,7 +58,8 @@ import com.jayway.restassured.RestAssured;
 @TestPropertySource(locations="classpath:test.properties")
 public class TenantControllerTest {
 	private String accessToken;
-
+	private String accessTokenTenant;
+	
 	@Autowired
 	private TestRestTemplate restTemplate;
 
@@ -186,4 +189,16 @@ public class TenantControllerTest {
 		.andExpect(status().isNotFound());
 		
 	}
+	@Before
+	public void loginTenant(){
+		ResponseEntity<String> responseEntity = restTemplate.postForEntity("/api/login",
+				new LoginDTO(USERNAME, PASSWORD), String.class);
+		accessTokenTenant = responseEntity.getBody();
+	}
+	
+	@Test
+	public void testGetResponsiblePerson() throws Exception{
+		mockMvc.perform(get("/api/responsibleGlitches?page=0&size="+ PAGE_SIZE).header("X-Auth-Token", accessTokenTenant))
+		.andExpect(status().isOk());	
+	}	
 }
