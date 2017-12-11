@@ -162,7 +162,7 @@ public class BillControllerTest {
 		.andExpect(status().isOk())
 		.andExpect(content().contentType(contentType))
 		.andExpect(jsonPath("$.id").value(ID))
-		.andExpect(jsonPath("$.approved").value(APPROVED));
+		.andExpect(jsonPath("$.approved").value(APPROVED_2));
 		
 	}
 	
@@ -181,7 +181,7 @@ public class BillControllerTest {
 				.andExpect(status().isOk())
 				.andExpect(content().contentType(contentType))
 				.andExpect(jsonPath("$.id").value(ID))
-				.andExpect(jsonPath("$.approved").value(APPROVED));
+				.andExpect(jsonPath("$.approved").value(APPROVED_2));
 		
 	}
 	

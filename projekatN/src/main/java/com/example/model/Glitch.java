@@ -49,8 +49,8 @@ public class Glitch {
 
 	private boolean dateOfRepairApproved;
 
-	@Lob
-	private Set<byte[]> images;
+	@OneToMany(mappedBy = "glitch", fetch = FetchType.EAGER)
+	private Set<Picture> images = new HashSet<>();
 
 	@OneToMany(mappedBy = "glitch", fetch = FetchType.LAZY)
 	private Set<Comment> comments = new HashSet<>();
@@ -192,12 +192,14 @@ public class Glitch {
 		this.dateOfRepairApproved = dateOfRepairApproved;
 	}
 
-	public Set<byte[]> getImage() {
+	public Set<Picture> getImages() {
 		return images;
 	}
 
-	public void setImage(Set<byte[]> image) {
-		this.images = image;
+	public void setImages(Set<Picture> images) {
+		this.images = images;
 	}
+
+
 
 }

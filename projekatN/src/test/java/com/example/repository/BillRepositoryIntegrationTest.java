@@ -29,7 +29,7 @@ public class BillRepositoryIntegrationTest {
 	DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 
 	@Test
-	public void testfindByGlitch() throws ParseException {
+	public void testFindByGlitch() throws ParseException {
 		Date d = formatter.parse("2017-12-03");
 
 		Bill bill = billRepository.findByGlitch(GLITCH_ID);
@@ -43,7 +43,7 @@ public class BillRepositoryIntegrationTest {
 	}
 
 	@Test
-	public void testfindByDate() throws ParseException {
+	public void testFindByDate() throws ParseException {
 		Date d = formatter.parse("2017-12-03");
 		Date d1 = formatter.parse("2017-12-01");
 		Date d2 = formatter.parse("2017-12-10");

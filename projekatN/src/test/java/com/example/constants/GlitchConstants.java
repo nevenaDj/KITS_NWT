@@ -23,7 +23,9 @@ public class GlitchConstants {
 	public static final String IMAGE_UPLOAD = "https://static.pexels.com/photos/34950/pexels-photo.jpg";
 	
 	public static final Long ID_GLITCH = 1L;
+	public static final Long ID_GLITCH_2 = 2L;
 	public static final String DESCRIPTION = "glitch";
+	public static final String DESCRIPTION_2 = "glitch2";
 	
 	public static final Long ID_TENANT = 2L;
 	

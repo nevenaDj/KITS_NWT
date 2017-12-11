@@ -1,5 +1,6 @@
 package com.example.controller;
 
+import static com.example.constants.UserConstants.*;
 import static com.example.constants.UserConstants.PASSWORD;
 import static com.example.constants.UserConstants.USERNAME;
 import static com.example.constants.UserConstants.USERNAME_PRESIDENT;
@@ -17,6 +18,7 @@ import static com.example.constants.GlitchConstants.NEW_DESCRIPTION;
 import static com.example.constants.ApartmentConstants.ID_APARTMENT;
 import static com.example.constants.GlitchConstants.STATE_REPORTED;
 import static com.example.constants.GlitchConstants.ID;
+import static com.example.constants.GlitchConstants.ID_NOT_FOUND;
 import static com.example.constants.ApartmentConstants.ID_APARTMENT_NOT_FOUND;
 import static com.example.constants.GlitchConstants.*;
 import static com.example.constants.BuildingConstatnts.PAGE_SIZE;
@@ -61,6 +63,7 @@ import com.jayway.restassured.RestAssured;
 public class GlitchControllerTest {
 	private String accessTokenTenant;
 	private String accessTokenPresident;
+	private String accessTokenCompany;
 
 	@Autowired
 	private TestRestTemplate restTemplate;
@@ -206,27 +209,13 @@ public class GlitchControllerTest {
 		.andExpect(jsonPath("$.companyID").value(ID_COMPANY.intValue()));
 		
 	}
-	
-	@Test
-	@Transactional
-	@Rollback(true)
-	public void testChangeGlitchDate() throws Exception{
-		Date new_date= new Date();
 		
-		mockMvc.perform(put("/api/apartments/"+ID_APARTMENT+"/glitches/"+ID_GLITCH+"?date="+new_date).header("X-Auth-Token", accessTokenPresident))
-		.andExpect(status().isOk())
-		.andExpect(content().contentType(contentType))
-		.andExpect(jsonPath("$.dateOfRepair").value(new_date));
-		
-	}
-	
-	
 	@Test
 	@Transactional
 	@Rollback(true)
 	public void testChangeGlitchDateApprove() throws Exception{
 
-		mockMvc.perform(put("/api/apartments/"+ID_APARTMENT+"/glitches/"+ID_GLITCH).header("X-Auth-Token", accessTokenTenant))
+		mockMvc.perform(put("/api/apartments/"+ID_APARTMENT+"/glitches/"+ID_GLITCH).header("X-Auth-Token", accessTokenPresident))
 		.andExpect(status().isOk())
 		.andExpect(content().contentType(contentType))
 		.andExpect(jsonPath("$.dateOfRepairApproved").value(true));
@@ -250,7 +239,7 @@ public class GlitchControllerTest {
 		
 		mockMvc.perform(get("/api/glitches/"+ID_GLITCH+"/company").header("X-Auth-Token", accessTokenPresident))
 		.andExpect(status().isOk())
-		.andExpect(jsonPath("$.[*].id").value(hasItem(1)));
+		.andExpect(jsonPath("$.[*].id").value(hasItem(ID_GLITCH.intValue())));
 		
 	}
 	
@@ -262,12 +251,12 @@ public class GlitchControllerTest {
 		
 		String json = TestUtils.convertObjectToJson(userDTO);
 		
-		mockMvc.perform(put("/api/glitches/"+2L+"/company").header("X-Auth-Token", accessTokenPresident)
+		mockMvc.perform(put("/api/glitches/"+ID_GLITCH_2+"/company").header("X-Auth-Token", accessTokenPresident)
 				.contentType(contentType)
 				.content(json))
 		.andExpect(status().isOk())
-		.andExpect(jsonPath("$.id").value(2L))
-		.andExpect(jsonPath("$.description").value("glitch2"));
+		.andExpect(jsonPath("$.id").value(ID_GLITCH_2))
+		.andExpect(jsonPath("$.description").value(DESCRIPTION_2));
 		
 	}
 	

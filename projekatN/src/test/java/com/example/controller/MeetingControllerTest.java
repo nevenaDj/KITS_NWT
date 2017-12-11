@@ -113,12 +113,11 @@ public class MeetingControllerTest {
 	}
 	
 	@Test
-	public void testGetMeetingByDate() throws Exception{
-		Date dateAndTime = new SimpleDateFormat("yyyy-MM-dd").parse("2017-11-11");
+	public void testGetMeetingByDateBadRequest() throws Exception{
+		Date dateAndTime = new SimpleDateFormat("yyyy-MM-dd").parse("2017-11-14");
 		
 		mockMvc.perform(get("/api/buildings/"+BUILDING_ID_1+"/meetings?date="+dateAndTime).header("X-Auth-Token", accessToken))
-		.andExpect(status().isOk())
-		.andExpect(jsonPath("$.id").value(ID_MEETING));
+		.andExpect(status().isBadRequest());
 		
 	}
 	
