@@ -1,14 +1,10 @@
 package com.example.controller;
 
-import static com.example.constants.ApartmentConstants.DESCRIPTION;
-import static com.example.constants.ApartmentConstants.ID_APARTMENT;
 import static com.example.constants.ApartmentConstants.ID_BUILDING;
-import static com.example.constants.ApartmentConstants.NUMBER;
 import static com.example.constants.ApartmentConstants.PAGE_SIZE;
+import static com.example.constants.ApartmentConstants.ID_BUILDING_NOT_FOUND;
 import static com.example.constants.NotificationConstants.*;
-import static com.example.constants.UserConstants.PASSWORD_ADMIN;
 import static com.example.constants.UserConstants.PASSWORD_PRESIDENT;
-import static com.example.constants.UserConstants.USERNAME_ADMIN;
 import static com.example.constants.UserConstants.USERNAME_PRESIDENT;
 import static org.hamcrest.CoreMatchers.hasItem;
 import static org.hamcrest.Matchers.hasSize;
@@ -42,16 +38,15 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
 
 import com.example.TestUtils;
-import com.example.dto.AgendaItemDTO;
 import com.example.dto.LoginDTO;
 import com.example.dto.NotificationDTO;
 import com.jayway.restassured.RestAssured;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = WebEnvironment.DEFINED_PORT)
-@TestPropertySource(locations="classpath:test.properties")
+@TestPropertySource(locations = "classpath:test.properties")
 public class NotificationControllerTest {
-	
+
 	private String accessToken;
 
 	@Autowired
@@ -59,7 +54,7 @@ public class NotificationControllerTest {
 
 	@Autowired
 	private WebApplicationContext webApplicationContext;
-	
+
 	@Autowired
 	FilterChainProxy springSecurityFilterChain;
 
@@ -71,134 +66,116 @@ public class NotificationControllerTest {
 	@PostConstruct
 	public void setup() {
 		RestAssured.useRelaxedHTTPSValidation();
-		this.mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext)
-									  .addFilters(springSecurityFilterChain)
-									  .build();
-		
+		this.mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).addFilters(springSecurityFilterChain)
+				.build();
+
 		ResponseEntity<String> responseEntity = restTemplate.postForEntity("/api/login",
 				new LoginDTO(USERNAME_PRESIDENT, PASSWORD_PRESIDENT), String.class);
 		accessToken = responseEntity.getBody();
 	}
-	
-	@Test
-	@Transactional
-	@Rollback(true)
-	public void testNotification() throws Exception{
-		
-		Date new_date=new Date();
-		NotificationDTO notificationDTO = new NotificationDTO(ID_NEW , new_date, NEW_TEXT);
-	
-		String json = TestUtils.convertObjectToJson(notificationDTO);
-		
-		mockMvc.perform(post("/api/buildings/"+BUILDING_ID+"/notifications")
-							.header("X-Auth-Token", accessToken)
-							.contentType(contentType)
-							.content(json))
-		.andExpect(status().isCreated())
-		.andExpect(content().contentType(contentType))
-		.andExpect(jsonPath("$.text").value(NEW_TEXT))
-		.andExpect(jsonPath("$.date").value(new_date));
-	}
-	
-	@Test
-	@Transactional
-	@Rollback(true)
-	public void testAddNotificationBadRequest() throws Exception{
-		
-		Date new_date=new Date();
-		NotificationDTO notificationDTO = new NotificationDTO(ID_NEW , new_date, NEW_TEXT);
-	
-		String json = TestUtils.convertObjectToJson(notificationDTO);
-		
-		mockMvc.perform(post("/api/buildings/"+BUILDING_ID_NOT_FOUND+"/notifications")
-							.header("X-Auth-Token", accessToken)
-							.contentType(contentType)
-							.content(json))
-		.andExpect(status().isBadRequest());
-	}
-	
-	@Test
-	public void testGetNotifications() throws Exception{
-		mockMvc.perform(get("/api/buildings/" + ID_BUILDING + 
-				"/notifications?page=0&size="+PAGE_SIZE )
-				.header("X-Auth-Token", accessToken))
-		.andExpect(status().isOk())
-		.andExpect(jsonPath("$",  hasSize(1)))
-		.andExpect(jsonPath("$.[*].id").value(hasItem(ID.intValue())))
-		.andExpect(jsonPath("$.[*].text").value(hasItem(TEXT)));
-		
-	}
-	
-	@Test
-	public void testGetNotification() throws Exception{
-		mockMvc.perform(get("/api/buildings/" + ID_BUILDING + 
-				"/notifications/"+ID)
-				.header("X-Auth-Token", accessToken))
-		.andExpect(status().isOk())
-		.andExpect(jsonPath("$.id").value(ID.intValue()))
-		.andExpect(jsonPath("$.text").value(TEXT));
-		
-	}
-	
-	
 
 	@Test
 	@Transactional
 	@Rollback(true)
-	public void testDeleteNotification() throws Exception{
-		mockMvc.perform(delete("/api/buildings/" + ID_BUILDING + 
-				"/notifications/"+ID)
-				.header("X-Auth-Token", accessToken))
-		.andExpect(status().isOk());
-		
+	public void testNotification() throws Exception {
+
+		Date new_date = new Date();
+		NotificationDTO notificationDTO = new NotificationDTO(ID_NEW, new_date, NEW_TEXT);
+
+		String json = TestUtils.convertObjectToJson(notificationDTO);
+
+		mockMvc.perform(post("/api/buildings/" + BUILDING_ID + "/notifications").header("X-Auth-Token", accessToken)
+				.contentType(contentType).content(json)).andExpect(status().isCreated())
+				.andExpect(content().contentType(contentType)).andExpect(jsonPath("$.text").value(NEW_TEXT))
+				.andExpect(jsonPath("$.date").value(new_date));
 	}
-	
+
 	@Test
 	@Transactional
 	@Rollback(true)
-	public void testDeleteNotificationBadRequest() throws Exception{
-		mockMvc.perform(delete("/api/buildings/" + BUILDING_ID_NOT_FOUND + 
-				"/notifications/"+ID)
-				.header("X-Auth-Token", accessToken))
-		.andExpect(status().isBadRequest());
-		
+	public void testAddNotificationBadRequest() throws Exception {
+
+		Date new_date = new Date();
+		NotificationDTO notificationDTO = new NotificationDTO(ID_NEW, new_date, NEW_TEXT);
+
+		String json = TestUtils.convertObjectToJson(notificationDTO);
+
+		mockMvc.perform(post("/api/buildings/" + BUILDING_ID_NOT_FOUND + "/notifications")
+				.header("X-Auth-Token", accessToken).contentType(contentType).content(json))
+				.andExpect(status().isBadRequest());
 	}
-	
+
+	@Test
+	public void testGetNotifications() throws Exception {
+		mockMvc.perform(get("/api/buildings/" + ID_BUILDING + "/notifications?page=0&size=" + PAGE_SIZE)
+				.header("X-Auth-Token", accessToken)).andExpect(status().isOk()).andExpect(jsonPath("$", hasSize(1)))
+				.andExpect(jsonPath("$.[*].id").value(hasItem(ID.intValue())))
+				.andExpect(jsonPath("$.[*].text").value(hasItem(TEXT)));
+
+	}
+
+	@Test
+	public void testGetNotificationsBadRequest() throws Exception {
+		mockMvc.perform(get("/api/buildings/" + ID_BUILDING_NOT_FOUND + "/notifications?page=0&size=" + PAGE_SIZE)
+				.header("X-Auth-Token", accessToken)).andExpect(status().isBadRequest());
+
+	}
+
+	@Test
+	public void testGetNotification() throws Exception {
+		mockMvc.perform(
+				get("/api/buildings/" + ID_BUILDING + "/notifications/" + ID).header("X-Auth-Token", accessToken))
+				.andExpect(status().isOk()).andExpect(jsonPath("$.id").value(ID.intValue()))
+				.andExpect(jsonPath("$.text").value(TEXT));
+
+	}
+
 	@Test
 	@Transactional
 	@Rollback(true)
-	public void testDeleteNotificationNotFound() throws Exception{
-		mockMvc.perform(delete("/api/buildings/" + ID_BUILDING + 
-				"/notifications/"+ID_NOT_FOUND)
-				.header("X-Auth-Token", accessToken))
-		.andExpect(status().isNotFound());
-		
+	public void testDeleteNotification() throws Exception {
+		mockMvc.perform(
+				delete("/api/buildings/" + ID_BUILDING + "/notifications/" + ID).header("X-Auth-Token", accessToken))
+				.andExpect(status().isOk());
+
 	}
-	
-	
+
 	@Test
-	public void testGetNotificationNotFound() throws Exception{
-		mockMvc.perform(get("/api/buildings/" + ID_BUILDING + 
-				"/notifications/"+ID_NEW)
-				.header("X-Auth-Token", accessToken))
-		.andExpect(status().isNotFound());
-		
+	@Transactional
+	@Rollback(true)
+	public void testDeleteNotificationBadRequest() throws Exception {
+		mockMvc.perform(delete("/api/buildings/" + BUILDING_ID_NOT_FOUND + "/notifications/" + ID)
+				.header("X-Auth-Token", accessToken)).andExpect(status().isBadRequest());
+
 	}
-	
+
 	@Test
-	public void testGetNotificationBadRequest() throws Exception{
-		mockMvc.perform(get("/api/buildings/" + BUILDING_ID_NOT_FOUND + 
-				"/notifications/"+ID)
-				.header("X-Auth-Token", accessToken))
-		.andExpect(status().isBadRequest());
-		
+	@Transactional
+	@Rollback(true)
+	public void testDeleteNotificationNotFound() throws Exception {
+		mockMvc.perform(delete("/api/buildings/" + ID_BUILDING + "/notifications/" + ID_NOT_FOUND)
+				.header("X-Auth-Token", accessToken)).andExpect(status().isNotFound());
+
 	}
-	
+
 	@Test
-	public void testGetOwnNotification() throws Exception{
-		mockMvc.perform(get("/api/notifications")
-				.header("X-Auth-Token", accessToken))
-		.andExpect(status().isOk());
-		
+	public void testGetNotificationNotFound() throws Exception {
+		mockMvc.perform(
+				get("/api/buildings/" + ID_BUILDING + "/notifications/" + ID_NEW).header("X-Auth-Token", accessToken))
+				.andExpect(status().isNotFound());
+
+	}
+
+	@Test
+	public void testGetNotificationBadRequest() throws Exception {
+		mockMvc.perform(get("/api/buildings/" + BUILDING_ID_NOT_FOUND + "/notifications/" + ID).header("X-Auth-Token",
+				accessToken)).andExpect(status().isBadRequest());
+
+	}
+
+	@Test
+	public void testGetOwnNotification() throws Exception {
+		mockMvc.perform(get("/api/notifications").header("X-Auth-Token", accessToken)).andExpect(status().isOk());
+
 	}
 }

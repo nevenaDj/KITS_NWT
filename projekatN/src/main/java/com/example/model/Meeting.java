@@ -4,7 +4,6 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -33,7 +32,7 @@ public class Meeting {
 	private Set<AgendaItem> points = new HashSet<>();
 
 	private boolean active;
-	
+
 	public Meeting() {
 
 	}
@@ -42,7 +41,7 @@ public class Meeting {
 		super();
 		this.id = id;
 		this.dateAndTime = dateAndTime;
-		this.active=active;
+		this.active = active;
 	}
 
 	public Long getId() {
@@ -93,5 +92,4 @@ public class Meeting {
 		this.active = active;
 	}
 
-	
 }

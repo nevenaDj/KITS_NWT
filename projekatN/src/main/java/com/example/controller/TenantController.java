@@ -56,12 +56,11 @@ public class TenantController {
 	UserApartmentService userApartmentService;
 	@Autowired
 	TokenUtils tokenUtils;
-	
+
 	@RequestMapping(value = "/aparments/{id}/tenants", method = RequestMethod.POST, consumes = "application/json")
 	@ApiOperation(value = "Add tenant to the apartment.", notes = "Returns the tenant.", httpMethod = "POST", produces = "application/json", consumes = "application/json")
-	@ApiImplicitParam(paramType="header", name="X-Auth-Token", required=true, value="JWT token")
-	@ApiResponses(value = { 
-			@ApiResponse(code = 201, message = "Created", response = UserDTO.class),
+	@ApiImplicitParam(paramType = "header", name = "X-Auth-Token", required = true, value = "JWT token")
+	@ApiResponses(value = { @ApiResponse(code = 201, message = "Created", response = UserDTO.class),
 			@ApiResponse(code = 400, message = "Bad request") })
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	/*** add tenant ***/
@@ -90,7 +89,7 @@ public class TenantController {
 
 	@RequestMapping(value = "/tenants", method = RequestMethod.GET)
 	@ApiOperation(value = "Get a list of tenants.", httpMethod = "GET")
-	@ApiImplicitParam(paramType="header", name="X-Auth-Token", required=true, value="JWT token")
+	@ApiImplicitParam(paramType = "header", name = "X-Auth-Token", required = true, value = "JWT token")
 	/*** get list of tenants ***/
 	public ResponseEntity<List<UserDTO>> getTenants(Pageable page) {
 		Page<User> users = userService.find(page, ROLE_TENANT);
@@ -102,17 +101,15 @@ public class TenantController {
 		return new ResponseEntity<>(usersDTO, HttpStatus.OK);
 	}
 
-
 	@RequestMapping(value = "/tenants/{id}", method = RequestMethod.DELETE)
 	@ApiOperation(value = "Delete a tenant.", httpMethod = "DELETE")
-	@ApiImplicitParam(paramType="header", name="X-Auth-Token", required=true, value="JWT token")
-	@ApiResponses(value = { 
-			@ApiResponse(code = 200, message = "Success"),
-			@ApiResponse(code = 404, message = "Not found")})
+	@ApiImplicitParam(paramType = "header", name = "X-Auth-Token", required = true, value = "JWT token")
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "Success"),
+			@ApiResponse(code = 404, message = "Not found") })
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	/*** delete tenant ***/
 	public ResponseEntity<Void> deleteTenant(
-			@ApiParam(value = "The ID of the tenant.", required = true)@PathVariable Long id) {
+			@ApiParam(value = "The ID of the tenant.", required = true) @PathVariable Long id) {
 		User user = userService.findOne(id);
 		if (user == null) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -122,28 +119,27 @@ public class TenantController {
 		}
 	}
 
-	@RequestMapping(value = "/responsibleGlitches", method = RequestMethod.GET,
-			produces = "application/json")
+	@RequestMapping(value = "/responsibleGlitches", method = RequestMethod.GET, produces = "application/json")
 	@ApiOperation(value = "Find glitches where the tenant is responsible person.", httpMethod = "GET")
-	@ApiImplicitParam(paramType="header", name="X-Auth-Token", required=true, value="JWT token")
-	@ApiResponses(value = { 
-			@ApiResponse(code = 200, message = "Success"),
-			@ApiResponse(code = 404, message = "Not found")})
+	@ApiImplicitParam(paramType = "header", name = "X-Auth-Token", required = true, value = "JWT token")
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "Success"),
+			@ApiResponse(code = 404, message = "Not found") })
 	@PreAuthorize("hasRole('ROLE_USER')")
-	public ResponseEntity<List<GlitchDTO>> getGlitches(
-			HttpServletRequest request, Pageable page) {
+	public ResponseEntity<List<GlitchDTO>> getGlitches(HttpServletRequest request, Pageable page) {
 		String token = request.getHeader("X-Auth-Token");
 		String username = tokenUtils.getUsernameFromToken(token);
 
 		User tenant = userService.findByUsername(username);
-		
-		Page<Glitch> glitches= glitchService.findByResponsibility(page, tenant.getId());
-		if (glitches==null)
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-		return new ResponseEntity<>(HttpStatus.OK);
-		
+
+		Page<Glitch> glitches = glitchService.findByResponsibility(page, tenant.getId());
+
+		List<GlitchDTO> glitchesDTO = new ArrayList<>();
+		for (Glitch glitch : glitches) {
+			glitchesDTO.add(new GlitchDTO(glitch));
+		}
+
+		return new ResponseEntity<>(glitchesDTO, HttpStatus.OK);
 
 	}
 
 }
-

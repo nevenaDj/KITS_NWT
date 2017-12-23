@@ -19,6 +19,8 @@ import static com.example.constants.ApartmentConstants.ID_BUILDING_NOT_FOUND;
 import static com.example.constants.BuildingConstatnts.STREET;
 import static com.example.constants.BuildingConstatnts.CITY;
 import static com.example.constants.ApartmentConstants.BUILDING_NUMBER;
+import static com.example.constants.UserConstants.ID_OWNER;
+import static com.example.constants.UserConstants.USERNAME_OWNER;
 
 import static org.hamcrest.CoreMatchers.hasItem;
 import static org.hamcrest.Matchers.hasSize;
@@ -59,9 +61,9 @@ import com.jayway.restassured.RestAssured;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = WebEnvironment.DEFINED_PORT)
-@TestPropertySource(locations="classpath:test.properties")
+@TestPropertySource(locations = "classpath:test.properties")
 public class ApartmentControllerTest {
-	
+
 	private String accessToken;
 
 	@Autowired
@@ -69,7 +71,7 @@ public class ApartmentControllerTest {
 
 	@Autowired
 	private WebApplicationContext webApplicationContext;
-	
+
 	@Autowired
 	FilterChainProxy springSecurityFilterChain;
 
@@ -81,205 +83,199 @@ public class ApartmentControllerTest {
 	@PostConstruct
 	public void setup() {
 		RestAssured.useRelaxedHTTPSValidation();
-		this.mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext)
-									  .addFilters(springSecurityFilterChain)
-									  .build();
-		
+		this.mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).addFilters(springSecurityFilterChain)
+				.build();
+
 		ResponseEntity<String> responseEntity = restTemplate.postForEntity("/api/login",
 				new LoginDTO(USERNAME_ADMIN, PASSWORD_ADMIN), String.class);
 		accessToken = responseEntity.getBody();
 	}
-	
+
 	@Test
-	public void testGetApartments() throws Exception{
-		mockMvc.perform(get("/api/buildings/" + ID_BUILDING + 
-				"/apartments?page=0&size="+PAGE_SIZE )
-				.header("X-Auth-Token", accessToken))
-		.andExpect(status().isOk())
-		.andExpect(jsonPath("$",  hasSize(PAGE_SIZE)))
-		.andExpect(jsonPath("$.[*].id").value(hasItem(ID_APARTMENT.intValue())))
-		.andExpect(jsonPath("$.[*].description").value(hasItem(DESCRIPTION)))
-		.andExpect(jsonPath("$.[*].number").value(hasItem(NUMBER)));
-		
+	public void testGetApartments() throws Exception {
+		mockMvc.perform(get("/api/buildings/" + ID_BUILDING + "/apartments?page=0&size=" + PAGE_SIZE)
+				.header("X-Auth-Token", accessToken)).andExpect(status().isOk())
+				.andExpect(jsonPath("$", hasSize(PAGE_SIZE)))
+				.andExpect(jsonPath("$.[*].id").value(hasItem(ID_APARTMENT.intValue())))
+				.andExpect(jsonPath("$.[*].description").value(hasItem(DESCRIPTION)))
+				.andExpect(jsonPath("$.[*].number").value(hasItem(NUMBER)));
+
 	}
-	
+
 	@Test
-	public void testGetApartment() throws Exception{
-		mockMvc.perform(get("/api/apartments/"+ID_APARTMENT.intValue()).header("X-Auth-Token", accessToken))
-		.andExpect(status().isOk())
-		.andExpect(content().contentType(contentType))
-		.andExpect(jsonPath("$.description").value(DESCRIPTION))
-		.andExpect(jsonPath("$.number").value(NUMBER));
-		
+	public void testGetApartment() throws Exception {
+		mockMvc.perform(get("/api/apartments/" + ID_APARTMENT.intValue()).header("X-Auth-Token", accessToken))
+				.andExpect(status().isOk()).andExpect(content().contentType(contentType))
+				.andExpect(jsonPath("$.description").value(DESCRIPTION)).andExpect(jsonPath("$.number").value(NUMBER));
+
 	}
-	
+
 	@Test
-	public void testGetApartmentNotFound() throws Exception{
-		mockMvc.perform(get("/api/apartments/"+ID_APARTMENT_NOT_FOUND.intValue()).header("X-Auth-Token", accessToken))
-		.andExpect(status().isNotFound());
-		
+	public void testGetApartmentNotFound() throws Exception {
+		mockMvc.perform(get("/api/apartments/" + ID_APARTMENT_NOT_FOUND.intValue()).header("X-Auth-Token", accessToken))
+				.andExpect(status().isNotFound());
+
 	}
-	
+
 	@Test
 	@Transactional
 	@Rollback(true)
-	public void testAddApartment() throws Exception{
+	public void testAddApartment() throws Exception {
 		ApartmentDTO apartmentDTO = new ApartmentDTO(NEW_NUMBER, NEW_DESCRIPTION);
-		
+
 		String json = TestUtils.convertObjectToJson(apartmentDTO);
-		
-		mockMvc.perform(post("/api/buildings/" + ID_BUILDING + "/apartments")
-							.header("X-Auth-Token", accessToken)
-							.contentType(contentType)
-							.content(json))
-		.andExpect(status().isCreated())
-		.andExpect(content().contentType(contentType))
-		.andExpect(jsonPath("$.number").value(NEW_NUMBER))
-		.andExpect(jsonPath("$.description").value(NEW_DESCRIPTION));
+
+		mockMvc.perform(post("/api/buildings/" + ID_BUILDING + "/apartments").header("X-Auth-Token", accessToken)
+				.contentType(contentType).content(json)).andExpect(status().isCreated())
+				.andExpect(content().contentType(contentType)).andExpect(jsonPath("$.number").value(NEW_NUMBER))
+				.andExpect(jsonPath("$.description").value(NEW_DESCRIPTION));
 	}
-	
+
 	@Test
-	public void testAddApartmentBadRequest() throws Exception{
+	public void testAddApartmentBadRequest() throws Exception {
 		ApartmentDTO apartmentDTO = new ApartmentDTO(NEW_NUMBER, NEW_DESCRIPTION);
-		
+
 		String json = TestUtils.convertObjectToJson(apartmentDTO);
-		
+
 		mockMvc.perform(post("/api/buildings/" + ID_BUILDING_NOT_FOUND + "/apartments")
-							.header("X-Auth-Token", accessToken)
-							.contentType(contentType)
-							.content(json))
-		.andExpect(status().isBadRequest());
+				.header("X-Auth-Token", accessToken).contentType(contentType).content(json))
+				.andExpect(status().isBadRequest());
 	}
-	
+
 	@Test
 	@Transactional
 	@Rollback(true)
-	public void testUpdateApartment() throws Exception{
-		ApartmentDTO apartmentDTO = new ApartmentDTO(ID_APARTMENT,NEW_NUMBER, NEW_DESCRIPTION);
-		
+	public void testUpdateApartment() throws Exception {
+		ApartmentDTO apartmentDTO = new ApartmentDTO(ID_APARTMENT, NEW_NUMBER, NEW_DESCRIPTION);
+
 		String json = TestUtils.convertObjectToJson(apartmentDTO);
-		
-		mockMvc.perform(put("/api/apartments").header("X-Auth-Token", accessToken)
-							.contentType(contentType)
-							.content(json))
-		.andExpect(status().isOk())
-		.andExpect(content().contentType(contentType))
-		.andExpect(jsonPath("$.number").value(NEW_NUMBER))
-		.andExpect(jsonPath("$.description").value(NEW_DESCRIPTION));
+
+		mockMvc.perform(
+				put("/api/apartments").header("X-Auth-Token", accessToken).contentType(contentType).content(json))
+				.andExpect(status().isOk()).andExpect(content().contentType(contentType))
+				.andExpect(jsonPath("$.number").value(NEW_NUMBER))
+				.andExpect(jsonPath("$.description").value(NEW_DESCRIPTION));
 	}
-	
+
 	@Test
 	@Transactional
 	@Rollback(true)
-	public void testUpdateApartmentBadRequest() throws Exception{
-		ApartmentDTO apartmentDTO = new ApartmentDTO(ID_APARTMENT_NOT_FOUND,NEW_NUMBER, NEW_DESCRIPTION);
-		
+	public void testUpdateApartmentBadRequest() throws Exception {
+		ApartmentDTO apartmentDTO = new ApartmentDTO(ID_APARTMENT_NOT_FOUND, NEW_NUMBER, NEW_DESCRIPTION);
+
 		String json = TestUtils.convertObjectToJson(apartmentDTO);
-		
-		mockMvc.perform(put("/api/apartments").header("X-Auth-Token", accessToken)
-							.contentType(contentType)
-							.content(json))
-		.andExpect(status().isBadRequest());
+
+		mockMvc.perform(
+				put("/api/apartments").header("X-Auth-Token", accessToken).contentType(contentType).content(json))
+				.andExpect(status().isBadRequest());
 	}
-	
+
 	@Test
 	@Transactional
 	@Rollback(true)
-	public void testDeleteApartment() throws Exception{
+	public void testDeleteApartment() throws Exception {
 		mockMvc.perform(delete("/api/apartments/" + ID_APARTMENT).header("X-Auth-Token", accessToken))
-		.andExpect(status().isOk());
+				.andExpect(status().isOk());
 	}
-	
+
 	@Test
 	@Transactional
 	@Rollback(true)
-	public void testDeleteApartmentNotFound() throws Exception{
+	public void testDeleteApartmentNotFound() throws Exception {
 		mockMvc.perform(delete("/api/apartments/" + ID_APARTMENT_NOT_FOUND).header("X-Auth-Token", accessToken))
-		.andExpect(status().isNotFound());
+				.andExpect(status().isNotFound());
 	}
-	
+
 	@Test
-	public void testFindByAddress() throws Exception{
-		mockMvc.perform(get("/api/apartments?street=" + STREET +"&number=" + BUILDING_NUMBER 
-				+"&city=" + CITY +"&number_apartment=" + NUMBER)
-				.header("X-Auth-Token", accessToken))
-		.andExpect(status().isOk());
-		
+	public void testFindByAddress() throws Exception {
+		mockMvc.perform(get("/api/apartments?street=" + STREET + "&number=" + BUILDING_NUMBER + "&city=" + CITY
+				+ "&number_apartment=" + NUMBER).header("X-Auth-Token", accessToken)).andExpect(status().isOk());
+
 	}
+
 	@Test
-	public void testFindByAddressNotFound() throws Exception{
-		mockMvc.perform(get("/api/apartments?street=" + STREET +"&number=" + BUILDING_NUMBER 
-				+"&city=" + CITY +"&number_apartment=" + NEW_NUMBER)
-				.header("X-Auth-Token", accessToken))
-		.andExpect(status().isNotFound());
-		
+	public void testFindByAddressNotFound() throws Exception {
+		mockMvc.perform(get("/api/apartments?street=" + STREET + "&number=" + BUILDING_NUMBER + "&city=" + CITY
+				+ "&number_apartment=" + NEW_NUMBER).header("X-Auth-Token", accessToken))
+				.andExpect(status().isNotFound());
+
 	}
-	
+
 	@Test
 	@Transactional
 	@Rollback(true)
-	public void testAddOwner() throws Exception{
+	public void testAddOwner() throws Exception {
 		UserDTO userDTO = new UserDTO();
 		userDTO.setId(ID_USER);
 
 		String json = TestUtils.convertObjectToJson(userDTO);
 
-		mockMvc.perform(post("/api/apartments/ " + ID_APARTMENT +"/owner").header("X-Auth-Token", accessToken)
-				.contentType(contentType).content(json))
-				.andExpect(status().isCreated())
-				.andExpect(content().contentType(contentType))
-				.andExpect(jsonPath("$.id").value(ID_APARTMENT))
+		mockMvc.perform(post("/api/apartments/ " + ID_APARTMENT + "/owner").header("X-Auth-Token", accessToken)
+				.contentType(contentType).content(json)).andExpect(status().isCreated())
+				.andExpect(content().contentType(contentType)).andExpect(jsonPath("$.id").value(ID_APARTMENT))
 				.andExpect(jsonPath("$.owner.id").value(ID_USER))
 				.andExpect(jsonPath("$.owner.username").value(USERNAME))
 				.andExpect(jsonPath("$.owner.email").value(EMAIL));
 	}
-	
+
 	@Test
 	@Transactional
 	@Rollback(true)
-	public void testAddOwnerBadUserId() throws Exception{
+	public void testAddOwnerBadUserId() throws Exception {
 		UserDTO userDTO = new UserDTO();
 		userDTO.setId(ID_NOT_FOUND);
 
 		String json = TestUtils.convertObjectToJson(userDTO);
 
-		mockMvc.perform(post("/api/apartments/ " + ID_APARTMENT +"/owner").header("X-Auth-Token", accessToken)
-				.contentType(contentType).content(json))
-				.andExpect(status().isBadRequest());
+		mockMvc.perform(post("/api/apartments/ " + ID_APARTMENT + "/owner").header("X-Auth-Token", accessToken)
+				.contentType(contentType).content(json)).andExpect(status().isBadRequest());
 	}
-	
+
 	@Test
 	@Transactional
 	@Rollback(true)
-	public void testAddOwnerAddNewUser() throws Exception{
+	public void testAddOwnerAddNewUser() throws Exception {
 		UserDTO userDTO = new UserDTO();
 		userDTO.setUsername(NEW_USERNAME);
 		userDTO.setId(null);
 
 		String json = TestUtils.convertObjectToJson(userDTO);
 
-		mockMvc.perform(post("/api/apartments/ " + ID_APARTMENT +"/owner").header("X-Auth-Token", accessToken)
-				.contentType(contentType).content(json))
-				.andExpect(status().isCreated())
-				.andExpect(content().contentType(contentType))
-				.andExpect(jsonPath("$.id").value(ID_APARTMENT))
+		mockMvc.perform(post("/api/apartments/ " + ID_APARTMENT + "/owner").header("X-Auth-Token", accessToken)
+				.contentType(contentType).content(json)).andExpect(status().isCreated())
+				.andExpect(content().contentType(contentType)).andExpect(jsonPath("$.id").value(ID_APARTMENT))
 				.andExpect(jsonPath("$.owner.username").value(NEW_USERNAME));
 	}
-	
+
 	@Test
 	@Transactional
 	@Rollback(true)
-	public void testAddOwnerAddNewUserBadRequest() throws Exception{
+	public void testAddOwnerAddNewUserBadRequest() throws Exception {
 		UserDTO userDTO = new UserDTO();
 		userDTO.setUsername(NEW_USERNAME);
 		userDTO.setId(null);
 
 		String json = TestUtils.convertObjectToJson(userDTO);
 
-		mockMvc.perform(post("/api/apartments/ " + ID_APARTMENT_NOT_FOUND +"/owner").header("X-Auth-Token", accessToken)
-				.contentType(contentType).content(json))
+		mockMvc.perform(post("/api/apartments/ " + ID_APARTMENT_NOT_FOUND + "/owner")
+				.header("X-Auth-Token", accessToken).contentType(contentType).content(json))
 				.andExpect(status().isBadRequest());
 	}
-	
-	
+
+	@Test
+	@Transactional
+	@Rollback(true)
+	public void testAddOwnerExist() throws Exception {
+		UserDTO userDTO = new UserDTO();
+		userDTO.setId(ID_OWNER);
+
+		String json = TestUtils.convertObjectToJson(userDTO);
+
+		mockMvc.perform(post("/api/apartments/ " + ID_APARTMENT + "/owner").header("X-Auth-Token", accessToken)
+				.contentType(contentType).content(json)).andExpect(status().isCreated())
+				.andExpect(content().contentType(contentType)).andExpect(jsonPath("$.id").value(ID_APARTMENT))
+				.andExpect(jsonPath("$.owner.id").value(ID_OWNER))
+				.andExpect(jsonPath("$.owner.username").value(USERNAME_OWNER));
+	}
+
 }

@@ -1,6 +1,5 @@
 package com.example.controller;
 
-import static com.example.constants.AgendaItemConstants.NEW_NUMBER;
 import static com.example.constants.PricelistConstants.*;
 import static com.example.constants.PricelistConstants.ID_NOT_FOUND;
 import static com.example.constants.UserConstants.*;
@@ -35,7 +34,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
 
 import com.example.TestUtils;
-import com.example.dto.AgendaItemDTO;
 import com.example.dto.ItemInPricelistDTO;
 import com.example.dto.LoginDTO;
 import com.example.dto.PricelistDTO;
@@ -43,10 +41,9 @@ import com.jayway.restassured.RestAssured;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = WebEnvironment.DEFINED_PORT)
-@TestPropertySource(locations="classpath:test.properties")
+@TestPropertySource(locations = "classpath:test.properties")
 public class PricelistControllerTest {
 
-	private String accessTokenPresident;
 	private String accessToken;
 
 	@Autowired
@@ -54,7 +51,7 @@ public class PricelistControllerTest {
 
 	@Autowired
 	private WebApplicationContext webApplicationContext;
-	
+
 	@Autowired
 	FilterChainProxy springSecurityFilterChain;
 
@@ -66,163 +63,138 @@ public class PricelistControllerTest {
 	@PostConstruct
 	public void setup() {
 		RestAssured.useRelaxedHTTPSValidation();
-		this.mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext)
-									  .addFilters(springSecurityFilterChain)
-									  .build();
-		
+		this.mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).addFilters(springSecurityFilterChain)
+				.build();
+
 		ResponseEntity<String> responseEntity = restTemplate.postForEntity("/api/login",
 				new LoginDTO(USERNAME_COMPANY, USERNAME_COMPANY), String.class);
 		accessToken = responseEntity.getBody();
 	}
 
-	
 	@Test
 	@Transactional
 	@Rollback(true)
-	public void testAddPricelist() throws Exception{
+	public void testAddPricelist() throws Exception {
 		PricelistDTO pricelistDTO = new PricelistDTO(NEW_ID, new Date());
 
 		String json = TestUtils.convertObjectToJson(pricelistDTO);
-		
-		mockMvc.perform(post("/api/company/"+COMPANY_ID+"/pricelist")
-							.header("X-Auth-Token", accessToken)
-							.contentType(contentType)
-							.content(json))
-		.andExpect(status().isCreated())
-		.andExpect(content().contentType(contentType));
+
+		mockMvc.perform(post("/api/company/" + COMPANY_ID + "/pricelist").header("X-Auth-Token", accessToken)
+				.contentType(contentType).content(json)).andExpect(status().isCreated())
+				.andExpect(content().contentType(contentType));
 
 	}
-	
+
 	@Test
 	@Transactional
 	@Rollback(true)
-	public void testAddPricelistBadRequest() throws Exception{
+	public void testAddPricelistBadRequest() throws Exception {
 		PricelistDTO pricelistDTO = new PricelistDTO(NEW_ID, new Date());
 
 		String json = TestUtils.convertObjectToJson(pricelistDTO);
-		
-		mockMvc.perform(post("/api/company/"+COMPANY_ID_NOT_FOUND+"/pricelist")
-							.header("X-Auth-Token", accessToken)
-							.contentType(contentType)
-							.content(json))
-		.andExpect(status().isBadRequest());
+
+		mockMvc.perform(post("/api/company/" + COMPANY_ID_NOT_FOUND + "/pricelist").header("X-Auth-Token", accessToken)
+				.contentType(contentType).content(json)).andExpect(status().isBadRequest());
 
 	}
 
 	@Test
-	public void testGetPricelist() throws Exception{
-		mockMvc.perform(get("/api/company/"+NEW_COMPANY_ID+"/pricelist")
-							.header("X-Auth-Token", accessToken))
-		.andExpect(status().isOk());
+	public void testGetPricelist() throws Exception {
+		mockMvc.perform(get("/api/company/" + NEW_COMPANY_ID + "/pricelist").header("X-Auth-Token", accessToken))
+				.andExpect(status().isOk());
 
 	}
-	
+
 	@Test
-	public void testGetPricelistBadRequest() throws Exception{
-		mockMvc.perform(get("/api/company/"+COMPANY_ID_NOT_FOUND+"/pricelist")
-							.header("X-Auth-Token", accessToken))
-		.andExpect(status().isBadRequest());
+	public void testGetPricelistBadRequest() throws Exception {
+		mockMvc.perform(get("/api/company/" + COMPANY_ID_NOT_FOUND + "/pricelist").header("X-Auth-Token", accessToken))
+				.andExpect(status().isBadRequest());
 
 	}
-	
+
 	@Test
 	@Transactional
 	@Rollback(true)
-	public void testAddItemInPricelist() throws Exception{
-		ItemInPricelistDTO itemDTO= new ItemInPricelistDTO(NEW_ID,NEW_NAME, NEW_PRICE);
+	public void testAddItemInPricelist() throws Exception {
+		ItemInPricelistDTO itemDTO = new ItemInPricelistDTO(NEW_ID, NEW_NAME, NEW_PRICE);
 		String json = TestUtils.convertObjectToJson(itemDTO);
-		
-		mockMvc.perform(post("/api/company/"+COMPANY_ID+"/pricelist/items")
-							.header("X-Auth-Token", accessToken)
-							.contentType(contentType)
-							.content(json))
-		.andExpect(status().isCreated())
-		.andExpect(content().contentType(contentType))
-		.andExpect(jsonPath("$.nameOfType").value(NEW_NAME))
-		.andExpect(jsonPath("$.price").value(NEW_PRICE));
+
+		mockMvc.perform(post("/api/company/" + COMPANY_ID + "/pricelist/items").header("X-Auth-Token", accessToken)
+				.contentType(contentType).content(json)).andExpect(status().isCreated())
+				.andExpect(content().contentType(contentType)).andExpect(jsonPath("$.nameOfType").value(NEW_NAME))
+				.andExpect(jsonPath("$.price").value(NEW_PRICE));
 
 	}
-	
+
 	@Test
 	@Transactional
 	@Rollback(true)
-	public void testAddItemInPricelistBadRequest() throws Exception{
-		ItemInPricelistDTO itemDTO= new ItemInPricelistDTO(NEW_ID,NEW_NAME, NEW_PRICE);
+	public void testAddItemInPricelistBadRequest() throws Exception {
+		ItemInPricelistDTO itemDTO = new ItemInPricelistDTO(NEW_ID, NEW_NAME, NEW_PRICE);
 		String json = TestUtils.convertObjectToJson(itemDTO);
-		
-		mockMvc.perform(post("/api/company/"+COMPANY_ID_NOT_FOUND+"/pricelist/items")
-							.header("X-Auth-Token", accessToken)
-							.contentType(contentType)
-							.content(json))
-		.andExpect(status().isBadRequest());
+
+		mockMvc.perform(post("/api/company/" + COMPANY_ID_NOT_FOUND + "/pricelist/items")
+				.header("X-Auth-Token", accessToken).contentType(contentType).content(json))
+				.andExpect(status().isBadRequest());
 
 	}
-	
+
 	@Test
-	public void testGetPricelistItems() throws Exception{
-		mockMvc.perform(get("/api/company/"+COMPANY_ID+"/pricelist/items")
-							.header("X-Auth-Token", accessToken))
-		.andExpect(status().isOk());
+	public void testGetPricelistItems() throws Exception {
+		mockMvc.perform(get("/api/company/" + COMPANY_ID + "/pricelist/items").header("X-Auth-Token", accessToken))
+				.andExpect(status().isOk());
 
 	}
-	
+
 	@Test
-	public void testGetPricelistItemsBadRequest() throws Exception{
-		mockMvc.perform(get("/api/company/"+100000L+"/pricelist/items")
-							.header("X-Auth-Token", accessToken))
-		.andExpect(status().isBadRequest());
+	public void testGetPricelistItemsBadRequest() throws Exception {
+		mockMvc.perform(get("/api/company/" + 100000L + "/pricelist/items").header("X-Auth-Token", accessToken))
+				.andExpect(status().isBadRequest());
 
 	}
 
-	
 	@Test
 	@Transactional
 	@Rollback(true)
-	public void testDeletePricelistItems() throws Exception{
-		mockMvc.perform(delete("/api/company/"+COMPANY_ID+"/pricelist/items/"+ID)
-							.header("X-Auth-Token", accessToken))
-		.andExpect(status().isOk());
+	public void testDeletePricelistItems() throws Exception {
+		mockMvc.perform(
+				delete("/api/company/" + COMPANY_ID + "/pricelist/items/" + ID).header("X-Auth-Token", accessToken))
+				.andExpect(status().isOk());
 
 	}
-	
+
 	@Test
 	@Transactional
 	@Rollback(true)
-	public void testDeletePricelistItemsBadRequest() throws Exception{
-		mockMvc.perform(delete("/api/company/"+COMPANY_ID_NOT_FOUND+"/pricelist/items/"+ID_NOT_FOUND)
-							.header("X-Auth-Token", accessToken))
-		.andExpect(status().isBadRequest());
+	public void testDeletePricelistItemsBadRequest() throws Exception {
+		mockMvc.perform(delete("/api/company/" + COMPANY_ID_NOT_FOUND + "/pricelist/items/" + ID_NOT_FOUND)
+				.header("X-Auth-Token", accessToken)).andExpect(status().isBadRequest());
 
 	}
-	
+
 	@Test
 	@Transactional
 	@Rollback(true)
-	public void testUpdateItemInPricelist() throws Exception{
-		ItemInPricelistDTO itemDTO= new ItemInPricelistDTO(ID,NEW_NAME, PRICE);
+	public void testUpdateItemInPricelist() throws Exception {
+		ItemInPricelistDTO itemDTO = new ItemInPricelistDTO(ID, NEW_NAME, PRICE);
 		String json = TestUtils.convertObjectToJson(itemDTO);
-		
-		mockMvc.perform(put("/api/company/"+COMPANY_ID+"/pricelist/items/"+ID)
-							.header("X-Auth-Token", accessToken)
-							.contentType(contentType)
-							.content(json))
-		.andExpect(status().isOk());
+
+		mockMvc.perform(put("/api/company/" + COMPANY_ID + "/pricelist/items/" + ID).header("X-Auth-Token", accessToken)
+				.contentType(contentType).content(json)).andExpect(status().isOk());
 
 	}
-	
+
 	@Test
 	@Transactional
 	@Rollback(true)
-	public void testUpdateItemInPricelistBadRequest() throws Exception{
-		ItemInPricelistDTO itemDTO= new ItemInPricelistDTO(NEW_ID,NEW_NAME, NEW_PRICE);
+	public void testUpdateItemInPricelistBadRequest() throws Exception {
+		ItemInPricelistDTO itemDTO = new ItemInPricelistDTO(NEW_ID, NEW_NAME, NEW_PRICE);
 		String json = TestUtils.convertObjectToJson(itemDTO);
-		
-		mockMvc.perform(put("/api/company/"+COMPANY_ID_NOT_FOUND+"/pricelist/items/"+ID)
-							.header("X-Auth-Token", accessToken)
-							.contentType(contentType)
-							.content(json))
-		.andExpect(status().isBadRequest());
+
+		mockMvc.perform(put("/api/company/" + COMPANY_ID_NOT_FOUND + "/pricelist/items/" + ID)
+				.header("X-Auth-Token", accessToken).contentType(contentType).content(json))
+				.andExpect(status().isBadRequest());
 
 	}
-	
+
 }

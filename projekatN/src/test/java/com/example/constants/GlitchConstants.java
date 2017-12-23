@@ -31,5 +31,7 @@ public class GlitchConstants {
 	
 	public final int PAGE_NUMBER = 1;
 	public final int PAGE_SIZE = 5;
+	
+	public static final Long ID_GLITCH_NOT_FOUND = 100000L;
 
 }

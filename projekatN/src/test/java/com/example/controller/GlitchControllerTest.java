@@ -1,6 +1,5 @@
 package com.example.controller;
 
-import static com.example.constants.UserConstants.*;
 import static com.example.constants.UserConstants.PASSWORD;
 import static com.example.constants.UserConstants.USERNAME;
 import static com.example.constants.UserConstants.USERNAME_PRESIDENT;
@@ -26,7 +25,6 @@ import static com.example.constants.UserConstants.ID_PRESIDENT;
 import static com.example.constants.GlitchConstants.ID_GLITCH;
 import static com.example.constants.GlitchConstants.DESCRIPTION;
 import static com.example.constants.UserConstants.USERNAME_NOT_EXIST;
-
 
 import java.nio.charset.Charset;
 
@@ -58,11 +56,10 @@ import com.jayway.restassured.RestAssured;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = WebEnvironment.DEFINED_PORT)
-@TestPropertySource(locations="classpath:test.properties")
+@TestPropertySource(locations = "classpath:test.properties")
 public class GlitchControllerTest {
 	private String accessTokenTenant;
 	private String accessTokenPresident;
-	private String accessTokenCompany;
 
 	@Autowired
 	private TestRestTemplate restTemplate;
@@ -91,280 +88,256 @@ public class GlitchControllerTest {
 	@Test
 	@Transactional
 	@Rollback(true)
-	public void testAddGlitch() throws Exception{
+	public void testAddGlitch() throws Exception {
 		GlitchDTO glitchDTO = new GlitchDTO(ID_COMPANY, NEW_DESCRIPTION);
-		
+
 		String json = TestUtils.convertObjectToJson(glitchDTO);
-		
-		mockMvc.perform(post("/api/apartments/" + ID_APARTMENT  +"/glitches").header("X-Auth-Token", accessTokenTenant)
-				.contentType(contentType)
-				.content(json))
-		.andExpect(status().isCreated())
-		.andExpect(content().contentType(contentType))
-		.andExpect(jsonPath("$.apartment.id").value(ID_APARTMENT))
-		.andExpect(jsonPath("$.description").value(NEW_DESCRIPTION))
-		.andExpect(jsonPath("$.state.state").value(STATE_REPORTED))
-		.andExpect(jsonPath("$.responsiblePerson.username").value(USERNAME_PRESIDENT));
-	}
-	
-	@Test
-	public void testAddGlitchBadRequest() throws Exception{
-		GlitchDTO glitchDTO = new GlitchDTO(ID_COMPANY, NEW_DESCRIPTION);
-		
-		String json = TestUtils.convertObjectToJson(glitchDTO);
-		
-		mockMvc.perform(post("/api/apartments/" + ID_APARTMENT_NOT_FOUND  +"/glitches").header("X-Auth-Token", accessTokenTenant)
-				.contentType(contentType)
-				.content(json))
-		.andExpect(status().isBadRequest());
+
+		mockMvc.perform(post("/api/apartments/" + ID_APARTMENT + "/glitches").header("X-Auth-Token", accessTokenTenant)
+				.contentType(contentType).content(json)).andExpect(status().isCreated())
+				.andExpect(content().contentType(contentType)).andExpect(jsonPath("$.apartment.id").value(ID_APARTMENT))
+				.andExpect(jsonPath("$.description").value(NEW_DESCRIPTION))
+				.andExpect(jsonPath("$.state.state").value(STATE_REPORTED))
+				.andExpect(jsonPath("$.responsiblePerson.username").value(USERNAME_PRESIDENT));
 	}
 
-	
-	
-	
+	@Test
+	public void testAddGlitchBadRequest() throws Exception {
+		GlitchDTO glitchDTO = new GlitchDTO(ID_COMPANY, NEW_DESCRIPTION);
+
+		String json = TestUtils.convertObjectToJson(glitchDTO);
+
+		mockMvc.perform(post("/api/apartments/" + ID_APARTMENT_NOT_FOUND + "/glitches")
+				.header("X-Auth-Token", accessTokenTenant).contentType(contentType).content(json))
+				.andExpect(status().isBadRequest());
+	}
+
 	@Before
 	public void loginPresident() {
 		ResponseEntity<String> responseEntity = restTemplate.postForEntity("/api/login",
 				new LoginDTO(USERNAME_PRESIDENT, PASSWORD_PRESIDENT), String.class);
 		accessTokenPresident = responseEntity.getBody();
 	}
+
 	@Test
 	@Transactional
 	@Rollback(true)
-	public void testChangeResponsiblePerson() throws Exception{
+	public void testChangeResponsiblePerson() throws Exception {
 		UserDTO userDTO = new UserDTO();
 		userDTO.setUsername(USERNAME);
-		
+
 		String json = TestUtils.convertObjectToJson(userDTO);
-		
-		mockMvc.perform(put("/api/glitches/"+ ID +"/responsiblePerson").header("X-Auth-Token", accessTokenPresident)
-				.contentType(contentType)
-				.content(json))
-		.andExpect(status().isOk())
-		.andExpect(content().contentType(contentType))
-		.andExpect(jsonPath("$.responsiblePerson.id").value(ID_USER.intValue()))
-		.andExpect(jsonPath("$.responsiblePerson.username").value(USERNAME));
-		
+
+		mockMvc.perform(put("/api/glitches/" + ID + "/responsiblePerson").header("X-Auth-Token", accessTokenPresident)
+				.contentType(contentType).content(json)).andExpect(status().isOk())
+				.andExpect(content().contentType(contentType))
+				.andExpect(jsonPath("$.responsiblePerson.id").value(ID_USER.intValue()))
+				.andExpect(jsonPath("$.responsiblePerson.username").value(USERNAME));
+
 	}
-	
+
 	@Test
 	@Transactional
 	@Rollback(true)
-	public void testChangeResponsiblePersonBadRequest() throws Exception{
+	public void testChangeResponsiblePersonBadRequest() throws Exception {
 		UserDTO userDTO = new UserDTO();
 		userDTO.setUsername(USERNAME);
-		
+
 		String json = TestUtils.convertObjectToJson(userDTO);
-		
-		mockMvc.perform(put("/api/glitches/"+ ID_NOT_FOUND +"/responsiblePerson").header("X-Auth-Token", accessTokenPresident)
-				.contentType(contentType)
-				.content(json))
-		.andExpect(status().isBadRequest());
-		
+
+		mockMvc.perform(put("/api/glitches/" + ID_NOT_FOUND + "/responsiblePerson")
+				.header("X-Auth-Token", accessTokenPresident).contentType(contentType).content(json))
+				.andExpect(status().isBadRequest());
+
 	}
-	
+
 	@Test
 	@Transactional
 	@Rollback(true)
-	public void testChangeResponsiblePersonNotExistUsername() throws Exception{
+	public void testChangeResponsiblePersonNotExistUsername() throws Exception {
 		UserDTO userDTO = new UserDTO();
 		userDTO.setUsername(USERNAME_NOT_EXIST);
-		
+
 		String json = TestUtils.convertObjectToJson(userDTO);
-		
-		mockMvc.perform(put("/api/glitches/"+ ID +"/responsiblePerson").header("X-Auth-Token", accessTokenPresident)
-				.contentType(contentType)
-				.content(json))
-		.andExpect(status().isOk())
-		.andExpect(content().contentType(contentType))
-		.andExpect(jsonPath("$.responsiblePerson.id").value(ID_PRESIDENT.intValue()))
-		.andExpect(jsonPath("$.responsiblePerson.username").value(USERNAME_PRESIDENT));
-		
+
+		mockMvc.perform(put("/api/glitches/" + ID + "/responsiblePerson").header("X-Auth-Token", accessTokenPresident)
+				.contentType(contentType).content(json)).andExpect(status().isOk())
+				.andExpect(content().contentType(contentType))
+				.andExpect(jsonPath("$.responsiblePerson.id").value(ID_PRESIDENT.intValue()))
+				.andExpect(jsonPath("$.responsiblePerson.username").value(USERNAME_PRESIDENT));
+
 	}
-	
+
 	@Test
-	public void testGetGlitches() throws Exception{
+	public void testGetGlitches() throws Exception {
 		mockMvc.perform(get("/api/glitches?page=0&size=" + PAGE_SIZE).header("X-Auth-Token", accessTokenTenant))
-		.andExpect(status().isOk())
-		.andExpect(jsonPath("$.[*].id").value(hasItem(ID_GLITCH.intValue())))
-		.andExpect(jsonPath("$.[*].description").value(hasItem(DESCRIPTION)));
-		
+				.andExpect(status().isOk()).andExpect(jsonPath("$.[*].id").value(hasItem(ID_GLITCH.intValue())))
+				.andExpect(jsonPath("$.[*].description").value(hasItem(DESCRIPTION)));
+
 	}
-	
+
 	@Test
 	@Transactional
 	@Rollback(true)
-	public void testChangeCompany() throws Exception{
+	public void testChangeCompany() throws Exception {
 		UserDTO userDTO = new UserDTO();
 		userDTO.setUsername(USERNAME);
-		
+
 		String json = TestUtils.convertObjectToJson(userDTO);
-		
-		mockMvc.perform(put("/api/apartments/"+ID_APARTMENT+"/glitches/"+ID_GLITCH+"/company/"+ID_COMPANY).header("X-Auth-Token", accessTokenPresident)
-				.contentType(contentType)
-				.content(json))
-		.andExpect(status().isOk())
-		.andExpect(content().contentType(contentType))
-		.andExpect(jsonPath("$.companyID").value(ID_COMPANY.intValue()));
-		
+
+		mockMvc.perform(put("/api/apartments/" + ID_APARTMENT + "/glitches/" + ID_GLITCH + "/company/" + ID_COMPANY)
+				.header("X-Auth-Token", accessTokenPresident).contentType(contentType).content(json))
+				.andExpect(status().isOk()).andExpect(content().contentType(contentType))
+				.andExpect(jsonPath("$.companyID").value(ID_COMPANY.intValue()));
+
 	}
-		
+
 	@Test
 	@Transactional
 	@Rollback(true)
-	public void testChangeCompanyBadRequestApartmnet() throws Exception{
+	public void testChangeCompanyBadRequestApartmnet() throws Exception {
 		UserDTO userDTO = new UserDTO();
 		userDTO.setUsername(USERNAME);
-		
+
 		String json = TestUtils.convertObjectToJson(userDTO);
-		
-		mockMvc.perform(put("/api/apartments/"+ID_APARTMENT_NOT_FOUND+"/glitches/"+ID_GLITCH+"/company/"+ID_COMPANY).header("X-Auth-Token", accessTokenPresident)
-				.contentType(contentType)
-				.content(json))
-		.andExpect(status().isBadRequest());
-		
+
+		mockMvc.perform(
+				put("/api/apartments/" + ID_APARTMENT_NOT_FOUND + "/glitches/" + ID_GLITCH + "/company/" + ID_COMPANY)
+						.header("X-Auth-Token", accessTokenPresident).contentType(contentType).content(json))
+				.andExpect(status().isBadRequest());
+
 	}
-	
-	
+
 	@Test
 	@Transactional
 	@Rollback(true)
-	public void testChangeCompanyBadRequestGlitches() throws Exception{
+	public void testChangeCompanyBadRequestGlitches() throws Exception {
 		UserDTO userDTO = new UserDTO();
 		userDTO.setUsername(USERNAME);
-		
+
 		String json = TestUtils.convertObjectToJson(userDTO);
-		
-		mockMvc.perform(put("/api/apartments/"+ID_APARTMENT+"/glitches/"+10000L+"/company/"+ID_COMPANY).header("X-Auth-Token", accessTokenPresident)
-				.contentType(contentType)
-				.content(json))
-		.andExpect(status().isBadRequest());
-		
-	}
-	
-	@Test
-	@Transactional
-	@Rollback(true)
-	public void testChangeGlitchDateApprove() throws Exception{
 
-		mockMvc.perform(put("/api/apartments/"+ID_APARTMENT+"/glitches/"+ID_GLITCH).header("X-Auth-Token", accessTokenPresident))
-		.andExpect(status().isOk())
-		.andExpect(content().contentType(contentType))
-		.andExpect(jsonPath("$.dateOfRepairApproved").value(true));
-		
-	}
-	
-	
-	@Test
-	@Transactional
-	@Rollback(true)
-	public void testChangeGlitchDateApproveBadRequestApartment() throws Exception{
+		mockMvc.perform(
+				put("/api/apartments/" + ID_APARTMENT + "/glitches/" + ID_GLITCH_NOT_FOUND + "/company/" + ID_COMPANY)
+						.header("X-Auth-Token", accessTokenPresident).contentType(contentType).content(json))
+				.andExpect(status().isBadRequest());
 
-		mockMvc.perform(put("/api/apartments/"+ID_APARTMENT_NOT_FOUND+"/glitches/"+ID_GLITCH).header("X-Auth-Token", accessTokenPresident))
-		.andExpect(status().isBadRequest());
-		
 	}
-	
-	@Test
-	@Transactional
-	@Rollback(true)
-	public void testChangeGlitchDateApproveBadRequestGlitch() throws Exception{
 
-		mockMvc.perform(put("/api/apartments/"+ID_APARTMENT+"/glitches/"+10000L).header("X-Auth-Token", accessTokenPresident))
-		.andExpect(status().isBadRequest());
-		
-	}
-	
-	
 	@Test
 	@Transactional
 	@Rollback(true)
-	public void testChangeGlitchPhoto() throws Exception{
-	
-		mockMvc.perform(put("/api/apartments/"+ID_APARTMENT+"/glitches/"+ID_GLITCH+"/photo?image="+IMAGE_UPLOAD).header("X-Auth-Token", accessTokenTenant))
-		.andExpect(status().isOk());
-		
+	public void testChangeGlitchDateApprove() throws Exception {
+
+		mockMvc.perform(put("/api/apartments/" + ID_APARTMENT + "/glitches/" + ID_GLITCH).header("X-Auth-Token",
+				accessTokenPresident)).andExpect(status().isOk()).andExpect(content().contentType(contentType))
+				.andExpect(jsonPath("$.dateOfRepairApproved").value(true));
+
 	}
-	
+
 	@Test
 	@Transactional
 	@Rollback(true)
-	public void testChangeGlitchPhotoBadRequstApartment() throws Exception{
-	
-		mockMvc.perform(put("/api/apartments/"+ID_APARTMENT_NOT_FOUND+"/glitches/"+ID_GLITCH+"/photo?image="+IMAGE_UPLOAD).header("X-Auth-Token", accessTokenTenant))
-		.andExpect(status().isBadRequest());
-		
+	public void testChangeGlitchDateApproveBadRequestApartment() throws Exception {
+
+		mockMvc.perform(put("/api/apartments/" + ID_APARTMENT_NOT_FOUND + "/glitches/" + ID_GLITCH)
+				.header("X-Auth-Token", accessTokenPresident)).andExpect(status().isBadRequest());
+
 	}
-	
+
 	@Test
 	@Transactional
 	@Rollback(true)
-	public void testChangeGlitchPhotoBadRequstGlitch() throws Exception{
-	
-		mockMvc.perform(put("/api/apartments/"+ID_APARTMENT+"/glitches/"+10000L+"/photo?image="+IMAGE_UPLOAD).header("X-Auth-Token", accessTokenTenant))
-		.andExpect(status().isBadRequest());
-		
+	public void testChangeGlitchDateApproveBadRequestGlitch() throws Exception {
+
+		mockMvc.perform(put("/api/apartments/" + ID_APARTMENT + "/glitches/" + ID_GLITCH_NOT_FOUND)
+				.header("X-Auth-Token", accessTokenPresident)).andExpect(status().isBadRequest());
+
 	}
-	
+
 	@Test
-	public void testGetCompany() throws Exception{
-		
-		
-		mockMvc.perform(get("/api/glitches/"+ID_GLITCH+"/company").header("X-Auth-Token", accessTokenPresident))
-		.andExpect(status().isOk())
-		.andExpect(jsonPath("$.[*].id").value(hasItem(ID_GLITCH.intValue())));
-		
+	@Transactional
+	@Rollback(true)
+	public void testChangeGlitchPhoto() throws Exception {
+
+		mockMvc.perform(
+				put("/api/apartments/" + ID_APARTMENT + "/glitches/" + ID_GLITCH + "/photo?image=" + IMAGE_UPLOAD)
+						.header("X-Auth-Token", accessTokenTenant))
+				.andExpect(status().isOk());
+
 	}
-	
+
 	@Test
-	
-	public void testSetCompany() throws Exception{
+	@Transactional
+	@Rollback(true)
+	public void testChangeGlitchPhotoBadRequstApartment() throws Exception {
+
+		mockMvc.perform(put(
+				"/api/apartments/" + ID_APARTMENT_NOT_FOUND + "/glitches/" + ID_GLITCH + "/photo?image=" + IMAGE_UPLOAD)
+						.header("X-Auth-Token", accessTokenTenant))
+				.andExpect(status().isBadRequest());
+
+	}
+
+	@Test
+	@Transactional
+	@Rollback(true)
+	public void testChangeGlitchPhotoBadRequstGlitch() throws Exception {
+
+		mockMvc.perform(put("/api/apartments/" + ID_APARTMENT + "/glitches/" + ID_GLITCH_NOT_FOUND + "/photo?image=" + IMAGE_UPLOAD)
+				.header("X-Auth-Token", accessTokenTenant)).andExpect(status().isBadRequest());
+
+	}
+
+	@Test
+	public void testGetCompany() throws Exception {
+
+		mockMvc.perform(get("/api/glitches/" + ID_GLITCH + "/company").header("X-Auth-Token", accessTokenPresident))
+				.andExpect(status().isOk()).andExpect(jsonPath("$.[*].id").value(hasItem(ID_GLITCH.intValue())));
+
+	}
+
+	@Test
+	public void testSetCompany() throws Exception {
 		UserDTO userDTO = new UserDTO();
 		userDTO.setUsername(USERNAME);
 		userDTO.setId(6L);
-		
+
 		String json = TestUtils.convertObjectToJson(userDTO);
-		
-		mockMvc.perform(put("/api/glitches/"+ID_GLITCH_2+"/company").header("X-Auth-Token", accessTokenPresident)
-				.contentType(contentType)
-				.content(json))
-		.andExpect(status().isOk())
-		.andExpect(jsonPath("$.id").value(ID_GLITCH_2))
-		.andExpect(jsonPath("$.description").value(DESCRIPTION_2));
-		
+
+		mockMvc.perform(put("/api/glitches/" + ID_GLITCH_2 + "/company").header("X-Auth-Token", accessTokenPresident)
+				.contentType(contentType).content(json)).andExpect(status().isOk())
+				.andExpect(jsonPath("$.id").value(ID_GLITCH_2))
+				.andExpect(jsonPath("$.description").value(DESCRIPTION_2));
+
 	}
-	
-	
+
 	@Test
-	
-	public void testSetCompanyBadRequest() throws Exception{
+	public void testSetCompanyBadRequest() throws Exception {
 		UserDTO userDTO = new UserDTO();
 		userDTO.setUsername(USERNAME);
 		userDTO.setId(6L);
-		
+
 		String json = TestUtils.convertObjectToJson(userDTO);
-		
-		mockMvc.perform(put("/api/glitches/"+10000L+"/company").header("X-Auth-Token", accessTokenPresident)
-				.contentType(contentType)
-				.content(json))
-		.andExpect(status().isBadRequest());
-		
+
+		mockMvc.perform(put("/api/glitches/" + ID_GLITCH_NOT_FOUND + "/company")
+				.header("X-Auth-Token", accessTokenPresident).contentType(contentType).content(json))
+				.andExpect(status().isBadRequest());
+
 	}
-	
+
 	@Test
-	
-	public void testSetCompanBadRequesty() throws Exception{
+	public void testSetCompanBadRequesty() throws Exception {
 		UserDTO userDTO = new UserDTO();
 		userDTO.setUsername(USERNAME);
 		userDTO.setId(6L);
-		
+
 		String json = TestUtils.convertObjectToJson(userDTO);
-		
-		mockMvc.perform(put("/api/glitches/"+10000L+"/company").header("X-Auth-Token", accessTokenPresident)
-				.contentType(contentType)
-				.content(json))
-		.andExpect(status().isBadRequest());
-		
+
+		mockMvc.perform(put("/api/glitches/" + ID_GLITCH_NOT_FOUND + "/company")
+				.header("X-Auth-Token", accessTokenPresident).contentType(contentType).content(json))
+				.andExpect(status().isBadRequest());
+
 	}
-	
+
 }

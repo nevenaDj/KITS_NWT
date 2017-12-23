@@ -37,15 +37,13 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
 
 import com.example.TestUtils;
-import com.example.dto.ApartmentDTO;
 import com.example.dto.BillDTO;
 import com.example.dto.LoginDTO;
-import com.example.dto.UserDTO;
 import com.jayway.restassured.RestAssured;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = WebEnvironment.DEFINED_PORT)
-@TestPropertySource(locations="classpath:test.properties")
+@TestPropertySource(locations = "classpath:test.properties")
 public class BillControllerTest {
 
 	private String accessToken;
@@ -56,7 +54,7 @@ public class BillControllerTest {
 
 	@Autowired
 	private WebApplicationContext webApplicationContext;
-	
+
 	@Autowired
 	FilterChainProxy springSecurityFilterChain;
 
@@ -68,206 +66,172 @@ public class BillControllerTest {
 	@PostConstruct
 	public void setup() {
 		RestAssured.useRelaxedHTTPSValidation();
-		this.mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext)
-									  .addFilters(springSecurityFilterChain)
-									  .build();
-		
+		this.mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).addFilters(springSecurityFilterChain)
+				.build();
+
 		ResponseEntity<String> responseEntity = restTemplate.postForEntity("/api/login",
 				new LoginDTO(USERNAME_COMPANY, PASSWORD_COMPANY), String.class);
 		accessToken = responseEntity.getBody();
 	}
-	
+
 	@Test
 	@Transactional
 	@Rollback(true)
-	public void testAddBill() throws Exception{
-		Date new_date= new Date();
+	public void testAddBill() throws Exception {
+		Date new_date = new Date();
 		BillDTO billDTO = new BillDTO(NEW_ID, NEW_PRICE, new_date, NEW_APPROVED);
-		
+
 		String json = TestUtils.convertObjectToJson(billDTO);
-		
-		mockMvc.perform(post("/api/apartments/"+ID_APARTMENT+"/glitches/"+ID_GLITCH+"/bill")
-							.header("X-Auth-Token", accessToken)
-							.contentType(contentType)
-							.content(json))
-		.andExpect(status().isCreated())
-		.andExpect(content().contentType(contentType))
-		.andExpect(jsonPath("$.approved").value(NEW_APPROVED))
-		.andExpect(jsonPath("$.date").value(new_date));
+
+		mockMvc.perform(post("/api/apartments/" + ID_APARTMENT + "/glitches/" + ID_GLITCH + "/bill")
+				.header("X-Auth-Token", accessToken).contentType(contentType).content(json))
+				.andExpect(status().isCreated()).andExpect(content().contentType(contentType))
+				.andExpect(jsonPath("$.approved").value(NEW_APPROVED)).andExpect(jsonPath("$.date").value(new_date));
 	}
-	
+
 	@Test
 	@Transactional
 	@Rollback(true)
-	public void testDeleteBill() throws Exception{
-	
-		mockMvc.perform(delete("/api/apartments/"+ID_APARTMENT+"/glitches/"+ID_GLITCH+"/bill")
-							.header("X-Auth-Token", accessToken)
-							.contentType(contentType))
-		.andExpect(status().isOk());
+	public void testDeleteBill() throws Exception {
+
+		mockMvc.perform(delete("/api/apartments/" + ID_APARTMENT + "/glitches/" + ID_GLITCH + "/bill")
+				.header("X-Auth-Token", accessToken).contentType(contentType)).andExpect(status().isOk());
 	}
-	
+
 	@Test
 	@Transactional
 	@Rollback(true)
-	public void testDeleteBillNotFound() throws Exception{
-	
-		mockMvc.perform(delete("/api/apartments/"+ID_APARTMENT+"/glitches/"+ID_GLITCH_WITHOUT_BILL+"/bill")
-							.header("X-Auth-Token", accessToken)
-							.contentType(contentType))
-		.andExpect(status().isNotFound());
+	public void testDeleteBillNotFound() throws Exception {
+
+		mockMvc.perform(delete("/api/apartments/" + ID_APARTMENT + "/glitches/" + ID_GLITCH_WITHOUT_BILL + "/bill")
+				.header("X-Auth-Token", accessToken).contentType(contentType)).andExpect(status().isNotFound());
 	}
-	
+
 	@Test
 	@Transactional
 	@Rollback(true)
-	public void testDeleteBillBadRequest() throws Exception{
-	
-		mockMvc.perform(delete("/api/apartments/"+ID_APARTMENT_NOT_FOUND+"/glitches/"+ID_GLITCH+"/bill")
-							.header("X-Auth-Token", accessToken)
-							.contentType(contentType))
-		.andExpect(status().isBadRequest());
+	public void testDeleteBillBadRequest() throws Exception {
+
+		mockMvc.perform(delete("/api/apartments/" + ID_APARTMENT_NOT_FOUND + "/glitches/" + ID_GLITCH + "/bill")
+				.header("X-Auth-Token", accessToken).contentType(contentType)).andExpect(status().isBadRequest());
 	}
-	
+
 	@Test
 	@Transactional
 	@Rollback(true)
-	public void testDeleteBillBadRequestGlitch() throws Exception{
-	
-		mockMvc.perform(delete("/api/apartments/"+ID_APARTMENT+"/glitches/"+ID_GLITCH_NOT_FOUND+"/bill")
-							.header("X-Auth-Token", accessToken)
-							.contentType(contentType))
-		.andExpect(status().isBadRequest());
+	public void testDeleteBillBadRequestGlitch() throws Exception {
+
+		mockMvc.perform(delete("/api/apartments/" + ID_APARTMENT + "/glitches/" + ID_GLITCH_NOT_FOUND + "/bill")
+				.header("X-Auth-Token", accessToken).contentType(contentType)).andExpect(status().isBadRequest());
 	}
-	
+
 	@Test
 	@Transactional
 	@Rollback(true)
-	public void testDeleteBill2() throws Exception{
-		mockMvc.perform(delete("/api/bills/"+ID)
-							.header("X-Auth-Token", accessToken)
-							.contentType(contentType))
-		.andExpect(status().isOk());
+	public void testDeleteBill2() throws Exception {
+		mockMvc.perform(delete("/api/bills/" + ID).header("X-Auth-Token", accessToken).contentType(contentType))
+				.andExpect(status().isOk());
 	}
-	
-	public void testDeleteBill2NotFound() throws Exception{
-		mockMvc.perform(delete("/api/bills/"+NEW_ID)
-							.header("X-Auth-Token", accessToken)
-							.contentType(contentType))
-		.andExpect(status().isNotFound());
-	}
-	
-	@Test
-	public void testGetBill() throws Exception{
-		mockMvc.perform(get("/api/bills/"+ID).header("X-Auth-Token", accessToken))
-		.andExpect(status().isOk())
-		.andExpect(content().contentType(contentType))
-		.andExpect(jsonPath("$.id").value(ID))
-		.andExpect(jsonPath("$.approved").value(APPROVED_2));
-		
-	}
-	
-	
-	@Test
-	public void testGetBillNotFound() throws Exception{
-		mockMvc.perform(get("/api/bills/"+NEW_ID).header("X-Auth-Token", accessToken))
-		.andExpect(status().isNotFound());
-	}
-	
-	
-	@Test
-	public void testGetBill2() throws Exception{
-		mockMvc.perform(get("/api/apartments/"+ID_APARTMENT+"/glitches/"+ID_GLITCH+"/bill")
-				.header("X-Auth-Token", accessToken))
-				.andExpect(status().isOk())
-				.andExpect(content().contentType(contentType))
-				.andExpect(jsonPath("$.id").value(ID))
-				.andExpect(jsonPath("$.approved").value(APPROVED_2));
-		
-	}
-	
-	
-	@Test
-	public void testGetBill2NotFound() throws Exception{
-		mockMvc.perform(get("/api/apartments/"+ID_APARTMENT+"/glitches/"+ID_GLITCH_WITHOUT_BILL+"/bill")
-				.header("X-Auth-Token", accessToken))
+
+	public void testDeleteBill2NotFound() throws Exception {
+		mockMvc.perform(delete("/api/bills/" + NEW_ID).header("X-Auth-Token", accessToken).contentType(contentType))
 				.andExpect(status().isNotFound());
 	}
-	
+
 	@Test
-	public void testGetBill2BadRequest() throws Exception{
-		mockMvc.perform(get("/api/apartments/"+ID_APARTMENT+"/glitches/"+ID_GLITCH_NOT_FOUND+"/bill")
-				.header("X-Auth-Token", accessToken))
-				.andExpect(status().isBadRequest());
+	public void testGetBill() throws Exception {
+		mockMvc.perform(get("/api/bills/" + ID).header("X-Auth-Token", accessToken)).andExpect(status().isOk())
+				.andExpect(content().contentType(contentType)).andExpect(jsonPath("$.id").value(ID))
+				.andExpect(jsonPath("$.approved").value(APPROVED_2));
+
 	}
-	
+
 	@Test
-	public void testGetBill2BadRequestApartmenr() throws Exception{
-		mockMvc.perform(get("/api/apartments/"+ID_APARTMENT_NOT_FOUND+"/glitches/"+ID_GLITCH+"/bill")
-				.header("X-Auth-Token", accessToken))
-				.andExpect(status().isBadRequest());
+	public void testGetBillNotFound() throws Exception {
+		mockMvc.perform(get("/api/bills/" + NEW_ID).header("X-Auth-Token", accessToken))
+				.andExpect(status().isNotFound());
 	}
-	
+
+	@Test
+	public void testGetBill2() throws Exception {
+		mockMvc.perform(get("/api/apartments/" + ID_APARTMENT + "/glitches/" + ID_GLITCH + "/bill")
+				.header("X-Auth-Token", accessToken)).andExpect(status().isOk())
+				.andExpect(content().contentType(contentType)).andExpect(jsonPath("$.id").value(ID))
+				.andExpect(jsonPath("$.approved").value(APPROVED_2));
+
+	}
+
+	@Test
+	public void testGetBill2NotFound() throws Exception {
+		mockMvc.perform(get("/api/apartments/" + ID_APARTMENT + "/glitches/" + ID_GLITCH_WITHOUT_BILL + "/bill")
+				.header("X-Auth-Token", accessToken)).andExpect(status().isNotFound());
+	}
+
+	@Test
+	public void testGetBill2BadRequest() throws Exception {
+		mockMvc.perform(get("/api/apartments/" + ID_APARTMENT + "/glitches/" + ID_GLITCH_NOT_FOUND + "/bill")
+				.header("X-Auth-Token", accessToken)).andExpect(status().isBadRequest());
+	}
+
+	@Test
+	public void testGetBill2BadRequestApartmenr() throws Exception {
+		mockMvc.perform(get("/api/apartments/" + ID_APARTMENT_NOT_FOUND + "/glitches/" + ID_GLITCH + "/bill")
+				.header("X-Auth-Token", accessToken)).andExpect(status().isBadRequest());
+	}
+
 	@Before
 	public void loginPresident() {
 		ResponseEntity<String> responseEntity = restTemplate.postForEntity("/api/login",
 				new LoginDTO(USERNAME_PRESIDENT, PASSWORD_PRESIDENT), String.class);
 		accessTokenPresident = responseEntity.getBody();
 	}
-	
+
 	@Test
 	@Transactional
 	@Rollback(true)
-	public void testSetBillApprove() throws Exception{
-		mockMvc.perform(put("/api/apartments/"+ID_APARTMENT+"/glitches/"+ID_GLITCH+"/bill")
-				.header("X-Auth-Token", accessTokenPresident))
-				.andExpect(status().isOk())
+	public void testSetBillApprove() throws Exception {
+		mockMvc.perform(put("/api/apartments/" + ID_APARTMENT + "/glitches/" + ID_GLITCH + "/bill")
+				.header("X-Auth-Token", accessTokenPresident)).andExpect(status().isOk())
 				.andExpect(jsonPath("$.approved").value(true));
 	}
-	
+
 	@Test
 	@Transactional
 	@Rollback(true)
-	public void testSetBillApproveBadRequestApartmant() throws Exception{
-		mockMvc.perform(put("/api/apartments/"+ID_APARTMENT_NOT_FOUND+"/glitches/"+ID_GLITCH+"/bill")
-				.header("X-Auth-Token", accessTokenPresident))
-				.andExpect(status().isBadRequest());
+	public void testSetBillApproveBadRequestApartmant() throws Exception {
+		mockMvc.perform(put("/api/apartments/" + ID_APARTMENT_NOT_FOUND + "/glitches/" + ID_GLITCH + "/bill")
+				.header("X-Auth-Token", accessTokenPresident)).andExpect(status().isBadRequest());
 	}
-	
+
 	@Test
 	@Transactional
 	@Rollback(true)
-	public void testSetBillApproveBadRequestGlitch() throws Exception{
-		mockMvc.perform(put("/api/apartments/"+ID_APARTMENT+"/glitches/"+ID_GLITCH_NOT_FOUND+"/bill")
-				.header("X-Auth-Token", accessTokenPresident))
-				.andExpect(status().isBadRequest());
+	public void testSetBillApproveBadRequestGlitch() throws Exception {
+		mockMvc.perform(put("/api/apartments/" + ID_APARTMENT + "/glitches/" + ID_GLITCH_NOT_FOUND + "/bill")
+				.header("X-Auth-Token", accessTokenPresident)).andExpect(status().isBadRequest());
 	}
-	
+
 	@Test
 	@Transactional
 	@Rollback(true)
-	public void testSetBillApproveNotFound() throws Exception{
-		mockMvc.perform(put("/api/apartments/"+ID_APARTMENT+"/glitches/"+ID_GLITCH_WITHOUT_BILL+"/bill")
-				.header("X-Auth-Token", accessTokenPresident))
-				.andExpect(status().isNotFound());
+	public void testSetBillApproveNotFound() throws Exception {
+		mockMvc.perform(put("/api/apartments/" + ID_APARTMENT + "/glitches/" + ID_GLITCH_WITHOUT_BILL + "/bill")
+				.header("X-Auth-Token", accessTokenPresident)).andExpect(status().isNotFound());
 	}
-	
+
 	@Test
 	@Transactional
 	@Rollback(true)
-	public void testSetBillApprove2() throws Exception{
-		mockMvc.perform(put("/api/bills/"+ID)
-				.header("X-Auth-Token", accessTokenPresident))
-				.andExpect(status().isOk())
+	public void testSetBillApprove2() throws Exception {
+		mockMvc.perform(put("/api/bills/" + ID).header("X-Auth-Token", accessTokenPresident)).andExpect(status().isOk())
 				.andExpect(jsonPath("$.approved").value(true));
 	}
-	
+
 	@Test
 	@Transactional
 	@Rollback(true)
-	public void testSetBillApprove2NotFound() throws Exception{
-		mockMvc.perform(put("/api/bills/"+NEW_ID)
-				.header("X-Auth-Token", accessTokenPresident))
+	public void testSetBillApprove2NotFound() throws Exception {
+		mockMvc.perform(put("/api/bills/" + NEW_ID).header("X-Auth-Token", accessTokenPresident))
 				.andExpect(status().isNotFound());
 	}
 }

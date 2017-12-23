@@ -79,12 +79,10 @@ public class AgendaController {
 	ItemCommentService commentService;
 
 	@RequestMapping(value = "/meetings/{id}/items", method = RequestMethod.POST, consumes = "application/json")
-	@ApiOperation(value = "Create agenda item.", notes = "Returns the item being saved.",
-		httpMethod = "POST", produces = "application/json", consumes = "application/json")
+	@ApiOperation(value = "Create agenda item.", notes = "Returns the item being saved.", httpMethod = "POST", produces = "application/json", consumes = "application/json")
 	@ApiImplicitParam(paramType = "header", name = "X-Auth-Token", required = true, value = "JWT token")
-	@ApiResponses(value = { 
-			@ApiResponse(code = 201, message = "Created", response = AgendaItemDTO.class),
-			@ApiResponse(code = 400, message = "Bad request") })	
+	@ApiResponses(value = { @ApiResponse(code = 201, message = "Created", response = AgendaItemDTO.class),
+			@ApiResponse(code = 400, message = "Bad request") })
 	@PreAuthorize("hasRole('ROLE_PRESIDENT')")
 	public ResponseEntity<AgendaItemDTO> addAgendaItem(
 			@ApiParam(value = "The ID of the meeting.", required = true) @PathVariable("id") Long id,
@@ -105,22 +103,19 @@ public class AgendaController {
 	}
 
 	@RequestMapping(value = "/meetings/{m_id}/items/{id}", method = RequestMethod.GET, produces = "application/json")
-	@ApiOperation(value = "Get an agenda item by id.", notes = "Returns the item which is found.",
-		httpMethod = "GET", produces = "application/json")
+	@ApiOperation(value = "Get an agenda item by id.", notes = "Returns the item which is found.", httpMethod = "GET", produces = "application/json")
 	@ApiImplicitParam(paramType = "header", name = "X-Auth-Token", required = true, value = "JWT token")
-	@ApiResponses(value = { 
-			@ApiResponse(code = 200, message = "Ok", response = AgendaItemDTO.class),
-			@ApiResponse(code = 400, message = "Bad request"),
-			@ApiResponse(code = 404, message = "Not found")})	
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "Ok", response = AgendaItemDTO.class),
+			@ApiResponse(code = 400, message = "Bad request"), @ApiResponse(code = 404, message = "Not found") })
 	@PreAuthorize("hasAnyRole('ROLE_OWNER', 'ROLE_PRESIDENT')")
 	public ResponseEntity<AgendaItemDTO> getAgendaPoint(
 			@ApiParam(value = "The ID of the item.", required = true) @PathVariable("id") Long id,
-			@ApiParam(value = "The ID of the meeting.", required = true) @PathVariable("m_id") Long meetingId ) {
+			@ApiParam(value = "The ID of the meeting.", required = true) @PathVariable("m_id") Long meetingId) {
 		Meeting meeting = meetingService.findOne(meetingId);
 		if (meeting == null) {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
-		
+
 		AgendaItem agendaPoint = agendaPointService.findOne(id);
 
 		if (agendaPoint == null) {
@@ -131,11 +126,9 @@ public class AgendaController {
 	}
 
 	@RequestMapping(value = "/agendas/{id}", method = RequestMethod.GET)
-	@ApiOperation(value = "Get the whole agenda.", notes = "Returns the agenda.",
-		httpMethod = "GET", produces = "application/json")
+	@ApiOperation(value = "Get the whole agenda.", notes = "Returns the agenda.", httpMethod = "GET", produces = "application/json")
 	@ApiImplicitParam(paramType = "header", name = "X-Auth-Token", required = true, value = "JWT token")
-	@ApiResponses(value = { 
-			@ApiResponse(code = 200, message = "Ok", response = AgendaDTO.class)})
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "Ok", response = AgendaDTO.class) })
 	@PreAuthorize("hasAnyRole('ROLE_OWNER', 'ROLE_PRESIDENT')")
 	public ResponseEntity<AgendaDTO> getAgenda(
 			@ApiParam(value = "The ID of the meeting.", required = true) @PathVariable Long id) {
@@ -158,13 +151,10 @@ public class AgendaController {
 
 	}
 
-	@RequestMapping(value = "/agendas/no_meeting", method = RequestMethod.GET)	
-	@ApiOperation(value = "Get contents(glitches, notifications, commaunal problems) whiach are not in any agenda.",
-	notes = "Returns the contnts.",
-		httpMethod = "GET", produces = "application/json")
+	@RequestMapping(value = "/agendas/no_meeting", method = RequestMethod.GET)
+	@ApiOperation(value = "Get contents(glitches, notifications, commaunal problems) whiach are not in any agenda.", notes = "Returns the contnts.", httpMethod = "GET", produces = "application/json")
 	@ApiImplicitParam(paramType = "header", name = "X-Auth-Token", required = true, value = "JWT token")
-	@ApiResponses(value = { 
-			@ApiResponse(code = 200, message = "Ok", response = ContentWithoutAgendaDTO.class)})
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "Ok", response = ContentWithoutAgendaDTO.class) })
 	@PreAuthorize("hasAnyRole( 'ROLE_PRESIDENT')")
 	public ResponseEntity<ContentWithoutAgendaDTO> getAgendaWithoutMeeting() {
 
@@ -195,10 +185,8 @@ public class AgendaController {
 	@RequestMapping(value = "/meetings/{m_id}/items/{id}", method = RequestMethod.DELETE)
 	@ApiOperation(value = "Delete an item from the agenda", httpMethod = "DELETE")
 	@ApiImplicitParam(paramType = "header", name = "X-Auth-Token", required = true, value = "JWT token")
-	@ApiResponses(value = { 
-			@ApiResponse(code = 200, message = "Ok"),
-			@ApiResponse(code = 400, message = "Bad request"),
-			@ApiResponse(code = 404, message = "Not found"),})
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "Ok"), @ApiResponse(code = 400, message = "Bad request"),
+			@ApiResponse(code = 404, message = "Not found"), })
 	@PreAuthorize("hasAnyRole('ROLE_PRESIDENT')")
 	public ResponseEntity<Void> deleteAgenda(
 			@ApiParam(value = "The ID of the item.", required = true) @PathVariable("id") Long id,
@@ -209,7 +197,7 @@ public class AgendaController {
 		if (meeting == null) {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
-		
+
 		if (agendaItem == null) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
@@ -219,55 +207,52 @@ public class AgendaController {
 		return new ResponseEntity<>(HttpStatus.OK);
 
 	}
-	
-	@RequestMapping(value = "/meetings/{m_id}/items/{id}", method = RequestMethod.PUT, consumes="application/json" , produces="application/json")
-	@ApiOperation(value = "Update an item from the agenda", notes="Returns the updated item.",
-		httpMethod = "PUT", consumes="application/json" , produces="application/json")
+
+	@RequestMapping(value = "/meetings/{m_id}/items/{id}", method = RequestMethod.PUT, consumes = "application/json", produces = "application/json")
+	@ApiOperation(value = "Update an item from the agenda", notes = "Returns the updated item.", httpMethod = "PUT", consumes = "application/json", produces = "application/json")
 	@ApiImplicitParam(paramType = "header", name = "X-Auth-Token", required = true, value = "JWT token")
-	@ApiResponses(value = { 
-			@ApiResponse(code = 200, message = "Ok", response = AgendaItemDTO.class),
-			@ApiResponse(code = 400, message = "Bad request"),
-			@ApiResponse(code = 404, message = "Not found")})
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "Ok", response = AgendaItemDTO.class),
+			@ApiResponse(code = 400, message = "Bad request"), @ApiResponse(code = 404, message = "Not found") })
 	@PreAuthorize("hasAnyRole('ROLE_PRESIDENT')")
 	public ResponseEntity<AgendaItemDTO> updateAgenda(
-			@ApiParam(value = "The ID of the item.", required = true) @PathVariable("id") Long id, 
+			@ApiParam(value = "The ID of the item.", required = true) @PathVariable("id") Long id,
 			@ApiParam(value = "The ID of the meeting.", required = true) @PathVariable("m_id") Long meetingId,
 			@RequestBody AgendaItemDTO itemDTO) {
 		Meeting meeting = meetingService.findOne(meetingId);
 		if (meeting == null) {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
-		
+
 		AgendaItem agendaItem = agendaPointService.findOne(id);
 
-		if (agendaItem==null){
-			return new ResponseEntity<>( HttpStatus.NOT_FOUND);
+		if (agendaItem == null) {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
-		if (itemDTO.getConclusion()!=null & agendaItem.getConclusion()!=null )
-			if (!itemDTO.getConclusion().equals(agendaItem.getConclusion()))
-				agendaItem.setConclusion(itemDTO.getConclusion());
-		if (itemDTO.getTitle()!=null & agendaItem.getTitle()!=null)
-			if (!itemDTO.getTitle().equals(agendaItem.getTitle()))
-				agendaItem.setTitle(itemDTO.getTitle());
-		if (itemDTO.getNumber()!=agendaItem.getNumber())
+		if (itemDTO.getConclusion() != null && agendaItem.getConclusion() != null
+				&& !itemDTO.getConclusion().equals(agendaItem.getConclusion()))
+
+			agendaItem.setConclusion(itemDTO.getConclusion());
+
+		if (itemDTO.getTitle() != null && agendaItem.getTitle() != null
+				&& !itemDTO.getTitle().equals(agendaItem.getTitle()))
+
+			agendaItem.setTitle(itemDTO.getTitle());
+
+		if (itemDTO.getNumber() != agendaItem.getNumber())
 			agendaItem.setNumber(itemDTO.getNumber());
 		agendaPointService.save(agendaItem);
-	
-		
+
 		return new ResponseEntity<>(new AgendaItemDTO(agendaItem), HttpStatus.OK);
 	}
-	
-	@RequestMapping(value = "/meetings/{m_id}/items/{id}/conclusion", method = RequestMethod.PUT, consumes="application/json" , produces="application/json")
-	@ApiOperation(value = "Update an item's conclucion in the agenda", notes="Returns the updated item.",
-		httpMethod = "PUT", consumes="application/json" , produces="application/json")
+
+	@RequestMapping(value = "/meetings/{m_id}/items/{id}/conclusion", method = RequestMethod.PUT, consumes = "application/json", produces = "application/json")
+	@ApiOperation(value = "Update an item's conclucion in the agenda", notes = "Returns the updated item.", httpMethod = "PUT", consumes = "application/json", produces = "application/json")
 	@ApiImplicitParam(paramType = "header", name = "X-Auth-Token", required = true, value = "JWT token")
-	@ApiResponses(value = { 
-			@ApiResponse(code = 200, message = "Ok", response = AgendaItemDTO.class),
-			@ApiResponse(code = 400, message = "Bad request"),
-			@ApiResponse(code = 404, message = "Not found")})
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "Ok", response = AgendaItemDTO.class),
+			@ApiResponse(code = 400, message = "Bad request"), @ApiResponse(code = 404, message = "Not found") })
 	@PreAuthorize("hasAnyRole('ROLE_PRESIDENT')")
 	public ResponseEntity<AgendaItemDTO> updateConclusionAgenda(
-			@ApiParam(value = "The ID of the item.", required = true) @PathVariable("id") Long id, 
+			@ApiParam(value = "The ID of the item.", required = true) @PathVariable("id") Long id,
 			@ApiParam(value = "The ID of the meeting.", required = true) @PathVariable("m_id") Long meetingId,
 			@ApiParam(value = "The AgendaItemDTO object.", required = true) @RequestBody AgendaItemDTO itemDTO) {
 		Meeting meeting = meetingService.findOne(meetingId);
@@ -276,53 +261,47 @@ public class AgendaController {
 		}
 		AgendaItem agendaItem = agendaPointService.findOne(id);
 
-		if (agendaItem==null){
-			return new ResponseEntity<>( HttpStatus.NOT_FOUND);
+		if (agendaItem == null) {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
-		
+
 		agendaItem.setConclusion(itemDTO.getConclusion());
 		agendaPointService.save(agendaItem);
 
 		return new ResponseEntity<>(new AgendaItemDTO(agendaItem), HttpStatus.OK);
 
 	}
-	
-	@RequestMapping(value = "/agendas/", method = RequestMethod.PUT, consumes="application/json" , produces="application/json")
-	@ApiOperation(value = "Update an item's number in the agenda", notes="Returns the updated items.",
-		httpMethod = "PUT", consumes="application/json" , produces="application/json")
+
+	@RequestMapping(value = "/agendas/", method = RequestMethod.PUT, consumes = "application/json", produces = "application/json")
+	@ApiOperation(value = "Update an item's number in the agenda", notes = "Returns the updated items.", httpMethod = "PUT", consumes = "application/json", produces = "application/json")
 	@ApiImplicitParam(paramType = "header", name = "X-Auth-Token", required = true, value = "JWT token")
-	@ApiResponses(value = { 
-			@ApiResponse(code = 200, message = "Ok", response = AgendaDTO.class),
-			@ApiResponse(code = 404, message = "Not found")})
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "Ok", response = AgendaDTO.class),
+			@ApiResponse(code = 404, message = "Not found") })
 	@PreAuthorize("hasAnyRole('ROLE_PRESIDENT')")
 	public ResponseEntity<AgendaDTO> updateAgendaItemNumber(
 			@ApiParam(value = "The AgendaDTO obejct.", required = true) @RequestBody AgendaDTO agendaDTO) {
-		
+
 		for (AgendaItemDTO itemDTO : agendaDTO.getAgendaPoints()) {
 			AgendaItem agendaItem = agendaPointService.findOne(itemDTO.getId());
-			if (agendaItem==null){
-				return new ResponseEntity<>( HttpStatus.NOT_FOUND);
+			if (agendaItem == null) {
+				return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 			}
-			if (itemDTO.getNumber()!=agendaItem.getNumber())
+			if (itemDTO.getNumber() != agendaItem.getNumber())
 				agendaItem.setNumber(itemDTO.getNumber());
 			agendaPointService.save(agendaItem);
 		}
-	
+
 		return new ResponseEntity<>(agendaDTO, HttpStatus.OK);
 	}
-	
-	@RequestMapping(value = "/meetings/{m_id}/items/{id}/comments", method = RequestMethod.POST, 
-			consumes="application/json" , produces="application/json")
-	@ApiOperation(value = "Add a new comment to the agenda item", notes="Returns the updated item.",
-		httpMethod = "POST", consumes="application/json" , produces="application/json")
+
+	@RequestMapping(value = "/meetings/{m_id}/items/{id}/comments", method = RequestMethod.POST, consumes = "application/json", produces = "application/json")
+	@ApiOperation(value = "Add a new comment to the agenda item", notes = "Returns the updated item.", httpMethod = "POST", consumes = "application/json", produces = "application/json")
 	@ApiImplicitParam(paramType = "header", name = "X-Auth-Token", required = true, value = "JWT token")
-	@ApiResponses(value = { 
-			@ApiResponse(code = 201, message = "Created", response = AgendaItemDTO.class),
-			@ApiResponse(code = 400, message = "Bad request"),
-			@ApiResponse(code = 404, message = "Not found")})
+	@ApiResponses(value = { @ApiResponse(code = 201, message = "Created", response = AgendaItemDTO.class),
+			@ApiResponse(code = 400, message = "Bad request"), @ApiResponse(code = 404, message = "Not found") })
 	@PreAuthorize("hasAnyRole('ROLE_OWNER')")
 	public ResponseEntity<AgendaItemDTO> addComment(
-			@ApiParam(value = "The ID of the item.", required = true)@PathVariable("id") Long id,
+			@ApiParam(value = "The ID of the item.", required = true) @PathVariable("id") Long id,
 			@ApiParam(value = "The ID of the meeting.", required = true) @PathVariable("m_id") Long meetingId,
 			@ApiParam(value = "The ItemCommentDTO object.", required = true) @RequestBody ItemCommentDTO commentDTO,
 			HttpServletRequest request) {
@@ -331,36 +310,33 @@ public class AgendaController {
 		if (meeting == null) {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
-		if (agendaItem==null){
-			return new ResponseEntity<>( HttpStatus.NOT_FOUND);
+		if (agendaItem == null) {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
-	
+
 		String token = request.getHeader("X-Auth-Token");
 		String username = tokenUtils.getUsernameFromToken(token);
 
-		User writer = userService.findByUsername(username);		
-		ItemComment comment= ItemCommentDTO.getComment(commentDTO);
+		User writer = userService.findByUsername(username);
+		ItemComment comment = ItemCommentDTO.getComment(commentDTO);
 		comment.setWriter(writer);
-		Set<ItemComment> comments= agendaItem.getComments();
-		if (comments==null)
-			comments= new HashSet<>();
+		Set<ItemComment> comments = agendaItem.getComments();
+		if (comments == null)
+			comments = new HashSet<>();
 		comments.add(comment);
 		agendaItem.setComments(comments);
-		
+
 		agendaPointService.save(agendaItem);
-	
-		
+
 		return new ResponseEntity<>(new AgendaItemDTO(agendaItem), HttpStatus.CREATED);
 	}
-	
-	@RequestMapping(value = "/meetings/{m_id}/items/{id}/comments", method = RequestMethod.GET,
-			produces="application/json")
-	@ApiOperation(value = "Gett the comments from the agenda item", notes="Returns the the list of commment.",
-		httpMethod = "GET" , produces="application/json")
+
+	@RequestMapping(value = "/meetings/{m_id}/items/{id}/comments", method = RequestMethod.GET, produces = "application/json")
+	@ApiOperation(value = "Gett the comments from the agenda item", notes = "Returns the the list of commment.", httpMethod = "GET", produces = "application/json")
 	@ApiImplicitParam(paramType = "header", name = "X-Auth-Token", required = true, value = "JWT token")
-	@ApiResponses(value = { 
-			@ApiResponse(code = 200, message = "Ok", response = ItemCommentDTO.class, responseContainer="List"),
-			@ApiResponse(code = 400, message = "Bad request")})
+	@ApiResponses(value = {
+			@ApiResponse(code = 200, message = "Ok", response = ItemCommentDTO.class, responseContainer = "List"),
+			@ApiResponse(code = 400, message = "Bad request") })
 	@PreAuthorize("hasAnyRole('ROLE_OWNER', 'ROLE_PRESIDENT', 'ROLE_TENANT')")
 	public ResponseEntity<List<ItemCommentDTO>> getComments(
 			@ApiParam(value = "The ID of the item.", required = true) @PathVariable("id") Long id,
@@ -369,35 +345,33 @@ public class AgendaController {
 		if (meeting == null) {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
-		
+
 		AgendaItem agendaItem = agendaPointService.findOne(id);
 
-		if (agendaItem==null){
-			return new ResponseEntity<>( HttpStatus.BAD_REQUEST);
+		if (agendaItem == null) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 
 		}
-		Set<ItemComment> comments= agendaItem.getComments();
-		if (comments==null)
-			comments= new HashSet<>();
-		List<ItemCommentDTO> commentsDTO= new ArrayList<>();
+		Set<ItemComment> comments = agendaItem.getComments();
+		if (comments == null)
+			comments = new HashSet<>();
+		List<ItemCommentDTO> commentsDTO = new ArrayList<>();
 		for (ItemComment itemComment : comments) {
 			commentsDTO.add(new ItemCommentDTO(itemComment));
 		}
-		
+
 		return new ResponseEntity<>(commentsDTO, HttpStatus.OK);
 	}
-	
+
 	@RequestMapping(value = "/meetings/{m_id}/items/{id}/comments/{comment_id}", method = RequestMethod.DELETE)
-	@ApiOperation(value = "Delete a comment from the agenda item", httpMethod = "DELETE" )
+	@ApiOperation(value = "Delete a comment from the agenda item", httpMethod = "DELETE")
 	@ApiImplicitParam(paramType = "header", name = "X-Auth-Token", required = true, value = "JWT token")
-	@ApiResponses(value = { 
-			@ApiResponse(code = 200, message = "Ok"),
-			@ApiResponse(code = 400, message = "Bad request"),
-			@ApiResponse(code = 404, message = "Not found")})
-	
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "Ok"), @ApiResponse(code = 400, message = "Bad request"),
+			@ApiResponse(code = 404, message = "Not found") })
+
 	@PreAuthorize("hasAnyRole('ROLE_OWNER', 'ROLE_PRESIDENT')")
-	public ResponseEntity<Void>deleteComment(
-			@ApiParam(value = "The ID of the item.", required = true) @PathVariable("id") Long id, 
+	public ResponseEntity<Void> deleteComment(
+			@ApiParam(value = "The ID of the item.", required = true) @PathVariable("id") Long id,
 			@ApiParam(value = "The ID of the comment.", required = true) @PathVariable("comment_id") Long commentId,
 			@ApiParam(value = "The ID of the meeting.", required = true) @PathVariable("m_id") Long meetingId) {
 		AgendaItem agendaItem = agendaPointService.findOne(id);
@@ -406,22 +380,22 @@ public class AgendaController {
 		if (meeting == null) {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
-		
-		if (agendaItem==null){
-			return new ResponseEntity<>( HttpStatus.BAD_REQUEST);
+
+		if (agendaItem == null) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 
-		Set<ItemComment> comments= agendaItem.getComments();
+		Set<ItemComment> comments = agendaItem.getComments();
 		for (ItemComment com : comments) {
-			if (com.getId()==commentId){
+			if (com.getId() == commentId) {
 				comments.remove(com);
 			}
 		}
-		
+
 		agendaItem.setComments(comments);
 		agendaPointService.save(agendaItem);
-	
-		commentService.delete(commentId);	
+
+		commentService.delete(commentId);
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 }
