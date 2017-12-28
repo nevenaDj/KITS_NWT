@@ -2,6 +2,8 @@ package com.example.controller;
 
 import static com.example.constants.UserConstants.PASSWORD_ADMIN;
 import static com.example.constants.UserConstants.USERNAME_ADMIN;
+import static com.example.constants.UserConstants.PASSWORD_PRESIDENT;
+import static com.example.constants.UserConstants.USERNAME_PRESIDENT;
 import static com.example.constants.UserConstants.NEW_USERNAME;
 import static com.example.constants.UserConstants.PAGE_SIZE;
 import static com.example.constants.UserConstants.PASSWORD;
@@ -59,6 +61,7 @@ import com.jayway.restassured.RestAssured;
 public class TenantControllerTest {
 	private String accessToken;
 	private String accessTokenTenant;
+	private String accessTokenPresident;
 	
 	@Autowired
 	private TestRestTemplate restTemplate;
@@ -196,9 +199,22 @@ public class TenantControllerTest {
 		accessTokenTenant = responseEntity.getBody();
 	}
 	
+	@Before
+	public void loginPresident(){
+		ResponseEntity<String> responseEntity = restTemplate.postForEntity("/api/login",
+				new LoginDTO(USERNAME_PRESIDENT, PASSWORD_PRESIDENT), String.class);
+		accessTokenPresident = responseEntity.getBody();
+	}
+	
 	@Test
 	public void testGetResponsiblePerson() throws Exception{
 		mockMvc.perform(get("/api/responsibleGlitches?page=0&size="+ PAGE_SIZE).header("X-Auth-Token", accessTokenTenant))
+		.andExpect(status().isOk());	
+	}	
+	
+	@Test
+	public void testGetResponsiblePersonPresident() throws Exception{
+		mockMvc.perform(get("/api/responsibleGlitches?page=0&size="+ PAGE_SIZE).header("X-Auth-Token", accessTokenPresident))
 		.andExpect(status().isOk());	
 	}	
 }

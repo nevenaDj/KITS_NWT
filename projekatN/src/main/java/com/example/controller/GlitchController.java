@@ -213,7 +213,7 @@ public class GlitchController {
 			@ApiParam(value = "The ID of the apartment.", required = true) @PathVariable("id") Long apartmentId,
 			@ApiParam(value = "The ID of the glitch.", required = true) @PathVariable("glitch_id") Long glitchId,
 			@ApiParam(name="date", value = "date", required = true) @RequestParam("date") Date dateOfReparing) {
-		return new ResponseEntity<>(HttpStatus.ALREADY_REPORTED);/*
+		//return new ResponseEntity<>(HttpStatus.ALREADY_REPORTED);/*
 		Apartment apartment = apartmentService.findOne(apartmentId);
 
 		if (apartment == null) {
@@ -229,7 +229,7 @@ public class GlitchController {
 		glitch.setDateOfRepair(dateOfReparing);
 		glitchService.save(glitch);
 
-		return new ResponseEntity<>(new GlitchDTO(glitch), HttpStatus.OK);*/
+		return new ResponseEntity<>(new GlitchDTO(glitch), HttpStatus.OK);
 	}
 
 	@RequestMapping(value = "/apartments/{id}/glitches/{glitch_id}", method = RequestMethod.PUT, produces = "application/json")

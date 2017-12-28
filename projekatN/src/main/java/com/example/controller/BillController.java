@@ -75,6 +75,7 @@ public class BillController {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 
+		
 		String token = request.getHeader("X-Auth-Token");
 		String username = tokenUtils.getUsernameFromToken(token);
 
@@ -106,17 +107,15 @@ public class BillController {
 		if (apartment == null) {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
-
-		Glitch glitch = glitchService.findOne(glitchId);
-		if (glitch == null) {
+		Glitch glitch2 = glitchService.findOne(glitchId);
+		if (glitch2 == null) {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
-
-		Bill bill = billService.findByGlitch(glitchId);
-		if (bill == null) {
+		Bill bill2 = billService.findByGlitch(glitchId);
+		if (bill2 == null) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		} else {
-			billService.remove(bill.getId());
+			billService.remove(bill2.getId());
 			return new ResponseEntity<>(HttpStatus.OK);
 		}
 	}
@@ -228,18 +227,18 @@ public class BillController {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 
-		Glitch glitch = glitchService.findOne(glitchId);
-		if (glitch == null) {
+		Glitch gl = glitchService.findOne(glitchId);
+		if (gl == null) {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 
-		Bill bill = billService.findByGlitch(glitchId);
-		if (bill == null) {
+		Bill b = billService.findByGlitch(glitchId);
+		if (b == null) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		} else {
-			bill.setApproved(true);
-			billService.save(bill); // update good????
-			BillDTO billDTO = new BillDTO(bill);
+			b.setApproved(true);
+			billService.save(b); // update good????
+			BillDTO billDTO = new BillDTO(b);
 			return new ResponseEntity<>(billDTO, HttpStatus.OK);
 		}
 	}

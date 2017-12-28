@@ -10,6 +10,8 @@ public class GlitchConstants {
 	public static final String NEW_TYPE = "new type";
 
 	public static final Long ID = 1L;
+	
+	public static final Long ID_COMPANY_NOT_FOUND = 100000L;
 
 	public static final String NEW_COMMENT = "new comment";
 	

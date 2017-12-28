@@ -18,6 +18,10 @@ public class AgendaItemConstants {
 	public static final String NEW_TITLE = "Glitch";
 	public static final String NEW_CONCLUSION = "Conclusion";
 	
+	public static final String UPDATE_CONCLUSION = "UPD_CONC";
+	public static final int UPDATE_NUMBER = 1000;
+	public static final String UPDATE_TITLE = "UPD_TITLE";
+	
 	public static final Long ID_COMMENT = 1L;
 	public static final Long ID_COMMENT_NOT_FOUND = 1000L;
 	public static final Long NEW_ID_COMMENT = 2L;

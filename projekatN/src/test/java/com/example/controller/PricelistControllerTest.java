@@ -111,6 +111,14 @@ public class PricelistControllerTest {
 				.andExpect(status().isBadRequest());
 
 	}
+	
+
+	@Test
+	public void testGetPricelistBadRequestItem() throws Exception {
+		mockMvc.perform(get("/api/company/" + COMPANY_ID_NOT_FOUND + "/pricelist").header("X-Auth-Token", accessToken))
+				.andExpect(status().isBadRequest());
+
+	}
 
 	@Test
 	@Transactional

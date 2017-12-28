@@ -130,9 +130,7 @@ public class AgendaControllerTest {
 	public void testGetAgenda() throws Exception {
 		mockMvc.perform(get("/api/agendas/" + ID_MEETING).header("X-Auth-Token", accessToken))
 				.andExpect(status().isOk()).andExpect(content().contentType(contentType));
-		// .andExpect(jsonPath("$.[*].id").value(hasItem(ID.intValue())))
-		/// .andExpect(jsonPath("$.[*].title").value(hasItem(TITLE)))
-		// .andExpect(jsonPath("$.[*].number").value(hasItem(NUMBER)));
+
 
 	}
 
@@ -208,6 +206,27 @@ public class AgendaControllerTest {
 				.header("X-Auth-Token", accessToken).contentType(contentType).content(json))
 				.andExpect(status().isNotFound());
 	}
+	
+	@Test
+	@Transactional
+	@Rollback(true)
+	public void testUpdateAgendaItemSetConclusion() throws Exception {
+		AgendaItemDTO itemDTO = new AgendaItemDTO(ID, NEW_NUMBER, NEW_TYPE, NEW_TITLE);
+		itemDTO.setConclusion(UPDATE_CONCLUSION);
+		itemDTO.setTitle(UPDATE_TITLE);
+		itemDTO.setNumber(UPDATE_NUMBER);
+		
+		String json = TestUtils.convertObjectToJson(itemDTO);
+
+		mockMvc.perform(put("/api/meetings/" + ID_MEETING + "/items/" + ID)
+				.header("X-Auth-Token", accessToken).contentType(contentType).content(json))
+				.andExpect(status().isOk())
+				.andExpect(content().contentType(contentType))
+				.andExpect(jsonPath("$.conclusion").value(UPDATE_CONCLUSION))
+				.andExpect(jsonPath("$.title").value(UPDATE_TITLE))
+				.andExpect(jsonPath("$.number").value(UPDATE_NUMBER));
+	}
+	
 
 	@Test
 	@Transactional
@@ -224,6 +243,7 @@ public class AgendaControllerTest {
 				.andExpect(jsonPath("$.conclusion").value(NEW_CONCLUSION));
 
 	}
+	
 
 	@Test
 	@Transactional
@@ -234,7 +254,7 @@ public class AgendaControllerTest {
 
 		String json = TestUtils.convertObjectToJson(itemDTO);
 
-		mockMvc.perform(put("/api/meetings/" + 14000L + "/items/" + ID)
+		mockMvc.perform(put("/api/meetings/" + 14000L + "/items/" + ID+ "/conclusion")
 				.header("X-Auth-Token", accessToken).contentType(contentType).content(json))
 				.andExpect(status().isBadRequest());
 	}
@@ -248,7 +268,7 @@ public class AgendaControllerTest {
 
 		String json = TestUtils.convertObjectToJson(itemDTO);
 
-		mockMvc.perform(put("/api/meetings/" + ID_MEETING + "/items/" + ID_ITEM_NOT_FOUND)
+		mockMvc.perform(put("/api/meetings/" + ID_MEETING + "/items/" + ID_ITEM_NOT_FOUND+ "/conclusion")
 				.header("X-Auth-Token", accessToken).contentType(contentType).content(json))
 				.andExpect(status().isNotFound());
 	}
@@ -268,6 +288,25 @@ public class AgendaControllerTest {
 		mockMvc.perform(put("/api/agendas/").header("X-Auth-Token", accessToken).contentType(contentType).content(json))
 				.andExpect(status().isOk()).andExpect(content().contentType(contentType));
 		// .andExpect(jsonPath("$.[*].number").value(hasItem(NEW_NUMBER)));
+
+	}
+	
+	@Test
+	@Transactional
+	@Rollback(true)
+	public void updateAgendaItemNumberNotFound() throws Exception {
+		AgendaItemDTO itemDTO = new AgendaItemDTO(ID, NEW_NUMBER, NEW_TYPE, NEW_TITLE);
+		AgendaItemDTO itemDTOBad = new AgendaItemDTO(ID_NOT_FOUND, NEW_NUMBER, NEW_TYPE, NEW_TITLE);
+		AgendaDTO agendaDTO = new AgendaDTO();
+		Set<AgendaItemDTO> set = new HashSet<AgendaItemDTO>();
+		set.add(itemDTO);
+		set.add(itemDTOBad);
+		agendaDTO.setAgendaPoints(set);
+
+		String json = TestUtils.convertObjectToJson(agendaDTO);
+
+		mockMvc.perform(put("/api/agendas/").header("X-Auth-Token", accessToken).contentType(contentType).content(json))
+				.andExpect(status().isNotFound());
 
 	}
 
@@ -307,8 +346,32 @@ public class AgendaControllerTest {
 	}
 
 	@Test
+	@Transactional
+	@Rollback(true)
+	public void testAddCommentNotFound() throws Exception {
+		UserDTO userDTO = new UserDTO();
+		ItemCommentDTO commentDTO = new ItemCommentDTO(ID_COMMENT, userDTO, NEW_TEXT, new Date());
+
+		String json = TestUtils.convertObjectToJson(commentDTO);
+
+		mockMvc.perform(post("/api/meetings/" + ID_MEETING+ "/items/" + ID_NOT_FOUND + "/comments")
+				.header("X-Auth-Token", accessTokenOwner).contentType(contentType).content(json))
+				.andExpect(status().isNotFound());
+	}
+	
+	
+	@Test
 	public void testGetComments() throws Exception {
 		mockMvc.perform(get("/api/meetings/" + ID_MEETING + "/items/" + ID.intValue() + "/comments")
+				.header("X-Auth-Token", accessToken)).andExpect(status().isOk())
+				.andExpect(jsonPath("$.[*].text").value(hasItem(TEXT)));
+
+	}
+	
+	
+	@Test
+	public void testGetCommentsNull() throws Exception {
+		mockMvc.perform(get("/api/meetings/" + ID_MEETING + "/items/" + ID_GLITCH.intValue() + "/comments")
 				.header("X-Auth-Token", accessToken)).andExpect(status().isOk())
 				.andExpect(jsonPath("$.[*].text").value(hasItem(TEXT)));
 
@@ -317,6 +380,13 @@ public class AgendaControllerTest {
 	@Test
 	public void testGetCommentsBadRequest() throws Exception {
 		mockMvc.perform(get("/api/meetings/" + ID_MEETING + "/items/" + ID_ITEM_NOT_FOUND.intValue() + "/comments")
+				.header("X-Auth-Token", accessToken)).andExpect(status().isBadRequest());
+
+	}
+	
+	@Test
+	public void testGetCommentsBadRequestMeeting() throws Exception {
+		mockMvc.perform(get("/api/meetings/" + ID_MEETING_NOT_FOUND + "/items/" + ID.intValue() + "/comments")
 				.header("X-Auth-Token", accessToken)).andExpect(status().isBadRequest());
 
 	}
@@ -335,6 +405,17 @@ public class AgendaControllerTest {
 	public void testDeleteCommentBadRequest() throws Exception {
 		mockMvc.perform(
 				delete("/api/meetings/" + ID_MEETING_NOT_FOUND + "/items/" + ID.intValue() + "/comments/" + ID_COMMENT)
+						.header("X-Auth-Token", accessToken))
+				.andExpect(status().isBadRequest());
+	}
+	
+
+	@Test
+	@Transactional
+	@Rollback(true)
+	public void testDeleteCommentBadRequestMeeting() throws Exception {
+		mockMvc.perform(
+				delete("/api/meetings/" + ID_MEETING + "/items/" + ID_NOT_FOUND.intValue() + "/comments/" + ID_COMMENT)
 						.header("X-Auth-Token", accessToken))
 				.andExpect(status().isBadRequest());
 	}

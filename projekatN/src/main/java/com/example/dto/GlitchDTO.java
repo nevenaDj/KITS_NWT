@@ -1,9 +1,12 @@
 package com.example.dto;
 
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 import com.example.model.Glitch;
 import com.example.model.GlitchState;
+import com.example.model.Picture;
 
 public class GlitchDTO {
 	private Long id;
@@ -17,6 +20,7 @@ public class GlitchDTO {
 	private Date dateOfRepair;
 	private BillDTO bill;
 	private boolean dateOfRepairApproved;
+	private Set<PictureDTO> images;
 
 	public GlitchDTO() {
 
@@ -43,6 +47,15 @@ public class GlitchDTO {
 		}
 		if (glitch.getCompany() != null) {
 			this.companyID= glitch.getCompany().getId();
+		}
+		
+		if (glitch.getImages() != null) {
+			this.images= new HashSet<PictureDTO>();
+		}
+		else{
+			for (Picture picture : glitch.getImages()) {
+				this.images.add(new PictureDTO(picture.getId(), picture.getImages(), new GlitchDTO(picture.getGlitch())));
+			}
 		}
 		
 	}
@@ -171,6 +184,16 @@ public class GlitchDTO {
 	public void setDateOfRepairApproved(boolean dateOfRepairApproved) {
 		this.dateOfRepairApproved = dateOfRepairApproved;
 	}
+	
+	
+
+	public Set<PictureDTO> getImages() {
+		return images;
+	}
+
+	public void setImages(Set<PictureDTO> images) {
+		this.images = images;
+	}
 
 	public static Glitch getGlitch(GlitchDTO glitchDTO) {
 		Glitch glitch = new Glitch(glitchDTO.getId(), glitchDTO.getDescription(), glitchDTO.getDateOfReport(),
@@ -190,6 +213,17 @@ public class GlitchDTO {
 
 		if (glitchDTO.getBill() != null) {
 			glitch.setBill(BillDTO.getBill(glitchDTO.getBill()));
+		}
+		if (glitchDTO.getImages() == null) {
+			glitch.setImages( new HashSet<Picture>());
+		}
+		else{
+			Set<Picture> pics= new HashSet<Picture>();
+			
+			for (PictureDTO picture : glitchDTO.getImages()) {
+				pics.add(PictureDTO.getPicture(picture));
+				}
+			glitch.setImages(pics);
 		}
 		
 		return glitch;

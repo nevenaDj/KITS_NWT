@@ -92,6 +92,35 @@ public class BillControllerTest {
 	@Test
 	@Transactional
 	@Rollback(true)
+	public void testAddBillBadRequestApartment() throws Exception {
+		Date new_date = new Date();
+		BillDTO billDTO = new BillDTO(NEW_ID, NEW_PRICE, new_date, NEW_APPROVED);
+
+		String json = TestUtils.convertObjectToJson(billDTO);
+
+		mockMvc.perform(post("/api/apartments/" + ID_APARTMENT_NOT_FOUND + "/glitches/" + ID_GLITCH + "/bill")
+				.header("X-Auth-Token", accessToken).contentType(contentType).content(json))
+				.andExpect(status().isBadRequest());
+	}
+	
+	@Test
+	@Transactional
+	@Rollback(true)
+	public void testAddBillBadRequestGlitches() throws Exception {
+		Date new_date = new Date();
+		BillDTO billDTO = new BillDTO(NEW_ID, NEW_PRICE, new_date, NEW_APPROVED);
+
+		String json = TestUtils.convertObjectToJson(billDTO);
+
+		mockMvc.perform(post("/api/apartments/" + ID_APARTMENT + "/glitches/" + ID_GLITCH_NOT_FOUND + "/bill")
+				.header("X-Auth-Token", accessToken).contentType(contentType).content(json))
+				.andExpect(status().isBadRequest());
+		}
+	
+	
+	@Test
+	@Transactional
+	@Rollback(true)
 	public void testDeleteBill() throws Exception {
 
 		mockMvc.perform(delete("/api/apartments/" + ID_APARTMENT + "/glitches/" + ID_GLITCH + "/bill")

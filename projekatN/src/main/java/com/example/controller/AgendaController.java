@@ -228,13 +228,11 @@ public class AgendaController {
 		if (agendaItem == null) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
-		if (itemDTO.getConclusion() != null && agendaItem.getConclusion() != null
-				&& !itemDTO.getConclusion().equals(agendaItem.getConclusion()))
-
-			agendaItem.setConclusion(itemDTO.getConclusion());
-
-		if (itemDTO.getTitle() != null && agendaItem.getTitle() != null
-				&& !itemDTO.getTitle().equals(agendaItem.getTitle()))
+		if (itemDTO.getConclusion() != null) {
+				agendaItem.setConclusion(itemDTO.getConclusion());
+			
+		}
+		if (itemDTO.getTitle() != null)
 
 			agendaItem.setTitle(itemDTO.getTitle());
 

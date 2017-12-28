@@ -55,6 +55,7 @@ public class PricelistController {
 	public ResponseEntity<PricelistDTO> addPricelist(
 			@ApiParam(value = "The ID of the company.", required = true) @PathVariable Long id,
 			@ApiParam(value = "The PricelistDTO object", required = true) @RequestBody PricelistDTO itemDTO) {
+		
 		Pricelist item = PricelistDTO.getPricelist(itemDTO);
 
 		User user = userService.findOne(id);
@@ -69,7 +70,7 @@ public class PricelistController {
 		return new ResponseEntity<>(itemDTO, HttpStatus.CREATED);
 	}
 
-	@ApiOperation(value = "Get a priceList.", notes = "Returns the price list being saved.", httpMethod = "POST", produces = "application/json", consumes = "application/json")
+	@ApiOperation(value = "Get a priceList.", notes = "Returns the price list being saved.", httpMethod = "GET", produces = "application/json", consumes = "application/json")
 	@ApiResponses(value = { @ApiResponse(code = 200, message = "Ok", response = PricelistDTO.class),
 			@ApiResponse(code = 400, message = "Bad request"), @ApiResponse(code = 404, message = "Not found") })
 	@RequestMapping(method = RequestMethod.GET, produces = "application/json")

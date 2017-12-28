@@ -49,4 +49,13 @@ public class Picture {
 		this.images = images;
 	}
 
+	public Glitch getGlitch() {
+		return glitch;
+	}
+
+	public void setGlitch(Glitch glitch) {
+		this.glitch = glitch;
+	}
+
+	
 }
