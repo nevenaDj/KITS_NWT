@@ -1,4 +1,8 @@
-<p>
-  Welcome! {{token}}
-</p>
-<button (click)="logout()">Logout</button>
+<nav>
+  <a routerLink="/buildings" routerLinkActive="active">Buildings</a>
+  <a routerLink="/addBuilding" routerLinkActive="active">Add building</a>
+</nav>
+<button (click)="logout()">Log out</button>
+
+<router-outlet></router-outlet>
+

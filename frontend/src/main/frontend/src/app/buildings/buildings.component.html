@@ -1,0 +1,19 @@
+<div>
+  <h2>Buildings</h2>
+</div>
+<button (click)="gotoAdd()">Add building</button>
+<table>
+  <tr>
+    <th>Street</th>
+    <th>Number</th>
+    <th>Zip code</th>
+    <th>City</th>
+  </tr>
+  <tr *ngFor="let building of buildings">
+    <td>{{building.address.street}}</td>
+    <td>{{building.address.number}}</td>
+    <td>{{building.address.zipCode}}</td>
+    <td>{{building.address.city}}</td>
+  </tr>
+</table>
+

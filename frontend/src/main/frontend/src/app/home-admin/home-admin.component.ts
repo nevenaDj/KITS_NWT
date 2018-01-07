@@ -3,12 +3,11 @@ import { Router } from '@angular/router';
 import * as decode from 'jwt-decode';
 
 @Component({
-  selector: 'app-home',
-  templateUrl: './home.component.html',
-  styleUrls: ['./home.component.css']
+  selector: 'app-home-admin',
+  templateUrl: './home-admin.component.html',
+  styleUrls: ['./home-admin.component.css']
 })
-export class HomeComponent implements OnInit {
-
+export class HomeAdminComponent implements OnInit {
   token: string = '';
   proba: string = '';
 
@@ -18,7 +17,6 @@ export class HomeComponent implements OnInit {
     this.token = localStorage.getItem('token');
     this.proba = decode(this.token);
     console.log(this.proba);
-    
   }
 
   logout(){

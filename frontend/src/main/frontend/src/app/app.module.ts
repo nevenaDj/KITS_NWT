@@ -7,15 +7,24 @@ import { AppRoutingModule } from './/app-routing.module';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
 import { HomeComponent } from './home/home.component';
-import { AuthGuardService } from './guards/auth-guard.service';
+import { HomeAdminComponent } from './home-admin/home-admin.component';
+import { BuildingDetailComponent } from './building-detail/building-detail.component';
+import { BuildingsComponent } from './buildings/buildings.component';
 import { AuthService } from './login/auth.service';
+import { AuthGuardService } from './guards/auth-guard.service';
+import { RoleGuardService } from './guards/role-guard.service';
+import { BuildingService } from './buildings/building.service';
+
 
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
-    HomeComponent
+    HomeComponent,
+    HomeAdminComponent,
+    BuildingDetailComponent,
+    BuildingsComponent
   ],
   imports: [
     BrowserModule,
@@ -26,7 +35,9 @@ import { AuthService } from './login/auth.service';
   ],
   providers: [
     AuthGuardService,
-    AuthService
+    RoleGuardService,
+    AuthService,
+    BuildingService
   ],
   bootstrap: [AppComponent]
 })
