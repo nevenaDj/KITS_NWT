@@ -6,8 +6,10 @@ import { HomeComponent } from './home/home.component';
 import { HomeAdminComponent } from './home-admin/home-admin.component';
 import { BuildingsComponent } from './buildings/buildings.component';
 import { BuildingDetailComponent } from './building-detail/building-detail.component';
+import { AddBuildingComponent } from './add-building/add-building.component';
 import { AuthGuardService } from './guards/auth-guard.service';
 import { RoleGuardService } from './guards/role-guard.service';
+
 
 
 const routers: Routes = [
@@ -21,8 +23,9 @@ const routers: Routes = [
     }
    
   },
-  { path: 'addBuilding', component: BuildingDetailComponent},
-  { path: 'buildings', component: BuildingsComponent}
+  { path: 'addBuilding', component: AddBuildingComponent},
+  { path: 'buildings', component: BuildingsComponent},
+  { path: 'buildings/:id', component: BuildingDetailComponent}
 ];
 
 @NgModule({

@@ -1,0 +1,26 @@
+<div>
+  <h3>Add building</h3>
+</div>
+
+<div>
+
+  <form name="form" (ngSubmit)="save()">
+        <div>
+          <label>Street</label>
+          <input type="text" [(ngModel)]="building.address.street" placeholder="Street" name="street">
+        </div>
+        <div>
+          <label>Number</label>
+          <input type="text" [(ngModel)]="building.address.number" placeholder="Number" name="number">
+        </div>
+       
+        <div>
+          <label>Zip code</label>
+          <input type="number" [(ngModel)]="building.address.zipCode" placeholder="Zip code" name="Zip code">
+        </div>
+        <div>
+          <label>City</label>
+          <input type="text" [(ngModel)]="building.address.city" placeholder="City" name="city">
+        </div>
+        <button>Save</button>
+   </form>

@@ -1,26 +1,21 @@
 <div>
-  <h3>Add building</h3>
+  <h3>Building</h3>
 </div>
-
+<button>Add president</button>
+<button>Add apartment</button>
 <div>
-
-  <form name="form" (ngSubmit)="save()">
-        <div>
-          <label>Street</label>
-          <input type="text" [(ngModel)]="building.address.street" placeholder="Street" name="street">
-        </div>
-        <div>
-          <label>Number</label>
-          <input type="text" [(ngModel)]="building.address.number" placeholder="Number" name="number">
-        </div>
-       
-        <div>
-          <label>Zip code</label>
-          <input type="number" [(ngModel)]="building.address.zipCode" placeholder="Zip code" name="Zip code">
-        </div>
-        <div>
-          <label>City</label>
-          <input type="text" [(ngModel)]="building.address.city" placeholder="City" name="city">
-        </div>
-        <button>Save</button>
-   </form>
+  <label><b>Street</b></label>
+  {{building.address.street}}
+</div>
+<div>
+  <label><b>Number</b></label>
+  {{building.address.number}}
+</div>
+<div>
+  <label><b>Zip code</b></label>
+  {{building.address.zipCode}}
+</div>
+<div>
+  <label><b>City</b></label>
+  {{building.address.city}}
+</div>

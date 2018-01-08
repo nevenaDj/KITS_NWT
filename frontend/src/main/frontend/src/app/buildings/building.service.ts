@@ -34,7 +34,7 @@ export class BuildingService {
 
   getBuilding(id: number): Promise<Building>{
     const url = `${this.buildingsUrl}/${id}`;
-    return this.http.get(url, {headers: this.headers})
+    return this.http.get<Building>(url, {headers: this.headers})
           .toPromise()
           .then(res => {return res})
           .catch(this.handleError);

@@ -38,6 +38,12 @@ export class BuildingsComponent implements OnInit {
     );
   }
 
+  getBuilding(id:number){
+    console.log(id);
+    this.router.navigate(['/buildings', id]);
+
+  }
+
 
 
 }

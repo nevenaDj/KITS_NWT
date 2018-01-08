@@ -8,12 +8,14 @@
     <th>Number</th>
     <th>Zip code</th>
     <th>City</th>
+    <th></th>
   </tr>
   <tr *ngFor="let building of buildings">
     <td>{{building.address.street}}</td>
     <td>{{building.address.number}}</td>
     <td>{{building.address.zipCode}}</td>
     <td>{{building.address.city}}</td>
+    <td><button (click)="getBuilding(building.id)">Detail</button></td>
   </tr>
 </table>
 

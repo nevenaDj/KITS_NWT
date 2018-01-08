@@ -1,19 +1,19 @@
 import { Component, OnInit } from '@angular/core';
-import { ParamMap, Router, ActivatedRoute } from '@angular/router';
+import { Router } from '@angular/router';
 
 import { Building } from '../models/building';
 import { BuildingService } from '../buildings/building.service';
 
-
 @Component({
-  selector: 'app-building-detail',
-  templateUrl: './building-detail.component.html',
-  styleUrls: ['./building-detail.component.css']
+  selector: 'app-add-building',
+  templateUrl: './add-building.component.html',
+  styleUrls: ['./add-building.component.css']
 })
-export class BuildingDetailComponent implements OnInit {
+export class AddBuildingComponent implements OnInit {
+
   building: Building;
 
-  constructor(private router:ActivatedRoute,
+  constructor(private router:Router,
               private buildingService: BuildingService) { 
     this.building = {
       id: null,
@@ -35,9 +35,14 @@ export class BuildingDetailComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.buildingService.getBuilding(+this.router.snapshot.params['id'])
-        .then(building => this.building = building);
   }
 
- 
+  save(): void{
+   console.log(this.building);
+   this.buildingService.addBuilding(this.building)
+      .then( building => { console.log(building);
+                           this.router.navigate(['buildings']);
+      });
+  }
+
 }

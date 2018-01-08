@@ -10,10 +10,12 @@ import { HomeComponent } from './home/home.component';
 import { HomeAdminComponent } from './home-admin/home-admin.component';
 import { BuildingDetailComponent } from './building-detail/building-detail.component';
 import { BuildingsComponent } from './buildings/buildings.component';
+import { AddBuildingComponent } from './add-building/add-building.component';
 import { AuthService } from './login/auth.service';
 import { AuthGuardService } from './guards/auth-guard.service';
 import { RoleGuardService } from './guards/role-guard.service';
 import { BuildingService } from './buildings/building.service';
+
 
 
 
@@ -24,7 +26,8 @@ import { BuildingService } from './buildings/building.service';
     HomeComponent,
     HomeAdminComponent,
     BuildingDetailComponent,
-    BuildingsComponent
+    BuildingsComponent,
+    AddBuildingComponent
   ],
   imports: [
     BrowserModule,
