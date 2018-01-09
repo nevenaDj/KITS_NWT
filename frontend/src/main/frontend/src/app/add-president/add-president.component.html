@@ -1,0 +1,21 @@
+<div>
+    <h3>Add president</h3>
+  </div>
+  
+  <div>
+  
+    <form name="form" (ngSubmit)="save()">
+          <div>
+            <label>Username</label>
+            <input type="text" [(ngModel)]="president.username" placeholder="Username" name="username">
+          </div>
+          <div>
+            <label>Email</label>
+            <input type="text" [(ngModel)]="president.email" placeholder="Email" name="email">
+          </div>
+          <div>
+              <label>Phone number</label>
+              <input type="text" [(ngModel)]="president.phoneNo" placeholder="Phone number" name="phoneNo">
+            </div>
+          <button>Save</button>
+     </form>

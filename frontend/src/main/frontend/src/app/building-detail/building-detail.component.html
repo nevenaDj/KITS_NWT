@@ -1,8 +1,8 @@
 <div>
   <h3>Building</h3>
 </div>
-<button>Add president</button>
-<button>Add apartment</button>
+<button *ngIf="!building.president" (click)="gotoAddPresident()">Add president</button>
+<button (click)="gotoAddApartment()">Add apartment</button>
 <div>
   <label><b>Street</b></label>
   {{building.address.street}}
@@ -19,3 +19,29 @@
   <label><b>City</b></label>
   {{building.address.city}}
 </div>
+
+<div *ngIf="building.id">
+  <div>
+    Apartments
+  </div>
+  <table>
+    <tr *ngFor="let apartment of apartments">
+      <td>
+        {{apartment.number}}
+      </td>
+    </tr>
+  </table>
+
+</div>
+<br>
+<br>
+<div *ngIf="building.president">
+  <h5>
+    President
+  </h5>
+  <div>
+    <label><b>Username</b></label>
+    {{building.president.username}}
+  </div>
+</div>
+

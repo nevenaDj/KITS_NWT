@@ -3,6 +3,11 @@ import { NgModule } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 
+import { ApartmentService } from './apartments/apartment.service';
+import { BuildingService } from './buildings/building.service';
+import { AuthService } from './login/auth.service';
+import { AuthGuardService } from './guards/auth-guard.service';
+import { RoleGuardService } from './guards/role-guard.service';
 import { AppRoutingModule } from './/app-routing.module';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
@@ -11,10 +16,9 @@ import { HomeAdminComponent } from './home-admin/home-admin.component';
 import { BuildingDetailComponent } from './building-detail/building-detail.component';
 import { BuildingsComponent } from './buildings/buildings.component';
 import { AddBuildingComponent } from './add-building/add-building.component';
-import { AuthService } from './login/auth.service';
-import { AuthGuardService } from './guards/auth-guard.service';
-import { RoleGuardService } from './guards/role-guard.service';
-import { BuildingService } from './buildings/building.service';
+import { ApartmentsComponent } from './apartments/apartments.component';
+import { AddApartmentComponent } from './add-apartment/add-apartment.component';
+import { AddPresidentComponent } from './add-president/add-president.component';
 
 
 
@@ -27,7 +31,10 @@ import { BuildingService } from './buildings/building.service';
     HomeAdminComponent,
     BuildingDetailComponent,
     BuildingsComponent,
-    AddBuildingComponent
+    AddBuildingComponent,
+    ApartmentsComponent,
+    AddApartmentComponent,
+    AddPresidentComponent
   ],
   imports: [
     BrowserModule,
@@ -40,7 +47,8 @@ import { BuildingService } from './buildings/building.service';
     AuthGuardService,
     RoleGuardService,
     AuthService,
-    BuildingService
+    BuildingService,
+    ApartmentService
   ],
   bootstrap: [AppComponent]
 })
