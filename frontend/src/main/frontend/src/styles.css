@@ -1,1 +1,450 @@
-/* You can add global styles to this file, and also import other style files */
+
+/*LOGIN CONFIGURATION PAGE*/
+.form-login {
+	max-width: 330px;
+	margin: 100px auto 0;
+	background-color:rgba(200, 200, 200, 0.4);
+	border-radius: 5px;
+	-webkit-border-radius: 5px; 
+    box-shadow: 2px 2px 4px #000000;
+}
+
+.form-login h2.form-login-heading {
+	margin: 0;
+	padding: 25px 20px;
+	text-align: center;
+	background: #68dff0;
+	border-radius: 5px 5px 0 0;
+	-webkit-border-radius: 5px 5px 0 0;
+	color: #fff;
+	font-size: 20px;
+	text-transform: uppercase;
+	font-weight: 300;
+}
+.login-wrap {
+	padding: 20px;
+}
+.login-wrap .registration {
+	text-align: center;
+}
+.login-social-link {
+	display: block;
+	margin-top: 20px;
+	margin-bottom: 15px;
+}
+
+.login-image {
+    height: 100px; 
+    margin: 20px; 
+    display: block; 
+    margin-left: auto; 
+    margin-right: auto;
+}
+
+/* BASIC THEME CONFIGURATION */
+body {
+    color: #797979;
+    font-family: 'Ruda', sans-serif;
+    padding: 0px !important;
+    margin: 0px !important;
+    font-size:13px;
+    background: rgba(235,236,237,0.3); /* For browsers that do not support gradients */
+}
+
+
+ul li {
+    list-style: none;
+}
+
+a, a:hover, a:focus {
+    text-decoration: none;
+    outline: none;
+}
+::selection {
+
+    background: #68dff0;
+    color: #fff;
+}
+::-moz-selection {
+    background: #68dff0;
+    color: #fff;
+}
+
+.delete-button{
+    top:31px;
+   left:31px;
+   cursor:pointer;
+   width:20px;
+   height:20px;
+   border:1px solid #DB6374;
+   border-radius:12px;
+   box-shadow:3px 3px 3px #999999;
+   background-color:#DB6374;
+    
+}
+
+.delete-x:visited, .delete-x{
+    color: white; 
+}
+
+
+#container {
+    width: 100%;
+    height: 100%;
+}
+
+/* Bootstrap Modifications */
+.modal-header {
+	background: #68dff0;
+}
+
+.modal-title {
+	color: white;
+}
+
+.btn-round {
+	border-radius: 20px;
+	-webkit-border-radius: 20px;
+}
+
+.accordion-heading .accordion-toggle {
+	display: block;
+	cursor: pointer;
+	border-top: 1px solid #F5F5F5;
+	padding: 5px 0px;
+	line-height: 28.75px;
+	text-transform: uppercase;
+	color: #1a1a1a;
+	background-color: #ffffff;
+	outline: none !important;
+	text-decoration: none;
+}	
+
+.full-button{
+    background-color: #BED297;
+    color: white;
+    padding: 15px;
+    text-align: center;
+    text-decoration: none;
+    font-size: 16px;
+
+    margin: 5px;
+    cursor: pointer;
+    border:1px solid #ebeced !important;
+    height: 50px;
+  
+}
+
+.full-button-text {
+    color: #4c586f;
+    opacity: 0.7;
+}
+
+.full-button-text:hover{
+     text-decoration-color: #a2aab0;
+     opacity: 0.2;
+}
+
+/*Theme Backgrounds*/
+
+.bg-theme {
+	background-color: #68dff0;
+}
+
+.bg-theme02 {
+	background-color: #ac92ec;
+}
+
+.bg-theme03 {
+  background-color: #48cfad;
+}
+
+.bg-theme04 {
+  background-color: #ed5565;
+}
+
+
+/*Theme Buttons*/
+
+.btn-theme {
+    color: #fff;
+    background-color: #4c586F;
+    border-color: #cbc5c1;
+  }
+  .btn-theme:hover,
+  .btn-theme:focus,
+  .btn-theme:active,
+  .btn-theme.active,
+  .open .dropdown-toggle.btn-theme {
+    color: #fff;
+    background-color: #cbc5c1;
+    border-color: #cbc5c1;
+  }
+  
+  .btn-theme02 {
+    color: #fff;
+    background-color: #ac92ec;
+    border-color: #967adc;
+  }
+  .btn-theme02:hover,
+  .btn-theme02:focus,
+  .btn-theme02:active,
+  .btn-theme02.active,
+  .open .dropdown-toggle.btn-theme02 {
+    color: #fff;
+    background-color: #967adc;
+    border-color: #967adc;
+  }
+  
+  .btn-theme03 {
+    color: #fff;
+    background-color: #48cfad;
+    border-color: #37bc9b;
+  }
+  .btn-theme03:hover,
+  .btn-theme03:focus,
+  .btn-theme03:active,
+  .btn-theme03.active,
+  .open .dropdown-toggle.btn-theme03 {
+    color: #fff;
+    background-color: #cbc5c1;
+    border-color: #37bc9b;
+  }
+  
+  .btn-theme04 {
+    color: #fff;
+    background-color: #ed5565;
+    border-color: #da4453;
+  }
+  .btn-theme04:hover,
+  .btn-theme04:focus,
+  .btn-theme04:active,
+  .btn-theme04.active,
+  .open .dropdown-toggle.btn-theme04 {
+    color: #fff;
+    background-color: #da4453;
+    border-color: #da4453;
+  }
+  
+  .btn-clear-g {
+      color: #48bcb4;
+      background: transparent;
+      border-color: #48bcb4;
+  }
+  
+  .btn-clear-g:hover {
+      color: white;
+  }
+  
+  hr {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    border: 0;
+    border-top: 1px solid #797979;
+  }
+  
+  /*Helpers*/
+
+.centered {
+	text-align: center;
+}
+
+.goleft {
+	text-align: left;
+}
+
+.goright {
+	text-align: right;
+}
+
+.mt {
+	margin-top: 25px;
+}
+
+.mb {
+	margin-bottom: 25px;
+}
+
+.ml {
+	margin-left: 5px;
+	}
+
+.no-padding {
+	padding: 0 !important;
+}
+
+.no-margin {
+	margin: 0 !important;
+}
+
+/*Exclusive Theme Colors Configuration*/
+
+.label-theme {
+	background-color: #68dff0;
+}
+
+.bg-theme {
+	background-color: #68dff0;
+}
+
+ul.top-menu > li > .logout {
+	color: #f2f2f2;
+	font-size: 12px;
+	border-radius: 4px;
+	-webkit-border-radius: 4px;
+	border: 1px solid #64c3c2 !important;
+	padding: 5px 15px;
+	margin-right: 15px;
+	background: #68dff0;
+	margin-top: 15px;
+}
+
+/*sidebar navigation*/
+
+#sidebar {
+    width: 210px;
+    height: 100%;
+    position: fixed;
+    background: #424a5d;
+}
+
+#sidebar h5 {
+	color: #f2f2f2;
+	font-weight: 700;
+}
+
+#sidebar ul li {
+    position: relative;
+}
+
+#sidebar .sub-menu > .sub li  {
+    padding-left: 32px;
+}
+
+#sidebar .sub-menu > .sub li:last-child {
+    padding-bottom: 10px;
+}
+
+/* FORMS CONFIGURATION */
+.form-panel {
+	background: #ffffff;
+	margin: 10px;
+	padding: 10px;
+	box-shadow: 0px 3px 2px #aab2bd;
+	text-align: left;
+}
+
+label {
+	font-weight: 400;
+}
+
+.form-horizontal.style-form .form-group {
+	border-bottom: 1px solid #eff2f7;
+	padding-bottom: 15px;
+	margin-bottom: 15px;
+}
+
+.round-form {
+	border-radius: 500px;
+	-webkit-border-radius: 500px;
+}
+
+@media (min-width: 768px) {
+		.form-horizontal .control-label {
+		text-align: left;
+	}
+}
+
+#focusedInput {
+	border: 1px solid #ed5565;
+	box-shadow: none;
+}
+
+.add-on {
+	float: right;
+	margin-top: -37px;
+	padding: 3px;
+	text-align: center;
+}
+
+.add-on .btn {
+	height: 34px;
+}
+
+.container {
+    color: white;
+    
+}
+/* Custom Code Here */
+.container .check input {
+  display: none;
+}
+.container .check input:checked + label .box {
+  -webkit-animation: animOn 0.8s 1 forwards;
+          animation: animOn 0.8s 1 forwards;
+  background: rgba(0, 0, 0, 0.5);
+  height: auto;
+}
+
+.container .check input + label .text {
+    color: #4c586f;
+    padding: 10px; 
+    font-size:16px;
+    
+}
+.container .check input:checked + label .box i {
+  -webkit-transform: translate(-50%, -50%) scale(1);
+          transform: translate(-50%, -50%) scale(1);
+  -webkit-transition-duration: 250ms;
+          transition-duration: 250ms;
+  opacity: 1;
+
+}
+.container .check label {
+  min-width: 100px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: left;
+      -ms-flex-pack: left;
+          justify-content: left;
+  -webkit-box-align: left;
+      -ms-flex-align: left;
+          align-items: left;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  min-height: 40px;
+  cursor: pointer;
+}
+
+.container .check label .box {
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 5px;
+  position: relative;
+  width: 30px;
+  height: 30px;
+  -webkit-transition: background 300ms ease;
+  transition: background 300ms ease;
+}
+
+.container .check label .box:hover {
+  background: rgba(0, 0, 0, 0.5);
+    
+}
+.container .check label .box i {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  font-size: 15px;
+  display: inline-block;
+  opacity: 0;
+  pointer-events: none;
+  -webkit-transition: all 0.2s ease-in-out;
+  transition: all 0.2s ease-in-out;
+  -webkit-transition-delay: 200ms;
+          transition-delay: 200ms;
+  -webkit-transform: translate(-50%, -50%) scale(6);
+          transform: translate(-50%, -50%) scale(6);
+}

@@ -22,7 +22,6 @@ import { AddPresidentComponent } from './add-president/add-president.component';
 
 
 
-
 @NgModule({
   declarations: [
     AppComponent,
