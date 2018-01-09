@@ -3,6 +3,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Subject } from 'rxjs/Rx';
 
 import { Building } from '../models/building';
+import { User } from '../models/user';
 
 
 @Injectable()
@@ -46,6 +47,23 @@ export class BuildingService {
           .then(res => {return res})
           .catch(this.handleError);
   }
+
+  deleteBuilding(id: number): Promise<{}>{
+    const url = `${this.buildingsUrl}/${id}`;
+    return this.http.delete(url, {headers: this.headers})
+        .toPromise()
+        .catch(this.handleError);
+  }
+
+  addPresident(buildingID:number, president: User): Promise<User>{
+    const url = `${this.buildingsUrl}/${buildingID}/president`;
+    return this.http.post<User>(url, president, {headers: this.headers})
+          .toPromise()
+          .then(res => {return res})
+          .catch(this.handleError);
+  }
+
+  
 
   private handleError(error: any): Promise<any> {
     console.error("Error... ", error);

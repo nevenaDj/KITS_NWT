@@ -1,15 +1,23 @@
-<h2>Login</h2>
-<form name="form" (ngSubmit)="login()">
-  <div>
-    <label>Username</label>
-    <input type="text" name="username" [(ngModel)]="user.username" required/>
+<div id="login-page">
+	<div class="container">
+	  <form class="form-login" name="form" (ngSubmit)="login()">
+		  <div class="login-wrap">
+        <img src="http://www.freeiconspng.com/uploads/home-house-silhouette-icon-building--public-domain-pictures--20.png" class="login-image" >
+        <br>
+        <input type="text" class="form-control" placeholder="User ID" name="username" [(ngModel)]="user.username" required autofocus>
+        <br>
+        <input type="password" class="form-control" placeholder="Password" name="password" [(ngModel)]="user.password" required>
+        <br>
+        <button class="btn btn-theme btn-block" type="submit"><i class="fa fa-lock"></i> SIGN IN</button>
+        <hr>
+        <div class="registration">
+          Don't have an account yet?
+          <br>
+          <a class="" href="#">Create an account</a>
+        </div>
+      </div>
+    </form>	
   </div>
-  <div>
-    <label>Password</label>
-    <input type="password" name="password" [(ngModel)]="user.password" required />
-  </div>
-  <div>
-    <button>Login</button>
-  </div>
-     
-</form>
+</div>
+<br>
+<br>

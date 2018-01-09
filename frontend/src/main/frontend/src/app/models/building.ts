@@ -9,7 +9,7 @@ export class Building implements BuildingInterface{
 	constructor(buildingCfg:BuildingInterface)
 	{	
 		this.id = buildingCfg.id;
-		this.address = buildingCfg.address
+		this.address = buildingCfg.address;
 		this.president = buildingCfg.president;
 	}
 }

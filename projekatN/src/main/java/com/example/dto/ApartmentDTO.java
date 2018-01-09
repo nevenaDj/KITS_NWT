@@ -68,7 +68,7 @@ public class ApartmentDTO {
 	public static Apartment getApartment(ApartmentDTO apartmentDTO) {
 		Apartment apartment = new Apartment(apartmentDTO.getId(), apartmentDTO.getNumber(),
 				apartmentDTO.getDescription());
-		if (apartmentDTO.getOwner() != null) {
+		if (apartmentDTO.getOwner() != null && apartmentDTO.getOwner().getId() != null) {
 			apartment.setOwner(UserDTO.getUser(apartmentDTO.getOwner()));
 		}
 		return apartment;

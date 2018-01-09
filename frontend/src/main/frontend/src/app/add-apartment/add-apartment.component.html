@@ -1,0 +1,17 @@
+<div>
+    <h3>Add apartment</h3>
+  </div>
+  
+  <div>
+  
+    <form name="form" (ngSubmit)="save()">
+          <div>
+            <label>Description</label>
+            <input type="text" [(ngModel)]="apartment.description" placeholder="Description" name="description">
+          </div>
+          <div>
+            <label>Number</label>
+            <input type="number" [(ngModel)]="apartment.number" placeholder="Number" name="number">
+          </div>
+          <button>Save</button>
+     </form>

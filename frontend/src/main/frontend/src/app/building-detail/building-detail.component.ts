@@ -3,6 +3,8 @@ import { ParamMap, Router, ActivatedRoute } from '@angular/router';
 
 import { Building } from '../models/building';
 import { BuildingService } from '../buildings/building.service';
+import { Apartment } from '../models/apartment';
+import { ApartmentService } from '../apartments/apartment.service';
 
 
 @Component({
@@ -13,8 +15,12 @@ import { BuildingService } from '../buildings/building.service';
 export class BuildingDetailComponent implements OnInit {
   building: Building;
 
-  constructor(private router:ActivatedRoute,
-              private buildingService: BuildingService) { 
+  apartments: Apartment[];
+
+  constructor(private router: Router,
+              private route:ActivatedRoute,
+              private buildingService: BuildingService,
+              private apartmentService: ApartmentService) { 
     this.building = {
       id: null,
       address: {
@@ -35,9 +41,21 @@ export class BuildingDetailComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.buildingService.getBuilding(+this.router.snapshot.params['id'])
-        .then(building => this.building = building);
+    this.buildingService.getBuilding(+this.route.snapshot.params['id'])
+        .then(building => {
+          this.building = building;
+          this.apartmentService.getApartments(building.id).then(apartments =>
+              this.apartments = apartments);
+        }
+      );
   }
 
+  gotoAddApartment(){
+    this.router.navigate([ `/buildings/${this.building.id}/addApartment`]);
+  }
+
+  gotoAddPresident(){
+    this.router.navigate([ `/buildings/${this.building.id}/addPresident`]);
+  }
  
 }
