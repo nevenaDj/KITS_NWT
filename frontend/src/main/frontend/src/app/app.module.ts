@@ -20,6 +20,15 @@ import { ApartmentsComponent } from './apartments/apartments.component';
 import { AddApartmentComponent } from './add-apartment/add-apartment.component';
 import { AddPresidentComponent } from './add-president/add-president.component';
 import { HomeCompanyComponent } from './home-company/home-company.component';
+import { CompanyDataService } from './home-company/company-data.service';
+import { UpdateCompanyComponent } from './update-company/update-company.component';
+import { PendingGlitchesCompanyComponent } from './pending-glitches-company/pending-glitches-company.component';
+import { ActiveGlitchesCompanyComponent } from './active-glitches-company/active-glitches-company.component';
+import { BillsCompanyComponent } from './bills-company/bills-company.component';
+import { PricelistCompanyComponent } from './pricelist-company/pricelist-company.component';
+import { ChangePasswordCompanyComponent } from './change-password-company/change-password-company.component';
+import { BillDetailsCompanyComponent } from './bill-details-company/bill-details-company.component';
+import { GlitchDetailsCompanyComponent } from './glitch-details-company/glitch-details-company.component'
 
 
 
@@ -35,7 +44,15 @@ import { HomeCompanyComponent } from './home-company/home-company.component';
     ApartmentsComponent,
     AddApartmentComponent,
     AddPresidentComponent,
-    HomeCompanyComponent
+    HomeCompanyComponent,
+    UpdateCompanyComponent,
+    PendingGlitchesCompanyComponent,
+    ActiveGlitchesCompanyComponent,
+    BillsCompanyComponent,
+    PricelistCompanyComponent,
+    ChangePasswordCompanyComponent,
+    BillDetailsCompanyComponent,
+    GlitchDetailsCompanyComponent
   ],
   imports: [
     BrowserModule,
@@ -49,7 +66,8 @@ import { HomeCompanyComponent } from './home-company/home-company.component';
     RoleGuardService,
     AuthService,
     BuildingService,
-    ApartmentService
+    ApartmentService,
+    CompanyDataService
   ],
   bootstrap: [AppComponent]
 })

@@ -1,5 +1,6 @@
 package com.example.controller;
 
+import java.io.Console;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -200,5 +201,27 @@ public class UserController {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 
+	}
+	
+	@RequestMapping(value = "/me", method = RequestMethod.GET)
+	@ApiOperation(value = "Get the loged in user.", httpMethod = "GET")
+	@ApiImplicitParam(paramType="header", name="X-Auth-Token", required=true, value="JWT token")
+	@ApiResponses(value = { 
+			@ApiResponse(code = 200, message = "Success", response=UserDTO.class),
+			@ApiResponse(code = 404, message = "Not found") })
+	/*** get user ***/
+	public ResponseEntity<UserDTO> getLogedINUser(HttpServletRequest request) {
+		System.out.println("Kezdes");
+		String token = request.getHeader("X-Auth-Token");
+		System.out.println(token);
+		String username = tokenUtils.getUsernameFromToken(token);
+		System.out.println(username);
+		User user = userService.findByUsername(username);
+		if (user == null) {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+		System.out.println(user.getUsername());
+		System.out.println(user.getEmail());
+		return new ResponseEntity<>(new UserDTO(user), HttpStatus.OK);
 	}
 }
