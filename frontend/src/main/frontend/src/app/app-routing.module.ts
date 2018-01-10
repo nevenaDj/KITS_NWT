@@ -16,21 +16,21 @@ import { AddPresidentComponent } from './add-president/add-president.component';
 
 const routers: Routes = [
   { path: 'login', component: LoginComponent},
-  { 
-    path: '', 
-    component: HomeComponent, 
-    canActivate: [AuthGuardService,RoleGuardService], 
-    data: { 
+  {
+    path: '',
+    component: HomeComponent,
+    canActivate: [AuthGuardService, RoleGuardService],
+    data: {
       expectedRole: 'ROLE_ADMIN'
     }
-   
+
   },
   { path: 'addBuilding', component: AddBuildingComponent},
   { path: 'buildings', component: BuildingsComponent},
-  { path: 'buildings/:id',component: BuildingDetailComponent},
+  { path: 'buildings/:id', component: BuildingDetailComponent},
   { path: 'buildings/:id/addApartment', component: AddApartmentComponent},
   { path: 'buildings/:id/addPresident', component: AddPresidentComponent}
-  
+
 
 ];
 

@@ -54,7 +54,7 @@ export class ApartmentService {
      return this.http
           .put(url, apartment, {headers: this.headers})
           .toPromise()
-          .then(res => {return res})
+          .then(res => { return res})
           .catch(this.handleError);
    }
 

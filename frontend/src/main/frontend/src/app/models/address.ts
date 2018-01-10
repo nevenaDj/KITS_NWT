@@ -1,4 +1,4 @@
-export class Address implements AddressInterface{
+export class Address implements AddressInterface {
 	public id: number;
 	public street: string;
 	public number: string;
