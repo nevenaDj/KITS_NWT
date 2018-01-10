@@ -9,14 +9,15 @@ import * as decode from 'jwt-decode';
 })
 export class HomeAdminComponent implements OnInit {
   token: string = '';
-  proba: string = '';
+  username: string = '';
 
   constructor(private router: Router) { }
 
   ngOnInit() {
     this.token = localStorage.getItem('token');
-    this.proba = decode(this.token);
-    console.log(this.proba);
+    const tokenPayload = decode(this.token);
+    console.log(tokenPayload.sub);
+    this.username = tokenPayload.sub;
   }
 
   logout(){

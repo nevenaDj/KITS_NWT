@@ -1,0 +1,11 @@
+.save-button-text {
+    color: #4c586f;
+    opacity: 0.7;
+    border: #BED297;
+    background-color: #BED297;
+}
+
+.save-button-text:hover{
+     text-decoration-color: #a2aab0;
+     opacity: 0.2;
+}

@@ -2,6 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
+import { DropdownModule } from 'ngx-dropdown';
 
 import { ApartmentService } from './apartments/apartment.service';
 import { BuildingService } from './buildings/building.service';
@@ -41,7 +42,8 @@ import { HomeCompanyComponent } from './home-company/home-company.component';
     BrowserModule,
     AppRoutingModule,
     FormsModule,
-    HttpClientModule
+    HttpClientModule,
+    DropdownModule
     
   ],
   providers: [

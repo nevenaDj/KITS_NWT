@@ -24,7 +24,22 @@ const routers: Routes = [
     data: { 
       expectedRole: 'ROLE_ADMIN'
     }
-   
+  },
+  { 
+    path: 'home/admin', 
+    component: HomeAdminComponent, 
+    
+    children:[
+      { path: 'buildings', component: BuildingsComponent, outlet: 'building'},
+      { path: 'addBuilding', component: AddBuildingComponent, outlet: 'building'},
+      { path: 'buildings/:id',component: BuildingDetailComponent, outlet:'building'},
+      { path: 'buildings/:id/addApartment', component: AddApartmentComponent, outlet:'building'}
+    ]
+  },
+  { 
+    path: 'home', 
+    component: HomeComponent, 
+    canActivate: [AuthGuardService]
   },
   { 
     path: 'home/company', 
@@ -40,8 +55,6 @@ const routers: Routes = [
   { path: 'buildings/:id',component: BuildingDetailComponent},
   { path: 'buildings/:id/addApartment', component: AddApartmentComponent},
   { path: 'buildings/:id/addPresident', component: AddPresidentComponent}
-  
-
 ];
 
 @NgModule({

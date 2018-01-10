@@ -41,7 +41,7 @@ export class AddBuildingComponent implements OnInit {
    console.log(this.building);
    this.buildingService.addBuilding(this.building)
       .then( building => { console.log(building);
-                           this.router.navigate(['buildings']);
+                           this.router.navigate(['/home/admin', { outlets: { building: ['buildings'] }}]);
       });
   }
 

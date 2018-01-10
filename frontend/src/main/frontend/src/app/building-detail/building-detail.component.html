@@ -1,47 +1,70 @@
-<div>
-  <h3>Building</h3>
-</div>
-<button *ngIf="!building.president" (click)="gotoAddPresident()">Add president</button>
-<button (click)="gotoAddApartment()">Add apartment</button>
-<div>
-  <label><b>Street</b></label>
-  {{building.address.street}}
-</div>
-<div>
-  <label><b>Number</b></label>
-  {{building.address.number}}
-</div>
-<div>
-  <label><b>Zip code</b></label>
-  {{building.address.zipCode}}
-</div>
-<div>
-  <label><b>City</b></label>
-  {{building.address.city}}
-</div>
 
-<div *ngIf="building.id">
-  <div>
-    Apartments
-  </div>
-  <table>
-    <tr *ngFor="let apartment of apartments">
-      <td>
-        {{apartment.number}}
-      </td>
-    </tr>
-  </table>
-
-</div>
-<br>
-<br>
-<div *ngIf="building.president">
-  <h5>
-    President
-  </h5>
-  <div>
-    <label><b>Username</b></label>
-    {{building.president.username}}
+<section>
+<div class="row">
+  <div class="col-lg-9 main-chart">
+    <p class="title">BUILDING</p>
+    <p class="delete-button">
+      <a class="delete-x">x</a>
+    </p>
   </div>
 </div>
+<div class="row">
+  <div class="col-lg-9 main-chart">
+    <div class="row">
+      <div class="col-lg-1"></div>
+      <div class="col-lg-5 border">
+        <div class="border-title">city</div>
+        <div class="border-desc">{{building.address.city}}</div>
+      </div>
+      <div class="col-lg-5 border">
+        <div class="border-title">
+          zip code
+        </div>
+        <div class="border-desc">{{building.address.zipCode}}</div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-lg-1"></div>
+      <div class="col-lg-10 border">
+        <div class="border-title">street</div>
+        <div class="border-desc">{{building.address.street}}</div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-lg-1"></div>
+      <div class="col-lg-10 border">
+        <div class="border-title">number</div>
+        <div class="border-desc">{{building.address.number}}</div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-lg-1"></div>
+      <div class="col-lg-10">
+        <div class="full-button">
+          <a class="full-button-text">Update data</a>
+        </div>
+      </div>
+    </div>
+  </div>
+    <div class="col-lg-3 ds">
+      <h3>APARTMENTS</h3>
+      <div class="weather-new pn">
+        <i class="fa fa-plus"></i>
+        <h2><a (click)="gotoAddApartment()">NEW</a></h2>
+        <h4></h4>
+      </div>  
+      <div *ngFor="let apartment of apartments">
+        <div class="weather pn">
+          <i class="fa fa-home"></i>
+          <h2>{{apartment.number}}</h2>
+          <h4></h4>
+        </div> 
+      </div>
+    </div>
+  </div>
+</section>
 
+
+        
+       
+        
