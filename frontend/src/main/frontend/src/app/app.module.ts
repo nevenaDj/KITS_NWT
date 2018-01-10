@@ -19,6 +19,7 @@ import { AddBuildingComponent } from './add-building/add-building.component';
 import { ApartmentsComponent } from './apartments/apartments.component';
 import { AddApartmentComponent } from './add-apartment/add-apartment.component';
 import { AddPresidentComponent } from './add-president/add-president.component';
+import { HomeCompanyComponent } from './home-company/home-company.component';
 
 
 
@@ -33,7 +34,8 @@ import { AddPresidentComponent } from './add-president/add-president.component';
     AddBuildingComponent,
     ApartmentsComponent,
     AddApartmentComponent,
-    AddPresidentComponent
+    AddPresidentComponent,
+    HomeCompanyComponent
   ],
   imports: [
     BrowserModule,
