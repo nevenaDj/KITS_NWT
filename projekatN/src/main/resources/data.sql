@@ -33,6 +33,8 @@ insert into apartment (description,number, building_id, owner_id) values ('descr
 insert into apartment (description,number, building_id) values ('description 2', 2, 1);
 insert into apartment (description,number, building_id) values ('description 3', 1, 2);
 
+insert into user_aparment (tenant_id, apartment_id) values (2, 1);
+
 insert into meeting (building_id, date_and_time, active) values (1,'2017-11-11', true);
 
 

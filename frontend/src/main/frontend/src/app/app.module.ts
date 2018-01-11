@@ -4,6 +4,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { DropdownModule } from 'ngx-dropdown';
 
+import { TenantService } from './tenants/tenant.service';
 import { ApartmentService } from './apartments/apartment.service';
 import { BuildingService } from './buildings/building.service';
 import { AuthService } from './login/auth.service';
@@ -23,6 +24,10 @@ import { AddPresidentComponent } from './add-president/add-president.component';
 import { HomeCompanyComponent } from './home-company/home-company.component';
 import { MenuComponent } from './menu/menu.component';
 import { LoginLayoutComponent } from './login-layout/login-layout.component';
+import { TenantsComponent } from './tenants/tenants.component';
+import { ApartmentDetailComponent } from './apartment-detail/apartment-detail.component';
+import { AddTenantComponent } from './add-tenant/add-tenant.component';
+import { TenantDetailComponent } from './tenant-detail/tenant-detail.component';
 
 
 
@@ -40,7 +45,11 @@ import { LoginLayoutComponent } from './login-layout/login-layout.component';
     AddPresidentComponent,
     HomeCompanyComponent,
     MenuComponent,
-    LoginLayoutComponent
+    LoginLayoutComponent,
+    TenantsComponent,
+    ApartmentDetailComponent,
+    AddTenantComponent,
+    TenantDetailComponent
   ],
   imports: [
     BrowserModule,
@@ -55,7 +64,8 @@ import { LoginLayoutComponent } from './login-layout/login-layout.component';
     RoleGuardService,
     AuthService,
     BuildingService,
-    ApartmentService
+    ApartmentService,
+    TenantService
   ],
   bootstrap: [AppComponent]
 })

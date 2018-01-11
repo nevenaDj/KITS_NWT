@@ -171,9 +171,9 @@ public class BuildingControllerTest {
 	@Test
 	@Transactional
 	@Rollback(true)
-	public void testDeleteBuilding() throws Exception {
+	public void testDeleteBuildingBadRequest() throws Exception {
 		mockMvc.perform(delete("/api/buildings/" + BUILDING_ID_1).header("X-Auth-Token", accessToken))
-				.andExpect(status().isOk());
+				.andExpect(status().isBadRequest());
 	}
 	
 	@Test

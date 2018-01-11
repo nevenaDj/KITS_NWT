@@ -37,10 +37,8 @@ export class BuildingsComponent implements OnInit {
     );
   }
 
-  getBuilding(id:number){
-    console.log(id);
+  gotoGetBuilding(id:number){
     this.router.navigate(['buildings', id]);
-
   }
 
 

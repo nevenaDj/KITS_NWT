@@ -1,12 +1,16 @@
 package com.example.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import com.example.model.Apartment;
 import com.example.model.Building;
 import com.example.repository.AddressRepository;
+import com.example.repository.ApartmentRepository;
 import com.example.repository.BuildingRepository;
 
 @Service
@@ -16,6 +20,8 @@ public class BuildingService {
 	BuildingRepository buildingRepository;
 	@Autowired
 	AddressRepository addressRepository;
+	@Autowired
+	ApartmentRepository apartmentRepository;
 
 	public Building findOne(Long id) {
 		return buildingRepository.findOne(id);
@@ -30,8 +36,13 @@ public class BuildingService {
 		return buildingRepository.save(building);
 	}
 
-	public void remove(Long id) {
-		buildingRepository.delete(id);
+	public boolean remove(Long id) {
+		List<Apartment> apartments = apartmentRepository.getApartments(id);
+		if (apartments.isEmpty()) {
+			buildingRepository.delete(id);
+			return true;
+		}
+		return false;
 	}
 
 	public Building findByAddress(String street, String number, String city) {

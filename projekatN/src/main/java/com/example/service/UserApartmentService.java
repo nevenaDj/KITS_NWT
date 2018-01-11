@@ -1,8 +1,11 @@
 package com.example.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.example.model.User;
 import com.example.model.UserAparment;
 import com.example.repository.UserApatmentRepository;
 
@@ -15,5 +18,9 @@ public class UserApartmentService {
 	public UserAparment save(UserAparment userApartment) {
 		return userApartmentRepostitory.save(userApartment);
 
+	}
+
+	public List<User> getTenants(Long idApartment) {
+		return userApartmentRepostitory.getTenants(idApartment);
 	}
 }

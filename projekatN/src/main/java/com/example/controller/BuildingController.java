@@ -45,22 +45,18 @@ public class BuildingController {
 
 	@Autowired
 	UserService userService;
-	
+
 	@Autowired
 	PasswordEncoder passwordEncoder;
 
 	@RequestMapping(method = RequestMethod.GET)
 	@ApiOperation(value = "Get a list of buildings.", httpMethod = "GET")
 	@ApiImplicitParams({
-        @ApiImplicitParam(name = "page", dataType = "string", paramType = "query",
-                value = "Results page you want to retrieve (0..N)"),
-        @ApiImplicitParam(name = "size", dataType = "string", paramType = "query",
-                value = "Number of records per page."),
-        @ApiImplicitParam(name = "sort", allowMultiple = true, dataType = "string", paramType = "query",
-                value = "Sorting criteria in the format: property(,asc|desc). " +
-                        "Default sort order is ascending. " +
-                        "Multiple sort criteria are supported."),
-		@ApiImplicitParam(paramType="header", name="X-Auth-Token", required=true, value="JWT token")})
+			@ApiImplicitParam(name = "page", dataType = "string", paramType = "query", value = "Results page you want to retrieve (0..N)"),
+			@ApiImplicitParam(name = "size", dataType = "string", paramType = "query", value = "Number of records per page."),
+			@ApiImplicitParam(name = "sort", allowMultiple = true, dataType = "string", paramType = "query", value = "Sorting criteria in the format: property(,asc|desc). "
+					+ "Default sort order is ascending. " + "Multiple sort criteria are supported."),
+			@ApiImplicitParam(paramType = "header", name = "X-Auth-Token", required = true, value = "JWT token") })
 	/*** get a list of the buildings ***/
 	public ResponseEntity<List<BuildingDTO>> getBuildings(Pageable page) {
 		Page<Building> buildings = buildingService.findAll(page);
@@ -74,7 +70,7 @@ public class BuildingController {
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	@ApiOperation(value = "Get a single building.", httpMethod = "GET")
-	@ApiImplicitParam(paramType="header", name="X-Auth-Token", required=true, value="JWT token")
+	@ApiImplicitParam(paramType = "header", name = "X-Auth-Token", required = true, value = "JWT token")
 	@ApiResponses(value = { @ApiResponse(code = 200, message = "Success", response = BuildingDTO.class),
 			@ApiResponse(code = 404, message = "Not found") })
 	/*** get a building ***/
@@ -89,7 +85,7 @@ public class BuildingController {
 
 	@RequestMapping(method = RequestMethod.POST, consumes = "application/json")
 	@ApiOperation(value = "Create a building.", notes = "Returns the building being saved.", httpMethod = "POST", produces = "application/json", consumes = "application/json")
-	@ApiImplicitParam(paramType="header", name="X-Auth-Token", required=true, value="JWT token")
+	@ApiImplicitParam(paramType = "header", name = "X-Auth-Token", required = true, value = "JWT token")
 	@ApiResponses(value = { @ApiResponse(code = 201, message = "Created", response = BuildingDTO.class),
 			@ApiResponse(code = 500, message = "Failure") })
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
@@ -104,7 +100,7 @@ public class BuildingController {
 	}
 
 	@RequestMapping(method = RequestMethod.PUT, consumes = "application/json")
-	@ApiImplicitParam(paramType="header", name="X-Auth-Token", required=true, value="JWT token")
+	@ApiImplicitParam(paramType = "header", name = "X-Auth-Token", required = true, value = "JWT token")
 	@ApiOperation(value = "Update a building.", notes = "Returns the building being saved.", httpMethod = "PUT", produces = "application/json", consumes = "application/json")
 	@ApiResponses(value = { @ApiResponse(code = 200, message = "Success", response = BuildingDTO.class),
 			@ApiResponse(code = 500, message = "Failure"), @ApiResponse(code = 400, message = "Bad request") })
@@ -125,10 +121,10 @@ public class BuildingController {
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
 	@ApiOperation(value = "Delete a buildig.", httpMethod = "DELETE")
-	@ApiImplicitParam(paramType="header", name="X-Auth-Token", required=true, value="JWT token")
-	@ApiResponses(value = { 
-			@ApiResponse(code = 200, message = "Success"),
-			@ApiResponse(code = 404, message = "Not found")})
+	@ApiImplicitParam(paramType = "header", name = "X-Auth-Token", required = true, value = "JWT token")
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "Success"),
+			@ApiResponse(code = 404, message = "Not found"),
+			@ApiResponse(code = 400, message = "Bad request")})
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	/*** delete a building ***/
 	public ResponseEntity<Void> deleteBuilding(
@@ -136,23 +132,28 @@ public class BuildingController {
 		Building building = buildingService.findOne(id);
 		if (building == null) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-		} else {
-			buildingService.remove(id);
-			return new ResponseEntity<>(HttpStatus.OK);
 		}
+
+		boolean flag = buildingService.remove(id);
+		
+		if (flag) {
+			return new ResponseEntity<>(HttpStatus.OK);
+		} else {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+
 	}
 
 	@RequestMapping(method = RequestMethod.GET, params = { "street", "number", "city" })
 	@ApiOperation(value = "Find a building by address.", httpMethod = "GET")
-	@ApiImplicitParam(paramType="header", name="X-Auth-Token", required=true, value="JWT token")
-	@ApiResponses(value = { 
-			@ApiResponse(code = 200, message = "Success", response = BuildingDTO.class),
+	@ApiImplicitParam(paramType = "header", name = "X-Auth-Token", required = true, value = "JWT token")
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "Success", response = BuildingDTO.class),
 			@ApiResponse(code = 404, message = "Not found") })
 	/*** find builidng by address ***/
 	public ResponseEntity<BuildingDTO> findBuildingByAddress(
-			@ApiParam(name = "street", value = "street",required=true) @RequestParam("street") String street,
-			@ApiParam(name = "number", value = "number of street",required=true) @RequestParam("number") String number,
-			@ApiParam(name = "city", value = "city",required=true) @RequestParam("city") String city) {
+			@ApiParam(name = "street", value = "street", required = true) @RequestParam("street") String street,
+			@ApiParam(name = "number", value = "number of street", required = true) @RequestParam("number") String number,
+			@ApiParam(name = "city", value = "city", required = true) @RequestParam("city") String city) {
 
 		Building building = buildingService.findByAddress(street, number, city);
 
@@ -165,28 +166,28 @@ public class BuildingController {
 
 	@RequestMapping(value = "/{id}/president", method = RequestMethod.POST, consumes = "application/json")
 	@ApiOperation(value = "Add a building president.", httpMethod = "POST", produces = "application/json", consumes = "application/json")
-	@ApiImplicitParam(paramType="header", name="X-Auth-Token", required=true, value="JWT token")
+	@ApiImplicitParam(paramType = "header", name = "X-Auth-Token", required = true, value = "JWT token")
 	@ApiResponses(value = { @ApiResponse(code = 201, message = "Created", response = BuildingDTO.class),
 			@ApiResponse(code = 400, message = "Bad request"), @ApiResponse(code = 500, message = "Failure") })
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	/*** add a builidng president **/
 	public ResponseEntity<BuildingDTO> addPresident(@PathVariable Long id, @RequestBody UserDTO userDTO) {
-		
+
 		User user = null;
-		if (userDTO.getId() == null){
+		if (userDTO.getId() == null) {
 			user = UserDTO.getUser(userDTO);
 			user.setPassword(passwordEncoder.encode("password"));
 			user = userService.save(user, ROLE_PRESIDENT);
-		}else{
+		} else {
 			user = userService.findOne(userDTO.getId());
-			
-			if (user == null){
+
+			if (user == null) {
 				return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 			}
-			
+
 			userService.saveUserAuthority(user, ROLE_PRESIDENT);
 		}
-		
+
 		Building building = buildingService.findOne(id);
 
 		if (building == null) {

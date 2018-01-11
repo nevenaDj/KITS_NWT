@@ -13,6 +13,10 @@ import { AddApartmentComponent } from './add-apartment/add-apartment.component';
 import { AddPresidentComponent } from './add-president/add-president.component';
 import { HomeCompanyComponent } from './home-company/home-company.component';
 import { LoginLayoutComponent } from './login-layout/login-layout.component';
+import { Component } from '@angular/core/src/metadata/directives';
+import { ApartmentDetailComponent } from './apartment-detail/apartment-detail.component';
+import { AddTenantComponent } from './add-tenant/add-tenant.component';
+import { TenantDetailComponent } from './tenant-detail/tenant-detail.component';
 
 
 
@@ -29,7 +33,10 @@ const routers: Routes = [
           { path: 'addBuilding', component: AddBuildingComponent},
           { path: 'buildings/:id',component: BuildingDetailComponent},
           { path: 'buildings/:id/addApartment', component: AddApartmentComponent},
-          { path: 'buildings/:id/addPresident', component: AddPresidentComponent}
+          { path: 'buildings/:id/addPresident', component: AddPresidentComponent},
+          { path: 'apartments/:id', component: ApartmentDetailComponent},
+          { path: 'apartments/:id/addTenant', component: AddTenantComponent},
+          { path: 'apartments/:idApartment/tenants/:id', component: TenantDetailComponent}
     ]
   },
   {
