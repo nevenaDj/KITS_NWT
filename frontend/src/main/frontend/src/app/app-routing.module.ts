@@ -12,49 +12,45 @@ import { AddBuildingComponent } from './add-building/add-building.component';
 import { AddApartmentComponent } from './add-apartment/add-apartment.component';
 import { AddPresidentComponent } from './add-president/add-president.component';
 import { HomeCompanyComponent } from './home-company/home-company.component';
+import { LoginLayoutComponent } from './login-layout/login-layout.component';
 
 
 
 const routers: Routes = [
-  { path: 'login', component: LoginComponent},
-  { 
-    path: '', 
-    component: HomeComponent, 
+  {
+    path: '',
+    component: HomeAdminComponent,
     canActivate: [AuthGuardService,RoleGuardService], 
     data: { 
       expectedRole: 'ROLE_ADMIN'
-    }
-  },
-  { 
-    path: 'home/admin', 
-    component: HomeAdminComponent, 
-    
-    children:[
-      { path: 'buildings', component: BuildingsComponent, outlet: 'building'},
-      { path: 'addBuilding', component: AddBuildingComponent, outlet: 'building'},
-      { path: 'buildings/:id',component: BuildingDetailComponent, outlet:'building'},
-      { path: 'buildings/:id/addApartment', component: AddApartmentComponent, outlet:'building'}
+    },
+    children: [
+          { path: 'buildings', component: BuildingsComponent},
+          { path: 'addBuilding', component: AddBuildingComponent},
+          { path: 'buildings/:id',component: BuildingDetailComponent},
+          { path: 'buildings/:id/addApartment', component: AddApartmentComponent},
+          { path: 'buildings/:id/addPresident', component: AddPresidentComponent}
     ]
   },
-  { 
-    path: 'home', 
-    component: HomeComponent, 
-    canActivate: [AuthGuardService]
-  },
-  { 
-    path: 'home/company', 
-    component: HomeCompanyComponent, 
+  {
+    path: 'home/company',
+    component: HomeCompanyComponent,
     canActivate: [AuthGuardService,RoleGuardService], 
     data: { 
       expectedRole: 'ROLE_COMPANY'
-    }
-   
+    },
   },
-  { path: 'addBuilding', component: AddBuildingComponent},
-  { path: 'buildings', component: BuildingsComponent},
-  { path: 'buildings/:id',component: BuildingDetailComponent},
-  { path: 'buildings/:id/addApartment', component: AddApartmentComponent},
-  { path: 'buildings/:id/addPresident', component: AddPresidentComponent}
+  {
+    path: '',
+    component: LoginLayoutComponent,
+    children: [
+      {
+        path: 'login',
+        component: LoginComponent
+      }
+    ]
+  },
+  { path: '**', redirectTo: '' }
 ];
 
 @NgModule({

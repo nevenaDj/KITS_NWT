@@ -28,8 +28,7 @@ export class BuildingsComponent implements OnInit {
   }
 
   gotoAdd(){
-    console.log("add");
-    this.router.navigate(['/home/admin', { outlets: { building: ['addBuilding'] }}]);
+    this.router.navigate(['addBuilding']);
   }
 
   getBuildings(){
@@ -40,7 +39,7 @@ export class BuildingsComponent implements OnInit {
 
   getBuilding(id:number){
     console.log(id);
-    this.router.navigate(['/home/admin', { outlets: { building: ['buildings', id]}}]);
+    this.router.navigate(['buildings', id]);
 
   }
 

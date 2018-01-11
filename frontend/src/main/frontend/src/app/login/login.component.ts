@@ -37,10 +37,10 @@ export class LoginComponent implements OnInit {
         const tokenPayload = decode(token);
         for(let role of tokenPayload.scopes){
           if(role === 'ROLE_ADMIN'){
-            this.router.navigate(['home/admin']);
+            this.router.navigate(['']);
           }
           else if (role === 'ROLE_COMPANY'){
-            this.router.navigate(['home/company']);
+            this.router.navigate(['/home/company']);
           } else {
             console.log('user');
           }

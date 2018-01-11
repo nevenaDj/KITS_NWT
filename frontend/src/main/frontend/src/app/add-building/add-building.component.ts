@@ -38,11 +38,8 @@ export class AddBuildingComponent implements OnInit {
   }
 
   save(): void{
-   console.log(this.building);
    this.buildingService.addBuilding(this.building)
-      .then( building => { console.log(building);
-                           this.router.navigate(['/home/admin', { outlets: { building: ['buildings'] }}]);
-      });
+      .then( building => { this.router.navigate(['buildings'])});
   }
 
 }

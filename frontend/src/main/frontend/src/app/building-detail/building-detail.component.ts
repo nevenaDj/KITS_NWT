@@ -51,7 +51,7 @@ export class BuildingDetailComponent implements OnInit {
   }
 
   gotoAddApartment(){
-    this.router.navigate(['/home/admin', { outlets: { building: ['buildings',this.building.id, 'addApartment'] }}]);
+    this.router.navigate([`/buildings/${this.building.id}/addApartment`]);
   }
 
   gotoAddPresident(){

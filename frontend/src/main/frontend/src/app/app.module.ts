@@ -21,6 +21,8 @@ import { ApartmentsComponent } from './apartments/apartments.component';
 import { AddApartmentComponent } from './add-apartment/add-apartment.component';
 import { AddPresidentComponent } from './add-president/add-president.component';
 import { HomeCompanyComponent } from './home-company/home-company.component';
+import { MenuComponent } from './menu/menu.component';
+import { LoginLayoutComponent } from './login-layout/login-layout.component';
 
 
 
@@ -36,7 +38,9 @@ import { HomeCompanyComponent } from './home-company/home-company.component';
     ApartmentsComponent,
     AddApartmentComponent,
     AddPresidentComponent,
-    HomeCompanyComponent
+    HomeCompanyComponent,
+    MenuComponent,
+    LoginLayoutComponent
   ],
   imports: [
     BrowserModule,
