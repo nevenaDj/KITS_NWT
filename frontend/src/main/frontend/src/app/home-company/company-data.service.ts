@@ -18,9 +18,9 @@ export class CompanyDataService {
   constructor(private http: HttpClient) {
       this.headers = new HttpHeaders();
       this.headers.append('Content-Type', 'application/json');
-      alert("token> "+JSON.stringify(localStorage.getItem('token')));
+      //alert("token> "+JSON.stringify(localStorage.getItem('token')));
       this.headers.append('X-Auth-Token', localStorage.getItem('token'));
-      alert(JSON.stringify(this.headers));
+     // alert(JSON.stringify(this.headers));
   }
    
   

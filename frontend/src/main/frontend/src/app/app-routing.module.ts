@@ -63,11 +63,11 @@ const routers: Routes = [
     component: BillDetailsCompanyComponent, 
   },
   { 
-    path: 'company/activeGlitches/', 
+    path: 'company/activeGlitches', 
     component: ActiveGlitchesCompanyComponent, 
   },
   { 
-    path: 'company/pendingGlitches/', 
+    path: 'company/pendingGlitches', 
     component: PendingGlitchesCompanyComponent, 
   },
   { 
