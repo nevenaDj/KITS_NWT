@@ -2,7 +2,7 @@
   <div class="row">
     <div class="col-lg-9 main-chart">
       <p class="title">APARTMENT</p>
-      <p *ngIf="tenants.length === 0" class="delete-button">
+      <p *ngIf="tenants && tenants.length === 0" class="delete-button">
         <a class="delete-x" (click)="deleteApartment()">x</a>
       </p>
     </div>
@@ -31,6 +31,32 @@
           </div>
         </div>
       </div>
+      <br><br>
+      <div class="row">
+        <div class="col-lg-9 main-chart owner">
+          <p class="title pFont">OWNER</p>
+            <a class="small-btn" *ngIf="!apartment.owner" (click)="gotoAddOwner()">Add owner</a>
+        </div>
+      </div>
+      <div class="row" *ngIf="apartment.owner">
+        <div class="col-lg-1"></div>
+        <div class="col-lg-5 border">
+          <div class="border-title">username</div>
+          <div class="border-desc">{{apartment.owner.username}}</div>
+        </div>
+        <div class="col-lg-5 border">
+          <div class="border-title">phone number</div>
+          <div class="border-desc">{{apartment.owner.phoneNo}}</div>
+        </div>
+      </div>
+      <div class="row" *ngIf="apartment.owner">
+        <div class="col-lg-1"></div>
+        <div class="col-lg-10 border">
+          <div class="border-title">email</div>
+          <div class="border-desc">{{apartment.owner.email}}</div>
+        </div>
+      </div>
+      <br><br><br><br><br><br>
     </div>
     <div class="col-lg-3 ds">
       <h3>TENANTS</h3>

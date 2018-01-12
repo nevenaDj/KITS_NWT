@@ -57,11 +57,11 @@ export class BuildingDetailComponent implements OnInit {
   }
 
   gotoAddPresident(){
-    this.router.navigate([ `/buildings/${this.building.id}/addPresident`]);
+    this.router.navigate([`/buildings/${this.building.id}/addPresident`]);
   }
 
   gotoGetApartment(id: number){
-    this.router.navigate(['apartments', id]);
+    this.router.navigate([`/buildings/${this.building.id}/apartments/${id}`]);
   }
 
   deleteBuilding(){

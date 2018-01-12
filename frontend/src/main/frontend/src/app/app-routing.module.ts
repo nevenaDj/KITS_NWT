@@ -17,6 +17,7 @@ import { Component } from '@angular/core/src/metadata/directives';
 import { ApartmentDetailComponent } from './apartment-detail/apartment-detail.component';
 import { AddTenantComponent } from './add-tenant/add-tenant.component';
 import { TenantDetailComponent } from './tenant-detail/tenant-detail.component';
+import { AddOwnerComponent } from './add-owner/add-owner.component';
 
 
 
@@ -24,19 +25,20 @@ const routers: Routes = [
   {
     path: '',
     component: HomeAdminComponent,
-    canActivate: [AuthGuardService,RoleGuardService], 
+    /* canActivate: [AuthGuardService,RoleGuardService], 
     data: { 
       expectedRole: 'ROLE_ADMIN'
-    },
+    }, */
     children: [
           { path: 'buildings', component: BuildingsComponent},
           { path: 'addBuilding', component: AddBuildingComponent},
           { path: 'buildings/:id',component: BuildingDetailComponent},
           { path: 'buildings/:id/addApartment', component: AddApartmentComponent},
           { path: 'buildings/:id/addPresident', component: AddPresidentComponent},
-          { path: 'apartments/:id', component: ApartmentDetailComponent},
+          { path: 'buildings/:idBuilding/apartments/:id', component: ApartmentDetailComponent},
           { path: 'apartments/:id/addTenant', component: AddTenantComponent},
-          { path: 'apartments/:idApartment/tenants/:id', component: TenantDetailComponent}
+          { path: 'apartments/:idApartment/tenants/:id', component: TenantDetailComponent},
+          { path: 'apartments/:id/addOwner', component: AddOwnerComponent}
     ]
   },
   {

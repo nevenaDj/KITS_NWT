@@ -28,6 +28,7 @@ import { TenantsComponent } from './tenants/tenants.component';
 import { ApartmentDetailComponent } from './apartment-detail/apartment-detail.component';
 import { AddTenantComponent } from './add-tenant/add-tenant.component';
 import { TenantDetailComponent } from './tenant-detail/tenant-detail.component';
+import { AddOwnerComponent } from './add-owner/add-owner.component';
 
 
 
@@ -49,7 +50,8 @@ import { TenantDetailComponent } from './tenant-detail/tenant-detail.component';
     TenantsComponent,
     ApartmentDetailComponent,
     AddTenantComponent,
-    TenantDetailComponent
+    TenantDetailComponent,
+    AddOwnerComponent
   ],
   imports: [
     BrowserModule,

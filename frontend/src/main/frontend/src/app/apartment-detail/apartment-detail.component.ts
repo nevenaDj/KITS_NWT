@@ -42,6 +42,10 @@ export class ApartmentDetailComponent implements OnInit {
         });
   }
 
+  gotoAddOwner(){
+    this.router.navigate([`/apartments/${this.apartment.id}/addOwner`]);
+  }
+
   gotoAddTenant(){
     console.log("add");
     this.router.navigate([`/apartments/${this.apartment.id}/addTenant`]);
@@ -49,8 +53,8 @@ export class ApartmentDetailComponent implements OnInit {
 
   deleteApartment(){
     this.apartmentService.deleteApartment(this.apartment.id)
-        .then(() => this.location.back());
-
+        .then(() => {
+        this.router.navigate([`/buildings/${+this.route.snapshot.params['idBuilding']}/apartments/${+this.route.snapshot.params['id']}`])});
   }
 
   gotoGetTenant(id: number){

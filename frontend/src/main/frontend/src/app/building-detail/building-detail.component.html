@@ -2,7 +2,7 @@
   <div class="row">
     <div class="col-lg-9 main-chart">
       <p class="title">BUILDING</p>
-      <p *ngIf="apartments.length === 0" class="delete-button">
+      <p *ngIf="apartments && apartments.length === 0" class="delete-button">
         <a  (click)="deleteBuilding()" class="delete-x">x</a>
       </p>
     </div>

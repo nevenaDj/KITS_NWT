@@ -3,6 +3,7 @@ import { HttpClient ,HttpHeaders } from '@angular/common/http';
 import { Subject } from 'rxjs/Rx';
 
 import { Apartment } from '../models/apartment';
+import { User } from '../models/user';
 
 @Injectable()
 export class ApartmentService {
@@ -64,7 +65,14 @@ export class ApartmentService {
           .delete(url, {headers: this.headers})
           .toPromise()
           .catch(this.handleError);
+   }
 
+   addOwner(apartmentID: number, owner: User): Promise<User>{
+     const url = `/api/apartments/${apartmentID}/owner`;
+     return this.http.post<User>(url, owner, {headers: this.headers})
+            .toPromise()
+            .then(res => {return res})
+            .catch(this.handleError);
    }
 
    private handleError(error: any): Promise<any> {
