@@ -147,11 +147,12 @@ public class ApartmentController {
 
 		if (apartment == null) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-		} else {
-			apartmentService.remove(id);
+		}
+		boolean retVal = apartmentService.remove(id);
+		if (retVal){
 			return new ResponseEntity<>(HttpStatus.OK);
 		}
-
+		return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 	}
 
 	@RequestMapping(value = "/apartments", method = RequestMethod.GET, params = { "street", "number", "city",

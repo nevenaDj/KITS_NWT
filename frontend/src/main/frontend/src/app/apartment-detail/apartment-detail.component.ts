@@ -54,7 +54,7 @@ export class ApartmentDetailComponent implements OnInit {
   deleteApartment(){
     this.apartmentService.deleteApartment(this.apartment.id)
         .then(() => {
-        this.router.navigate([`/buildings/${+this.route.snapshot.params['idBuilding']}/apartments/${+this.route.snapshot.params['id']}`])});
+        this.router.navigate([`/buildings/${+this.route.snapshot.params['idBuilding']}`])});
   }
 
   gotoGetTenant(id: number){
@@ -64,5 +64,5 @@ export class ApartmentDetailComponent implements OnInit {
   gotoEditApartment(){
     this.router.navigate(['editApartment', this.apartment.id]);
   }
-  
+
 }

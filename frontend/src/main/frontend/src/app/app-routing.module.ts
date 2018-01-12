@@ -28,16 +28,16 @@ const routers: Routes = [
   {
     path: '',
     component: HomeAdminComponent,
-    /* canActivate: [AuthGuardService,RoleGuardService], 
+    canActivate: [AuthGuardService,RoleGuardService], 
     data: { 
       expectedRole: 'ROLE_ADMIN'
-    }, */
+    },
     children: [
           { path: 'buildings', component: BuildingsComponent},
           { path: 'addBuilding', component: AddBuildingComponent},
           { path: 'editBuilding/:id', component: AddBuildingComponent},
           { path: 'buildings/:id',component: BuildingDetailComponent},
-          { path: 'buildings/:id/addApartment', component: AddApartmentComponent},
+          { path: 'buildings/:idBuilding/addApartment', component: AddApartmentComponent},
           { path: 'buildings/:id/addPresident', component: AddPresidentComponent},
           { path: 'buildings/:idBuilding/apartments/:id', component: ApartmentDetailComponent},
           { path: 'apartments/:id/addTenant', component: AddTenantComponent},

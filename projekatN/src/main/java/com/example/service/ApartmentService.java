@@ -25,8 +25,14 @@ public class ApartmentService {
 		return apartmentRepository.save(apartment);
 	}
 
-	public void remove(Long id) {
-		apartmentRepository.delete(id);
+	public boolean remove(Long id) {
+		try {
+			apartmentRepository.delete(id);
+		} catch (Exception e) {
+			return false;
+		}
+		return true;
+		
 	}
 
 	public Apartment findByAddress(String street, String number, String city, int numberApartment) {

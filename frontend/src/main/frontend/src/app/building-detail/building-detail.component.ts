@@ -66,7 +66,7 @@ export class BuildingDetailComponent implements OnInit {
 
   deleteBuilding(){
     this.buildingService.deleteBuilding(this.building.id)
-        .then(() => this.location.back );
+        .then(() => this.location.back() );
 
   }
 

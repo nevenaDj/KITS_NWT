@@ -174,7 +174,7 @@ public class ApartmentControllerTest {
 	@Transactional
 	@Rollback(true)
 	public void testDeleteApartment() throws Exception {
-		mockMvc.perform(delete("/api/apartments/" + ID_APARTMENT).header("X-Auth-Token", accessToken))
+		mockMvc.perform(delete("/api/apartments/" + 2).header("X-Auth-Token", accessToken))
 				.andExpect(status().isOk());
 	}
 
