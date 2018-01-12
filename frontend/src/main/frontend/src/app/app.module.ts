@@ -4,6 +4,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { DropdownModule } from 'ngx-dropdown';
 
+import { UserService } from './users/user.service';
 import { CompanyService } from './companies/company.service';
 import { TenantService } from './tenants/tenant.service';
 import { ApartmentService } from './apartments/apartment.service';
@@ -33,6 +34,7 @@ import { AddOwnerComponent } from './add-owner/add-owner.component';
 import { CompaniesComponent } from './companies/companies.component';
 import { AddCompanyComponent } from './add-company/add-company.component';
 import { CompanyDetailComponent } from './company-detail/company-detail.component';
+import { UsersComponent } from './users/users.component';
 
 
 
@@ -58,7 +60,8 @@ import { CompanyDetailComponent } from './company-detail/company-detail.componen
     AddOwnerComponent,
     CompaniesComponent,
     AddCompanyComponent,
-    CompanyDetailComponent
+    CompanyDetailComponent,
+    UsersComponent
   ],
   imports: [
     BrowserModule,
@@ -75,7 +78,8 @@ import { CompanyDetailComponent } from './company-detail/company-detail.componen
     BuildingService,
     ApartmentService,
     TenantService,
-    CompanyService
+    CompanyService,
+    UserService
   ],
   bootstrap: [AppComponent]
 })

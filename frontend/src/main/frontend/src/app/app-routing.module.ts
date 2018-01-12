@@ -20,6 +20,7 @@ import { AddOwnerComponent } from './add-owner/add-owner.component';
 import { CompaniesComponent } from './companies/companies.component';
 import { CompanyDetailComponent } from './company-detail/company-detail.component';
 import { AddCompanyComponent } from './add-company/add-company.component';
+import { UsersComponent } from './users/users.component';
 
 
 
@@ -43,7 +44,8 @@ const routers: Routes = [
           { path: 'apartments/:id/addOwner', component: AddOwnerComponent},
           { path: 'companies', component: CompaniesComponent},
           { path: 'companies/:id', component: CompanyDetailComponent},
-          { path: 'addCompany', component: AddCompanyComponent}
+          { path: 'addCompany', component: AddCompanyComponent},
+          { path: 'users', component: UsersComponent}
     ]
   },
   {
