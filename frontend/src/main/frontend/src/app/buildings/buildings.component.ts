@@ -24,7 +24,6 @@ export class BuildingsComponent implements OnInit {
 
   ngOnInit() {
     this.getBuildings();
-    console.log(this.buildings);
   }
 
   gotoAdd(){

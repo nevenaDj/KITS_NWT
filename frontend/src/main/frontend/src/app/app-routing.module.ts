@@ -13,11 +13,13 @@ import { AddApartmentComponent } from './add-apartment/add-apartment.component';
 import { AddPresidentComponent } from './add-president/add-president.component';
 import { HomeCompanyComponent } from './home-company/home-company.component';
 import { LoginLayoutComponent } from './login-layout/login-layout.component';
-import { Component } from '@angular/core/src/metadata/directives';
 import { ApartmentDetailComponent } from './apartment-detail/apartment-detail.component';
 import { AddTenantComponent } from './add-tenant/add-tenant.component';
 import { TenantDetailComponent } from './tenant-detail/tenant-detail.component';
 import { AddOwnerComponent } from './add-owner/add-owner.component';
+import { CompaniesComponent } from './companies/companies.component';
+import { CompanyDetailComponent } from './company-detail/company-detail.component';
+import { AddCompanyComponent } from './add-company/add-company.component';
 
 
 
@@ -38,7 +40,10 @@ const routers: Routes = [
           { path: 'buildings/:idBuilding/apartments/:id', component: ApartmentDetailComponent},
           { path: 'apartments/:id/addTenant', component: AddTenantComponent},
           { path: 'apartments/:idApartment/tenants/:id', component: TenantDetailComponent},
-          { path: 'apartments/:id/addOwner', component: AddOwnerComponent}
+          { path: 'apartments/:id/addOwner', component: AddOwnerComponent},
+          { path: 'companies', component: CompaniesComponent},
+          { path: 'companies/:id', component: CompanyDetailComponent},
+          { path: 'addCompany', component: AddCompanyComponent}
     ]
   },
   {
