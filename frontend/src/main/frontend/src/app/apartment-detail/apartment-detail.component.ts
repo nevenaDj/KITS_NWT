@@ -59,6 +59,10 @@ export class ApartmentDetailComponent implements OnInit {
 
   gotoGetTenant(id: number){
     this.router.navigate([`/apartments/${this.apartment.id}/tenants/${id}`]);
-
   }
+
+  gotoEditApartment(){
+    this.router.navigate(['editApartment', this.apartment.id]);
+  }
+  
 }

@@ -35,6 +35,7 @@ const routers: Routes = [
     children: [
           { path: 'buildings', component: BuildingsComponent},
           { path: 'addBuilding', component: AddBuildingComponent},
+          { path: 'editBuilding/:id', component: AddBuildingComponent},
           { path: 'buildings/:id',component: BuildingDetailComponent},
           { path: 'buildings/:id/addApartment', component: AddApartmentComponent},
           { path: 'buildings/:id/addPresident', component: AddPresidentComponent},
@@ -43,6 +44,7 @@ const routers: Routes = [
           { path: 'apartments/:idApartment/tenants/:id', component: TenantDetailComponent},
           { path: 'apartments/:id/addOwner', component: AddOwnerComponent},
           { path: 'companies', component: CompaniesComponent},
+          { path: 'editApartment/:id', component: AddApartmentComponent},
           { path: 'companies/:id', component: CompanyDetailComponent},
           { path: 'addCompany', component: AddCompanyComponent},
           { path: 'users', component: UsersComponent}

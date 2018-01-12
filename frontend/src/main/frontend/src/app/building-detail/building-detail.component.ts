@@ -69,5 +69,9 @@ export class BuildingDetailComponent implements OnInit {
         .then(() => this.location.back );
 
   }
+
+  gotoEditBuilding(){
+    this.router.navigate(['editBuilding', this.building.id]);
+  }
  
 }
