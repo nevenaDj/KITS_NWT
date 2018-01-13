@@ -21,6 +21,8 @@ import { CompaniesComponent } from './companies/companies.component';
 import { CompanyDetailComponent } from './company-detail/company-detail.component';
 import { AddCompanyComponent } from './add-company/add-company.component';
 import { UsersComponent } from './users/users.component';
+import { GlitchTypesComponent } from './glitch-types/glitch-types.component';
+import { AddGlitchTypeComponent } from './glitch-types/add-glitch-type/add-glitch-type.component';
 
 
 
@@ -28,10 +30,10 @@ const routers: Routes = [
   {
     path: '',
     component: HomeAdminComponent,
-    canActivate: [AuthGuardService,RoleGuardService], 
+    /* canActivate: [AuthGuardService,RoleGuardService], 
     data: { 
       expectedRole: 'ROLE_ADMIN'
-    },
+    }, */
     children: [
           { path: 'buildings', component: BuildingsComponent},
           { path: 'addBuilding', component: AddBuildingComponent},
@@ -47,7 +49,9 @@ const routers: Routes = [
           { path: 'editApartment/:id', component: AddApartmentComponent},
           { path: 'companies/:id', component: CompanyDetailComponent},
           { path: 'addCompany', component: AddCompanyComponent},
-          { path: 'users', component: UsersComponent}
+          { path: 'users', component: UsersComponent},
+          { path: 'glitchTypes', component: GlitchTypesComponent},
+          { path: 'addGlitchType', component: AddGlitchTypeComponent}
     ]
   },
   {

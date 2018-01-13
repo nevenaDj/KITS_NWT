@@ -7,27 +7,19 @@ import { User } from '../models/user';
 
 @Injectable()
 export class ApartmentService {
-  headers: HttpHeaders;
+  headers: HttpHeaders = new HttpHeaders({'X-Auth-Token': localStorage.getItem('token'),'Content-Type':'application/json'});
 
   private RegenerateData = new Subject<void>();
 
   RegenerateData$ = this.RegenerateData.asObservable();
 
-  constructor(private http:HttpClient) {
-    this.headers = new HttpHeaders({'X-Auth-Token': localStorage.getItem('token')});
-    this.headers.set('Content-Type', 'application/json');
-    this.headers.set('X-Auth-Token', localStorage.getItem('token'));
-    console.log('Header:');
-    console.log(this.headers.get('X-Auth-Token'));
-   }
+  constructor(private http:HttpClient) {}
 
    announceChange(){
      this.RegenerateData.next();
    }
 
    addApartment(buildingID: number,apartment:Apartment): Promise<Apartment>{
-     console.log('Header:');
-     console.log(this.headers.get('X-Auth-Token'));
      const url = `/api/buildings/${buildingID}/apartments`;
      return this.http
           .post<Apartment>(url, apartment, {headers: this.headers})

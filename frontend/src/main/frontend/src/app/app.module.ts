@@ -4,6 +4,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { DropdownModule } from 'ngx-dropdown';
 
+import { GlitchTypeService } from './glitch-types/glitch-type.service';
 import { UserService } from './users/user.service';
 import { CompanyService } from './companies/company.service';
 import { TenantService } from './tenants/tenant.service';
@@ -35,6 +36,8 @@ import { CompaniesComponent } from './companies/companies.component';
 import { AddCompanyComponent } from './add-company/add-company.component';
 import { CompanyDetailComponent } from './company-detail/company-detail.component';
 import { UsersComponent } from './users/users.component';
+import { GlitchTypesComponent } from './glitch-types/glitch-types.component';
+import { AddGlitchTypeComponent } from './glitch-types/add-glitch-type/add-glitch-type.component';
 
 
 
@@ -61,7 +64,9 @@ import { UsersComponent } from './users/users.component';
     CompaniesComponent,
     AddCompanyComponent,
     CompanyDetailComponent,
-    UsersComponent
+    UsersComponent,
+    GlitchTypesComponent,
+    AddGlitchTypeComponent
   ],
   imports: [
     BrowserModule,
@@ -79,7 +84,8 @@ import { UsersComponent } from './users/users.component';
     ApartmentService,
     TenantService,
     CompanyService,
-    UserService
+    UserService,
+    GlitchTypeService
   ],
   bootstrap: [AppComponent]
 })
