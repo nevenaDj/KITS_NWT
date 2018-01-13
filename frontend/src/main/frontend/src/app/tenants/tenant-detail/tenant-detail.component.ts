@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
-import { User } from '../models/user';
-import { TenantService } from '../tenants/tenant.service';
+
+import { User } from '../../models/user';
+import { TenantService } from '../../tenants/tenant.service';
 
 @Component({
   selector: 'app-tenant-detail',

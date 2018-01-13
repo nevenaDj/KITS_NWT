@@ -2,10 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
 
-import { Apartment } from '../models/apartment';
-import { User } from '../models/user';
-import { ApartmentService } from '../apartments/apartment.service';
-import { TenantService } from '../tenants/tenant.service';
+import { Apartment } from '../../models/apartment';
+import { User } from '../../models/user';
+import { ApartmentService } from '../../apartments/apartment.service';
+import { TenantService } from '../../tenants/tenant.service';
 
 @Component({
   selector: 'app-apartment-detail',

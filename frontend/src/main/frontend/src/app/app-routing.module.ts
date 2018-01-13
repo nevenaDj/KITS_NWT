@@ -7,22 +7,24 @@ import { LoginComponent } from './login/login.component';
 import { HomeComponent } from './home/home.component';
 import { HomeAdminComponent } from './home-admin/home-admin.component';
 import { BuildingsComponent } from './buildings/buildings.component';
-import { BuildingDetailComponent } from './building-detail/building-detail.component';
-import { AddBuildingComponent } from './add-building/add-building.component';
-import { AddApartmentComponent } from './add-apartment/add-apartment.component';
-import { AddPresidentComponent } from './add-president/add-president.component';
+import { BuildingDetailComponent } from './buildings/building-detail/building-detail.component';
+import { AddBuildingComponent } from './buildings/add-building/add-building.component';
+import { AddApartmentComponent } from './apartments/add-apartment/add-apartment.component';
+import { AddPresidentComponent } from './buildings/add-president/add-president.component';
 import { HomeCompanyComponent } from './home-company/home-company.component';
-import { LoginLayoutComponent } from './login-layout/login-layout.component';
-import { ApartmentDetailComponent } from './apartment-detail/apartment-detail.component';
-import { AddTenantComponent } from './add-tenant/add-tenant.component';
-import { TenantDetailComponent } from './tenant-detail/tenant-detail.component';
-import { AddOwnerComponent } from './add-owner/add-owner.component';
+import { LoginLayoutComponent } from './login/login-layout/login-layout.component';
+import { ApartmentDetailComponent } from './apartments/apartment-detail/apartment-detail.component';
+import { AddTenantComponent } from './tenants/add-tenant/add-tenant.component';
+import { TenantDetailComponent } from './tenants/tenant-detail/tenant-detail.component';
+import { AddOwnerComponent } from './apartments/add-owner/add-owner.component';
 import { CompaniesComponent } from './companies/companies.component';
-import { CompanyDetailComponent } from './company-detail/company-detail.component';
-import { AddCompanyComponent } from './add-company/add-company.component';
+import { CompanyDetailComponent } from './companies/company-detail/company-detail.component';
+import { AddCompanyComponent } from './companies/add-company/add-company.component';
 import { UsersComponent } from './users/users.component';
 import { GlitchTypesComponent } from './glitch-types/glitch-types.component';
 import { AddGlitchTypeComponent } from './glitch-types/add-glitch-type/add-glitch-type.component';
+import { HomeOwnerComponent } from './home-owner/home-owner.component';
+import { HomePresidentComponent } from './home-president/home-president.component';
 
 
 
@@ -30,10 +32,10 @@ const routers: Routes = [
   {
     path: '',
     component: HomeAdminComponent,
-    /* canActivate: [AuthGuardService,RoleGuardService], 
+    canActivate: [AuthGuardService,RoleGuardService], 
     data: { 
       expectedRole: 'ROLE_ADMIN'
-    }, */
+    },
     children: [
           { path: 'buildings', component: BuildingsComponent},
           { path: 'addBuilding', component: AddBuildingComponent},
@@ -61,6 +63,30 @@ const routers: Routes = [
     data: { 
       expectedRole: 'ROLE_COMPANY'
     },
+  },
+  {
+    path:'tenant',
+    component: HomeComponent,
+    canActivate: [AuthGuardService,RoleGuardService], 
+    data: { 
+      expectedRole: 'ROLE_USER'
+    }
+  },
+  {
+    path:'owner',
+    component: HomeOwnerComponent,
+    canActivate: [AuthGuardService,RoleGuardService], 
+    data: { 
+      expectedRole: 'ROLE_OWNER'
+    }
+  },
+  {
+    path:'president',
+    component: HomePresidentComponent,
+    canActivate: [AuthGuardService,RoleGuardService], 
+    data: { 
+      expectedRole: 'ROLE_PRESIDENT'
+    }
   },
   {
     path: '',

@@ -1,0 +1,97 @@
+<header class="header black-bg">
+    <div class="sidebar-toggle-box">
+        <img src="http://www.freeiconspng.com/uploads/home-house-silhouette-icon-building--public-domain-pictures--20.png" style="height: 30px;">
+    </div>
+    <a class="logo"><b>HOME</b></a>
+    <div class="nav notify-row" id="top_menu" style="margin-left: 40%;">
+        <ul class="nav pull-right top-menu">
+          <ul class="nav top-menu">
+            <li class="dropdown" dropdown [dropdownToggle]="true" >
+              <a class="dropdown-toggle"  dropdown-open><i class="fa fa-angle-down"></i></a>
+                <ul class="dropdown-menu dropdown-menu-left" *ngFor="let role of roles" >
+                  <li>
+                    <a (click)="goto(role)">
+                      <div class="task-info">
+                        <div class="desc">
+                          <i *ngIf="role === 'ROLE_OWNER'" class="fa fa-home" aria-hidden="true"></i> {{ role | slice: 5: role.length | lowercase }}
+                        </div>
+                      </div>
+                    </a>
+                  </li>
+                </ul>
+              </li>
+            </ul>
+          </ul>
+        <ul class="nav pull-right top-menu">
+            <a class="logo2">  Owner </a>
+        </ul>
+        <ul class="nav pull-right top-menu">
+            <a class="logo2"> 
+                <i class="fa fa-home" aria-hidden="true"  style="font-size: 30px; margin-right: 5px;"></i>
+            </a>
+        </ul>
+    </div>
+    <div class="top-menu">
+        <ul class="nav pull-right top-menu">
+            <ul class="nav top-menu">
+                <div class="dropdown" dropdown [dropdownToggle]="true" >
+                    <button class="dropdown-button"  dropdown-open><i class="fa fa-angle-down">Settings</i></button>
+                    <ul class="dropdown-menu dropdown-button" >
+                        <li class="dropdown-button"><a>Profile</a></li>
+                        <li class="dropdown-button"><a (click)="logout()">Log out</a></li>
+                    </ul>
+                </div>
+            </ul>
+        </ul>
+        <ul class="nav pull-right top-menu">
+            <a class="logo">{{username}} &nbsp; &nbsp;</a>
+        </ul>
+        <ul class="nav pull-right top-menu">
+            <a class="logo"> 
+                <img src="https://www.shareicon.net/download/2016/05/29/772558_user_512x512.png" style="height: 30px; margin-right: 5px;">
+            </a>
+        </ul>
+    </div>
+  </header>
+  
+  <aside>
+    <div id="sidebar"  class="nav-collapse ">
+        <ul class="sidebar-menu" id="nav-accordion">
+            <nav>
+                <li class="mt">
+                    <a [routerLink]="['/buildings']">
+                        <i class="fa fa-building"></i>
+                        <span>Buildings</span>
+                    </a>
+                </li>
+                <li class="sub-menu">
+                    <a [routerLink]="['/users']">
+                        <i class="fa fa-users"></i>
+                        <span>Users</span>
+                    </a>
+                </li>
+                <li class="sub-menu">
+                    <a [routerLink]="['/companies']">
+                        <i class="fa fa-cogs"></i>
+                        <span>Companies</span>
+                    </a>
+                </li>
+                <li class="sub-menu">
+                  <a [routerLink]="['/glitchTypes']">
+                      <i class="fa fa-cogs"></i>
+                      <span>Glitch types</span>
+                  </a>
+              </li>
+            </nav>
+        </ul>
+    </div>
+  </aside>
+  
+  
+  <section id="container">
+  <section id="main-content">
+      <section class="wrapper">
+          <router-outlet></router-outlet>
+      </section>
+  </section>
+  </section>

@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
 
-import { Building } from '../models/building';
-import { BuildingService } from '../buildings/building.service';
+import { Building } from '../../models/building';
+import { BuildingService } from '../../buildings/building.service';
 
 
 @Component({

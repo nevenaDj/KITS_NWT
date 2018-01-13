@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
-import { User } from '../models/user';
-import { BuildingService } from '../buildings/building.service';
+import { User } from '../../models/user';
+import { BuildingService } from '../../buildings/building.service';
 
 
 @Component({

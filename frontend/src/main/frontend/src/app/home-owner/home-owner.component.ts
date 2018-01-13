@@ -5,11 +5,11 @@ import * as decode from 'jwt-decode';
 import { AuthService } from '../login/auth.service';
 
 @Component({
-  selector: 'app-home',
-  templateUrl: './home.component.html',
-  styleUrls: ['./home.component.css']
+  selector: 'app-home-owner',
+  templateUrl: './home-owner.component.html',
+  styleUrls: ['./home-owner.component.css']
 })
-export class HomeComponent implements OnInit {
+export class HomeOwnerComponent implements OnInit {
   username: string = '';
   roles: string[];
 

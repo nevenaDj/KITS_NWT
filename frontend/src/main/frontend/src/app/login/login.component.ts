@@ -35,18 +35,25 @@ export class LoginComponent implements OnInit {
       .then( res => { 
         const token = localStorage.getItem('token');
         const tokenPayload = decode(token);
+        console.log(this.authService.isTenant());
+        console.log(this.authService.isOwner());
+        console.log(this.authService.isPresident());
+
         for(let role of tokenPayload.scopes){
-          if(role === 'ROLE_ADMIN'){
+          if(this.authService.isAdmin()){
             this.router.navigate(['/buildings']);
-          }
-          else if (role === 'ROLE_COMPANY'){
+          } else if (this.authService.isCompany()){
             this.router.navigate(['/home/company']);
-          } else {
-            console.log('user');
+          } else if (this.authService.isTenant()) {
+            this.router.navigate(['tenant']);
+          } else if(this.authService.isOwner()){
+            console.log('owner');
+            this.router.navigate(['owner']);
+          } else if(this.authService.isPresident()){
+            console.log('president');
+            this.router.navigate(['president']);
           }
         }
-        
-        
       })
       .catch(error => console.log(error));
 

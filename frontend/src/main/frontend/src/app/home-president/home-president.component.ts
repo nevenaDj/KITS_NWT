@@ -1,15 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import * as decode from 'jwt-decode';
 
 import { AuthService } from '../login/auth.service';
 
 @Component({
-  selector: 'app-home',
-  templateUrl: './home.component.html',
-  styleUrls: ['./home.component.css']
+  selector: 'app-home-president',
+  templateUrl: './home-president.component.html',
+  styleUrls: ['./home-president.component.css']
 })
-export class HomeComponent implements OnInit {
+export class HomePresidentComponent implements OnInit {
   username: string = '';
   roles: string[];
 
@@ -34,4 +33,5 @@ export class HomeComponent implements OnInit {
   logout(){
     this.authService.logout();
   }
+
 }

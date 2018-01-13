@@ -18,26 +18,28 @@ import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
 import { HomeComponent } from './home/home.component';
 import { HomeAdminComponent } from './home-admin/home-admin.component';
-import { BuildingDetailComponent } from './building-detail/building-detail.component';
+import { BuildingDetailComponent } from './buildings/building-detail/building-detail.component';
 import { BuildingsComponent } from './buildings/buildings.component';
-import { AddBuildingComponent } from './add-building/add-building.component';
+import { AddBuildingComponent } from './buildings/add-building/add-building.component';
 import { ApartmentsComponent } from './apartments/apartments.component';
-import { AddApartmentComponent } from './add-apartment/add-apartment.component';
-import { AddPresidentComponent } from './add-president/add-president.component';
+import { AddApartmentComponent } from './apartments/add-apartment/add-apartment.component';
+import { AddPresidentComponent } from './buildings/add-president/add-president.component';
 import { HomeCompanyComponent } from './home-company/home-company.component';
 import { MenuComponent } from './menu/menu.component';
-import { LoginLayoutComponent } from './login-layout/login-layout.component';
+import { LoginLayoutComponent } from './login/login-layout/login-layout.component';
 import { TenantsComponent } from './tenants/tenants.component';
-import { ApartmentDetailComponent } from './apartment-detail/apartment-detail.component';
-import { AddTenantComponent } from './add-tenant/add-tenant.component';
-import { TenantDetailComponent } from './tenant-detail/tenant-detail.component';
-import { AddOwnerComponent } from './add-owner/add-owner.component';
+import { ApartmentDetailComponent } from './apartments/apartment-detail/apartment-detail.component';
+import { AddTenantComponent } from './tenants/add-tenant/add-tenant.component';
+import { TenantDetailComponent } from './tenants/tenant-detail/tenant-detail.component';
+import { AddOwnerComponent } from './apartments/add-owner/add-owner.component';
 import { CompaniesComponent } from './companies/companies.component';
-import { AddCompanyComponent } from './add-company/add-company.component';
-import { CompanyDetailComponent } from './company-detail/company-detail.component';
+import { AddCompanyComponent } from './companies/add-company/add-company.component';
+import { CompanyDetailComponent } from './companies/company-detail/company-detail.component';
 import { UsersComponent } from './users/users.component';
 import { GlitchTypesComponent } from './glitch-types/glitch-types.component';
 import { AddGlitchTypeComponent } from './glitch-types/add-glitch-type/add-glitch-type.component';
+import { HomePresidentComponent } from './home-president/home-president.component';
+import { HomeOwnerComponent } from './home-owner/home-owner.component';
 
 
 
@@ -66,7 +68,9 @@ import { AddGlitchTypeComponent } from './glitch-types/add-glitch-type/add-glitc
     CompanyDetailComponent,
     UsersComponent,
     GlitchTypesComponent,
-    AddGlitchTypeComponent
+    AddGlitchTypeComponent,
+    HomePresidentComponent,
+    HomeOwnerComponent
   ],
   imports: [
     BrowserModule,

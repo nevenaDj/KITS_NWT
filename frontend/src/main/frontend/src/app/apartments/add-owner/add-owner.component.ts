@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Location } from '@angular/common';
 
-import { User } from '../models/user';
-import { ApartmentService } from '../apartments/apartment.service';
+import { User } from '../../models/user';
+import { ApartmentService } from '../../apartments/apartment.service';
 
 
 @Component({
