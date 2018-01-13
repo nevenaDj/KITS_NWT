@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import * as decode from 'jwt-decode';
 
 import { AuthService } from './auth.service';
 import { User } from '../models/user';
@@ -32,20 +31,7 @@ export class LoginComponent implements OnInit {
 
   login(){
     this.authService.login(this.user.username, this.user.password)
-      .then( res => { 
-        const token = localStorage.getItem('token');
-        const tokenPayload = decode(token);
-        for(let role of tokenPayload.scopes){
-          if(role === 'ROLE_ADMIN'){
-            this.router.navigate(['']);
-          }
-          if(role === 'ROLE_COMPANY'){
-            this.router.navigate(['home/company']);
-          }
-        }
-        
-        
-      })
+      .then( res => { this.router.navigate(['']) })
       .catch(error => console.log(error));
 
   }

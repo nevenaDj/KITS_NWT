@@ -38,7 +38,7 @@ const routers: Routes = [
   { 
     path: 'home/company', 
     component: HomeCompanyComponent, 
-    canActivate: [AuthGuardService,RoleGuardService], 
+    canActivate: [AuthGuardService, RoleGuardService] ,
     data: { 
       expectedRole: 'ROLE_COMPANY'
     }

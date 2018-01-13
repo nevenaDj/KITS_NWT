@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+
+import { User } from '../models/user'
 
 @Component({
   selector: 'app-bills-company',
@@ -7,9 +10,16 @@ import { Component, OnInit } from '@angular/core';
 })
 export class BillsCompanyComponent implements OnInit {
 
-  constructor() { }
+
+  company: User;
+  constructor(private router: Router) { }
 
   ngOnInit() {
   }
 
+  logout(){
+    localStorage.removeItem('token');
+    this.router.navigate(['login']);
+
+  }
 }

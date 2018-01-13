@@ -31,7 +31,7 @@ export class HomeCompanyComponent implements OnInit {
   }
 
   logout(){
-    localStorage.removeItem('token');
+    localStorage.removeItem('currentUser');
     this.router.navigate(['login']);
 
   }
@@ -41,6 +41,7 @@ export class HomeCompanyComponent implements OnInit {
       company => this.company = company
     );
     alert(JSON.stringify(this.company));
+    this.companyService.ping();
   }
 
 }

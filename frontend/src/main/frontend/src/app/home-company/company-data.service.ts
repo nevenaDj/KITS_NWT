@@ -17,19 +17,32 @@ export class CompanyDataService {
   
   constructor(private http: HttpClient) {
       this.headers = new HttpHeaders();
-      this.headers.append('Content-Type', 'application/json');
-      //alert("token> "+JSON.stringify(localStorage.getItem('token')));
-      this.headers.append('X-Auth-Token', localStorage.getItem('token'));
-     // alert(JSON.stringify(this.headers));
+      this.headers.set('Content-Type', 'application/json');
+      alert("token> "+JSON.stringify(localStorage.getItem('token')));
+      this.headers.set('X-Auth-Token', localStorage.getItem('token'));
+      console.log(this.headers.get('X-Auth-Token'));
   }
    
-  
+     
   getCompany():Promise<User>{
     const url = `/api/me`;
-    return this.http.get<User>(url, {headers: this.headers})
-          .toPromise()
-          .then(res => {return res})
-          .catch(this.handleError);
+    //if (this.company==null){
+      return this.http.get<User>(url, {headers: this.headers})
+            .toPromise()
+            .then(res => {return res})
+            .catch(this.handleError);
+    /*} else
+    {
+      return this.company;
+    }*/
+  }
+  
+   public ping() {
+    this.http.get('/api/me')
+      .subscribe(
+        data => alert(data),
+        err => alert(err)
+      );
   }
   
     private handleError(error: any): Promise<any> {

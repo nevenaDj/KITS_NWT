@@ -2,6 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
 
 import { ApartmentService } from './apartments/apartment.service';
 import { BuildingService } from './buildings/building.service';
@@ -29,7 +30,6 @@ import { PricelistCompanyComponent } from './pricelist-company/pricelist-company
 import { ChangePasswordCompanyComponent } from './change-password-company/change-password-company.component';
 import { BillDetailsCompanyComponent } from './bill-details-company/bill-details-company.component';
 import { GlitchDetailsCompanyComponent } from './glitch-details-company/glitch-details-company.component'
-
 
 
 @NgModule({
@@ -67,7 +67,7 @@ import { GlitchDetailsCompanyComponent } from './glitch-details-company/glitch-d
     AuthService,
     BuildingService,
     ApartmentService,
-    CompanyDataService
+    CompanyDataService,
   ],
   bootstrap: [AppComponent]
 })

@@ -1,4 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+
+import { User } from '../models/user'
+
 
 @Component({
   selector: 'app-pending-glitches-company',
@@ -7,9 +11,16 @@ import { Component, OnInit } from '@angular/core';
 })
 export class PendingGlitchesCompanyComponent implements OnInit {
 
-  constructor() { }
+  company: User;
+  constructor(private router: Router) { }
 
   ngOnInit() {
+  }
+
+  logout(){
+    localStorage.removeItem('token');
+    this.router.navigate(['login']);
+
   }
 
 }
