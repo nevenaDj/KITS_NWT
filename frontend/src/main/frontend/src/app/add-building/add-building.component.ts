@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
+import { Location } from '@angular/common';
 
 import { Building } from '../models/building';
 import { BuildingService } from '../buildings/building.service';
+
 
 @Component({
   selector: 'app-add-building',
@@ -13,7 +15,11 @@ export class AddBuildingComponent implements OnInit {
 
   building: Building;
 
+  mode: string;
+
   constructor(private router:Router,
+              private route: ActivatedRoute,
+              private location: Location,
               private buildingService: BuildingService) { 
     this.building = {
       id: null,
@@ -32,17 +38,31 @@ export class AddBuildingComponent implements OnInit {
         phoneNo:''
       }
     }
+    this.mode = 'ADD';
   }
 
   ngOnInit() {
+    if (this.route.snapshot.params['id']){
+      this.mode = 'EDIT';
+      this.buildingService.getBuilding(+this.route.snapshot.params['id'])
+          .then(building => this.building = building);
+    }
   }
 
-  save(): void{
-   console.log(this.building);
-   this.buildingService.addBuilding(this.building)
-      .then( building => { console.log(building);
-                           this.router.navigate(['buildings']);
-      });
+  save(): void {
+   this.mode == 'ADD' ? this.add() : this.edit();
   }
 
+  add(): void {
+    this.buildingService.addBuilding(this.building)
+      .then( building => { this.router.navigate(['buildings'])});
+  }
+
+  edit(): void {
+    this.buildingService.updateBuilding(this.building)
+        .then(building => {
+          this.buildingService.announceChange();
+          this.location.back();
+        });
+  }
 }

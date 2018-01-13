@@ -62,7 +62,7 @@ import com.jayway.restassured.RestAssured;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = WebEnvironment.DEFINED_PORT)
-@TestPropertySource(locations="classpath:test.properties")
+@TestPropertySource(locations = "classpath:test.properties")
 public class BuildingControllerTest {
 
 	private String accessToken;
@@ -114,10 +114,10 @@ public class BuildingControllerTest {
 				.andExpect(jsonPath("$.address.zipCode").value(ZIP_CODE));
 
 	}
-	
+
 	@Test
 	public void testGetBuildingNotFound() throws Exception {
-		mockMvc.perform(get("/api/buildings/" +ID_BUILDING_NOT_FOUND).header("X-Auth-Token", accessToken))
+		mockMvc.perform(get("/api/buildings/" + ID_BUILDING_NOT_FOUND).header("X-Auth-Token", accessToken))
 				.andExpect(status().isNotFound());
 
 	}
@@ -131,7 +131,8 @@ public class BuildingControllerTest {
 
 		String json = TestUtils.convertObjectToJson(buildingDTO);
 
-		mockMvc.perform(post("/api/buildings").header("X-Auth-Token", accessToken).contentType(contentType).content(json))
+		mockMvc.perform(
+				post("/api/buildings").header("X-Auth-Token", accessToken).contentType(contentType).content(json))
 				.andExpect(status().isCreated()).andExpect(content().contentType(contentType))
 				.andExpect(jsonPath("$.id").value(NEW_ID)).andExpect(jsonPath("$.address.street").value(NEW_STREET))
 				.andExpect(jsonPath("$.address.number").value(NEW_NUMBER))
@@ -149,14 +150,15 @@ public class BuildingControllerTest {
 
 		String json = TestUtils.convertObjectToJson(buildingDTO);
 
-		mockMvc.perform(put("/api/buildings").header("X-Auth-Token", accessToken).contentType(contentType).content(json))
+		mockMvc.perform(
+				put("/api/buildings").header("X-Auth-Token", accessToken).contentType(contentType).content(json))
 				.andExpect(status().isOk()).andExpect(content().contentType(contentType))
 				.andExpect(jsonPath("$.address.street").value(NEW_STREET))
 				.andExpect(jsonPath("$.address.number").value(NEW_NUMBER))
 				.andExpect(jsonPath("$.address.city").value(NEW_CITY))
 				.andExpect(jsonPath("$.address.zipCode").value(NEW_ZIP_CODE));
 	}
-	
+
 	@Test
 	public void testUpdateBuildingBadRequest() throws Exception {
 		AddressDTO addressDTO = new AddressDTO(NEW_STREET, NEW_NUMBER, NEW_ZIP_CODE, NEW_CITY);
@@ -164,7 +166,8 @@ public class BuildingControllerTest {
 
 		String json = TestUtils.convertObjectToJson(buildingDTO);
 
-		mockMvc.perform(put("/api/buildings").header("X-Auth-Token", accessToken).contentType(contentType).content(json))
+		mockMvc.perform(
+				put("/api/buildings").header("X-Auth-Token", accessToken).contentType(contentType).content(json))
 				.andExpect(status().isBadRequest());
 	}
 
@@ -175,7 +178,7 @@ public class BuildingControllerTest {
 		mockMvc.perform(delete("/api/buildings/" + BUILDING_ID_1).header("X-Auth-Token", accessToken))
 				.andExpect(status().isOk());
 	}
-	
+
 	@Test
 	public void testDeleteBuildingNotFound() throws Exception {
 		mockMvc.perform(delete("/api/buildings/" + ID_BUILDING_NOT_FOUND).header("X-Auth-Token", accessToken))
@@ -192,15 +195,14 @@ public class BuildingControllerTest {
 		String json = TestUtils.convertObjectToJson(userDTO);
 
 		mockMvc.perform(post("/api/buildings/" + BUILDING_ID_2 + "/president").header("X-Auth-Token", accessToken)
-				.contentType(contentType).content(json))
-				.andExpect(status().isCreated())
+				.contentType(contentType).content(json)).andExpect(status().isCreated())
 				.andExpect(content().contentType(contentType)).andExpect(jsonPath("$.id").value(BUILDING_ID_2))
 				.andExpect(jsonPath("$.president.id").value(ID_USER))
 				.andExpect(jsonPath("$.president.username").value(USERNAME))
 				.andExpect(jsonPath("$.president.email").value(EMAIL));
 
 	}
-	
+
 	@Test
 	@Transactional
 	@Rollback(true)
@@ -211,11 +213,10 @@ public class BuildingControllerTest {
 		String json = TestUtils.convertObjectToJson(userDTO);
 
 		mockMvc.perform(post("/api/buildings/" + BUILDING_ID_2 + "/president").header("X-Auth-Token", accessToken)
-				.contentType(contentType).content(json))
-				.andExpect(status().isBadRequest());
+				.contentType(contentType).content(json)).andExpect(status().isBadRequest());
 
 	}
-	
+
 	@Test
 	@Transactional
 	@Rollback(true)
@@ -227,13 +228,12 @@ public class BuildingControllerTest {
 		String json = TestUtils.convertObjectToJson(userDTO);
 
 		mockMvc.perform(post("/api/buildings/" + BUILDING_ID_2 + "/president").header("X-Auth-Token", accessToken)
-				.contentType(contentType).content(json))
-				.andExpect(status().isCreated())
+				.contentType(contentType).content(json)).andExpect(status().isCreated())
 				.andExpect(content().contentType(contentType)).andExpect(jsonPath("$.id").value(BUILDING_ID_2))
 				.andExpect(jsonPath("$.president.username").value(NEW_USERNAME));
 
 	}
-	
+
 	@Test
 	@Transactional
 	@Rollback(true)
@@ -243,26 +243,22 @@ public class BuildingControllerTest {
 
 		String json = TestUtils.convertObjectToJson(userDTO);
 
-		mockMvc.perform(post("/api/buildings/" + ID_BUILDING_NOT_FOUND + "/president").header("X-Auth-Token", accessToken)
-				.contentType(contentType).content(json))
+		mockMvc.perform(post("/api/buildings/" + ID_BUILDING_NOT_FOUND + "/president")
+				.header("X-Auth-Token", accessToken).contentType(contentType).content(json))
 				.andExpect(status().isBadRequest());
 
 	}
-	
+
 	@Test
-	public void testFindByAddress() throws Exception{
-		mockMvc.perform(get("/api/buildings?street="+ STREET + "&number=" + NUMBER + "&city=" + CITY )
-				.header("X-Auth-Token", accessToken))
-		.andExpect(status().isOk());
+	public void testFindByAddress() throws Exception {
+		mockMvc.perform(get("/api/buildings?street=" + STREET + "&number=" + NUMBER + "&city=" + CITY)
+				.header("X-Auth-Token", accessToken)).andExpect(status().isOk());
 	}
-	
+
 	@Test
-	public void testFindByAddressNotFound() throws Exception{
-		mockMvc.perform(get("/api/buildings?street=" + STREET_NOT_FOUND 
-				+"&number= " + NEW_NUMBER + "&city=" + "jaaa" )
-				.header("X-Auth-Token", accessToken))
-		.andExpect(status().isNotFound());
+	public void testFindByAddressNotFound() throws Exception {
+		mockMvc.perform(get("/api/buildings?street=" + STREET_NOT_FOUND + "&number= " + NEW_NUMBER + "&city=" + "jaaa")
+				.header("X-Auth-Token", accessToken)).andExpect(status().isNotFound());
 	}
-	
 
 }

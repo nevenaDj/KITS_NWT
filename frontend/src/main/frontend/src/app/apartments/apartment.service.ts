@@ -3,20 +3,17 @@ import { HttpClient ,HttpHeaders } from '@angular/common/http';
 import { Subject } from 'rxjs/Rx';
 
 import { Apartment } from '../models/apartment';
+import { User } from '../models/user';
 
 @Injectable()
 export class ApartmentService {
-  headers: HttpHeaders;
+  headers: HttpHeaders = new HttpHeaders({'X-Auth-Token': localStorage.getItem('token'),'Content-Type':'application/json'});
 
   private RegenerateData = new Subject<void>();
 
   RegenerateData$ = this.RegenerateData.asObservable();
 
-  constructor(private http:HttpClient) {
-    this.headers = new HttpHeaders();
-    this.headers.set('Content-Type', 'application/json');
-    this.headers.set('X-Auth-Token', localStorage.getItem('token'));
-   }
+  constructor(private http:HttpClient) {}
 
    announceChange(){
      this.RegenerateData.next();
@@ -64,7 +61,14 @@ export class ApartmentService {
           .delete(url, {headers: this.headers})
           .toPromise()
           .catch(this.handleError);
+   }
 
+   addOwner(apartmentID: number, owner: User): Promise<User>{
+     const url = `/api/apartments/${apartmentID}/owner`;
+     return this.http.post<User>(url, owner, {headers: this.headers})
+            .toPromise()
+            .then(res => {return res})
+            .catch(this.handleError);
    }
 
    private handleError(error: any): Promise<any> {

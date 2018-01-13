@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { ParamMap, Router, ActivatedRoute } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
+import { Location } from '@angular/common';
 
 import { Building } from '../models/building';
 import { BuildingService } from '../buildings/building.service';
@@ -19,6 +20,7 @@ export class BuildingDetailComponent implements OnInit {
 
   constructor(private router: Router,
               private route:ActivatedRoute,
+              private location: Location,
               private buildingService: BuildingService,
               private apartmentService: ApartmentService) { 
     this.building = {
@@ -51,11 +53,25 @@ export class BuildingDetailComponent implements OnInit {
   }
 
   gotoAddApartment(){
-    this.router.navigate([ `/buildings/${this.building.id}/addApartment`]);
+    this.router.navigate([`/buildings/${this.building.id}/addApartment`]);
   }
 
   gotoAddPresident(){
-    this.router.navigate([ `/buildings/${this.building.id}/addPresident`]);
+    this.router.navigate([`/buildings/${this.building.id}/addPresident`]);
+  }
+
+  gotoGetApartment(id: number){
+    this.router.navigate([`/buildings/${this.building.id}/apartments/${id}`]);
+  }
+
+  deleteBuilding(){
+    this.buildingService.deleteBuilding(this.building.id)
+        .then(() => this.location.back() );
+
+  }
+
+  gotoEditBuilding(){
+    this.router.navigate(['editBuilding', this.building.id]);
   }
  
 }

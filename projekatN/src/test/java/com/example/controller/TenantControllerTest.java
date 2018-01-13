@@ -176,7 +176,7 @@ public class TenantControllerTest {
     @Transactional
     @Rollback(true)
 	public void testDeleteTenant() throws Exception{
-		mockMvc.perform(delete("/api/tenants/" + ID_USER.intValue())
+		mockMvc.perform(delete("/api/apartment/"+ 1 +"/tenants/" + ID_USER.intValue())
 				.header("X-Auth-Token", accessToken))
 		.andExpect(status().isOk());
 		
@@ -184,11 +184,20 @@ public class TenantControllerTest {
 	
 	@Test
 	public void testDeleteTenantNotFound() throws Exception{
-		mockMvc.perform(delete("/api/tenants/" + ID_NOT_FOUND)
+		mockMvc.perform(delete("/api/apartment/"+ 1 +"/tenants/" + ID_NOT_FOUND)
 				.header("X-Auth-Token", accessToken))
 		.andExpect(status().isNotFound());
 		
 	}
+	
+	@Test
+	public void testDeleteTenantBadRequest() throws Exception{
+		mockMvc.perform(delete("/api/apartment/"+ 10000L +"/tenants/" + ID_USER.intValue())
+				.header("X-Auth-Token", accessToken))
+		.andExpect(status().isBadRequest());
+		
+	}
+	
 	@Before
 	public void loginTenant(){
 		ResponseEntity<String> responseEntity = restTemplate.postForEntity("/api/login",

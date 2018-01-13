@@ -12,6 +12,7 @@ import com.example.model.User;
 import com.example.model.UserAuthority;
 import com.example.repository.AddressRepository;
 import com.example.repository.AuthorityRepository;
+import com.example.repository.UserApatmentRepository;
 import com.example.repository.UserAuthorityRepository;
 import com.example.repository.UserRepository;
 
@@ -26,6 +27,8 @@ public class UserService {
 	AuthorityRepository authorityRepository;
 	@Autowired
 	AddressRepository addressRepository;
+	@Autowired
+	UserApatmentRepository userApartmentRepository;
 	@Autowired
 	PasswordEncoder passwordEncoder;
 
@@ -66,6 +69,11 @@ public class UserService {
 		userAuthorityRepository.delete(userAuthorityID);
 		userRepository.delete(id);
 
+	}
+
+	public void removeUserApartment(Long idTenant, Long idApartment) {
+		Long id = userApartmentRepository.get(idTenant, idApartment);
+		userApartmentRepository.delete(id);
 	}
 
 	public User findByUsername(String username) {

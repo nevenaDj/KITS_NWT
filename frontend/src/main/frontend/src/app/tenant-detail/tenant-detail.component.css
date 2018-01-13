@@ -1,0 +1,119 @@
+/* Dash Side */
+
+.ds {
+	background: #f0f0f0;
+    border:1px solid #ebeced !important;
+	padding: 15px;
+}
+
+.ds h4 {
+	font-size: 14px;
+	font-weight: 700;
+}
+
+.ds h3 {
+	color: #ffffff;
+	font-size: 16px;
+	padding: 0 10px;
+	line-height: 60px;
+	height: 60px;
+	margin: 0;
+	background: #4c586f;
+	text-align: center;
+}
+
+.ds i {
+	font-size: 12px;
+	line-height: 16px;
+}
+
+.ds .desc {
+	border-bottom: 1px solid #eaeaea;
+	display: inline-block;
+	padding: 15px 0;
+	width: 100%;
+}
+
+.ds .desc:hover {
+	background: #f2f2f2;
+}
+
+.ds .thumb {
+	width: 30px;
+	margin: 0 10px 0 20px;
+	display: block;
+	float: left;
+}
+
+.ds .details {
+	width: 170px;
+	float: left;
+}
+
+.ds > .desc p {
+	font-size: 11px;
+}
+
+.ds p > muted {
+	font-size: 9px;
+	text-transform: uppercase;
+	font-style: italic;
+	color: #666666
+}
+
+.ds a {
+	color: #68dff0;
+}
+
+.delete-button{
+    top:31px;
+   left:31px;
+   cursor:pointer;
+   width:20px;
+   height:20px;
+   border:1px solid #DB6374;
+   border-radius:12px;
+   box-shadow:3px 3px 3px #999999;
+   background-color:#DB6374;
+   float: right; 
+   text-align: center; 
+}
+
+.delete-x:visited, .delete-x{
+    color: white; 
+    padding-top: 10px;
+}
+
+.small-btn {
+    padding: 15px;
+	background: #cbc5c1;
+	text-align: left;
+	background-position: center center;
+    height: 50px;
+    line-height: 35px;
+    border-radius:10px;
+    color: #4c586f;
+    vertical-align: bottom;
+    box-shadow:0px 0px 0px #999999;
+	font-size: 20px;
+	
+}
+
+.small-btn:hover {
+	background: #4c586f;
+	text-align: left;
+	background-position: center center;
+    height: 50px;
+    border-radius:10px;
+    color: #cbc5c1;
+    vertical-align: bottom;
+    box-shadow:0px 0px 0px #999999;
+    font-size: 20px;
+    opacity: 0.4;
+
+}
+
+.pFont{
+	text-align: center;
+	margin-top: 0px;
+}

@@ -1,7 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Location } from '@angular/common';
+
 import { Apartment } from '../models/apartment';
 import { ApartmentService } from '../apartments/apartment.service';
+
 
 @Component({
   selector: 'app-add-apartment',
@@ -13,8 +16,11 @@ export class AddApartmentComponent implements OnInit {
   apartment: Apartment;
   buildingID: number;
 
+  mode: string;
+
   constructor(private route:ActivatedRoute,
               private router: Router,
+              private location: Location,
               private apartmentService: ApartmentService) { 
     this.apartment ={
       id: null,
@@ -28,20 +34,37 @@ export class AddApartmentComponent implements OnInit {
         phoneNo: ''
       }
     }
-    this.buildingID = this.route.snapshot.params['id'];
+    this.buildingID = this.route.snapshot.params['idBuilding'];
+    this.mode = 'ADD';
   }
 
   ngOnInit() {
-    console.log(this.route.snapshot.params);
+    if(this.route.snapshot.params['id']){
+      this.mode = 'EDIT';
+      this.apartmentService.getApartment(+this.route.snapshot.params['id'])
+          .then(apartment => this.apartment = apartment);
+    }
   }
 
-  save(): void{
-    this.apartmentService.addApartment(this.buildingID, this.apartment)
-        .then(apartment => {
-          console.log(apartment);
-          this.router.navigate([`/buildings/${this.buildingID}`]);
-        })
+  save(): void {
+    this.mode == 'ADD' ? this.add() : this.edit();
+    
 
+  }
+
+  add(): void {
+    this.apartmentService.addApartment(this.buildingID, this.apartment)
+        .then(apartment => 
+          this.router.navigate([`/buildings/${this.buildingID}`])
+        );
+  }
+
+  edit(): void {
+    this.apartmentService.updateApartment(this.apartment)
+        .then(apartment => {
+          this.apartmentService.announceChange();
+          this.location.back();
+        });
   }
 
 }

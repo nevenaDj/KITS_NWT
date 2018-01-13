@@ -1,21 +1,19 @@
-<div>
-  <h2>Buildings</h2>
+<div class="row">
+  <div class="col-lg-12 main-chart">
+    <div class="col-lg-3 weather-new pn">
+      <i class="fa fa-plus"></i>
+      <h2><a (click)="gotoAdd()">NEW</a></h2>
+      <h4></h4>
+    </div>  
+    <div *ngFor="let building of buildings">
+      <div class="col-lg-3 weather pn">
+        <i class="fa fa-home"></i>
+        <h2>
+          <a (click)="gotoGetBuilding(building.id)">{{building.address.street}}</a>
+        </h2>
+        <h4></h4>
+      </div> 
+    </div>
+  </div>
 </div>
-<button (click)="gotoAdd()">Add building</button>
-<table>
-  <tr>
-    <th>Street</th>
-    <th>Number</th>
-    <th>Zip code</th>
-    <th>City</th>
-    <th></th>
-  </tr>
-  <tr *ngFor="let building of buildings">
-    <td>{{building.address.street}}</td>
-    <td>{{building.address.number}}</td>
-    <td>{{building.address.zipCode}}</td>
-    <td>{{building.address.city}}</td>
-    <td><button (click)="getBuilding(building.id)">Detail</button></td>
-  </tr>
-</table>
 

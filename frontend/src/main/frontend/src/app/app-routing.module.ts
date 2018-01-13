@@ -20,6 +20,17 @@ import { PendingGlitchesCompanyComponent } from './pending-glitches-company/pend
 import { PricelistCompanyComponent } from './pricelist-company/pricelist-company.component';
 import { BillDetailsCompanyComponent } from './bill-details-company/bill-details-company.component';
 import { GlitchDetailsCompanyComponent } from './glitch-details-company/glitch-details-company.component';
+import { LoginLayoutComponent } from './login-layout/login-layout.component';
+import { ApartmentDetailComponent } from './apartment-detail/apartment-detail.component';
+import { AddTenantComponent } from './add-tenant/add-tenant.component';
+import { TenantDetailComponent } from './tenant-detail/tenant-detail.component';
+import { AddOwnerComponent } from './add-owner/add-owner.component';
+import { CompaniesComponent } from './companies/companies.component';
+import { CompanyDetailComponent } from './company-detail/company-detail.component';
+import { AddCompanyComponent } from './add-company/add-company.component';
+import { UsersComponent } from './users/users.component';
+import { GlitchTypesComponent } from './glitch-types/glitch-types.component';
+import { AddGlitchTypeComponent } from './glitch-types/add-glitch-type/add-glitch-type.component';
 
 
 const routers: Routes = [
@@ -31,19 +42,25 @@ const routers: Routes = [
     component: HomeComponent,
     canActivate: [AuthGuardService, RoleGuardService],
     data: {
+  {
+    path: '',
+    component: HomeAdminComponent,
+    /* canActivate: [AuthGuardService,RoleGuardService], 
+    data: { 
       expectedRole: 'ROLE_ADMIN'
     }
 
   },
   { 
-    path: 'home/company', 
+    path: 'company', 
     component: HomeCompanyComponent, 
-    canActivate: [AuthGuardService, RoleGuardService] ,
+   /* canActivate: [AuthGuardService, RoleGuardService] ,
     data: { 
       expectedRole: 'ROLE_COMPANY'
     }
    
-  },
+  },*/
+  children: [
   { 
     path: 'company/update', 
     component: UpdateCompanyComponent, 
@@ -82,14 +99,18 @@ const routers: Routes = [
     path: 'company/pricelist', 
     component: PricelistCompanyComponent, 
   },
-  { path: 'addBuilding', component: AddBuildingComponent},
-  { path: 'buildings', component: BuildingsComponent},
-  { path: 'buildings/:id', component: BuildingDetailComponent},
-  { path: 'buildings/:id/addApartment', component: AddApartmentComponent},
-  { path: 'buildings/:id/addPresident', component: AddPresidentComponent},
-  
-
-
+  ],
+ {
+    path: '',
+    component: LoginLayoutComponent,
+    children: [
+      {
+        path: 'login',
+        component: LoginComponent
+      }
+    ]
+  },
+  { path: '**', redirectTo: '' }
 ];
 
 @NgModule({

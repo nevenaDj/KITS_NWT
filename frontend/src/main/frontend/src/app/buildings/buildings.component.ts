@@ -24,12 +24,10 @@ export class BuildingsComponent implements OnInit {
 
   ngOnInit() {
     this.getBuildings();
-    console.log(this.buildings);
   }
 
   gotoAdd(){
-    console.log("add");
-    this.router.navigate(['/addBuilding']);
+    this.router.navigate(['addBuilding']);
   }
 
   getBuildings(){
@@ -38,10 +36,8 @@ export class BuildingsComponent implements OnInit {
     );
   }
 
-  getBuilding(id:number){
-    console.log(id);
-    this.router.navigate(['/buildings', id]);
-
+  gotoGetBuilding(id:number){
+    this.router.navigate(['buildings', id]);
   }
 
 

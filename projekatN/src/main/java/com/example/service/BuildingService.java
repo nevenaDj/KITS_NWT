@@ -30,8 +30,13 @@ public class BuildingService {
 		return buildingRepository.save(building);
 	}
 
-	public void remove(Long id) {
-		buildingRepository.delete(id);
+	public boolean remove(Long id) {
+		try {
+			buildingRepository.delete(id);
+		} catch (Exception e) {
+			return false;
+		}
+		return true;
 	}
 
 	public Building findByAddress(String street, String number, String city) {

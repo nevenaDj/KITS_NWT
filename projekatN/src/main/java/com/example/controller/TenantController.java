@@ -101,7 +101,7 @@ public class TenantController {
 		return new ResponseEntity<>(usersDTO, HttpStatus.OK);
 	}
 
-	@RequestMapping(value = "/tenants/{id}", method = RequestMethod.DELETE)
+	@RequestMapping(value = "/apartment/{idApartment}/tenants/{id}", method = RequestMethod.DELETE)
 	@ApiOperation(value = "Delete a tenant.", httpMethod = "DELETE")
 	@ApiImplicitParam(paramType = "header", name = "X-Auth-Token", required = true, value = "JWT token")
 	@ApiResponses(value = { @ApiResponse(code = 200, message = "Success"),
@@ -109,14 +109,23 @@ public class TenantController {
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	/*** delete tenant ***/
 	public ResponseEntity<Void> deleteTenant(
+			@ApiParam(value = "The ID of the apartment.", required = true) @PathVariable Long idApartment,
 			@ApiParam(value = "The ID of the tenant.", required = true) @PathVariable Long id) {
 		User user = userService.findOne(id);
 		if (user == null) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-		} else {
-			userService.remove(id, ROLE_TENANT);
-			return new ResponseEntity<>(HttpStatus.OK);
 		}
+
+		Apartment apartment = apartmentService.findOne(idApartment);
+
+		if (apartment == null) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+		
+		userService.removeUserApartment(id, idApartment);
+		userService.remove(id, ROLE_TENANT);
+		return new ResponseEntity<>(HttpStatus.OK);
+
 	}
 
 	@RequestMapping(value = "/responsibleGlitches", method = RequestMethod.GET, produces = "application/json")
@@ -139,6 +148,24 @@ public class TenantController {
 		}
 
 		return new ResponseEntity<>(glitchesDTO, HttpStatus.OK);
+
+	}
+
+	@RequestMapping(value = "/aparments/{id}/tenants", method = RequestMethod.GET)
+	@ApiOperation(value = "Get a list of tenants in a apartment.", httpMethod = "GET")
+	@ApiImplicitParam(paramType = "header", name = "X-Auth-Token", required = true, value = "JWT token")
+	/*** Get list of tenants in a apartment ***/
+	public ResponseEntity<List<UserDTO>> getTenantOfApartment(
+			@ApiParam(value = "The ID of the apartment.", required = true) @PathVariable Long id) {
+		List<User> tenants = userApartmentService.getTenants(id);
+
+		List<UserDTO> tenantsDTO = new ArrayList<>();
+
+		for (User user : tenants) {
+			tenantsDTO.add(new UserDTO(user));
+		}
+
+		return new ResponseEntity<>(tenantsDTO, HttpStatus.OK);
 
 	}
 
