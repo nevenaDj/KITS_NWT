@@ -1,0 +1,27 @@
+<br>
+<div class="row">
+  <div class="col-lg-10">
+    <a (click)="gotoAddGlitchType()"  class="small-btn">Add glitch type</a>
+  </div>   
+</div>
+<br><br>
+<div class="row">
+  <div class="col-lg-1"></div>
+  <div class="col-lg-10">
+        <table class="table table-hover">
+              <thead>
+              <tr>
+                  <th>#</th>
+                  <th>Type</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr *ngFor="let glitchType of glitchTypes">
+                  <td>{{glitchType.id}}</td>
+                  <td>{{glitchType.type}}</td>
+              </tr>
+              </tbody>
+          </table>
+      <br>
+  </div>   
+</div>

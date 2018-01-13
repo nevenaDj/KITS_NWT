@@ -9,16 +9,13 @@ import { User } from '../models/user';
 @Injectable()
 export class BuildingService {
   private buildingsUrl = '/api/buildings';
-  private headers: HttpHeaders;
+  private headers: HttpHeaders = new HttpHeaders({'X-Auth-Token': localStorage.getItem('token'),'Content-Type':'application/json'});
 
   private RegenerateData = new Subject<void>();
 
   RegenerateData$ = this.RegenerateData.asObservable();
 
   constructor(private http: HttpClient) { 
-    this.headers = new HttpHeaders();
-    this.headers.set('Content-Type', 'application/json');
-    this.headers.set('X-Auth-Token', localStorage.getItem('token'));
   }
 
   announceChange(){
@@ -43,6 +40,7 @@ export class BuildingService {
   }
 
   getBuildings(): Promise<Building[]>{
+    
     return this.http
           .get(this.buildingsUrl, {headers: this.headers})
           .toPromise()
