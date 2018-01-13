@@ -5,14 +5,8 @@ import * as decode from 'jwt-decode';
 
 @Injectable()
 export class AuthService {
-
   private authUrl = 'api/login';
-
-  private admin: boolean;
-  private tenant: boolean;
-  private president: boolean;
-  private owner: boolean;
-  private company: boolean;
+  private roles: string[];
 
   constructor(private http: HttpClient,
               private router: Router) { }
@@ -49,23 +43,23 @@ export class AuthService {
   }
 
   isAdmin(): boolean {
-    return this.admin;
+    return this.roles.includes('ROLE_ADMIN');
   }
 
   isTenant(): boolean {
-    return this.tenant;
+    return this.roles.includes('ROLE_USER');
   }
 
   isOwner(): boolean {
-    return this.owner;
+    return this.roles.includes('ROLE_OWNER');
   }
 
   isPresident(): boolean {
-    return this.president;
+    return this.roles.includes('ROLE_PRESIDENT');
   }
 
   isCompany(): boolean {
-    return this.company;
+    return this.roles.includes('ROLE_COMPANY');
   }
 
   getRoles(): string[] {
@@ -84,20 +78,7 @@ export class AuthService {
   private setRoles(): void {
     const token = localStorage.getItem('token');
     const tokenPayload = decode(token);
-
-    for(let role of tokenPayload.scopes){
-      if(role === 'ROLE_ADMIN'){
-        this.admin = true;
-      } else if (role === 'ROLE_USER') {
-        this.tenant = true;
-      } else if (role === 'ROLE_PRESIDENT') {
-        this.president = true;
-      } else if (role === 'ROLE_OWNER') {
-        this.owner = true;
-      } else if (role === 'ROLE_COMPANY') {
-        this.company = true;
-      }
-    }
+    this.roles = tokenPayload.scopes;
   }
 
   private handleError(error: any): Promise<any> {

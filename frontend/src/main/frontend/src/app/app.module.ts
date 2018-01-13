@@ -25,7 +25,6 @@ import { ApartmentsComponent } from './apartments/apartments.component';
 import { AddApartmentComponent } from './apartments/add-apartment/add-apartment.component';
 import { AddPresidentComponent } from './buildings/add-president/add-president.component';
 import { HomeCompanyComponent } from './home-company/home-company.component';
-import { MenuComponent } from './menu/menu.component';
 import { LoginLayoutComponent } from './login/login-layout/login-layout.component';
 import { TenantsComponent } from './tenants/tenants.component';
 import { ApartmentDetailComponent } from './apartments/apartment-detail/apartment-detail.component';
@@ -56,7 +55,6 @@ import { HomeOwnerComponent } from './home-owner/home-owner.component';
     AddApartmentComponent,
     AddPresidentComponent,
     HomeCompanyComponent,
-    MenuComponent,
     LoginLayoutComponent,
     TenantsComponent,
     ApartmentDetailComponent,
