@@ -14,9 +14,11 @@ export class ApartmentService {
   RegenerateData$ = this.RegenerateData.asObservable();
 
   constructor(private http:HttpClient) {
-    this.headers = new HttpHeaders();
+    this.headers = new HttpHeaders({'X-Auth-Token': localStorage.getItem('token')});
     this.headers.set('Content-Type', 'application/json');
     this.headers.set('X-Auth-Token', localStorage.getItem('token'));
+    console.log('Header:');
+    console.log(this.headers.get('X-Auth-Token'));
    }
 
    announceChange(){
@@ -24,6 +26,8 @@ export class ApartmentService {
    }
 
    addApartment(buildingID: number,apartment:Apartment): Promise<Apartment>{
+     console.log('Header:');
+     console.log(this.headers.get('X-Auth-Token'));
      const url = `/api/buildings/${buildingID}/apartments`;
      return this.http
           .post<Apartment>(url, apartment, {headers: this.headers})
