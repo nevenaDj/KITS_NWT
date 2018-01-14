@@ -25,6 +25,7 @@ import { GlitchTypesComponent } from './glitch-types/glitch-types.component';
 import { AddGlitchTypeComponent } from './glitch-types/add-glitch-type/add-glitch-type.component';
 import { HomeOwnerComponent } from './home-owner/home-owner.component';
 import { HomePresidentComponent } from './home-president/home-president.component';
+import { RegisterComponent } from './register/register.component';
 
 
 
@@ -95,6 +96,10 @@ const routers: Routes = [
       {
         path: 'login',
         component: LoginComponent
+      },
+      {
+        path: 'register',
+        component: RegisterComponent
       }
     ]
   },

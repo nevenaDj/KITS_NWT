@@ -188,14 +188,14 @@ public class ApartmentControllerTest {
 
 	@Test
 	public void testFindByAddress() throws Exception {
-		mockMvc.perform(get("/api/apartments?street=" + STREET + "&number=" + BUILDING_NUMBER + "&city=" + CITY
+		mockMvc.perform(get("/api/apartment?street=" + STREET + "&number=" + BUILDING_NUMBER + "&city=" + CITY
 				+ "&number_apartment=" + NUMBER).header("X-Auth-Token", accessToken)).andExpect(status().isOk());
 
 	}
 
 	@Test
 	public void testFindByAddressNotFound() throws Exception {
-		mockMvc.perform(get("/api/apartments?street=" + STREET + "&number=" + BUILDING_NUMBER + "&city=" + CITY
+		mockMvc.perform(get("/api/apartment?street=" + STREET + "&number=" + BUILDING_NUMBER + "&city=" + CITY
 				+ "&number_apartment=" + NEW_NUMBER).header("X-Auth-Token", accessToken))
 				.andExpect(status().isNotFound());
 

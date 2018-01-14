@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient ,HttpHeaders } from '@angular/common/http';
+import { HttpClient ,HttpHeaders, HttpParams } from '@angular/common/http';
 import { Subject } from 'rxjs/Rx';
 
 import { Apartment } from '../models/apartment';
@@ -65,10 +65,21 @@ export class ApartmentService {
 
    addOwner(apartmentID: number, owner: User): Promise<User>{
      const url = `/api/apartments/${apartmentID}/owner`;
-     return this.http.post<User>(url, owner, {headers: this.headers})
+     return this.http
+            .post<User>(url, owner, {headers: this.headers})
             .toPromise()
             .then(res => {return res})
             .catch(this.handleError);
+   }
+
+   findApartment(street: string, number: string, city: string, apartmentNumber: string): Promise<Apartment>{
+    const httpParams = new HttpParams().set('street', street).set('number', number).set('city', city).set('number_apartment', apartmentNumber);
+     const url = `/api/apartment`;
+     return this.http
+          .get(url, {headers: this.headers, params: httpParams})
+          .toPromise()
+          .then(res => {return res})
+          .catch(this.handleError);
    }
 
    private handleError(error: any): Promise<any> {

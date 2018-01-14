@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Subject } from 'rxjs/Rx';
-import { User } from '../models/user';
+import { User, UserRegister } from '../models/user';
 
 
 @Injectable()
@@ -20,9 +20,18 @@ export class UserService {
   }
 
   getUsers(): Promise<User[]>{
-    return this.http.get<User[]>(this.userUrl, {headers: this.headers})
+    return this.http
+          .get<User[]>(this.userUrl, {headers: this.headers})
           .toPromise()
           .then(res => {return res})
+          .catch(this.handleError);
+  }
+
+  registration(user: UserRegister): Promise<{}>{
+    const url = '/api/register';
+    return this.http
+          .post(url, user, {headers: this.headers})
+          .toPromise()
           .catch(this.handleError);
   }
 

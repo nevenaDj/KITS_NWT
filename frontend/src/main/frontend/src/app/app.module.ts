@@ -39,6 +39,7 @@ import { GlitchTypesComponent } from './glitch-types/glitch-types.component';
 import { AddGlitchTypeComponent } from './glitch-types/add-glitch-type/add-glitch-type.component';
 import { HomePresidentComponent } from './home-president/home-president.component';
 import { HomeOwnerComponent } from './home-owner/home-owner.component';
+import { RegisterComponent } from './register/register.component';
 
 
 
@@ -68,7 +69,8 @@ import { HomeOwnerComponent } from './home-owner/home-owner.component';
     GlitchTypesComponent,
     AddGlitchTypeComponent,
     HomePresidentComponent,
-    HomeOwnerComponent
+    HomeOwnerComponent,
+    RegisterComponent
   ],
   imports: [
     BrowserModule,

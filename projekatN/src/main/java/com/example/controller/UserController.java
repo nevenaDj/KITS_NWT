@@ -110,6 +110,7 @@ public class UserController {
 		}
 
 		User user = RegisterDTO.getTenant(registerDTO);
+		user.setPassword(passwordEncoder.encode(user.getPassword()));
 		user = userService.save(user, "ROLE_USER");
 
 		UserAparment userApartment = new UserAparment(user, apartment);

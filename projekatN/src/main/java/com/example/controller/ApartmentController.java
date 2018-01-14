@@ -155,7 +155,7 @@ public class ApartmentController {
 		return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 	}
 
-	@RequestMapping(value = "/apartments", method = RequestMethod.GET, params = { "street", "number", "city",
+	@RequestMapping(value = "/apartment", method = RequestMethod.GET, params = { "street", "number", "city",
 			"number_apartment" })
 	@ApiOperation(value = "Find an apartment by address.", httpMethod = "GET")
 	@ApiImplicitParam(paramType = "header", name = "X-Auth-Token", required = true, value = "JWT token")

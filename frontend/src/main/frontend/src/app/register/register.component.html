@@ -1,0 +1,39 @@
+<div id="login-page">
+    <div class="container">
+      <form class="form-login" name="form" (ngSubmit)="save()">
+        <div class="login-wrap">
+          
+          <br>
+          <input type="text" class="form-control" placeholder="User ID" name="username" [(ngModel)]="user.username" required autofocus>
+          <br>
+          <input type="password" class="form-control" placeholder="Password" name="password" [(ngModel)]="user.password" required>
+          <br>
+          <input type="password" class="form-control" placeholder="Password again" name="password" [(ngModel)]="user.password2" required>
+          <br>
+          <input type="email" class="form-control" placeholder="Email" name="email" [(ngModel)]="user.email" required>
+          <br>
+          <input type="text" class="form-control" placeholder="Phone number" name="phoneNo" [(ngModel)]="user.phoneNo" required>
+          <hr>
+          <form class="form-login" name="form" (ngSubmit)="findApartment()">
+            <input type="text" class="form-control" placeholder="Street" name="street" [(ngModel)]="street" required>
+            <br>
+            <input type="text" class="form-control" placeholder="Number" name="number" [(ngModel)]="number" required>
+            <br>
+            <input type="text" class="form-control" placeholder="City" name="city" [(ngModel)]="city" required>
+            <br>
+            <input type="number" class="form-control" placeholder="Apartment number" name="apartmentNumber" [(ngModel)]="apartmentNumber" required>
+            <br>
+            <button class="btn btn-theme btn-block" type="submit"> FIND APARTMENT</button>
+        </form>
+        <br>
+        <br>
+
+          <button class="btn btn-theme btn-block" type="submit"><i class="fa fa-lock"></i> SIGN UP</button>
+          <hr>
+          
+        </div>
+      </form>	
+    </div>
+  </div>
+  <br>
+  <br>
