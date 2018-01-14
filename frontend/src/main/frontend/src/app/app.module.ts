@@ -41,6 +41,10 @@ import { AddGlitchTypeComponent } from './glitch-types/add-glitch-type/add-glitc
 import { HomePresidentComponent } from './home-president/home-president.component';
 import { HomeOwnerComponent } from './home-owner/home-owner.component';
 import { RegisterComponent } from './register/register.component';
+import { AdminProfileComponent } from './users/profile/admin-profile/admin-profile.component';
+import { PasswordComponent } from './users/password/password.component';
+import { ProfileComponent } from './users/profile/profile.component';
+import { ProfileUpdateComponent } from './users/profile/profile-update/profile-update.component';
 
 
 
@@ -71,7 +75,11 @@ import { RegisterComponent } from './register/register.component';
     AddGlitchTypeComponent,
     HomePresidentComponent,
     HomeOwnerComponent,
-    RegisterComponent
+    RegisterComponent,
+    AdminProfileComponent,
+    PasswordComponent,
+    ProfileComponent,
+    ProfileUpdateComponent
   ],
   imports: [
     BrowserModule,

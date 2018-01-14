@@ -37,7 +37,8 @@ export class BuildingDetailComponent implements OnInit {
         username:'',
         password:'',
         email:'',
-        phoneNo:''
+        phoneNo:'',
+        address: null
       }
     }
   }
@@ -66,7 +67,7 @@ export class BuildingDetailComponent implements OnInit {
 
   deleteBuilding(){
     this.buildingService.deleteBuilding(this.building.id)
-        .then(() => this.location.back() );
+        .then(() => this.router.navigate(['buildings']) );
 
   }
 

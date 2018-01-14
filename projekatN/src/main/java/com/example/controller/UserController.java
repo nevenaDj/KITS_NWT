@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.dto.AddressDTO;
+import com.example.dto.BuildingDTO;
 import com.example.dto.LoginDTO;
 import com.example.dto.RegisterDTO;
 import com.example.dto.UserDTO;
@@ -164,7 +165,9 @@ public class UserController {
 		}
 
 		user.setEmail(userDTO.getEmail());
-		user.setAddress(AddressDTO.getAddress(userDTO.getAddress()));
+		if (userDTO.getAddress() != null) {
+			user.setAddress(AddressDTO.getAddress(userDTO.getAddress()));
+		}
 		user.setPhoneNo(userDTO.getPhoneNo());
 
 		user = userService.update(user);
@@ -197,9 +200,31 @@ public class UserController {
 	}
 
 	@RequestMapping(value = "/users/count", method = RequestMethod.GET)
+	@ApiOperation(value = "Get a conut of users.", httpMethod = "GET")
+	@ApiImplicitParam(paramType = "header", name = "X-Auth-Token", required = true, value = "JWT token")
+	@ApiResponse(code = 200, message = "Success", response = BuildingDTO.class)
+	/*** get a count of users ***/
 	public ResponseEntity<Long> getCountOfUsers() {
 		Long count = userService.getCountOfUsers();
 		return new ResponseEntity<>(count, HttpStatus.OK);
 
+	}
+
+	@RequestMapping(value = "/users/me", method = RequestMethod.GET)
+	@ApiOperation(value = "Get a current user.", httpMethod = "GET")
+	@ApiImplicitParam(paramType = "header", name = "X-Auth-Token", required = true, value = "JWT token")
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "Success", response = BuildingDTO.class),
+			@ApiResponse(code = 404, message = "Not found") })
+	/*** get a current user ***/
+	public ResponseEntity<UserDTO> getCurrentUser(HttpServletRequest request) {
+		String token = request.getHeader("X-Auth-Token");
+		String username = tokenUtils.getUsernameFromToken(token);
+
+		User user = userService.findByUsername(username);
+
+		if (user == null) {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+		return new ResponseEntity<>(new UserDTO(user), HttpStatus.OK);
 	}
 }

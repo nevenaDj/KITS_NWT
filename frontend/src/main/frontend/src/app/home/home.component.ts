@@ -34,4 +34,8 @@ export class HomeComponent implements OnInit {
   logout(){
     this.authService.logout();
   }
+
+  gotoProfile(){
+    this.router.navigate(['/tenant/profile']);
+  }
 }

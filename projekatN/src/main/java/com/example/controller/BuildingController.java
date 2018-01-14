@@ -164,6 +164,10 @@ public class BuildingController {
 	}
 
 	@RequestMapping(value = "/count", method = RequestMethod.GET)
+	@ApiOperation(value = "Get a count of buildings.", httpMethod = "GET")
+	@ApiImplicitParam(paramType = "header", name = "X-Auth-Token", required = true, value = "JWT token")
+	@ApiResponse(code = 200, message = "Success", response = BuildingDTO.class)
+	/*** get a count of buildings ***/
 	public ResponseEntity<Long> getCountOfBuilding() {
 		Long count = buildingService.getCountOfBuilding();
 		return new ResponseEntity<>(count, HttpStatus.OK);

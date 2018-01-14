@@ -24,7 +24,8 @@ export class AddOwnerComponent implements OnInit {
       username: '',
       password: '',
       email: '',
-      phoneNo: ''
+      phoneNo: '',
+      address: null
     }
     this.apartmentID = this.route.snapshot.params['id'];
   }

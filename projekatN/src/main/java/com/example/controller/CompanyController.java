@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.dto.BuildingDTO;
 import com.example.dto.UserDTO;
 import com.example.model.User;
 import com.example.security.TokenUtils;
@@ -91,6 +92,10 @@ public class CompanyController {
 	}
 
 	@RequestMapping(value = "/count", method = RequestMethod.GET)
+	@ApiOperation(value = "Get a count of comapnies.", httpMethod = "GET")
+	@ApiImplicitParam(paramType = "header", name = "X-Auth-Token", required = true, value = "JWT token")
+	@ApiResponse(code = 200, message = "Success", response = BuildingDTO.class)
+	/*** get a count of companies ***/
 	public ResponseEntity<Integer> getCountOfComapnies() {
 		int count = userService.count(ROLE_COMPANY);
 		return new ResponseEntity<>(count, HttpStatus.OK);

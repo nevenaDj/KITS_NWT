@@ -19,7 +19,7 @@
               <div class="dropdown" dropdown [dropdownToggle]="true" >
                   <button class="dropdown-button"  dropdown-open><i class="fa fa-angle-down">Settings</i></button>
                   <ul class="dropdown-menu dropdown-button" >
-                      <li class="dropdown-button"><a>Profile</a></li>
+                      <li class="dropdown-button"><a (click)="gotoProfile()">Profile</a></li>
                       <li class="dropdown-button"><a (click)="logout()">Log out</a></li>
                   </ul>
               </div>

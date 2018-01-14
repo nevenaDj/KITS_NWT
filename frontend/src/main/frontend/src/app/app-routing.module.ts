@@ -26,6 +26,10 @@ import { AddGlitchTypeComponent } from './glitch-types/add-glitch-type/add-glitc
 import { HomeOwnerComponent } from './home-owner/home-owner.component';
 import { HomePresidentComponent } from './home-president/home-president.component';
 import { RegisterComponent } from './register/register.component';
+import { AdminProfileComponent } from './users/profile/admin-profile/admin-profile.component';
+import { PasswordComponent } from './users/password/password.component';
+import { ProfileComponent } from './users/profile/profile.component';
+import { ProfileUpdateComponent } from './users/profile/profile-update/profile-update.component';
 
 
 
@@ -33,10 +37,10 @@ const routers: Routes = [
   {
     path: '',
     component: HomeAdminComponent,
-    /* canActivate: [AuthGuardService,RoleGuardService], 
+    canActivate: [AuthGuardService,RoleGuardService], 
     data: { 
       expectedRole: 'ROLE_ADMIN'
-    }, */
+    },
     children: [
           { path: 'buildings', component: BuildingsComponent},
           { path: 'addBuilding', component: AddBuildingComponent},
@@ -54,7 +58,9 @@ const routers: Routes = [
           { path: 'addCompany', component: AddCompanyComponent},
           { path: 'users', component: UsersComponent},
           { path: 'glitchTypes', component: GlitchTypesComponent},
-          { path: 'addGlitchType', component: AddGlitchTypeComponent}
+          { path: 'addGlitchType', component: AddGlitchTypeComponent},
+          { path: 'admin', component: AdminProfileComponent},
+          { path: 'password', component: PasswordComponent}
     ]
   },
   {
@@ -71,7 +77,12 @@ const routers: Routes = [
     canActivate: [AuthGuardService,RoleGuardService], 
     data: { 
       expectedRole: 'ROLE_USER'
-    }
+    },
+    children: [
+      { path: 'password', component: PasswordComponent},
+      { path: 'profile', component: ProfileComponent},
+      { path: 'update', component: ProfileUpdateComponent}
+    ]
   },
   {
     path:'owner',

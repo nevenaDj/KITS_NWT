@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import * as decode from 'jwt-decode';
+import { AuthService } from '../login/auth.service';
 
 @Component({
   selector: 'app-home-admin',
@@ -10,18 +11,19 @@ import * as decode from 'jwt-decode';
 export class HomeAdminComponent implements OnInit {
   username: string = '';
 
-  constructor(private router: Router) { }
+  constructor(private router: Router,
+              private authService: AuthService) { }
 
   ngOnInit() {
-    const token = localStorage.getItem('token');
-    const tokenPayload = decode(token);
-    console.log(tokenPayload.sub);
-    this.username = tokenPayload.sub;
+    this.username = this.authService.getCurrentUser();
   }
 
   logout(){
-    localStorage.removeItem('token');
-    this.router.navigate(['login']);
+    this.authService.logout();
+  }
+
+  gotoProfile(){
+    this.router.navigate(['admin']);
   }
 
   

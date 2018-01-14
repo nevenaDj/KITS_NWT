@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Location } from '@angular/common';
 
 import { User } from '../../models/user';
 import { TenantService } from '../../tenants/tenant.service';
+
 
 @Component({
   selector: 'app-add-tenant',
@@ -16,13 +18,15 @@ export class AddTenantComponent implements OnInit {
 
   constructor(private route: ActivatedRoute,
               private router: Router,
+              private location: Location,
               private tenantService: TenantService) {
     this.tenant = {
       id: null,
       username: '',
       password: '',
       email: '',
-      phoneNo: ''
+      phoneNo: '',
+      address: null
     }
     this.apartmentID = this.route.snapshot.params['id'];
   }
@@ -34,9 +38,8 @@ export class AddTenantComponent implements OnInit {
     this.tenantService.addTenant(this.apartmentID, this.tenant)
         .then(tenant => {
           console.log(tenant);
-          this.router.navigate([`/apartments/${this.apartmentID}`]);
-        })
-
+          this.location.back();
+        });
   }
 
 }

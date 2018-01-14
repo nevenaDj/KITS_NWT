@@ -13,12 +13,14 @@
               <tr>
                   <th>#</th>
                   <th>Type</th>
+                  <th></th>
               </tr>
               </thead>
               <tbody>
               <tr *ngFor="let glitchType of glitchTypes">
                   <td>{{glitchType.id}}</td>
                   <td>{{glitchType.type}}</td>
+                  <td> <button (click)="deleteGlitchType(glitchType.id)" class="btn btn-danger btn-xs"><i class="fa fa-trash-o "></i></button> </td>
               </tr>
               </tbody>
           </table>

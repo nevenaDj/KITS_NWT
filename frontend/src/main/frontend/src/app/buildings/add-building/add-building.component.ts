@@ -35,7 +35,8 @@ export class AddBuildingComponent implements OnInit {
         username:'',
         password:'',
         email:'',
-        phoneNo:''
+        phoneNo:'',
+        address: null
       }
     }
     this.mode = 'ADD';
@@ -43,14 +44,14 @@ export class AddBuildingComponent implements OnInit {
 
   ngOnInit() {
     if (this.route.snapshot.params['id']){
-      this.mode = 'EDIT';
+      this.mode = 'UPDATE';
       this.buildingService.getBuilding(+this.route.snapshot.params['id'])
           .then(building => this.building = building);
     }
   }
 
   save(): void {
-   this.mode == 'ADD' ? this.add() : this.edit();
+   this.mode == 'ADD' ? this.add() : this.update();
   }
 
   add(): void {
@@ -58,7 +59,7 @@ export class AddBuildingComponent implements OnInit {
       .then( building => { this.router.navigate(['buildings', building.id])});
   }
 
-  edit(): void {
+  update(): void {
     this.buildingService.updateBuilding(this.building)
         .then(building => {
           this.buildingService.announceChange();

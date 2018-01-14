@@ -37,7 +37,7 @@
               <div class="dropdown" dropdown [dropdownToggle]="true" >
                   <button class="dropdown-button"  dropdown-open><i class="fa fa-angle-down">Settings</i></button>
                   <ul class="dropdown-menu dropdown-button" >
-                      <li class="dropdown-button"><a>Profile</a></li>
+                      <li class="dropdown-button"><a (click)="gotoProfile()">Profile</a></li>
                       <li class="dropdown-button"><a (click)="logout()">Log out</a></li>
                   </ul>
               </div>
@@ -59,29 +59,17 @@
       <ul class="sidebar-menu" id="nav-accordion">
           <nav>
               <li class="mt">
-                  <a [routerLink]="['/buildings']">
+                  <a [routerLink]="">
                       <i class="fa fa-building"></i>
-                      <span>Buildings</span>
+                      <span>Notifications</span>
                   </a>
               </li>
               <li class="sub-menu">
-                  <a [routerLink]="['/users']">
-                      <i class="fa fa-users"></i>
-                      <span>Users</span>
+                  <a [routerLink]="">
+                        <i class="fa fa-cogs"></i>
+                      <span>Glitches</span>
                   </a>
               </li>
-              <li class="sub-menu">
-                  <a [routerLink]="['/companies']">
-                      <i class="fa fa-cogs"></i>
-                      <span>Companies</span>
-                  </a>
-              </li>
-              <li class="sub-menu">
-                <a [routerLink]="['/glitchTypes']">
-                    <i class="fa fa-cogs"></i>
-                    <span>Glitch types</span>
-                </a>
-            </li>
           </nav>
       </ul>
   </div>

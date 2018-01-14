@@ -20,7 +20,14 @@ export class AddCompanyComponent implements OnInit {
       username: '',
       password: '',
       email: '',
-      phoneNo: ''
+      phoneNo: '',
+      address: {
+        id: null,
+        street: '',
+        number: '',
+        city: '',
+        zipCode: null
+      }
     }
   }
 

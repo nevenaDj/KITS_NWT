@@ -1,9 +1,12 @@
+import { Address } from "./address";
+
 export class User implements UserInterface{
 	public id: number;
 	public username: string;
 	public password: string;
     public email: string;
-    public phoneNo: string;
+	public phoneNo: string;
+	public address: Address;
 		
 	constructor(userCfg:UserInterface)
 	{	
@@ -11,7 +14,8 @@ export class User implements UserInterface{
 		this.username = userCfg.username;
 		this.password = userCfg.password;
         this.email = userCfg.email;
-        this.phoneNo = userCfg.phoneNo;
+		this.phoneNo = userCfg.phoneNo;
+		this.address = userCfg.address;
 	}
 }
 
@@ -42,5 +46,6 @@ interface UserInterface{
 	password2?: string;
     email?: string;
 	phoneNo?: string;
+	address?: Address;
 	apartmentId?: number;
 }

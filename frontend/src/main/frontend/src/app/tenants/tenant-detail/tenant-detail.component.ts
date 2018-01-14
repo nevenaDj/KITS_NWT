@@ -22,7 +22,8 @@ export class TenantDetailComponent implements OnInit {
       username: '',
       password: '',
       email: '',
-      phoneNo: ''
+      phoneNo: '',
+      address: null
     }
   }
 

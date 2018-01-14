@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Subject } from 'rxjs/Rx';
 import { User, UserRegister } from '../models/user';
+import { UserPassword } from '../models/user-password';
 
 
 @Injectable()
@@ -43,7 +44,32 @@ export class UserService {
           .toPromise()
           .then(res => {return res})
           .catch(this.handleError);
+  }
 
+  changePassword(user: UserPassword): Promise<{}>{
+    const url = '/api/users/password';
+    return this.http
+          .put(url, user, {headers: this.headers})
+          .toPromise()
+          .catch(this.handleError);
+  }
+
+  getCurrentUser(): Promise<User>{
+    const url = '/api/users/me';
+    return this.http
+          .get<User>(url, {headers: this.headers})
+          .toPromise()
+          .then(res => {return res})
+          .catch(this.handleError);
+  }
+
+  updateUser(user: User): Promise<User> {
+    const url = '/api/users';
+    return this.http
+        .put<User>(url,user, {headers: this.headers})
+        .toPromise()
+        .then(res => {return res})
+        .catch(this.handleError);
   }
 
   private handleError(error: any): Promise<any> {

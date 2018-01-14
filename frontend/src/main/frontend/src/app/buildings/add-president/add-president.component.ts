@@ -23,7 +23,8 @@ export class AddPresidentComponent implements OnInit {
       username: '',
       password: '',
       email: '',
-      phoneNo: ''
+      phoneNo: '',
+      address: null
     }
     this.buildingID = this.route.snapshot.params['id'];
   }
