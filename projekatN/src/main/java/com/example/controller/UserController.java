@@ -169,7 +169,8 @@ public class UserController {
 		}
 
 		user.setEmail(userDTO.getEmail());
-		user.setAddress(AddressDTO.getAddress(userDTO.getAddress()));
+		if (userDTO.getAddress()!=null)
+			user.setAddress(AddressDTO.getAddress(userDTO.getAddress()));
 		user.setPhoneNo(userDTO.getPhoneNo());
 
 		user = userService.update(user);
@@ -211,17 +212,16 @@ public class UserController {
 			@ApiResponse(code = 404, message = "Not found") })
 	/*** get user ***/
 	public ResponseEntity<UserDTO> getLogedINUser(HttpServletRequest request) {
-		System.out.println("Kezdes");
 		String token = request.getHeader("X-Auth-Token");
 		System.out.println(token);
 		String username = tokenUtils.getUsernameFromToken(token);
 		System.out.println(username);
 		User user = userService.findByUsername(username);
 		if (user == null) {
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+			return new ResponseEntity<UserDTO>(HttpStatus.NOT_FOUND);
 		}
-		System.out.println(user.getUsername());
-		System.out.println(user.getEmail());
-		return new ResponseEntity<>(new UserDTO(user), HttpStatus.OK);
+		UserDTO userDTO = new UserDTO(user);
+		System.out.println("userDTO: "+userDTO.getUsername());
+		return new ResponseEntity<UserDTO>(userDTO, HttpStatus.OK);
 	}
 }

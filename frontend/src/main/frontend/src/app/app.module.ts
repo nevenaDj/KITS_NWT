@@ -69,7 +69,7 @@ import { AddGlitchTypeComponent } from './glitch-types/add-glitch-type/add-glitc
     PricelistCompanyComponent,
     ChangePasswordCompanyComponent,
     BillDetailsCompanyComponent,
-    GlitchDetailsCompanyComponent
+    GlitchDetailsCompanyComponent,
     HomeCompanyComponent,
     MenuComponent,
     LoginLayoutComponent,

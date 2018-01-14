@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 @import '~font-awesome/css/font-awesome.css';
 
 
@@ -45,8 +44,6 @@
 }
 
 /* BASIC THEME CONFIGURATION */
-=======
->>>>>>> refs/remotes/origin/config_angular
 body {
     color: #797979;
     font-family: 'Ruda', sans-serif;
@@ -477,7 +474,6 @@ label {
 	height: 34px;
 }
 
-<<<<<<< HEAD
 .container {
     color: white;
     
@@ -718,6 +714,14 @@ a.logo span {
     
 }
 
+.border-title-hover:hover{
+    color: #4c586f;
+    font-size: 13px;
+    text-transform: uppercase;
+    opacity: 1;
+    
+}
+
 .border-desc{
     color: #4c586f;
     vertical-align: bottom;
@@ -915,6 +919,18 @@ ul.top-menu > li > a:hover, ul.top-menu > li > a:focus {
     font-weight: bold;
     position: absolute;
     right: 5px;
+}
+
+.save-button-text {
+    color: #4c586f;
+    opacity: 0.7;
+    border: #BED297;
+    background-color: #BED297;
+}
+
+.save-button-text:hover{
+     text-decoration-color: #a2aab0;
+     opacity: 0.2;
 }
 
 .dropdown-menu.inbox li a .message {
@@ -1478,11 +1494,11 @@ input[type="checkbox"].switch_1{
           animation: animOn 0.8s 1 forwards;
   background: rgba(0, 0, 0, 0.5);
   height: auto;
-=======
+}
+
 #main-content {
     margin-left: 210px;
     background-color: #ebeced;
->>>>>>> refs/remotes/origin/config_angular
 }
 
 .header, .footer {
@@ -1567,10 +1583,8 @@ a.logo span {
 
 .border-desc{
     color: #4c586f;
-<<<<<<< HEAD
     padding: 10px; 
     #font-size:16px;
-=======
     vertical-align: bottom;
     margin-bottom: 1px;
     font-size: 20px;
@@ -1585,7 +1599,7 @@ a.logo span {
   border: none;
   font-size: 20px;
   text-transform: lowercase;
->>>>>>> refs/remotes/origin/config_angular
+
     
   float: left;
   color: rgba(76, 88, 111, 0.7);
@@ -1601,7 +1615,6 @@ a.logo span {
     padding-right: 15px;
     margin-top: 15px;
 }
-<<<<<<< HEAD
 .container .check label .box i {
   position: absolute;
   top: 50%;
@@ -1742,9 +1755,6 @@ a.logo span {
   }
 }
 
-
-
-=======
 
 .sidebar-toggle-box .fa-bars {
     cursor: pointer;
@@ -2008,4 +2018,3 @@ ul.top-menu > li > a:hover, ul.top-menu > li > a:focus {
 .dropdown-button{
     background: #cbc5c1;
 }
->>>>>>> refs/remotes/origin/config_angular

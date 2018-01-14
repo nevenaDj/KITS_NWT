@@ -21,7 +21,14 @@ export class LoginComponent implements OnInit {
       username: '',
       password: '',
       email: '',
-      phoneNo: ''
+      phoneNo: '',
+      address:{
+        city:'',
+        id:null,
+        number: '',
+        street: '',
+        zipCode: 0
+      }
     };
                 
   }
@@ -36,17 +43,17 @@ export class LoginComponent implements OnInit {
         const token = localStorage.getItem('token');
         const tokenPayload = decode(token);
         for(let role of tokenPayload.scopes){
+          console.log("role");
+          console.log(role);
           if(role === 'ROLE_ADMIN'){
             this.router.navigate(['/buildings']);
           }
           else if (role === 'ROLE_COMPANY'){
-            this.router.navigate(['/home/company']);
+            this.router.navigate(['/company']);
           } else {
             console.log('user');
           }
-        }
-        
-        
+        }               
       })
       .catch(error => console.log(error));
 

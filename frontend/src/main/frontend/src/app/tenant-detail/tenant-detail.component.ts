@@ -21,7 +21,14 @@ export class TenantDetailComponent implements OnInit {
       username: '',
       password: '',
       email: '',
-      phoneNo: ''
+      phoneNo: '',
+      address:{
+        city:'',
+        id:null,
+        number: '',
+        street: '',
+        zipCode: 0
+      }
     }
   }
 

@@ -39,17 +39,31 @@ const routers: Routes = [
   },
   {
     path: '',
-    component: HomeComponent,
-    canActivate: [AuthGuardService, RoleGuardService],
-    data: {
-  {
-    path: '',
     component: HomeAdminComponent,
     /* canActivate: [AuthGuardService,RoleGuardService], 
     data: { 
       expectedRole: 'ROLE_ADMIN'
     }
-
+*/
+    children: [
+          { path: 'buildings', component: BuildingsComponent},
+          { path: 'addBuilding', component: AddBuildingComponent},
+          { path: 'editBuilding/:id', component: AddBuildingComponent},
+          { path: 'buildings/:id',component: BuildingDetailComponent},
+          { path: 'buildings/:idBuilding/addApartment', component: AddApartmentComponent},
+          { path: 'buildings/:id/addPresident', component: AddPresidentComponent},
+          { path: 'buildings/:idBuilding/apartments/:id', component: ApartmentDetailComponent},
+          { path: 'apartments/:id/addTenant', component: AddTenantComponent},
+          { path: 'apartments/:idApartment/tenants/:id', component: TenantDetailComponent},
+          { path: 'apartments/:id/addOwner', component: AddOwnerComponent},
+          { path: 'companies', component: CompaniesComponent},
+          { path: 'editApartment/:id', component: AddApartmentComponent},
+          { path: 'companies/:id', component: CompanyDetailComponent},
+          { path: 'addCompany', component: AddCompanyComponent},
+          { path: 'users', component: UsersComponent},
+          { path: 'glitchTypes', component: GlitchTypesComponent},
+          { path: 'addGlitchType', component: AddGlitchTypeComponent}
+    ]
   },
   { 
     path: 'company', 
@@ -60,46 +74,47 @@ const routers: Routes = [
     }
    
   },*/
-  children: [
-  { 
-    path: 'company/update', 
-    component: UpdateCompanyComponent, 
-
-  },
-  { 
-    path: 'company/changePassword', 
-    component: ChangePasswordCompanyComponent, 
-
-  },
-  { 
-    path: 'company/bills', 
-    component: BillsCompanyComponent, 
-  },
-  { 
-    path: 'company/bills/:id', 
-    component: BillDetailsCompanyComponent, 
-  },
-  { 
-    path: 'company/activeGlitches', 
-    component: ActiveGlitchesCompanyComponent, 
-  },
-  { 
-    path: 'company/pendingGlitches', 
-    component: PendingGlitchesCompanyComponent, 
-  },
-  { 
-    path: 'company/pendingGlitches/:id', 
-    component: GlitchDetailsCompanyComponent, 
-  },
-  { 
-    path: 'company/activeGlitches/:id', 
-    component: GlitchDetailsCompanyComponent, 
-  },
-  { 
-    path: 'company/pricelist', 
-    component: PricelistCompanyComponent, 
-  },
-  ],
+ // children: [
+        },{ 
+          path: 'company/update', 
+          component: UpdateCompanyComponent, 
+      
+        },
+        { 
+          path: 'company/changePassword', 
+          component: ChangePasswordCompanyComponent, 
+      
+        },
+        { 
+          path: 'company/bills', 
+          component: BillsCompanyComponent, 
+        },
+        { 
+          path: 'company/bills/:id', 
+          component: BillDetailsCompanyComponent, 
+        },
+        { 
+          path: 'company/activeGlitches', 
+          component: ActiveGlitchesCompanyComponent, 
+        },
+        { 
+          path: 'company/pendingGlitches', 
+          component: PendingGlitchesCompanyComponent, 
+        },
+        { 
+          path: 'company/pendingGlitches/:id', 
+          component: GlitchDetailsCompanyComponent, 
+        },
+        { 
+          path: 'company/activeGlitches/:id', 
+          component: GlitchDetailsCompanyComponent, 
+        },
+        { 
+          path: 'company/pricelist', 
+          component: PricelistCompanyComponent, 
+        },
+  //]
+ // },
  {
     path: '',
     component: LoginLayoutComponent,

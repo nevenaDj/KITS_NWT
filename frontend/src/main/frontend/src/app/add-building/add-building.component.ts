@@ -35,7 +35,14 @@ export class AddBuildingComponent implements OnInit {
         username:'',
         password:'',
         email:'',
-        phoneNo:''
+        phoneNo:'',
+        address:{
+          city:'',
+          id:null,
+          number: '',
+          street: '',
+          zipCode: 0
+        }
       }
     }
     this.mode = 'ADD';
