@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Subject } from 'rxjs/Rx';
 import { User } from '../models/user';
 
@@ -26,9 +26,10 @@ export class CompanyService {
         .catch(this.handleError);
   }
 
-  getCompanies(): Promise<User[]>{
+  getCompanies(page: number, size: number = 8): Promise<User[]>{
+    const httpParams = new HttpParams().set('page', page.toString()).set('size', size.toString());
     return this.http
-        .get<User[]>(this.companiesUrl, {headers: this.headers})
+        .get<User[]>(this.companiesUrl, {headers: this.headers, params: httpParams})
         .toPromise()
         .then(res => {return res})
         .catch(this.handleError);
@@ -48,6 +49,17 @@ export class CompanyService {
         .toPromise()
         .catch(this.handleError);
   }
+
+  getCompaniesCount(): Promise<number>{
+    const url = `${this.companiesUrl}/count`;
+    return this.http
+        .get(url, {headers: this.headers})
+        .toPromise()
+        .then(res => {return res})
+        .catch(this.handleError);
+  }
+
+
 
   private handleError(error: any): Promise<any> {
     console.error("Error... ", error);

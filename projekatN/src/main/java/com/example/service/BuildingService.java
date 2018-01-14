@@ -42,5 +42,9 @@ public class BuildingService {
 	public Building findByAddress(String street, String number, String city) {
 		return buildingRepository.findByAddress(street, number, city);
 	}
+	
+	public Long getCountOfBuilding(){
+		return buildingRepository.count();
+	}
 
 }

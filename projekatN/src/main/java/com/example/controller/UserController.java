@@ -71,13 +71,12 @@ public class UserController {
 
 	@RequestMapping(value = "/login", method = RequestMethod.POST, consumes = "application/json")
 	@ApiOperation(value = "Log in.", notes = "Returns the JWT token.", httpMethod = "POST", consumes = "application/json")
-	@ApiResponses(value = { 
-			@ApiResponse(code = 200, message = "Success"),
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "Success"),
 			@ApiResponse(code = 400, message = "Bad request") })
 	/*** login ***/
 	public ResponseEntity<String> login(
 			@ApiParam(value = "The loginDTO object", required = true) @RequestBody LoginDTO loginDTO) {
-		
+
 		try {
 			UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(loginDTO.getUsername(),
 					loginDTO.getPassword());
@@ -93,8 +92,7 @@ public class UserController {
 
 	@RequestMapping(value = "/register", method = RequestMethod.POST, consumes = "application/json")
 	@ApiOperation(value = "Registration.", httpMethod = "POST", consumes = "application/json")
-	@ApiResponses(value = { 
-			@ApiResponse(code = 201, message = "Created"),
+	@ApiResponses(value = { @ApiResponse(code = 201, message = "Created"),
 			@ApiResponse(code = 400, message = "Bad request") })
 	/*** registration ***/
 	public ResponseEntity<Void> register(
@@ -122,7 +120,7 @@ public class UserController {
 
 	@RequestMapping(value = "/users", method = RequestMethod.GET)
 	@ApiOperation(value = "Get a list of users.", httpMethod = "GET")
-	@ApiImplicitParam(paramType="header", name="X-Auth-Token", required=true, value="JWT token")
+	@ApiImplicitParam(paramType = "header", name = "X-Auth-Token", required = true, value = "JWT token")
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	/*** get list of users ***/
 	public ResponseEntity<List<UserDTO>> getUsers(Pageable page) {
@@ -138,9 +136,8 @@ public class UserController {
 
 	@RequestMapping(value = "/users/{id}", method = RequestMethod.GET)
 	@ApiOperation(value = "Get a user.", httpMethod = "GET")
-	@ApiImplicitParam(paramType="header", name="X-Auth-Token", required=true, value="JWT token")
-	@ApiResponses(value = { 
-			@ApiResponse(code = 200, message = "Success", response=UserDTO.class),
+	@ApiImplicitParam(paramType = "header", name = "X-Auth-Token", required = true, value = "JWT token")
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "Success", response = UserDTO.class),
 			@ApiResponse(code = 404, message = "Not found") })
 	/*** get user by id ***/
 	public ResponseEntity<UserDTO> getUser(
@@ -151,17 +148,15 @@ public class UserController {
 		}
 		return new ResponseEntity<>(new UserDTO(user), HttpStatus.OK);
 	}
-	
-	@RequestMapping(value="/users", method = RequestMethod.PUT, consumes = "application/json")
-	@ApiOperation(value = "Update a user.", notes = "Returns the company being saved.", httpMethod = "PUT", 
-				produces = "application/json", consumes = "application/json")
-	@ApiImplicitParam(paramType="header", name="X-Auth-Token", required=true, value="JWT token")
-	@ApiResponses(value = { 
-			@ApiResponse(code = 200, message = "Success", response = UserDTO.class),
+
+	@RequestMapping(value = "/users", method = RequestMethod.PUT, consumes = "application/json")
+	@ApiOperation(value = "Update a user.", notes = "Returns the company being saved.", httpMethod = "PUT", produces = "application/json", consumes = "application/json")
+	@ApiImplicitParam(paramType = "header", name = "X-Auth-Token", required = true, value = "JWT token")
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "Success", response = UserDTO.class),
 			@ApiResponse(code = 400, message = "Bad request") })
 	/*** update user ***/
 	public ResponseEntity<UserDTO> updateUser(
-			@ApiParam(value = "The userDTO object", required = true)@RequestBody UserDTO userDTO) {
+			@ApiParam(value = "The userDTO object", required = true) @RequestBody UserDTO userDTO) {
 		User user = userService.findOne(userDTO.getId());
 
 		if (user == null) {
@@ -177,18 +172,16 @@ public class UserController {
 		return new ResponseEntity<>(new UserDTO(user), HttpStatus.OK);
 	}
 
-
 	@RequestMapping(value = "/users/password", method = RequestMethod.PUT, consumes = "application/json")
 	@ApiOperation(value = "Change password.", httpMethod = "PUT", produces = "application/json", consumes = "application/json")
-	@ApiImplicitParam(paramType="header", name="X-Auth-Token", required=true, value="JWT token")
-	@ApiResponses(value = { 
-			@ApiResponse(code = 200, message = "Success"),
+	@ApiImplicitParam(paramType = "header", name = "X-Auth-Token", required = true, value = "JWT token")
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "Success"),
 			@ApiResponse(code = 400, message = "Bad request") })
 	/*** change user password ***/
 	public ResponseEntity<Void> changePassword(
 			@ApiParam(value = "The userPasswordDTO object", required = true) @RequestBody UserPasswordDTO userPasswordDTO,
 			HttpServletRequest request) {
-		
+
 		String token = request.getHeader("X-Auth-Token");
 		String username = tokenUtils.getUsernameFromToken(token);
 
@@ -200,6 +193,13 @@ public class UserController {
 		} else {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
+
+	}
+
+	@RequestMapping(value = "/users/count", method = RequestMethod.GET)
+	public ResponseEntity<Long> getCountOfUsers() {
+		Long count = userService.getCountOfUsers();
+		return new ResponseEntity<>(count, HttpStatus.OK);
 
 	}
 }

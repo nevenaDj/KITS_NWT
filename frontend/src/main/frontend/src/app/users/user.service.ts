@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Subject } from 'rxjs/Rx';
 import { User, UserRegister } from '../models/user';
 
@@ -19,9 +19,10 @@ export class UserService {
     this.RegenerateData.next();
   }
 
-  getUsers(): Promise<User[]>{
+  getUsers(page: number, size: number): Promise<User[]>{
+    const httpParams = new HttpParams().set('page', page.toString()).set('size', size.toString());
     return this.http
-          .get<User[]>(this.userUrl, {headers: this.headers})
+          .get<User[]>(this.userUrl, {headers: this.headers, params: httpParams})
           .toPromise()
           .then(res => {return res})
           .catch(this.handleError);
@@ -33,6 +34,16 @@ export class UserService {
           .post(url, user, {headers: this.headers})
           .toPromise()
           .catch(this.handleError);
+  }
+
+  getUsersCount(): Promise<number>{
+    const url = '/api/users/count';
+    return this.http
+          .get(url, {headers: this.headers})
+          .toPromise()
+          .then(res => {return res})
+          .catch(this.handleError);
+
   }
 
   private handleError(error: any): Promise<any> {

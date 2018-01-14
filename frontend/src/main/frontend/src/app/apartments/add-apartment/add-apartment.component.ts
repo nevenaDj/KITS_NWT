@@ -55,7 +55,7 @@ export class AddApartmentComponent implements OnInit {
   add(): void {
     this.apartmentService.addApartment(this.buildingID, this.apartment)
         .then(apartment => 
-          this.router.navigate([`/buildings/${this.buildingID}`])
+          this.router.navigate([`/buildings/${this.buildingID}/apartments/${apartment.id}`])
         );
   }
 

@@ -4,6 +4,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { DropdownModule } from 'ngx-dropdown';
 
+import { PagerService } from './pagination/pager.service';
 import { GlitchTypeService } from './glitch-types/glitch-type.service';
 import { UserService } from './users/user.service';
 import { CompanyService } from './companies/company.service';
@@ -89,7 +90,8 @@ import { RegisterComponent } from './register/register.component';
     TenantService,
     CompanyService,
     UserService,
-    GlitchTypeService
+    GlitchTypeService,
+    PagerService
   ],
   bootstrap: [AppComponent]
 })

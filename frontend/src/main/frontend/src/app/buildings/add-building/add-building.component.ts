@@ -55,7 +55,7 @@ export class AddBuildingComponent implements OnInit {
 
   add(): void {
     this.buildingService.addBuilding(this.building)
-      .then( building => { this.router.navigate(['buildings'])});
+      .then( building => { this.router.navigate(['buildings', building.id])});
   }
 
   edit(): void {

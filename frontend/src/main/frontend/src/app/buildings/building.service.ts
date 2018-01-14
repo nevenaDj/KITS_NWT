@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Subject } from 'rxjs/Rx';
 
 import { Building } from '../models/building';
@@ -39,10 +39,10 @@ export class BuildingService {
           .catch(this.handleError);
   }
 
-  getBuildings(): Promise<Building[]>{
-    
+  getBuildings(page: number, size: number = 8): Promise<Building[]>{
+    const httpParams = new HttpParams().set('page', page.toString()).set('size', size.toString());
     return this.http
-          .get(this.buildingsUrl, {headers: this.headers})
+          .get(this.buildingsUrl, {headers: this.headers, params: httpParams})
           .toPromise()
           .then(res => {return res})
           .catch(this.handleError);
@@ -61,6 +61,15 @@ export class BuildingService {
     return this.http
         .delete(url, {headers: this.headers})
         .toPromise()
+        .catch(this.handleError);
+  }
+
+  getBuildingsCount(): Promise<number>{
+    const url = `${this.buildingsUrl}/count`;
+    return this.http
+        .get(url, {headers: this.headers})
+        .toPromise()
+        .then(res => {return res})
         .catch(this.handleError);
   }
 
