@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Subject } from 'rxjs/Rx';
 
 import { GlitchType } from '../models/glitch-type';
@@ -7,8 +7,7 @@ import { GlitchType } from '../models/glitch-type';
 @Injectable()
 export class GlitchTypeService {
   private glitchTypesUrl = '/api/glitchTypes';
-  private headers: HttpHeaders = new HttpHeaders({'X-Auth-Token': localStorage.getItem('token'),'Content-Type':'application/json'});
-
+  
   private RegenerateData = new Subject<void>();
 
   RegenerateData$ = this.RegenerateData.asObservable();
@@ -21,7 +20,7 @@ export class GlitchTypeService {
 
   addGlitchType(glithType: GlitchType): Promise<GlitchType>{
     return this.http
-          .post<GlitchType>(this.glitchTypesUrl, glithType, {headers: this.headers})
+          .post<GlitchType>(this.glitchTypesUrl, glithType)
           .toPromise()
           .then(res => {return res})
           .catch(this.handleError);
@@ -29,7 +28,7 @@ export class GlitchTypeService {
 
   getGlitchTypes(): Promise<GlitchType[]>{
     return this.http
-          .get(this.glitchTypesUrl, {headers: this.headers})
+          .get(this.glitchTypesUrl)
           .toPromise()
           .then(res => {return res})
           .catch(this.handleError);
@@ -38,7 +37,7 @@ export class GlitchTypeService {
   deleteGlitchType(id: number): Promise<{}>{
     const url = `${this.glitchTypesUrl}/${id}`;
     return this.http
-          .delete(url, {headers: this.headers})
+          .delete(url)
           .toPromise()
           .catch(this.handleError);
   }

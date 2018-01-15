@@ -4,7 +4,7 @@ import { Subscription } from 'rxjs/Subscription';
 
 import { Building } from '../models/building';
 import { BuildingService } from './building.service';
-import { PagerService } from '../pagination/pager.service';
+import { PagerService } from '../services/pager.service';
 
 @Component({
   selector: 'app-buildings',
@@ -59,10 +59,6 @@ export class BuildingsComponent implements OnInit {
     }
 
     this.pager = this.pagerService.getPager(this.buildingsCount, page);
-    console.log(this.pager);
-    console.log(this.buildingsCount);
-
     this.getBuildings(this.pager.currentPage - 1, this.pager.pageSize);
-
   }
 }

@@ -4,7 +4,7 @@ import { Subscription } from 'rxjs/Subscription';
 
 import { User } from '../models/user';
 import { CompanyService } from './company.service';
-import { PagerService } from '../pagination/pager.service';
+import { PagerService } from '../services/pager.service';
 
 @Component({
   selector: 'app-companies',
@@ -60,11 +60,7 @@ export class CompaniesComponent implements OnInit {
     }
 
     this.pager = this.pagerService.getPager(this.companiesCount, page);
-    console.log(this.pager);
-    console.log(this.companiesCount);
-
     this.getCompanies(this.pager.currentPage - 1, this.pager.pageSize);
-
   }
 
 }

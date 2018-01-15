@@ -8,8 +8,8 @@
           <ul class="nav top-menu">
             <li class="dropdown" dropdown [dropdownToggle]="true" >
               <a class="dropdown-toggle"  dropdown-open><i class="fa fa-angle-down"></i></a>
-                <ul class="dropdown-menu dropdown-menu-left" *ngFor="let role of roles" >
-                  <li>
+                <ul class="dropdown-menu dropdown-menu-left">
+                  <li *ngFor="let role of roles">
                     <a (click)="goto(role)">
                       <div class="task-info">
                         <div class="desc">
@@ -60,28 +60,16 @@
             <nav>
                 <li class="mt">
                     <a [routerLink]="['/buildings']">
-                        <i class="fa fa-building"></i>
-                        <span>Buildings</span>
+                        <i class="fa fa-cogs"></i>
+                        <span>Meetings</span>
                     </a>
                 </li>
                 <li class="sub-menu">
                     <a [routerLink]="['/users']">
-                        <i class="fa fa-users"></i>
-                        <span>Users</span>
-                    </a>
-                </li>
-                <li class="sub-menu">
-                    <a [routerLink]="['/companies']">
                         <i class="fa fa-cogs"></i>
-                        <span>Companies</span>
+                        <span>Surveys</span>
                     </a>
                 </li>
-                <li class="sub-menu">
-                  <a [routerLink]="['/glitchTypes']">
-                      <i class="fa fa-cogs"></i>
-                      <span>Glitch types</span>
-                  </a>
-              </li>
             </nav>
         </ul>
     </div>

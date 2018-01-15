@@ -6,8 +6,7 @@ import { User } from '../models/user';
 
 @Injectable()
 export class TenantService {
-  headers: HttpHeaders = new HttpHeaders({'X-Auth-Token': localStorage.getItem('token'),'Content-Type':'application/json'});
-
+  
   private RegenerateData = new Subject<void>();
 
   RegenerateData$ = this.RegenerateData.asObservable();
@@ -21,7 +20,7 @@ export class TenantService {
    addTenant(apartmentID: number, tenant:User): Promise<User>{
      const url = `/api//aparments/${apartmentID}/tenants`;
      return this.http
-          .post<User>(url, tenant, {headers: this.headers})
+          .post<User>(url, tenant)
           .toPromise()
           .then(res => {return res})
           .catch(this.handleError);
@@ -30,7 +29,7 @@ export class TenantService {
    getTenantsApartment(apartmentID: number): Promise<User[]>{
      const url = `/api/aparments/${apartmentID}/tenants`;
      return this.http
-          .get<User[]>(url, {headers: this.headers})
+          .get<User[]>(url)
           .toPromise()
           .then(res => {return res})
           .catch(this.handleError);
@@ -39,7 +38,7 @@ export class TenantService {
    getTenant(id: number): Promise<User>{
      const url = `/api/users/${id}`;
      return this.http
-          .get<User>(url, {headers: this.headers})
+          .get<User>(url)
           .toPromise()
           .then(res => {return res})
           .catch(this.handleError);
@@ -48,7 +47,7 @@ export class TenantService {
    deleteTenant(id: number, apartmentID: number): Promise<{}>{
      const url = `/api/apartment/${apartmentID}/tenants/${id}`;
      return this.http
-          .delete(url,  {headers: this.headers})
+          .delete(url)
           .toPromise()
           .catch(this.handleError);
    }

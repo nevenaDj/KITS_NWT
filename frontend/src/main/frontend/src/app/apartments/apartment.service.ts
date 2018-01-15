@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient ,HttpHeaders, HttpParams } from '@angular/common/http';
+import { HttpClient ,HttpParams } from '@angular/common/http';
 import { Subject } from 'rxjs/Rx';
 
 import { Apartment } from '../models/apartment';
@@ -7,8 +7,6 @@ import { User } from '../models/user';
 
 @Injectable()
 export class ApartmentService {
-  headers: HttpHeaders = new HttpHeaders({'X-Auth-Token': localStorage.getItem('token'),'Content-Type':'application/json'});
-
   private RegenerateData = new Subject<void>();
 
   RegenerateData$ = this.RegenerateData.asObservable();
@@ -22,7 +20,7 @@ export class ApartmentService {
    addApartment(buildingID: number,apartment:Apartment): Promise<Apartment>{
      const url = `/api/buildings/${buildingID}/apartments`;
      return this.http
-          .post<Apartment>(url, apartment, {headers: this.headers})
+          .post<Apartment>(url, apartment)
           .toPromise()
           .then(res => {return res})
           .catch(this.handleError);
@@ -31,7 +29,7 @@ export class ApartmentService {
    getApartments(buildingID: number): Promise<Apartment[]>{
      const url = `/api/buildings/${buildingID}/apartments`;
      return this.http
-          .get<Apartment[]>(url,{headers: this.headers})
+          .get<Apartment[]>(url)
           .toPromise()
           .then(res => {return res})
           .catch(this.handleError)
@@ -40,7 +38,7 @@ export class ApartmentService {
    getApartment(id: number):Promise<Apartment>{
      const url = `/api/apartments/${id}`;
      return this.http
-          .get<Apartment>(url, {headers: this.headers})
+          .get<Apartment>(url)
           .toPromise()
           .then(res => {return res})
           .catch(this.handleError);
@@ -49,7 +47,7 @@ export class ApartmentService {
    updateApartment(apartment:Apartment): Promise<Apartment>{
      const url = "/api/apartments";
      return this.http
-          .put(url, apartment, {headers: this.headers})
+          .put(url, apartment)
           .toPromise()
           .then(res => {return res})
           .catch(this.handleError);
@@ -58,7 +56,7 @@ export class ApartmentService {
    deleteApartment(id: number): Promise<{}>{
      const url = `/api/apartments/${id}`;
      return this.http
-          .delete(url, {headers: this.headers})
+          .delete(url)
           .toPromise()
           .catch(this.handleError);
    }
@@ -66,7 +64,7 @@ export class ApartmentService {
    addOwner(apartmentID: number, owner: User): Promise<User>{
      const url = `/api/apartments/${apartmentID}/owner`;
      return this.http
-            .post<User>(url, owner, {headers: this.headers})
+            .post<User>(url, owner, )
             .toPromise()
             .then(res => {return res})
             .catch(this.handleError);
@@ -76,7 +74,7 @@ export class ApartmentService {
     const httpParams = new HttpParams().set('street', street).set('number', number).set('city', city).set('number_apartment', apartmentNumber);
      const url = `/api/apartment`;
      return this.http
-          .get(url, {headers: this.headers, params: httpParams})
+          .get(url, { params: httpParams})
           .toPromise()
           .then(res => {return res})
           .catch(this.handleError);

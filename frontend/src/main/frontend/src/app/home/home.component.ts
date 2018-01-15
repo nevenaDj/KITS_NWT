@@ -19,6 +19,7 @@ export class HomeComponent implements OnInit {
   ngOnInit() {
     this.username = this.authService.getCurrentUser();
     this.roles = this.authService.getRoles();
+    console.log(this.roles);
   }
 
   goto(role: string){

@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 
 import { User } from '../models/user';
 import { UserService } from './user.service';
-import { PagerService } from '../pagination/pager.service';
+import { PagerService } from '../services/pager.service';
 
 @Component({
   selector: 'app-users',

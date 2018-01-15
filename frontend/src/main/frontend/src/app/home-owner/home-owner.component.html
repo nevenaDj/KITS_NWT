@@ -8,8 +8,8 @@
           <ul class="nav top-menu">
             <li class="dropdown" dropdown [dropdownToggle]="true" >
               <a class="dropdown-toggle"  dropdown-open><i class="fa fa-angle-down"></i></a>
-                <ul class="dropdown-menu dropdown-menu-left" *ngFor="let role of roles" >
-                  <li>
+                <ul class="dropdown-menu dropdown-menu-left" >
+                  <li *ngFor="let role of roles">
                     <a (click)="goto(role)">
                       <div class="task-info">
                         <div class="desc">

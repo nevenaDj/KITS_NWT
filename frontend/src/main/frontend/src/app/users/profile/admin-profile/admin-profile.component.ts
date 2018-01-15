@@ -11,7 +11,14 @@ import { UserService } from '../../../users/user.service';
 })
 export class AdminProfileComponent implements OnInit {
 
-  user: User;
+  user: User = {
+    id: null,
+    username: '',
+    password: '',
+    email: '',
+    phoneNo: '',
+    address: null
+  };
 
   constructor(private router: Router,
               private userService: UserService) { }

@@ -1,10 +1,11 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { DropdownModule } from 'ngx-dropdown';
 
-import { PagerService } from './pagination/pager.service';
+import { TokenInterceptorService } from './services/token-interceptor.service';
+import { PagerService } from './services/pager.service';
 import { GlitchTypeService } from './glitch-types/glitch-type.service';
 import { UserService } from './users/user.service';
 import { CompanyService } from './companies/company.service';
@@ -45,6 +46,7 @@ import { AdminProfileComponent } from './users/profile/admin-profile/admin-profi
 import { PasswordComponent } from './users/password/password.component';
 import { ProfileComponent } from './users/profile/profile.component';
 import { ProfileUpdateComponent } from './users/profile/profile-update/profile-update.component';
+
 
 
 
@@ -99,7 +101,12 @@ import { ProfileUpdateComponent } from './users/profile/profile-update/profile-u
     CompanyService,
     UserService,
     GlitchTypeService,
-    PagerService
+    PagerService,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: TokenInterceptorService,
+      multi: true
+    }
   ],
   bootstrap: [AppComponent]
 })
