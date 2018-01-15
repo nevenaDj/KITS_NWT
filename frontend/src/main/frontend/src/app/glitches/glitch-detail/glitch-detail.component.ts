@@ -4,6 +4,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { Glitch } from '../../models/glitch';
 import { GlitchService } from '../glitch.service';
 import { Comment } from '../../models/comment';
+import { AuthService } from '../../login/auth.service';
 
 
 @Component({
@@ -17,9 +18,14 @@ export class GlitchDetailComponent implements OnInit {
 
   comments: Comment[];
 
+  username: string;
+
+  comment: Comment;
+
   constructor(private router: Router,
               private route: ActivatedRoute,
-              private glitchService: GlitchService) {
+              private glitchService: GlitchService,
+              private authService: AuthService) {
     this.glitch = {
       id: null,
       description: '',
@@ -43,18 +49,38 @@ export class GlitchDetailComponent implements OnInit {
         state: ''
       }
     }
+
+    this.comment = {
+      id: null,
+      text: '',
+      user: null
+    }
   }
 
   ngOnInit() {
     this.glitchService.getGlitch(+this.route.snapshot.params['id'])
         .then(glitch => {
           this.glitch = glitch;
-          this.glitchService.getComments(glitch.id)
-              .then(comments => this.comments = comments);
+          this.getComments();
         });
-
-    console.log(this.glitch);
-    console.log(this.comments);
+    this.username = this.authService.getCurrentUser();
   }
 
+  getComments(){
+    this.glitchService.getComments(this.glitch.id)
+    .then(comments => this.comments = comments);
+  }
+
+  saveComment(){
+    console.log(this.comment);
+    this.glitchService.addComment(this.glitch.id, this.comment)
+        .then(() => {
+          this.getComments();
+          this.comment = {
+            id: null,
+            text: '',
+            user: null
+          }
+        });
+  }
 }

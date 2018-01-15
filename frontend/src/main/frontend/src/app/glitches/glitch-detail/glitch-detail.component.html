@@ -40,6 +40,34 @@
         </div>
         </div>
       <br><br>
+      <div class="row" *ngFor="let comment of comments">
+        <br>
+        <div class="col-lg-1"></div>
+        <div class="col-lg-10">
+          <div class="speech-bubble-right" *ngIf="comment.user.username === username">
+            <p class="name">
+               {{comment.user.username}}:<br>
+            </p>
+             {{comment.text}}
+          </div>
+          <div class="speech-bubble-left" *ngIf="comment.user.username !== username">
+            <p class="name">
+              {{comment.user.username}}: <br>
+            </p>
+              {{comment.text}}
+          </div>
+        </div>   
+        <br>
+      </div>
+      <br><br>
+      <div class="row">
+        <form name="form" (ngSubmit)="saveComment()">
+          <div class="col-lg-1"></div>
+          <div class="col-lg-10 border">
+            <input type="text" class="form-control" [(ngModel)]="comment.text" name="text" placeholder="Add comment">
+          </div>
+        </form>
+      </div>
     </div>
   </div>
 </section>

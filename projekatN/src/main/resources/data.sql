@@ -65,6 +65,9 @@ insert into glitch (description, date_of_report, apartment_id, company_id, respo
 insert into glitch (description, date_of_report, apartment_id, company_id, responsible_person_id, state_id, tenant_id, date_of_repair_approved, type_id) 
 			values ('glitch2','2017-12-03', 1, 1, 5, 1, 2, false,1);
 			
+insert into comment (text, user_id, glitch_id) values ('comment', 2, 1);
+insert into comment (text, user_id, glitch_id) values ('new comment', 3, 1);
+			
 insert into agenda_item(title, meeting_id, number, glitch_id ) values ('Title',1, 1, 1);
 insert into item_comment(writer_id, text, date) values (1, 'text', '2017-12-03');
 insert into agenda_item_comments(agenda_item_id, comments_id) values (1,1);
