@@ -16,7 +16,7 @@ public class GlitchDTO {
 	private GlitchState state;
 	private Date dateOfRepair;
 	private BillDTO bill;
-	private boolean dateOfRepairApproved;
+	private boolean repairApproved;
 
 	public GlitchDTO() {
 
@@ -69,7 +69,7 @@ public class GlitchDTO {
 		this.type = type;
 		this.state = state;
 		this.dateOfRepair = dateOfRepair;
-		this.dateOfRepairApproved=dateOfRepairapproved;
+		this.repairApproved=dateOfRepairapproved;
 	}
 
 	public GlitchDTO(Long id, String description, Date dateOfReport, GlitchState state, Date dateOfRepair,boolean dateOfRepairapproved) {
@@ -79,7 +79,7 @@ public class GlitchDTO {
 		this.dateOfReport = dateOfReport;
 		this.state = state;
 		this.dateOfRepair = dateOfRepair;
-		this.dateOfRepairApproved=dateOfRepairapproved;
+		this.repairApproved=dateOfRepairapproved;
 	}
 
 	public Long getId() {
@@ -164,17 +164,17 @@ public class GlitchDTO {
 
 	
 	
-	public boolean isDateOfRepairApproved() {
-		return dateOfRepairApproved;
+	public boolean isRepairApproved() {
+		return repairApproved;
 	}
 
 	public void setDateOfRepairApproved(boolean dateOfRepairApproved) {
-		this.dateOfRepairApproved = dateOfRepairApproved;
+		this.repairApproved = dateOfRepairApproved;
 	}
 
 	public static Glitch getGlitch(GlitchDTO glitchDTO) {
 		Glitch glitch = new Glitch(glitchDTO.getId(), glitchDTO.getDescription(), glitchDTO.getDateOfReport(),
-				glitchDTO.getState(), glitchDTO.getDateOfRepair(), glitchDTO.isDateOfRepairApproved());
+				glitchDTO.getState(), glitchDTO.getDateOfRepair(), glitchDTO.isRepairApproved());
 
 		if (glitchDTO.getResponsiblePerson() != null) {
 			glitch.setResponsiblePerson(UserDTO.getUser(glitchDTO.getResponsiblePerson()));

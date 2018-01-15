@@ -11,7 +11,7 @@
 				style="height: 30px;">
 		</div>
 		<!--logo start-->
-		<a href="home/company" class="logo"><b>HOME</b></a>
+		<a href="company" class="logo"><b>HOME</b></a>
 		<!--logo end-->
 		<div class="nav notify-row" id="top_menu"></div>
 		<div class="top-menu">
@@ -20,8 +20,8 @@
 				<ul class="nav top-menu">
 					<!-- settings start -->
 					<li class="dropdown"><a data-toggle="dropdown"
-						class="dropdown-toggle"> <i
-							class="fa fa-angle-down" style="margin-top: 20px"></i>
+						class="dropdown-toggle"> <i class="fa fa-angle-down"
+							style="margin-top: 20px"></i>
 					</a>
 						<ul class="dropdown-menu dropdown-menu-right">
 
@@ -62,19 +62,20 @@
 		<div id="sidebar" class="nav-collapse ">
 			<!-- sidebar menu start-->
 			<ul class="sidebar-menu" id="nav-accordion">
-				<li class="mt"><a class="active" href="company/pendingGlitches"> <i
+				<li class="mt"><a class="active" (click)="goToPendingGlitches()"> <i
 						class="fa fa-building"></i> <span>Pending glitches</span>
 				</a></li>
 
-				<li class="sub-menu"><a href="company/activeGlitches"> <i
-						class="fa fa-users"></i> <span>Active glitches</span>
+				<li class="sub-menu"><a 
+					(click)="goToActiveGlitches()"> <i class="fa fa-users"></i> <span>Active
+							glitches</span>
 				</a></li>
 
-				<li class="sub-menu"><a href="company/bills"> <i
+				<li class="sub-menu"><a (click)="goToBills()"> <i
 						class="fa fa-users"></i> <span>Bills</span>
 				</a></li>
 
-				<li class="sub-menu"><a href="company/pricelist"> <i
+				<li class="sub-menu"><a (click)="goToPricelist()"> <i
 						class="fa fa-cogs"></i> <span>Pricelist</span>
 				</a></li>
 
@@ -99,31 +100,20 @@
 
 				<div class="col-lg-9 main-chart">
 					<div class="row">
-                              <div class="col-lg-1"></div>
-                              <div class="col-lg-10">
-                                  <ul>
-                                    <li> 
-                                        <div class="lists">
-                                            <div class="first">11.12.2018.</div> 
-                                            <div class="sec">Broj zgrada - address</div>
-                                        </div>
-                                      </li>
-                                    <li>
-                                        <div class="lists">
-                                            <div class="first">11.12.2018.</div> 
-                                            <div class="sec">Broj zgrada - address</div>
-                                        </div>
-                                    </li> 
-                                     <li>
-                                        <div class="lists">
-                                            <div class="first">11.12.2018.</div> 
-                                            <div class="sec">Broj zgrada - address</div>
-                                        </div>
-                                    </li> 
-                                  </ul>
-                                    
-                              </div>   
-                        </div>
+						<div class="col-lg-1"></div>
+						<div class="col-lg-10">
+							<div *ngFor="let glitch of glitches ; let i = index">
+								<ul (click)="gotoGetGlitch(glitch.id)">
+									<li>
+										<div class="lists">
+											<div class="first">{{glitch.dateOfReport | date}}</div>
+											<div class="sec"> {{glitch.description}} </div>
+										</div>
+									</li>
+								</ul>
+							</div>
+						</div>
+					</div>
 				</div>
 			</div>
 		</section>

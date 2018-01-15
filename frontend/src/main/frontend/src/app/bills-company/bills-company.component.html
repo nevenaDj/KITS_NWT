@@ -20,8 +20,8 @@
 				<ul class="nav top-menu">
 					<!-- settings start -->
 					<li class="dropdown"><a data-toggle="dropdown"
-						class="dropdown-toggle"> <i
-							class="fa fa-angle-down" style="margin-top: 20px"></i>
+						class="dropdown-toggle"> <i class="fa fa-angle-down"
+							style="margin-top: 20px"></i>
 					</a>
 						<ul class="dropdown-menu dropdown-menu-right">
 
@@ -70,8 +70,8 @@
 						class="fa fa-users"></i> <span>Active glitches</span>
 				</a></li>
 
-				<li class="sub-menu"><a class="active"  href="company/bills"> <i
-						class="fa fa-users"></i> <span>Bills</span>
+				<li class="sub-menu"><a class="active" href="company/bills">
+						<i class="fa fa-users"></i> <span>Bills</span>
 				</a></li>
 
 				<li class="sub-menu"><a href="company/pricelist"> <i
@@ -96,34 +96,25 @@
 				</div>
 			</div>
 			<div class="row">
-
 				<div class="col-lg-9 main-chart">
 					<div class="row">
-                              <div class="col-lg-1"></div>
-                              <div class="col-lg-10">
-                                  <ul>
-                                    <li> 
-                                        <div class="lists">
-                                            <div class="first">11.12.2018.</div> 
-                                            <div class="sec">Broj zgrada - address</div>
-                                        </div>
-                                      </li>
-                                    <li>
-                                        <div class="lists">
-                                            <div class="first">11.12.2018.</div> 
-                                            <div class="sec">Broj zgrada - address</div>
-                                        </div>
-                                    </li> 
-                                     <li>
-                                        <div class="lists">
-                                            <div class="first">11.12.2018.</div> 
-                                            <div class="sec">Broj zgrada - address</div>
-                                        </div>
-                                    </li> 
-                                  </ul>
-                                    
-                              </div>   
-                        </div>
+						<div class="col-lg-1"></div>
+						<div class="col-lg-10">
+							<div *ngFor="let bill of bills">
+								<ul (click)="gotoGetBill(bill.id)">
+									<li>
+										<div class="lists">
+											<div class="first">{{bill.date | date}}</div>
+											<div class="sec">
+												<b>{{bill.price}}</b> -
+												
+											</div>
+										</div>
+									</li>
+								</ul>
+							</div>
+						</div>
+					</div>
 				</div>
 			</div>
 		</section>

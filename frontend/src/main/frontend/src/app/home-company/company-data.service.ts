@@ -1,3 +1,5 @@
+import { Bill } from '../models/bill';
+import { Glitch } from '../models/glitch';
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Http, Headers } from "@angular/http";
@@ -31,6 +33,31 @@ export class CompanyDataService {
             .catch(this.handleError);
   }
   
+  getActiveGlitches():Promise<Glitch[]>{
+    const url = `/api/companies/activeGlitches`;
+      return this.http.get<Glitch[]>(url, {headers: this.headers})
+            .toPromise()
+            .then(res => {return res})
+            .catch(this.handleError);
+  }
+  
+    getBills():Promise<Bill[]>{
+    const url = `/api/bills`;
+      return this.http.get<Bill[]>(url, {headers: this.headers})
+            .toPromise()
+            .then(res => {return res})
+            .catch(this.handleError);
+  }
+  
+    
+  getPendingGlitches():Promise<Glitch[]>{
+    const url = `/api/companies/pendingGlitches`;
+      return this.http.get<Glitch[]>(url, {headers: this.headers})
+            .toPromise()
+            .then(res => {return res})
+            .catch(this.handleError);
+  }
+  
    updateCompany(updateUser: User):Promise<User>{
     const url = `/api/users`
       return this.http.put<User>(url, updateUser, {headers: this.headers})
@@ -38,6 +65,24 @@ export class CompanyDataService {
             .then(res => {return res})
             .catch(this.handleError);
   }
+  
+    getGlitch(id: number): Promise<Glitch>{
+    const url = `/api/glitches/`+id;
+    return this.http
+          .get<Glitch>(url, {headers: this.headers})
+          .toPromise()
+          .then(res => {return res})
+          .catch(this.handleError);
+  }
+  
+    getBill(id: number): Promise<Bill>{
+      const url = `/api/bills/` + id;
+      return this.http
+        .get<Bill>(url, {headers: this.headers})
+        .toPromise()
+        .then(res => {return res})
+        .catch(this.handleError);
+    }
   
     changePasswordCompany(userPassword: UserPassword){
     const url = `/api/users/password`

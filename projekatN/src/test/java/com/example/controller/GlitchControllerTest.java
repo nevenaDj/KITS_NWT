@@ -231,7 +231,7 @@ public class GlitchControllerTest {
 
 		mockMvc.perform(put("/api/apartments/" + ID_APARTMENT + "/glitches/" + ID_GLITCH).header("X-Auth-Token",
 				accessTokenPresident)).andExpect(status().isOk()).andExpect(content().contentType(contentType))
-				.andExpect(jsonPath("$.dateOfRepairApproved").value(true));
+				.andExpect(jsonPath("$.repairApproved").value(true));
 
 	}
 

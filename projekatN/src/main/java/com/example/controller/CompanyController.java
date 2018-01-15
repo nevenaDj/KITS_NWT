@@ -3,6 +3,8 @@ package com.example.controller;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -16,9 +18,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.dto.GlitchDTO;
 import com.example.dto.UserDTO;
+import com.example.model.Glitch;
 import com.example.model.User;
 import com.example.security.TokenUtils;
+import com.example.service.GlitchService;
 import com.example.service.UserService;
 
 import io.swagger.annotations.Api;
@@ -39,6 +44,9 @@ public class CompanyController {
 
 	@Autowired
 	UserService userService;
+	
+	@Autowired
+	GlitchService glitchService;
 
 	@Autowired
 	TokenUtils tokenUtils;
@@ -93,5 +101,43 @@ public class CompanyController {
 			userService.remove(id, ROLE_COMPANY);
 			return new ResponseEntity<>(HttpStatus.OK);
 		}
+	}
+	
+	@RequestMapping(method = RequestMethod.GET, value="activeGlitches")
+	@ApiOperation(value = "Get a list of active glitches by company.", httpMethod = "GET")
+	@ApiImplicitParam(paramType="header", name="X-Auth-Token", required=true, value="JWT token")
+	/***  get a list of active glitches by company ***/
+	public ResponseEntity<List<GlitchDTO>> getActiveGliches(HttpServletRequest request) {
+		
+		String token = request.getHeader("X-Auth-Token");
+		String username = tokenUtils.getUsernameFromToken(token);
+		User company = userService.findByUsername(username);	
+		
+		List<Glitch> glitches = glitchService.findActiveGlitches(company.getId());
+
+		List<GlitchDTO> glitchesDTO = new ArrayList<>();
+		for (Glitch glitch : glitches) {
+			glitchesDTO.add(new GlitchDTO(glitch));
+		}
+		return new ResponseEntity<>(glitchesDTO, HttpStatus.OK);
+	}
+	
+	@RequestMapping(method = RequestMethod.GET, value="pendingGlitches")
+	@ApiOperation(value = "Get a list of pending glitches by company.", httpMethod = "GET")
+	@ApiImplicitParam(paramType="header", name="X-Auth-Token", required=true, value="JWT token")
+	/***  get a list of pending glitches by company ***/
+	public ResponseEntity<List<GlitchDTO>> getPendingGliches(HttpServletRequest request) {
+		
+		String token = request.getHeader("X-Auth-Token");
+		String username = tokenUtils.getUsernameFromToken(token);
+		User company = userService.findByUsername(username);	
+		
+		List<Glitch> glitches = glitchService.findPendingGlitches(company.getId());
+
+		List<GlitchDTO> glitchesDTO = new ArrayList<>();
+		for (Glitch glitch : glitches) {
+			glitchesDTO.add(new GlitchDTO(glitch));
+		}
+		return new ResponseEntity<>(glitchesDTO, HttpStatus.OK);
 	}
 }
