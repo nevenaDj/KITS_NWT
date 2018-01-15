@@ -43,6 +43,7 @@ export class CompanyDataService {
     const url = `/api/users/password`
       return this.http.put<UserPassword>(url, userPassword, {headers: this.headers})
             .toPromise()
+            .then(res => {return res})
             .catch(this.handleError);
   }
   

@@ -21,9 +21,23 @@ export class ChangePasswordCompanyComponent implements OnInit {
   
   constructor(private router: Router, private companyService: CompanyDataService) { 
      this.userPassword=
-     {newPass:'',
-      newPassAgain:'',
-      oldPass:''}
+     {currentPassword:'',
+      newPassword1:'',
+      newPassword2:''}
+     this.company = {
+      id: null,
+      password: '',
+      username: '',
+      email: '',
+      phoneNo:'',
+      address:{
+        city:'',
+        id:null,
+        number: '',
+        street: '',
+        zipCode: 0
+      }
+      }
     this.subscription = companyService.RegenerateData$
             .subscribe(() => this.getCompany());
   
@@ -51,6 +65,8 @@ export class ChangePasswordCompanyComponent implements OnInit {
           this.router.navigate(['company']);
         });
   }
+  
+
   
   cancel(){
     this.router.navigate(['company']);

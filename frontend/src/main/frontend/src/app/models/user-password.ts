@@ -1,19 +1,19 @@
 interface UserPasswordInterface{
-    oldPass: string;
-    newPass: string;
-    newPassAgain: string;
+    currentPassword: string;
+    newPassword1: string;
+    newPassword2: string;
 }
 
 export class UserPassword implements UserPasswordInterface{
-  public oldPass: string;
-  public newPass: string;
-  public newPassAgain: string;
+  public currentPassword: string;
+  public newPassword1: string;
+  public newPassword2: string;
     
   constructor(userPasswordCfg:UserPasswordInterface)
   { 
-    this.oldPass = userPasswordCfg.oldPass;
-    this.newPass = userPasswordCfg.newPass;
-    this.newPassAgain = userPasswordCfg.newPassAgain;
+    this.currentPassword = userPasswordCfg.currentPassword;
+    this.newPassword1 = userPasswordCfg.newPassword1;
+    this.newPassword2 = userPasswordCfg.newPassword2;
   }
 }
 
