@@ -22,6 +22,7 @@ insert into user_authority (user_id, authority_id) values (2, 2); -- user has RO
 insert into user_authority (user_id, authority_id) values (3, 3); -- user has ROLE_COMPANY
 insert into user_authority (user_id, authority_id) values (4, 4); -- user has ROLE_OWNER
 insert into user_authority (user_id, authority_id) values (5, 5); -- user has ROLE_PRESIDENT
+insert into user_authority (user_id, authority_id) values (2, 4); -- user has ROLE_USER
 
 insert into address (street,number, zip_code, city) values ('address','1a', 21000, 'Novi Sad');
 insert into address (street,number, zip_code, city) values ('address','1b', 21000, 'Novi Sad');
@@ -30,7 +31,7 @@ insert into building (address_id, president_id) values (1,5);
 insert into building (address_id) values (2);
 
 insert into apartment (description,number, building_id, owner_id) values ('description 1', 1, 1, 4);
-insert into apartment (description,number, building_id) values ('description 2', 2, 1);
+insert into apartment (description,number, building_id, owner_id) values ('description 2', 2, 1, 2);
 insert into apartment (description,number, building_id) values ('description 3', 1, 2);
 
 insert into user_aparment (tenant_id, apartment_id) values (2, 1);

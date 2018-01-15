@@ -24,5 +24,8 @@ public interface GlitchRepository extends JpaRepository<Glitch, Long> {
 
 	@Query(value = "SELECT g FROM Glitch g WHERE g.item.id IS NULL")
 	public List<Glitch> findWithoutMeeting();
+	
+	@Query("SELECT g FROM Glitch g WHERE g.tenant.id = ?1")
+	public List<Glitch> findGlitchesOfTenantAll(Long id);
 
 }

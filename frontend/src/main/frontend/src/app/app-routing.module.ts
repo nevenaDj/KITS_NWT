@@ -30,6 +30,9 @@ import { AdminProfileComponent } from './users/profile/admin-profile/admin-profi
 import { PasswordComponent } from './users/password/password.component';
 import { ProfileComponent } from './users/profile/profile.component';
 import { ProfileUpdateComponent } from './users/profile/profile-update/profile-update.component';
+import { GlitchesComponent } from './glitches/glitches.component';
+import { AddGlitchComponent } from './glitches/add-glitch/add-glitch.component';
+import { GlitchDetailComponent } from './glitches/glitch-detail/glitch-detail.component';
 
 
 
@@ -74,14 +77,17 @@ const routers: Routes = [
   {
     path:'tenant',
     component: HomeComponent,
-    canActivate: [AuthGuardService,RoleGuardService], 
+   /*  canActivate: [AuthGuardService,RoleGuardService], 
     data: { 
       expectedRole: 'ROLE_USER'
-    },
+    }, */
     children: [
       { path: 'password', component: PasswordComponent},
       { path: 'profile', component: ProfileComponent},
-      { path: 'update', component: ProfileUpdateComponent}
+      { path: 'update', component: ProfileUpdateComponent},
+      { path: 'glitches', component: GlitchesComponent},
+      { path: 'glitches/:id', component: GlitchDetailComponent},
+      { path: 'glitches/add', component: AddGlitchComponent}
     ]
   },
   {

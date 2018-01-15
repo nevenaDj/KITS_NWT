@@ -4,6 +4,7 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { DropdownModule } from 'ngx-dropdown';
 
+import { GlitchService } from './glitches/glitch.service';
 import { TokenInterceptorService } from './services/token-interceptor.service';
 import { PagerService } from './services/pager.service';
 import { GlitchTypeService } from './glitch-types/glitch-type.service';
@@ -46,6 +47,9 @@ import { AdminProfileComponent } from './users/profile/admin-profile/admin-profi
 import { PasswordComponent } from './users/password/password.component';
 import { ProfileComponent } from './users/profile/profile.component';
 import { ProfileUpdateComponent } from './users/profile/profile-update/profile-update.component';
+import { GlitchesComponent } from './glitches/glitches.component';
+import { AddGlitchComponent } from './glitches/add-glitch/add-glitch.component';
+import { GlitchDetailComponent } from './glitches/glitch-detail/glitch-detail.component';
 
 
 
@@ -81,7 +85,10 @@ import { ProfileUpdateComponent } from './users/profile/profile-update/profile-u
     AdminProfileComponent,
     PasswordComponent,
     ProfileComponent,
-    ProfileUpdateComponent
+    ProfileUpdateComponent,
+    GlitchesComponent,
+    AddGlitchComponent,
+    GlitchDetailComponent
   ],
   imports: [
     BrowserModule,
@@ -102,6 +109,7 @@ import { ProfileUpdateComponent } from './users/profile/profile-update/profile-u
     UserService,
     GlitchTypeService,
     PagerService,
+    GlitchService,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: TokenInterceptorService,
