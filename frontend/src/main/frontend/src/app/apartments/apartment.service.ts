@@ -71,13 +71,23 @@ export class ApartmentService {
    }
 
    findApartment(street: string, number: string, city: string, apartmentNumber: string): Promise<Apartment>{
-    const httpParams = new HttpParams().set('street', street).set('number', number).set('city', city).set('number_apartment', apartmentNumber);
+     const httpParams = new HttpParams().set('street', street).set('number', number).set('city', city).set('number_apartment', apartmentNumber);
      const url = `/api/apartment`;
      return this.http
           .get(url, { params: httpParams})
           .toPromise()
           .then(res => {return res})
           .catch(this.handleError);
+   }
+
+   getMyApartment(): Promise<Apartment>{
+     const url = '/api/apartments/my';
+     return this.http
+          .get(url)
+          .toPromise()
+          .then(res => res)
+          .catch(this.handleError);
+
    }
 
    private handleError(error: any): Promise<any> {

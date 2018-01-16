@@ -1,3 +1,45 @@
-<p>
-  add-glitch works!
-</p>
+<div class="row">
+    <div class="col-lg-9 main-chart">
+      <p class="title">ADD GLITCH</p>
+    </div>
+  </div>
+  <div class="row">
+    <form (ngSubmit)="save()">
+      <div class="col-lg-9 main-chart">
+        <div class="row">
+          <div class="col-lg-1"></div>
+          <div class="col-lg-5 border">
+            <div class="border-title">type</div>
+            <div class="container-4">
+                <select [(ngModel)]="glitch.type.id" [ngModelOptions]="{standalone: true}">
+                    <option selected="selected" disabled>Glitch type...</option>
+                    <option *ngFor="let type of glitchTypes" [value]="type.id">{{type.type}}</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-lg-1"></div>
+          <div class="col-lg-10 border">
+            <div class="border-title">description</div>
+            <div class="box">
+              <div class="container-4">
+                <input type="text" id="update" [(ngModel)]="glitch.description" name="description" required>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-lg-1"></div>
+          <div class="col-lg-10">
+            <div class="full-button">
+              <input type="submit"  class="save-button-text" value="Save glitch">
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+  
+                    
+  

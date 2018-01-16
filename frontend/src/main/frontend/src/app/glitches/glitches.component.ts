@@ -47,7 +47,7 @@ export class GlitchesComponent implements OnInit {
   }
 
   gotoAddGlitch(){
-    this.router.navigate(['/tenant/glitches/add']);
+    this.router.navigate(['/tenant/addGlitch']);
   }
 
   gotoGetGlitch(id: number){

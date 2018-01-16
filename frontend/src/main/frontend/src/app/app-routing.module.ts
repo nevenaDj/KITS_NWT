@@ -87,7 +87,7 @@ const routers: Routes = [
       { path: 'update', component: ProfileUpdateComponent},
       { path: 'glitches', component: GlitchesComponent},
       { path: 'glitches/:id', component: GlitchDetailComponent},
-      { path: 'glitches/add', component: AddGlitchComponent}
+      { path: 'addGlitch', component: AddGlitchComponent}
     ]
   },
   {

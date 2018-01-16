@@ -213,7 +213,7 @@ public class UserController {
 	@RequestMapping(value = "/users/me", method = RequestMethod.GET)
 	@ApiOperation(value = "Get a current user.", httpMethod = "GET")
 	@ApiImplicitParam(paramType = "header", name = "X-Auth-Token", required = true, value = "JWT token")
-	@ApiResponses(value = { @ApiResponse(code = 200, message = "Success", response = BuildingDTO.class),
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "Success", response = UserDTO.class),
 			@ApiResponse(code = 404, message = "Not found") })
 	/*** get a current user ***/
 	public ResponseEntity<UserDTO> getCurrentUser(HttpServletRequest request) {

@@ -88,11 +88,12 @@ public class GlitchController {
 
 		Glitch glitch = GlitchDTO.getGlitch(glitchDTO);
 
-		User company = userService.findOne(glitchDTO.getCompanyID());
+		//User company = userService.findOne(glitchDTO.getCompanyID());
 
-		if (company != null) {
+		/*if (company != null) {
 			glitch.setCompany(company);
 		}
+		*/
 
 		User tenant = userService.findByUsername(username);
 		glitch.setTenant(tenant);
