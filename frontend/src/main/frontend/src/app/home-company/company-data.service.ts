@@ -1,7 +1,7 @@
 import { Bill } from '../models/bill';
 import { Glitch } from '../models/glitch';
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders,  HttpParams } from '@angular/common/http';
 import { Http, Headers } from "@angular/http";
 import {Observable} from "rxjs/Observable";
 import { Subject } from 'rxjs/Rx';
@@ -41,9 +41,11 @@ export class CompanyDataService {
             .catch(this.handleError);
   }
   
-    getBills():Promise<Bill[]>{
-    const url = `/api/bills`;
-      return this.http.get<Bill[]>(url, {headers: this.headers})
+    getBills(page: number, size: number = 10, id:number):Promise<Bill[]>{
+    const httpParams = new HttpParams().set('page', page.toString()).set('size', size.toString());
+    const url = `/api/companies/`+id+`/bills`;
+     console.log("id"+id);
+     return this.http.get<Bill[]>(url, {params: httpParams})
             .toPromise()
             .then(res => {return res})
             .catch(this.handleError);

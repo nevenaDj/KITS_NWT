@@ -35,14 +35,14 @@ token = '';
     };
     this.subscription = companyService.RegenerateData$
       .subscribe(() => this.getCompany());
-    this.subscription = companyService.RegenerateData$
-      .subscribe(() => this.getBills());
+   // this.subscription = companyService.RegenerateData$
+     // .subscribe(() => this.getBills());
   }
 
   ngOnInit() {
     this.token = localStorage.getItem('token');
     this.getCompany();
-    this.getBills()
+    //this.getBills()
   }
 
   logout() {
@@ -53,15 +53,14 @@ token = '';
 
   getCompany() {
     this.companyService.getCompany().then(
-      company => this.company = company
+      company => {this.company = company;
+        console.log(JSON.stringify(this.company));
+        this.companyService.getBills(1, 10, this.company.id).then(
+      bills => this.bills = bills);
+      }
     );
   }
 
-  getBills() {
-    this.companyService.getBills().then(
-      bills => this.bills = bills
-    );
-  }
   
   gotoGetBill(id: number) {
     this.router.navigate(['company/bills', id]);

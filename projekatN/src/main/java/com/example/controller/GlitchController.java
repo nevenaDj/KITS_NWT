@@ -137,6 +137,21 @@ public class GlitchController {
 		return new ResponseEntity<>(glitchesDTO, HttpStatus.OK);
 
 	}
+	
+	@RequestMapping(value = "/glitches/{id}", method = RequestMethod.GET)
+	@PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_OWNER', 'ROLE_COMPANY')")
+	@ApiOperation(value = "Get a glitch.", httpMethod = "GET")
+	@ApiImplicitParam(paramType = "header", name = "X-Auth-Token", required = true, value = "JWT token")
+	/*** get a list of glitches (for a user) ***/
+	public ResponseEntity<GlitchDTO> getGlitch(@ApiParam(value = "The ID of the glitch.", required = true) @PathVariable Long id) {
+	
+		Glitch glitch = glitchService.findOne(id);
+
+		if (glitch==null)
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+
+		return new ResponseEntity<>(new GlitchDTO(glitch), HttpStatus.OK);
+	}
 
 	@RequestMapping(value = "/glitches/{id}/responsiblePerson", method = RequestMethod.PUT)
 	@ApiOperation(value = "Change the responsible person for the glitch.", notes = "Returns the glitch being saved.", httpMethod = "PUT", produces = "application/json", consumes = "application/json")

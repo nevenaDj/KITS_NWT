@@ -20,7 +20,10 @@ public class BillDTO {
 	}
 
 	public BillDTO(Bill bill) {
-		this(bill.getId(), bill.getPrice(), bill.getDate(), bill.isApproved());
+		id=bill.getId();
+		price= bill.getPrice();
+		date=bill.getDate();
+		approved=bill.isApproved();
 		for (ItemInPrincelist item : bill.getItems()) {
 			items.add(new ItemInPricelistDTO(item));
 		}
