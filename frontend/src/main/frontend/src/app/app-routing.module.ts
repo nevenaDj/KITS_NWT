@@ -77,10 +77,10 @@ const routers: Routes = [
   {
     path:'tenant',
     component: HomeComponent,
-   /*  canActivate: [AuthGuardService,RoleGuardService], 
+    canActivate: [AuthGuardService,RoleGuardService], 
     data: { 
       expectedRole: 'ROLE_USER'
-    }, */
+    },
     children: [
       { path: 'password', component: PasswordComponent},
       { path: 'profile', component: ProfileComponent},

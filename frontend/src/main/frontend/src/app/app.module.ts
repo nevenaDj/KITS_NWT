@@ -24,7 +24,6 @@ import { HomeAdminComponent } from './home-admin/home-admin.component';
 import { BuildingDetailComponent } from './buildings/building-detail/building-detail.component';
 import { BuildingsComponent } from './buildings/buildings.component';
 import { AddBuildingComponent } from './buildings/add-building/add-building.component';
-import { ApartmentsComponent } from './apartments/apartments.component';
 import { AddApartmentComponent } from './apartments/add-apartment/add-apartment.component';
 import { AddPresidentComponent } from './buildings/add-president/add-president.component';
 import { HomeCompanyComponent } from './home-company/home-company.component';
@@ -63,7 +62,6 @@ import { GlitchDetailComponent } from './glitches/glitch-detail/glitch-detail.co
     BuildingDetailComponent,
     BuildingsComponent,
     AddBuildingComponent,
-    ApartmentsComponent,
     AddApartmentComponent,
     AddPresidentComponent,
     HomeCompanyComponent,

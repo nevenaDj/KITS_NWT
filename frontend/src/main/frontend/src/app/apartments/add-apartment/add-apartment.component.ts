@@ -49,8 +49,6 @@ export class AddApartmentComponent implements OnInit {
 
   save(): void {
     this.mode == 'ADD' ? this.add() : this.update();
-    
-
   }
 
   add(): void {

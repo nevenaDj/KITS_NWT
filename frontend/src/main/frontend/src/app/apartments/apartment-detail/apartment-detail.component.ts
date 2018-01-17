@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { Location } from '@angular/common';
 
 import { Apartment } from '../../models/apartment';
 import { User } from '../../models/user';
@@ -20,7 +19,6 @@ export class ApartmentDetailComponent implements OnInit {
 
   constructor(private router: Router,
               private route: ActivatedRoute,
-              private location: Location,
               private apartmentService: ApartmentService,
               private tenantService: TenantService) { 
     this.apartment ={
@@ -47,7 +45,6 @@ export class ApartmentDetailComponent implements OnInit {
   }
 
   gotoAddTenant(){
-    console.log("add");
     this.router.navigate([`/apartments/${this.apartment.id}/addTenant`]);
   }
 
@@ -64,5 +61,7 @@ export class ApartmentDetailComponent implements OnInit {
   gotoEditApartment(){
     this.router.navigate(['editApartment', this.apartment.id]);
   }
+
+  
 
 }
