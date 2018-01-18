@@ -41,8 +41,6 @@ export class GlitchesComponent implements OnInit {
     }
 
     this.pager = this.pagerService.getPager(this.glitchesCount, page, 15);
-    console.log(this.pager);
-
     this.getGlitches(this.pager.currentPage - 1, this.pager.pageSize);
   }
 

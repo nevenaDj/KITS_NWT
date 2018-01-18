@@ -29,10 +29,10 @@ export class Glitch implements GlitchInterface{
 interface GlitchInterface{
     id?: number;
     description: string;
-    dateOfReport: Date;
-    dateOfRepair: Date;
-    apartment: Apartment;
-    responsiblePerson: User;
+    dateOfReport?: Date;
+    dateOfRepair?: Date;
+    apartment?: Apartment;
+    responsiblePerson?: User;
     type: GlitchType;
-    state: GlitchState;
+    state?: GlitchState;
 }
