@@ -28,7 +28,6 @@ import { AddApartmentComponent } from './apartments/add-apartment/add-apartment.
 import { AddPresidentComponent } from './buildings/add-president/add-president.component';
 import { HomeCompanyComponent } from './home-company/home-company.component';
 import { LoginLayoutComponent } from './login/login-layout/login-layout.component';
-import { TenantsComponent } from './tenants/tenants.component';
 import { ApartmentDetailComponent } from './apartments/apartment-detail/apartment-detail.component';
 import { AddTenantComponent } from './tenants/add-tenant/add-tenant.component';
 import { TenantDetailComponent } from './tenants/tenant-detail/tenant-detail.component';
@@ -66,7 +65,6 @@ import { GlitchDetailComponent } from './glitches/glitch-detail/glitch-detail.co
     AddPresidentComponent,
     HomeCompanyComponent,
     LoginLayoutComponent,
-    TenantsComponent,
     ApartmentDetailComponent,
     AddTenantComponent,
     TenantDetailComponent,

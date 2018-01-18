@@ -18,7 +18,7 @@ export class TenantService {
    }
 
    addTenant(apartmentID: number, tenant:User): Promise<User>{
-     const url = `/api//aparments/${apartmentID}/tenants`;
+     const url = `/api/aparments/${apartmentID}/tenants`;
      return this.http
           .post<User>(url, tenant)
           .toPromise()

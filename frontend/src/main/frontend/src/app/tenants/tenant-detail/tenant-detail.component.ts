@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
 
 import { User } from '../../models/user';
@@ -13,8 +13,7 @@ import { TenantService } from '../../tenants/tenant.service';
 export class TenantDetailComponent implements OnInit {
   tenant: User;
 
-  constructor(private router: Router,
-              private route: ActivatedRoute,
+  constructor(private route: ActivatedRoute,
               private location: Location,
               private tenantService: TenantService) {
     this.tenant = {
