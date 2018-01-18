@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { Location } from '@angular/common';
 
 import { Building } from '../../models/building';
 import { BuildingService } from '../../buildings/building.service';
@@ -20,7 +19,6 @@ export class BuildingDetailComponent implements OnInit {
 
   constructor(private router: Router,
               private route:ActivatedRoute,
-              private location: Location,
               private buildingService: BuildingService,
               private apartmentService: ApartmentService) { 
     this.building = {

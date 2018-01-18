@@ -30,8 +30,7 @@ describe('ApartmentService', () => {
 
   it('getApartments() send request', () => {
     let buildingID: number = 1;
-    let apartments: Apartment[];
-    this.apartmentService.getApartments(buildingID).then((data:Apartment[]) => apartments = data);
+    this.apartmentService.getApartments(buildingID).then((data:Apartment[]) => expect(data).toBeTruthy());
 
     this.backend.expectOne((req: HttpRequest<any>) => {
       return req.url === `/api/buildings/${buildingID}/apartments`

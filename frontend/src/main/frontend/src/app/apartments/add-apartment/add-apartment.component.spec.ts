@@ -37,7 +37,7 @@ describe('AddApartmentComponent', () => {
         }))),
       updateApartment: jasmine.createSpy('updateApartment')
         .and.returnValue(Promise.resolve()),
-        announceChange: jasmine.createSpy('announceChange') 
+      announceChange: jasmine.createSpy('announceChange') 
     }
 
     let locationMock = {

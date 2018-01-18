@@ -22,7 +22,7 @@ export class ApartmentService {
      return this.http
           .post<Apartment>(url, apartment)
           .toPromise()
-          .then(res => {return res})
+          .then(res => res)
           .catch(this.handleError);
    }
 
@@ -31,7 +31,7 @@ export class ApartmentService {
      return this.http
           .get<Apartment[]>(url)
           .toPromise()
-          .then(res => {return res})
+          .then(res => res)
           .catch(this.handleError)
    }
 
@@ -40,7 +40,7 @@ export class ApartmentService {
      return this.http
           .get<Apartment>(url)
           .toPromise()
-          .then(res => {return res})
+          .then(res => res)
           .catch(this.handleError);
    }
 
@@ -49,7 +49,7 @@ export class ApartmentService {
      return this.http
           .put(url, apartment)
           .toPromise()
-          .then(res => {return res})
+          .then(res => res)
           .catch(this.handleError);
    }
 
@@ -66,7 +66,7 @@ export class ApartmentService {
      return this.http
             .post<User>(url, owner, )
             .toPromise()
-            .then(res => {return res})
+            .then(res => res)
             .catch(this.handleError);
    }
 
@@ -76,7 +76,7 @@ export class ApartmentService {
      return this.http
           .get(url, { params: httpParams})
           .toPromise()
-          .then(res => {return res})
+          .then(res => res)
           .catch(this.handleError);
    }
 

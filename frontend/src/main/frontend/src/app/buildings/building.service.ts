@@ -25,7 +25,7 @@ export class BuildingService {
     return this.http
         .post<Building>(this.buildingsUrl, building)
         .toPromise()
-        .then(res => {return res})
+        .then(res => res)
         .catch(this.handleError);
   }
 
@@ -34,7 +34,7 @@ export class BuildingService {
     return this.http
           .get<Building>(url)
           .toPromise()
-          .then(res => {return res})
+          .then(res => res)
           .catch(this.handleError);
   }
 
@@ -43,7 +43,7 @@ export class BuildingService {
     return this.http
           .get(this.buildingsUrl, { params: httpParams})
           .toPromise()
-          .then(res => {return res})
+          .then(res => res)
           .catch(this.handleError);
   }
 
@@ -51,7 +51,7 @@ export class BuildingService {
     return this.http
           .put(this.buildingsUrl, building)
           .toPromise()
-          .then(res => {return res})
+          .then(res => res)
           .catch(this.handleError);
   }
 
@@ -68,7 +68,7 @@ export class BuildingService {
     return this.http
         .get(url)
         .toPromise()
-        .then(res => {return res})
+        .then(res => res)
         .catch(this.handleError);
   }
 
@@ -77,7 +77,7 @@ export class BuildingService {
     return this.http
           .post<User>(url, president)
           .toPromise()
-          .then(res => {return res})
+          .then(res => res)
           .catch(this.handleError);
   }
 
