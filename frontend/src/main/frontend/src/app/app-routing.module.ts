@@ -31,6 +31,7 @@ import { AddCompanyComponent } from './add-company/add-company.component';
 import { UsersComponent } from './users/users.component';
 import { GlitchTypesComponent } from './glitch-types/glitch-types.component';
 import { AddGlitchTypeComponent } from './glitch-types/add-glitch-type/add-glitch-type.component';
+import { ChangeTypeCompanyComponent } from './change-type-company/change-type-company.component';
 
 
 const routers: Routes = [
@@ -112,6 +113,10 @@ const routers: Routes = [
         { 
           path: 'company/pricelist', 
           component: PricelistCompanyComponent, 
+        },
+        { 
+          path: 'company/pricelist/changeType', 
+          component: ChangeTypeCompanyComponent, 
         },
   //]
  // },

@@ -19,7 +19,7 @@ public class Pricelist {
 	
 	private Date dateUpdate;
 	
-	@OneToMany(mappedBy = "pricelist", fetch = FetchType.LAZY)
+	@OneToMany(mappedBy = "pricelist", fetch = FetchType.EAGER)
 	private Set<ItemInPrincelist> items = new HashSet<>();
 	
 	@OneToOne(fetch = FetchType.EAGER)

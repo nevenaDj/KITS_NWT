@@ -1,7 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { DropdownModule } from 'ngx-dropdown';
 
 import { GlitchTypeService } from './glitch-types/glitch-type.service';
@@ -47,6 +47,7 @@ import { CompanyDetailComponent } from './company-detail/company-detail.componen
 import { UsersComponent } from './users/users.component';
 import { GlitchTypesComponent } from './glitch-types/glitch-types.component';
 import { AddGlitchTypeComponent } from './glitch-types/add-glitch-type/add-glitch-type.component';
+import { ChangeTypeCompanyComponent } from './change-type-company/change-type-company.component';
 
 
 @NgModule({
@@ -83,15 +84,16 @@ import { AddGlitchTypeComponent } from './glitch-types/add-glitch-type/add-glitc
     CompanyDetailComponent,
     UsersComponent,
     GlitchTypesComponent,
-    AddGlitchTypeComponent
+    AddGlitchTypeComponent,
+    ChangeTypeCompanyComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     FormsModule,
     HttpClientModule,
-    DropdownModule
-    
+    DropdownModule,
+    ReactiveFormsModule
   ],
   providers: [
     AuthGuardService,

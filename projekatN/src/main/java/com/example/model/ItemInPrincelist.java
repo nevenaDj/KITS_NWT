@@ -57,6 +57,22 @@ public class ItemInPrincelist {
 		this.price = price;
 	}
 
+	public Pricelist getPricelist() {
+		return pricelist;
+	}
+
+	public void setPricelist(Pricelist pricelist) {
+		this.pricelist = pricelist;
+	}
+
+	public Bill getBill() {
+		return bill;
+	}
+
+	public void setBill(Bill bill) {
+		this.bill = bill;
+	}
+
 	@Override
 	public String toString() {
 		return "Item_In_Princelist [id=" + id + ", nameOfType=" + nameOfType + ", price=" + price + "]";

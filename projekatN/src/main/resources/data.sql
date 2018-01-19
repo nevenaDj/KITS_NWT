@@ -56,6 +56,7 @@ insert into glitch_state (state) values ('IN PROGRESS');
 insert into glitch_state (state) values ('DONE');
 
 insert into glitch_type (type) values ('TYPE');
+insert into glitch_type (type) values ('WATER');
 
 insert into bill(company_id, price, date, approved) values (3, 1000, '2017-12-03', false);
 
@@ -75,7 +76,7 @@ insert into communal_problem (description) values ('communal problem');
 
 insert into notification(text, building_id, writer_id ) values ('text', 1, 1);
 
-insert into pricelist(company_id, type_id) values(3,1);
+insert into pricelist(company_id, type_id) values(3,2);
 insert into item_in_princelist(name_of_type, price, pricelist_id, bill_id) values('name', 1000, 1, 1);
 
 

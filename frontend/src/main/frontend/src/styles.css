@@ -1257,7 +1257,6 @@ ul.top-menu > li > a:hover, ul.top-menu > li > a:focus {
     height: 40px;
     margin: 5px;
     font-size: 15px;
-    #display: inline-block;
     color: white;
     border-radius:10px;
     background: #cbc5c1;  
@@ -1273,9 +1272,7 @@ ul.top-menu > li > a:hover, ul.top-menu > li > a:focus {
     text-align: center;
     display: inline-block;
     border-radius:10px 0px 0px 10px;
-
 }
-
 
 .lists>.sec{
     color: #4c586f;

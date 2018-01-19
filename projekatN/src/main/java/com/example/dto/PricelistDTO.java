@@ -22,7 +22,14 @@ public class PricelistDTO {
 	}
 
 	public PricelistDTO(Pricelist pricelist) {
-		this(pricelist.getId(), pricelist.getDateUpdate());
+		id=pricelist.getId();
+		dateUpdate= pricelist.getDateUpdate();
+		company= new UserDTO(pricelist.getCompany());
+		type= new GlitchTypeDTO(pricelist.getType());
+		for (ItemInPrincelist item: pricelist.getItems()){
+			items.add(new ItemInPricelistDTO(item));
+		}
+		
 	}
 
 	public PricelistDTO(Long id, Date date) {
