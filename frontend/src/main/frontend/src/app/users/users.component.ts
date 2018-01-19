@@ -41,9 +41,6 @@ export class UsersComponent implements OnInit {
     }
 
     this.pager = this.pagerService.getPager(this.usersCount, page, 15);
-    console.log(this.pager);
-    console.log(this.usersCount);
-
     this.getUsers(this.pager.currentPage - 1, this.pager.pageSize);
 
   }

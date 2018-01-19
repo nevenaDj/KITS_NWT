@@ -44,10 +44,7 @@ export class RegisterComponent implements OnInit {
 
   findApartment(){
     this.apartmentService.findApartment(this.street, this.number, this.city, this.apartmentNumber)
-        .then(apartment => {
-          this.apartment = apartment;
-          console.log(apartment);
-        });
+        .then(apartment => this.apartment = apartment);
   }
 
   save(){

@@ -33,14 +33,7 @@ export class LoginComponent implements OnInit {
 
   login(){
     this.authService.login(this.user.username, this.user.password)
-      .then( res => { 
-        const token = localStorage.getItem('token');
-        const tokenPayload = decode(token);
-        console.log(this.authService.isTenant());
-        console.log(this.authService.isOwner());
-        console.log(this.authService.isPresident());
-
-        for(let role of tokenPayload.scopes){
+      .then( res => {    
           if(this.authService.isAdmin()){
             this.router.navigate(['/buildings']);
           } else if (this.authService.isCompany()){
@@ -48,13 +41,10 @@ export class LoginComponent implements OnInit {
           } else if (this.authService.isTenant()) {
             this.router.navigate(['tenant']);
           } else if(this.authService.isOwner()){
-            console.log('owner');
             this.router.navigate(['owner']);
           } else if(this.authService.isPresident()){
-            console.log('president');
             this.router.navigate(['president']);
           }
-        }
       })
       .catch(error => console.log(error));
   }

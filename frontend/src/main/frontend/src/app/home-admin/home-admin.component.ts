@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-import * as decode from 'jwt-decode';
+
+
 import { AuthService } from '../login/auth.service';
 
 @Component({
@@ -11,8 +11,7 @@ import { AuthService } from '../login/auth.service';
 export class HomeAdminComponent implements OnInit {
   username: string = '';
 
-  constructor(private router: Router,
-              private authService: AuthService) { }
+  constructor(private authService: AuthService) { }
 
   ngOnInit() {
     this.username = this.authService.getCurrentUser();
@@ -20,10 +19,6 @@ export class HomeAdminComponent implements OnInit {
 
   logout(){
     this.authService.logout();
-  }
-
-  gotoProfile(){
-    this.router.navigate(['admin']);
   }
 
   
