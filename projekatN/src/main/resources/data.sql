@@ -22,6 +22,7 @@ insert into user_authority (user_id, authority_id) values (2, 2); -- user has RO
 insert into user_authority (user_id, authority_id) values (3, 3); -- user has ROLE_COMPANY
 insert into user_authority (user_id, authority_id) values (4, 4); -- user has ROLE_OWNER
 insert into user_authority (user_id, authority_id) values (5, 5); -- user has ROLE_PRESIDENT
+insert into user_authority (user_id, authority_id) values (2, 4); -- user has ROLE_USER
 
 insert into address (street,number, zip_code, city) values ('address','1a', 21000, 'Novi Sad');
 insert into address (street,number, zip_code, city) values ('address','1b', 21000, 'Novi Sad');
@@ -30,7 +31,7 @@ insert into building (address_id, president_id) values (1,5);
 insert into building (address_id) values (2);
 
 insert into apartment (description,number, building_id, owner_id) values ('description 1', 1, 1, 4);
-insert into apartment (description,number, building_id) values ('description 2', 2, 1);
+insert into apartment (description,number, building_id, owner_id) values ('description 2', 2, 1, 2);
 insert into apartment (description,number, building_id) values ('description 3', 1, 2);
 
 insert into user_aparment (tenant_id, apartment_id) values (2, 1);
@@ -67,6 +68,9 @@ insert into glitch (description, date_of_report, apartment_id, company_id, respo
 insert into glitch (description, date_of_report, apartment_id, company_id, responsible_person_id, state_id, tenant_id, date_of_repair_approved, type_id) 
 			values ('glitch3','2017-12-03', 1, 3, 5, 2, 2, false,1);			
 	
+			
+insert into comment (text, user_id, glitch_id) values ('comment', 2, 1);
+insert into comment (text, user_id, glitch_id) values ('new comment', 3, 1);
 			
 insert into agenda_item(title, meeting_id, number, glitch_id ) values ('Title',1, 1, 1);
 insert into item_comment(writer_id, text, date) values (1, 'text', '2017-12-03');

@@ -43,4 +43,8 @@ public class BuildingService {
 		return buildingRepository.findByAddress(street, number, city);
 	}
 
+	public Long getCountOfBuilding() {
+		return buildingRepository.count();
+	}
+
 }

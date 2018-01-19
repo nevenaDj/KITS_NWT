@@ -1,41 +1,42 @@
-import { Apartment } from './apartment';
-import { GlitchType } from './glitch-type';
+import { Apartment } from "./apartment";
+import { User } from "./user";
+import { GlitchType } from "./glitch-type";
+import { GlitchState } from "./glitch-state";
 
-interface GlitchInterface {
-  id?: number;
-  description: string;
-  dateOfReport:Date;
-  apartment: Apartment;
-  type: GlitchType;
-  state: String;
-  dateOfRepair?: Date;
-  // Bill bill
-  repairApproved?: boolean;
-  
+export class Glitch implements GlitchInterface{
+    public id: number;
+    public description: string;
+    public dateOfReport: Date;
+    public dateOfRepair: Date;
+    public apartment: Apartment;
+    public responsiblePerson: User;
+    public type: GlitchType;
+    public state: GlitchState;
+    // Bill bill
+  	public repairApproved: boolean;
+		
+	constructor(glitchCfg:GlitchInterface)
+	{	
+        this.id = glitchCfg.id;
+        this.description = glitchCfg.description;
+        this.dateOfReport = glitchCfg.dateOfReport;
+        this.dateOfRepair = glitchCfg.dateOfRepair;
+        this.apartment = glitchCfg.apartment;
+        this.responsiblePerson = glitchCfg.responsiblePerson;
+        this.type = glitchCfg.type;
+        this.state = glitchCfg.state;
+        this.repairApproved = glitchCfg.repairApproved;
+	}
 }
 
-export class Glitch implements GlitchInterface {
-  
-  public id: number;
-  public description: string;
-  public dateOfReport:Date;
-  public apartment: Apartment;
-  public type: GlitchType;
-  public state: String;
-  public dateOfRepair: Date;
-  // Bill bill
-  public repairApproved: boolean;
-  
-  constructor(glitchCfg:GlitchInterface){
-    this.id = glitchCfg.id;
-    this.description = glitchCfg.description;
-    this.dateOfReport = glitchCfg.dateOfReport;
-    this.apartment = glitchCfg.apartment;
-    this.type = glitchCfg.type;
-    this.state = glitchCfg.state;
-    this.dateOfRepair = glitchCfg.dateOfRepair;
-    // Bill bill
-    this.repairApproved = glitchCfg.repairApproved;
-  }
-
+interface GlitchInterface{
+    id?: number;
+    description: string;
+    dateOfReport: Date;
+    dateOfRepair: Date;
+    apartment: Apartment;
+    responsiblePerson: User;
+    type: GlitchType;
+    state: GlitchState;
+    repairApproved?: boolean;
 }

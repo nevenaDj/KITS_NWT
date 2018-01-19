@@ -1,13 +1,12 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Subject } from 'rxjs/Rx';
 import { User } from '../models/user';
 
 @Injectable()
 export class CompanyService {
   private companiesUrl = '/api/companies';
-  private headers: HttpHeaders = new HttpHeaders({'X-Auth-Token': localStorage.getItem('token'),'Content-Type':'application/json'});
-
+  
   private RegenerateData = new Subject<void>();
 
   RegenerateData$ = this.RegenerateData.asObservable();
@@ -20,15 +19,16 @@ export class CompanyService {
 
   addCompany(company: User): Promise<User>{
     return this.http
-        .post<User>(this.companiesUrl, company, {headers: this.headers})
+        .post<User>(this.companiesUrl, company)
         .toPromise()
         .then(res => {return res})
         .catch(this.handleError);
   }
 
-  getCompanies(): Promise<User[]>{
+  getCompanies(page: number, size: number = 8): Promise<User[]>{
+    const httpParams = new HttpParams().set('page', page.toString()).set('size', size.toString());
     return this.http
-        .get<User[]>(this.companiesUrl, {headers: this.headers})
+        .get<User[]>(this.companiesUrl, { params: httpParams})
         .toPromise()
         .then(res => {return res})
         .catch(this.handleError);
@@ -36,7 +36,7 @@ export class CompanyService {
 
   getCompany(id: number): Promise<User>{
     const url = `/api/users/${id}`;
-    return this.http.get(url, {headers: this.headers})
+    return this.http.get(url)
         .toPromise()
         .then(res => {return res})
         .catch(this.handleError);
@@ -44,8 +44,17 @@ export class CompanyService {
 
   deleteCompany(id: number): Promise<{}>{
     const url = `${this.companiesUrl}/${id}`;
-    return this.http.delete(url, {headers: this.headers})
+    return this.http.delete(url)
         .toPromise()
+        .catch(this.handleError);
+  }
+
+  getCompaniesCount(): Promise<number>{
+    const url = `${this.companiesUrl}/count`;
+    return this.http
+        .get(url)
+        .toPromise()
+        .then(res => {return res})
         .catch(this.handleError);
   }
 

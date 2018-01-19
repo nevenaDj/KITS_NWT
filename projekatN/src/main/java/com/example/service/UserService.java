@@ -1,5 +1,7 @@
 package com.example.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -103,5 +105,14 @@ public class UserService {
 
 		UserAuthority userAuthority = new UserAuthority(user, authority);
 		return userAuthorityRepository.save(userAuthority);
+	}
+
+	public int count(String role) {
+		List<User> users = userRepository.findAll(role);
+		return users.size();
+	}
+
+	public Long getCountOfUsers() {
+		return userRepository.count();
 	}
 }

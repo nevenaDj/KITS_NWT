@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.dto.BuildingDTO;
 import com.example.dto.GlitchDTO;
 import com.example.dto.UserDTO;
 import com.example.model.Glitch;
@@ -51,7 +52,6 @@ public class CompanyController {
 	@Autowired
 	TokenUtils tokenUtils;
 	
-	
 
 	@RequestMapping(method = RequestMethod.POST, consumes = "application/json")
 	@ApiOperation(value = "Add a company.", notes = "Returns the company.", httpMethod = "POST",
@@ -68,11 +68,12 @@ public class CompanyController {
 		user = userService.save(user, ROLE_COMPANY);
 		return new ResponseEntity<>(new UserDTO(user), HttpStatus.CREATED);
 	}
-
+	
+	
 	@RequestMapping(method = RequestMethod.GET)
 	@ApiOperation(value = "Get a list of companies.", httpMethod = "GET")
-	@ApiImplicitParam(paramType="header", name="X-Auth-Token", required=true, value="JWT token")
-	/***  get a list of companies ***/
+	@ApiImplicitParam(paramType = "header", name = "X-Auth-Token", required = true, value = "JWT token")
+	/*** get a list of companies ***/
 	public ResponseEntity<List<UserDTO>> getCompanies(Pageable page) {
 		Page<User> users = userService.find(page, ROLE_COMPANY);
 
@@ -102,6 +103,20 @@ public class CompanyController {
 			return new ResponseEntity<>(HttpStatus.OK);
 		}
 	}
+	
+
+	@RequestMapping(value = "/count", method = RequestMethod.GET)
+	@ApiOperation(value = "Get a count of comapnies.", httpMethod = "GET")
+	@ApiImplicitParam(paramType = "header", name = "X-Auth-Token", required = true, value = "JWT token")
+	@ApiResponse(code = 200, message = "Success", response = BuildingDTO.class)
+	/*** get a count of companies ***/
+	public ResponseEntity<Integer> getCountOfComapnies() {
+		int count = userService.count(ROLE_COMPANY);
+		return new ResponseEntity<>(count, HttpStatus.OK);
+
+	}
+	
+
 	
 	@RequestMapping(method = RequestMethod.GET, value="activeGlitches")
 	@ApiOperation(value = "Get a list of active glitches by company.", httpMethod = "GET")
@@ -140,4 +155,5 @@ public class CompanyController {
 		}
 		return new ResponseEntity<>(glitchesDTO, HttpStatus.OK);
 	}
+	
 }

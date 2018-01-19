@@ -123,8 +123,7 @@ public class BuildingController {
 	@ApiOperation(value = "Delete a buildig.", httpMethod = "DELETE")
 	@ApiImplicitParam(paramType = "header", name = "X-Auth-Token", required = true, value = "JWT token")
 	@ApiResponses(value = { @ApiResponse(code = 200, message = "Success"),
-			@ApiResponse(code = 404, message = "Not found"),
-			@ApiResponse(code = 400, message = "Bad request")})
+			@ApiResponse(code = 404, message = "Not found"), @ApiResponse(code = 400, message = "Bad request") })
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	/*** delete a building ***/
 	public ResponseEntity<Void> deleteBuilding(
@@ -135,7 +134,7 @@ public class BuildingController {
 		}
 
 		boolean flag = buildingService.remove(id);
-		
+
 		if (flag) {
 			return new ResponseEntity<>(HttpStatus.OK);
 		} else {
@@ -162,6 +161,16 @@ public class BuildingController {
 		} else {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
+	}
+
+	@RequestMapping(value = "/count", method = RequestMethod.GET)
+	@ApiOperation(value = "Get a count of buildings.", httpMethod = "GET")
+	@ApiImplicitParam(paramType = "header", name = "X-Auth-Token", required = true, value = "JWT token")
+	@ApiResponse(code = 200, message = "Success")
+	/*** get a count of buildings ***/
+	public ResponseEntity<Long> getCountOfBuilding() {
+		Long count = buildingService.getCountOfBuilding();
+		return new ResponseEntity<>(count, HttpStatus.OK);
 	}
 
 	@RequestMapping(value = "/{id}/president", method = RequestMethod.POST, consumes = "application/json")

@@ -1,0 +1,63 @@
+<section>
+  <div class="row">
+    <div class="col-lg-9 main-chart">
+      <p class="title">COMPANY</p>
+      <p class="delete-button">
+        <a (click)="deleteCompany()" class="delete-x">x</a>
+      </p>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-lg-9 main-chart">
+      <div class="row">
+        <div class="col-lg-1"></div>
+        <div class="col-lg-5 border">
+          <div class="border-title">username</div>
+          <div class="border-desc">{{company.username}}</div>
+        </div>
+        <div class="col-lg-5 border">
+          <div class="border-title">
+            phone number
+          </div>
+          <div class="border-desc">{{company.phoneNo}}</div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-lg-1"></div>
+        <div class="col-lg-10 border">
+          <div class="border-title">email</div>
+          <div class="border-desc">{{company.email}}</div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-lg-1"></div>
+        <div class="col-lg-5 border">
+          <div class="border-title">city</div>
+          <div class="border-desc">{{company.address.city}}</div>
+        </div>
+        <div class="col-lg-5 border">
+          <div class="border-title">
+            zip code
+          </div>
+          <div class="border-desc">{{company.address.zipCode}}</div>
+        </div>
+        </div>
+        <div class="row">
+          <div class="col-lg-1"></div>
+          <div class="col-lg-10 border">
+            <div class="border-title">street</div>
+            <div class="border-desc">{{company.address.street}}</div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-lg-1"></div>
+          <div class="col-lg-10 border">
+            <div class="border-title">number</div>
+            <div class="border-desc">{{company.address.number}}</div>
+          </div>
+        </div>
+      <br><br>
+    </div>
+  </div>
+</section>
+  

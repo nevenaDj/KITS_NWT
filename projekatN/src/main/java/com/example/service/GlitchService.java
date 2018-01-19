@@ -41,8 +41,8 @@ public class GlitchService {
 	}
 
 	public Page<Glitch> findGlitches(Pageable page, User user) {
-		String authority = userRepository.getUserAuthority(user.getId());
-		if (authority.equals("ROLE_USER") || authority.equals("ROLE_OWNER")) {
+		List<String> authority = userRepository.getUserAuthority(user.getId());
+		if (authority.contains("ROLE_USER") || authority.contains("ROLE_OWNER")) {
 			return glitchRepository.findGlitchesOfTenant(user.getId(), page);
 		} else {
 			return glitchRepository.findGlitchesOfCompany(user.getId(), page);
@@ -56,23 +56,22 @@ public class GlitchService {
 	public GlitchType saveGlitchType(GlitchType glitchType) {
 		return glitchTypeRepository.save(glitchType);
 	}
-	
+
 	public GlitchType findOneGlitchType(Long id) {
 		return glitchTypeRepository.findOne(id);
 	}
-	
+
 	public List<GlitchType> findAllGlitchType() {
 		return glitchTypeRepository.findAll();
 	}
-	
+
 	public void removeGlitchType(Long id) {
-		 glitchTypeRepository.delete(id);
+		glitchTypeRepository.delete(id);
 	}
 
 	public GlitchType findOneGlitchTypeByName(String name) {
 		return glitchTypeRepository.findGlitchTypeByName(name);
 	}
-
 
 	public Page<Glitch> findByResponsibility(Pageable page, Long id) {
 		return glitchRepository.findGlitchByResponsiblePerson(id, page);
@@ -88,5 +87,10 @@ public class GlitchService {
 
 	public List<Glitch> findPendingGlitches(Long id) {
 		return glitchRepository.findPendingGlitches(id);
+	}
+
+	public Integer getCountOfGlitches(User user) {
+		List<Glitch> glitches = glitchRepository.findGlitchesOfTenantAll(user.getId());
+		return glitches.size();
 	}
 }

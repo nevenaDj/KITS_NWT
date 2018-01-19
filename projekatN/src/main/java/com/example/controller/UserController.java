@@ -1,6 +1,5 @@
 package com.example.controller;
 
-import java.io.Console;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,6 +25,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.dto.AddressDTO;
+import com.example.dto.BuildingDTO;
 import com.example.dto.LoginDTO;
 import com.example.dto.RegisterDTO;
 import com.example.dto.UserDTO;
@@ -91,7 +91,7 @@ public class UserController {
 			return new ResponseEntity<>("Invalid login", HttpStatus.BAD_REQUEST);
 		}
 	}
-
+	
 	@RequestMapping(value = "/register", method = RequestMethod.POST, consumes = "application/json")
 	@ApiOperation(value = "Registration.", httpMethod = "POST", consumes = "application/json")
 	@ApiResponses(value = { 
@@ -138,9 +138,8 @@ public class UserController {
 
 	@RequestMapping(value = "/users/{id}", method = RequestMethod.GET)
 	@ApiOperation(value = "Get a user.", httpMethod = "GET")
-	@ApiImplicitParam(paramType="header", name="X-Auth-Token", required=true, value="JWT token")
-	@ApiResponses(value = { 
-			@ApiResponse(code = 200, message = "Success", response=UserDTO.class),
+	@ApiImplicitParam(paramType = "header", name = "X-Auth-Token", required = true, value = "JWT token")
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "Success", response = UserDTO.class),
 			@ApiResponse(code = 404, message = "Not found") })
 	/*** get user by id ***/
 	public ResponseEntity<UserDTO> getUser(
@@ -178,18 +177,16 @@ public class UserController {
 		return new ResponseEntity<>(new UserDTO(user), HttpStatus.OK);
 	}
 
-
 	@RequestMapping(value = "/users/password", method = RequestMethod.PUT, consumes = "application/json")
 	@ApiOperation(value = "Change password.", httpMethod = "PUT", produces = "application/json", consumes = "application/json")
-	@ApiImplicitParam(paramType="header", name="X-Auth-Token", required=true, value="JWT token")
-	@ApiResponses(value = { 
-			@ApiResponse(code = 200, message = "Success"),
+	@ApiImplicitParam(paramType = "header", name = "X-Auth-Token", required = true, value = "JWT token")
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "Success"),
 			@ApiResponse(code = 400, message = "Bad request") })
 	/*** change user password ***/
 	public ResponseEntity<Void> changePassword(
 			@ApiParam(value = "The userPasswordDTO object", required = true) @RequestBody UserPasswordDTO userPasswordDTO,
 			HttpServletRequest request) {
-		
+
 		String token = request.getHeader("X-Auth-Token");
 		String username = tokenUtils.getUsernameFromToken(token);
 
@@ -202,6 +199,36 @@ public class UserController {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 
+	}
+	
+
+	@RequestMapping(value = "/users/count", method = RequestMethod.GET)
+	@ApiOperation(value = "Get a conut of users.", httpMethod = "GET")
+	@ApiImplicitParam(paramType = "header", name = "X-Auth-Token", required = true, value = "JWT token")
+	@ApiResponse(code = 200, message = "Success", response = BuildingDTO.class)
+	/*** get a count of users ***/
+	public ResponseEntity<Long> getCountOfUsers() {
+		Long count = userService.getCountOfUsers();
+		return new ResponseEntity<>(count, HttpStatus.OK);
+
+	}
+
+	@RequestMapping(value = "/users/me", method = RequestMethod.GET)
+	@ApiOperation(value = "Get a current user.", httpMethod = "GET")
+	@ApiImplicitParam(paramType = "header", name = "X-Auth-Token", required = true, value = "JWT token")
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "Success", response = UserDTO.class),
+			@ApiResponse(code = 404, message = "Not found") })
+	/*** get a current user ***/
+	public ResponseEntity<UserDTO> getCurrentUser(HttpServletRequest request) {
+		String token = request.getHeader("X-Auth-Token");
+		String username = tokenUtils.getUsernameFromToken(token);
+
+		User user = userService.findByUsername(username);
+
+		if (user == null) {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+		return new ResponseEntity<>(new UserDTO(user), HttpStatus.OK);
 	}
 	
 	@RequestMapping(value = "/me", method = RequestMethod.GET)
@@ -225,3 +252,4 @@ public class UserController {
 		return new ResponseEntity<UserDTO>(userDTO, HttpStatus.OK);
 	}
 }
+

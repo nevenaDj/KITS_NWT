@@ -16,4 +16,3 @@ export class UserPassword implements UserPasswordInterface{
     this.newPassword2 = userPasswordCfg.newPassword2;
   }
 }
-

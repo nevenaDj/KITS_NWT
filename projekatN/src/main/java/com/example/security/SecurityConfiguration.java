@@ -55,7 +55,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 							"/configuration/ui", "/swagger-ui.html", "/swagger-resources", "/v2/api-docs",  "/webjars/**"
 							,"/main**","/inline**", 
 							"/polyfills**", "/styles**",
-							"/favicon.ico", "/fontawesome**").permitAll()
+							"/favicon.ico", "/fontawesome**", "/api/apartment/**").permitAll()
 					.antMatchers("/h2_console/**").hasRole("ADMIN")
 					.anyRequest().authenticated().and();
 				

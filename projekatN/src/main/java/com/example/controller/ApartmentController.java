@@ -3,6 +3,8 @@ package com.example.controller;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -22,8 +24,10 @@ import com.example.dto.UserDTO;
 import com.example.model.Apartment;
 import com.example.model.Building;
 import com.example.model.User;
+import com.example.security.TokenUtils;
 import com.example.service.ApartmentService;
 import com.example.service.BuildingService;
+import com.example.service.UserApartmentService;
 import com.example.service.UserService;
 
 import io.swagger.annotations.Api;
@@ -49,6 +53,10 @@ public class ApartmentController {
 	PasswordEncoder passwordEncoder;
 	@Autowired
 	UserService userService;
+	@Autowired
+	TokenUtils tokenUtils;
+	@Autowired
+	UserApartmentService userApartmentService;
 
 	@RequestMapping(value = "/buildings/{id}/apartments", method = RequestMethod.GET)
 	@ApiOperation(value = "Get a list of apatments in a building.", httpMethod = "GET")
@@ -58,7 +66,7 @@ public class ApartmentController {
 			@ApiImplicitParam(name = "sort", allowMultiple = true, dataType = "string", paramType = "query", value = "Sorting criteria in the format: property(,asc|desc). "
 					+ "Default sort order is ascending. " + "Multiple sort criteria are supported."),
 			@ApiImplicitParam(paramType = "header", name = "X-Auth-Token", required = true, value = "JWT token") })
-	/*** Get list of apartments in a building  ***/
+	/*** Get list of apartments in a building ***/
 	public ResponseEntity<List<ApartmentDTO>> getApartments(
 			@ApiParam(value = "The ID of the building.", required = true) @PathVariable Long id, Pageable page) {
 		Page<Apartment> apartments = apartmentService.findApartments(id, page);
@@ -117,7 +125,7 @@ public class ApartmentController {
 	@ApiImplicitParam(paramType = "header", name = "X-Auth-Token", required = true, value = "JWT token")
 	@ApiResponses(value = { @ApiResponse(code = 200, message = "Success", response = ApartmentDTO.class),
 			@ApiResponse(code = 500, message = "Failure"), @ApiResponse(code = 400, message = "Bad request") })
-	/*** update an a apartment***/
+	/*** update an a apartment ***/
 	public ResponseEntity<ApartmentDTO> updateApartment(
 			@ApiParam(value = "The apartmentDTO object", required = true) @RequestBody ApartmentDTO apartmentDTO) {
 		Apartment apartment = apartmentService.findOne(apartmentDTO.getId());
@@ -149,13 +157,13 @@ public class ApartmentController {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
 		boolean retVal = apartmentService.remove(id);
-		if (retVal){
+		if (retVal) {
 			return new ResponseEntity<>(HttpStatus.OK);
 		}
 		return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 	}
 
-	@RequestMapping(value = "/apartments", method = RequestMethod.GET, params = { "street", "number", "city",
+	@RequestMapping(value = "/apartment", method = RequestMethod.GET, params = { "street", "number", "city",
 			"number_apartment" })
 	@ApiOperation(value = "Find an apartment by address.", httpMethod = "GET")
 	@ApiImplicitParam(paramType = "header", name = "X-Auth-Token", required = true, value = "JWT token")
@@ -210,5 +218,30 @@ public class ApartmentController {
 		apartment = apartmentService.save(apartment);
 
 		return new ResponseEntity<>(new ApartmentDTO(apartment), HttpStatus.CREATED);
+	}
+
+	@RequestMapping(value = "/apartments/my", method = RequestMethod.GET)
+	@ApiOperation(value = "Get a current apartment of user.", httpMethod = "GET")
+	@ApiImplicitParam(paramType = "header", name = "X-Auth-Token", required = true, value = "JWT token")
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "Success", response = ApartmentDTO.class),
+			@ApiResponse(code = 404, message = "Not found") })
+	/*** get a current user ***/
+	public ResponseEntity<ApartmentDTO> getCurrentUser(HttpServletRequest request) {
+		String token = request.getHeader("X-Auth-Token");
+		String username = tokenUtils.getUsernameFromToken(token);
+
+		User user = userService.findByUsername(username);
+
+		if (user == null) {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+
+		Apartment apartment = userApartmentService.getApartment(user.getId());
+
+		if (apartment == null) {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+
+		return new ResponseEntity<>(new ApartmentDTO(apartment), HttpStatus.OK);
 	}
 }

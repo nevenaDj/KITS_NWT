@@ -22,7 +22,7 @@ public class TokenUtils {
 	@Value("myXAuthSecret")
 	private String secret;
 
-	@Value("900")
+	@Value("86400")
 	private Long expiration;
 
 	public String getUsernameFromToken(String token) {
