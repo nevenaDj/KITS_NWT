@@ -36,7 +36,6 @@ import { PricelistCompanyComponent } from './pricelist-company/pricelist-company
 import { ChangePasswordCompanyComponent } from './change-password-company/change-password-company.component';
 import { BillDetailsCompanyComponent } from './bill-details-company/bill-details-company.component';
 import { GlitchDetailsCompanyComponent } from './glitch-details-company/glitch-details-company.component'
-import { MenuComponent } from './menu/menu.component';
 import { LoginLayoutComponent } from './login/login-layout/login-layout.component';
 import { TenantsComponent } from './tenants/tenants.component';
 import { ApartmentDetailComponent } from './apartments/apartment-detail/apartment-detail.component';
@@ -84,7 +83,6 @@ import { GlitchDetailComponent } from './glitches/glitch-detail/glitch-detail.co
     BillDetailsCompanyComponent,
     GlitchDetailsCompanyComponent,
     HomeCompanyComponent,
-    MenuComponent,
     LoginLayoutComponent,
     TenantsComponent,
     ApartmentDetailComponent,
@@ -97,7 +95,7 @@ import { GlitchDetailComponent } from './glitches/glitch-detail/glitch-detail.co
     UsersComponent,
     GlitchTypesComponent,
     AddGlitchTypeComponent,
-    ChangeTypeCompanyComponent
+    ChangeTypeCompanyComponent,
     HomePresidentComponent,
     HomeOwnerComponent,
     RegisterComponent,

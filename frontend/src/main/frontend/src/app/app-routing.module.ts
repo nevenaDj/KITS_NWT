@@ -20,10 +20,6 @@ import { PendingGlitchesCompanyComponent } from './pending-glitches-company/pend
 import { PricelistCompanyComponent } from './pricelist-company/pricelist-company.component';
 import { BillDetailsCompanyComponent } from './bill-details-company/bill-details-company.component';
 import { GlitchDetailsCompanyComponent } from './glitch-details-company/glitch-details-company.component';
-import { ApartmentDetailComponent } from './apartment-detail/apartment-detail.component';
-import { AddTenantComponent } from './add-tenant/add-tenant.component';
-import { TenantDetailComponent } from './tenant-detail/tenant-detail.component';
-import { AddOwnerComponent } from './add-owner/add-owner.component';
 import { LoginLayoutComponent } from './login/login-layout/login-layout.component';
 import { ApartmentDetailComponent } from './apartments/apartment-detail/apartment-detail.component';
 import { AddTenantComponent } from './tenants/add-tenant/add-tenant.component';
@@ -135,9 +131,6 @@ const routers: Routes = [
         },
   //]
  // },
- {
-    },
-  },
   {
     path:'tenant',
     component: HomeComponent,
