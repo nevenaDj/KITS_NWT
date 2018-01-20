@@ -138,6 +138,21 @@ public class GlitchController {
 		return new ResponseEntity<>(glitchesDTO, HttpStatus.OK);
 
 	}
+	
+	@RequestMapping(value = "/glitches/{id}", method = RequestMethod.GET)
+	@PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_OWNER', 'ROLE_COMPANY')")
+	@ApiOperation(value = "Get a glitch.", httpMethod = "GET")
+	@ApiImplicitParam(paramType = "header", name = "X-Auth-Token", required = true, value = "JWT token")
+	/*** get a list of glitches (for a user) ***/
+	public ResponseEntity<GlitchDTO> getGlitch(@ApiParam(value = "The ID of the glitch.", required = true) @PathVariable Long id) {
+	
+		Glitch glitch = glitchService.findOne(id);
+
+		if (glitch==null)
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+
+		return new ResponseEntity<>(new GlitchDTO(glitch), HttpStatus.OK);
+	}
 
 	@RequestMapping(value = "/glitches/count", method = RequestMethod.GET)
 	@ApiOperation(value = "Get a count of glitches.", httpMethod = "GET")
@@ -152,21 +167,6 @@ public class GlitchController {
 
 		Integer count = glitchService.getCountOfGlitches(user);
 		return new ResponseEntity<>(count, HttpStatus.OK);
-	}
-
-	@RequestMapping(value = "/glitches/{id}", method = RequestMethod.GET)
-	@ApiOperation(value = "Get a glitch.", httpMethod = "GET")
-	@ApiImplicitParam(paramType = "header", name = "X-Auth-Token", required = true, value = "JWT token")
-	@ApiResponses(value = { @ApiResponse(code = 200, message = "Success", response = GlitchDTO.class),
-			@ApiResponse(code = 404, message = "Not found") })
-	/*** get a glitch ***/
-	public ResponseEntity<GlitchDTO> getGlitch(
-			@ApiParam(value = "The ID of the building.", required = true) @PathVariable Long id) {
-		Glitch glitch = glitchService.findOne(id);
-		if (glitch == null) {
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-		}
-		return new ResponseEntity<>(new GlitchDTO(glitch), HttpStatus.OK);
 	}
 
 	@RequestMapping(value = "/glitches/{id}/responsiblePerson", method = RequestMethod.PUT)

@@ -32,6 +32,7 @@ export class AddGlitchComponent implements OnInit {
       dateOfRepair: null,
       apartment: null,
       responsiblePerson: null,
+      repairApproved:false,
       type: {
         id: null,
         type: ''

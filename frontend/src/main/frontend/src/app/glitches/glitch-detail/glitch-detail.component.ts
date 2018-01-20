@@ -31,6 +31,7 @@ export class GlitchDetailComponent implements OnInit {
       dateOfReport: null,
       dateOfRepair: null,
       apartment: null,
+      repairApproved:false,
       responsiblePerson: {
         id: null,
         username: '',

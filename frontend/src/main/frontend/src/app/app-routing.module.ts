@@ -11,6 +11,14 @@ import { AddBuildingComponent } from './buildings/add-building/add-building.comp
 import { AddApartmentComponent } from './apartments/add-apartment/add-apartment.component';
 import { AddPresidentComponent } from './buildings/add-president/add-president.component';
 import { HomeCompanyComponent } from './home-company/home-company.component';
+import { UpdateCompanyComponent } from './update-company/update-company.component';
+import { ActiveGlitchesCompanyComponent } from './active-glitches-company/active-glitches-company.component';
+import { BillsCompanyComponent } from './bills-company/bills-company.component';
+import { ChangePasswordCompanyComponent } from './change-password-company/change-password-company.component';
+import { PendingGlitchesCompanyComponent } from './pending-glitches-company/pending-glitches-company.component';
+import { PricelistCompanyComponent } from './pricelist-company/pricelist-company.component';
+import { BillDetailsCompanyComponent } from './bill-details-company/bill-details-company.component';
+import { GlitchDetailsCompanyComponent } from './glitch-details-company/glitch-details-company.component';
 import { LoginLayoutComponent } from './login/login-layout/login-layout.component';
 import { ApartmentDetailComponent } from './apartments/apartment-detail/apartment-detail.component';
 import { AddTenantComponent } from './tenants/add-tenant/add-tenant.component';
@@ -22,6 +30,7 @@ import { AddCompanyComponent } from './companies/add-company/add-company.compone
 import { UsersComponent } from './users/users.component';
 import { GlitchTypesComponent } from './glitch-types/glitch-types.component';
 import { AddGlitchTypeComponent } from './glitch-types/add-glitch-type/add-glitch-type.component';
+import { ChangeTypeCompanyComponent } from './change-type-company/change-type-company.component';
 import { HomeOwnerComponent } from './home-owner/home-owner.component';
 import { HomePresidentComponent } from './home-president/home-president.component';
 import { RegisterComponent } from './register/register.component';
@@ -35,8 +44,10 @@ import { GlitchDetailComponent } from './glitches/glitch-detail/glitch-detail.co
 import { HomeAdminComponent } from './home-admin/home-admin.component';
 
 
-
 const routers: Routes = [
+  { 
+    path: 'login', component: LoginComponent
+  },
   {
     path: '',
     component: HomeAdminComponent,
@@ -66,14 +77,60 @@ const routers: Routes = [
           { path: 'password', component: PasswordComponent}
     ]
   },
-  {
-    path: 'home/company',
-    component: HomeCompanyComponent,
-    canActivate: [AuthGuardService,RoleGuardService], 
+  { 
+    path: 'company', 
+    component: HomeCompanyComponent, 
+   /* canActivate: [AuthGuardService, RoleGuardService] ,
     data: { 
       expectedRole: 'ROLE_COMPANY'
-    },
-  },
+    }
+   
+  },*/
+ // children: [
+        },{ 
+          path: 'company/update', 
+          component: UpdateCompanyComponent, 
+      
+        },
+        { 
+          path: 'company/changePassword', 
+          component: ChangePasswordCompanyComponent, 
+      
+        },
+        { 
+          path: 'company/bills', 
+          component: BillsCompanyComponent, 
+        },
+        { 
+          path: 'company/bills/:id', 
+          component: BillDetailsCompanyComponent, 
+        },
+        { 
+          path: 'company/activeGlitches', 
+          component: ActiveGlitchesCompanyComponent, 
+        },
+        { 
+          path: 'company/pendingGlitches', 
+          component: PendingGlitchesCompanyComponent, 
+        },
+        { 
+          path: 'company/pendingGlitches/:id', 
+          component: GlitchDetailsCompanyComponent, 
+        },
+        { 
+          path: 'company/activeGlitches/:id', 
+          component: GlitchDetailsCompanyComponent, 
+        },
+        { 
+          path: 'company/pricelist', 
+          component: PricelistCompanyComponent, 
+        },
+        { 
+          path: 'company/pricelist/changeType', 
+          component: ChangeTypeCompanyComponent, 
+        },
+  //]
+ // },
   {
     path:'tenant',
     component: HomeComponent,
@@ -124,7 +181,7 @@ const routers: Routes = [
 ];
 
 @NgModule({
-  imports: [ RouterModule.forRoot(routers)],
+  imports: [ RouterModule.forRoot(routers, {useHash:true})],
   exports: [ RouterModule ]
 })
 export class AppRoutingModule { }

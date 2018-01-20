@@ -81,6 +81,14 @@ public class GlitchService {
 		return glitchRepository.findWithoutMeeting();
 	}
 
+	public List<Glitch> findActiveGlitches(Long id) {
+		return glitchRepository.findActiveGlitches(id);
+	}
+
+	public List<Glitch> findPendingGlitches(Long id) {
+		return glitchRepository.findPendingGlitches(id);
+	}
+
 	public Integer getCountOfGlitches(User user) {
 		List<Glitch> glitches = glitchRepository.findGlitchesOfTenantAll(user.getId());
 		return glitches.size();

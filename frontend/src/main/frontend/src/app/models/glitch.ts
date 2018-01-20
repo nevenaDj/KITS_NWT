@@ -1,3 +1,4 @@
+
 import { Apartment } from "./apartment";
 import { User } from "./user";
 import { GlitchType } from "./glitch-type";
@@ -12,6 +13,8 @@ export class Glitch implements GlitchInterface{
     public responsiblePerson: User;
     public type: GlitchType;
     public state: GlitchState;
+    // Bill bill
+  	public repairApproved: boolean;
 		
 	constructor(glitchCfg:GlitchInterface)
 	{	
@@ -23,16 +26,17 @@ export class Glitch implements GlitchInterface{
         this.responsiblePerson = glitchCfg.responsiblePerson;
         this.type = glitchCfg.type;
         this.state = glitchCfg.state;
+        this.repairApproved = glitchCfg.repairApproved;
 	}
 }
 
 interface GlitchInterface{
     id?: number;
     description: string;
-    dateOfReport?: Date;
-    dateOfRepair?: Date;
-    apartment?: Apartment;
-    responsiblePerson?: User;
+    dateOfReport: Date;
+    dateOfRepair: Date;
+    apartment: Apartment;
+    responsiblePerson: User;
     type: GlitchType;
-    state?: GlitchState;
-}
+    state: GlitchState;
+    repairApproved?: boolean;

@@ -1,5 +1,11 @@
 package com.example.controller;
 
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,8 +19,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.dto.GlitchTypeDTO;
 import com.example.dto.ItemInPricelistDTO;
 import com.example.dto.PricelistDTO;
+import com.example.dto.UserDTO;
+import com.example.model.GlitchType;
 import com.example.model.ItemInPrincelist;
 import com.example.model.Pricelist;
 import com.example.model.User;
@@ -52,11 +61,13 @@ public class PricelistController {
 	@ApiResponses(value = { @ApiResponse(code = 201, message = "Created", response = PricelistDTO.class),
 			@ApiResponse(code = 400, message = "Bad request") })
 	@PreAuthorize("hasRole('ROLE_COMPANY')")
-	public ResponseEntity<PricelistDTO> addPricelist(
+	public ResponseEntity<PricelistDTO> getPricelists(
 			@ApiParam(value = "The ID of the company.", required = true) @PathVariable Long id,
 			@ApiParam(value = "The PricelistDTO object", required = true) @RequestBody PricelistDTO itemDTO) {
 		Pricelist item = PricelistDTO.getPricelist(itemDTO);
 
+		System.out.println("post: "+id);
+		
 		User user = userService.findOne(id);
 		if (user == null) {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -69,7 +80,7 @@ public class PricelistController {
 		return new ResponseEntity<>(itemDTO, HttpStatus.CREATED);
 	}
 
-	@ApiOperation(value = "Get a priceList.", notes = "Returns the price list being saved.", httpMethod = "POST", produces = "application/json", consumes = "application/json")
+	@ApiOperation(value = "Get a priceList.", notes = "Returns the price list being saved.", httpMethod = "GET", produces = "application/json", consumes = "application/json")
 	@ApiResponses(value = { @ApiResponse(code = 200, message = "Ok", response = PricelistDTO.class),
 			@ApiResponse(code = 400, message = "Bad request"), @ApiResponse(code = 404, message = "Not found") })
 	@RequestMapping(method = RequestMethod.GET, produces = "application/json")
@@ -80,15 +91,55 @@ public class PricelistController {
 		if (user == null) {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
-
-		Pricelist item = pricelistService.findOne(id);
-
+		System.out.println("get: "+id);
+		Pricelist item = pricelistService.findOneByCompany(id);
+		System.out.println("pricelist: "+item.getId());
+		
 		if (item == null) {
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+			PricelistDTO pricelistDTO = new PricelistDTO();
+			pricelistDTO.setCompany(new UserDTO(user));
+			pricelistDTO.setDateUpdate(new Date());			
+			return getPricelists(id, pricelistDTO);
 		} else {
 			PricelistDTO itemDTO = new PricelistDTO(item);
+			System.out.println("size"+itemDTO.getItems().size());
 			return new ResponseEntity<>(itemDTO, HttpStatus.OK);
 		}
+	}
+	
+	@ApiOperation(value = "Update a priceList.", notes = "Returns the pricelist being saved.", httpMethod = "PUT", produces = "application/json", consumes = "application/json")
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "Ok", response = PricelistDTO.class),
+			@ApiResponse(code = 400, message = "Bad request"), @ApiResponse(code = 404, message = "Not found") })
+	@RequestMapping(value = "/types/{type_id}", method = RequestMethod.PUT, consumes = "application/json")
+	public ResponseEntity<Void> updatePricelists(
+			@ApiParam(value = "The ID of the company.", required = true) @PathVariable Long id,
+			@ApiParam(value = "The ID of the company.", required = true) @PathVariable Long type_id) {
+
+		User user = userService.findOne(id);
+		if (user == null) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+		System.out.println("hjaj");
+		System.out.println("type id: "+type_id);
+		
+		Pricelist pricelist = pricelistService.findOneByCompany(id);
+		System.out.println("pricelist+ id "+pricelist.getId());
+		if (pricelist!=null){
+			
+			pricelist.setDateUpdate(new Date());
+			
+			GlitchType type= glitchService.findOneGlitchType(type_id);
+			System.out.println("type: "+type.getId());
+			pricelist.setType(type);
+			pricelistService.save(pricelist);
+			System.out.println("vege");
+			return new ResponseEntity<>( HttpStatus.OK);
+		}else{
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+		
+		
+		
 	}
 
 	@RequestMapping(value = "/items", method = RequestMethod.POST, consumes = "application/json")
@@ -101,16 +152,22 @@ public class PricelistController {
 			@ApiParam(value = "The ID of the company.", required = true) @PathVariable Long id,
 			@ApiParam(value = "The ItemInPricelistDTO object", required = true) @RequestBody ItemInPricelistDTO itemDTO) {
 		ItemInPrincelist item = ItemInPricelistDTO.getItemInPricelist(itemDTO);
-
+		System.out.println("posted started ");
 		User user = userService.findOne(id);
 		if (user == null) {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 
 		// ha mar van 1 egy companyhoz
+		Pricelist pricelist = pricelistService.findOneByCompany(id);
+		item.setPricelist(pricelist);
 		item = itemService.save(item);
 		itemDTO.setId(item.getId());
+		
+		
+		
 
+		System.out.println("posted");
 		return new ResponseEntity<>(itemDTO, HttpStatus.CREATED);
 	}
 
@@ -129,10 +186,13 @@ public class PricelistController {
 		}
 
 		Pricelist pricelist = pricelistService.findOneByCompany(company.getId());
-
+		
+		
 		if (pricelist == null) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		} else {
+			pricelist.setDateUpdate(new Date());
+			pricelistService.save(pricelist);
 			return new ResponseEntity<>(new PricelistDTO(pricelist), HttpStatus.OK);
 		}
 	}
@@ -157,6 +217,7 @@ public class PricelistController {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		} else {
 			itemService.remove(itemId);
+			
 			return new ResponseEntity<>(HttpStatus.OK);
 		}
 	}
@@ -172,21 +233,23 @@ public class PricelistController {
 			@ApiParam(value = "The ID of the item in the pricelist.", required = true) @PathVariable("items_id") Long itemId,
 			@ApiParam(value = "The ItemInPricelistDTO object", required = true) @RequestBody ItemInPricelistDTO itemDTO) {
 
+		System.out.println("update");
 		User user = userService.findOne(id);
 		if (user == null) {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 
 		ItemInPrincelist item = itemService.findOne(itemId);
-		item = ItemInPricelistDTO.getItemInPricelist(itemDTO);
+		item.setPrice(itemDTO.getPrice());
+		item.setNameOfType(itemDTO.getNameOfType());
 		itemService.save(item);
-		/// ????
-		if (item == null) {
-			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-		} else {
-			itemService.remove(itemId);
-			return new ResponseEntity<>(HttpStatus.OK);
-		}
+		
+		
+		Pricelist pricelist = pricelistService.findOneByCompany(id);
+		pricelist.setDateUpdate(new Date());
+		pricelistService.save(pricelist);
+		return new ResponseEntity<>(HttpStatus.OK);
+		
 	}
 
 }

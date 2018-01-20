@@ -40,4 +40,11 @@ public class BillService {
 		billRepository.delete(id);
 	}
 
+	public Page<Bill> findAllByCompnany(Pageable page, Long id) {
+		return billRepository.findAllByCompnany(id, page);
+	}
+
+	public Long getCountOfBill(Long id) {
+		return billRepository.countByCompany(id);
+	}
 }

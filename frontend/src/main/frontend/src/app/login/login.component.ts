@@ -37,14 +37,14 @@ export class LoginComponent implements OnInit {
           if(this.authService.isAdmin()){
             this.router.navigate(['/buildings']);
           } else if (this.authService.isCompany()){
-            this.router.navigate(['/home/company']);
+            this.router.navigate(['/company']);
           } else if (this.authService.isTenant()) {
             this.router.navigate(['tenant']);
           } else if(this.authService.isOwner()){
             this.router.navigate(['owner']);
           } else if(this.authService.isPresident()){
             this.router.navigate(['president']);
-          }
+          }              
       })
       .catch(error => console.log(error));
   }

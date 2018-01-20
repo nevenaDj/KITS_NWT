@@ -1,10 +1,16 @@
 package com.example.controller;
 
+import static com.example.utils.Constants.TOKEN;
+
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -16,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.dto.BillDTO;
+import com.example.dto.GlitchDTO;
 import com.example.model.Apartment;
 import com.example.model.Bill;
 import com.example.model.Glitch;
@@ -148,16 +155,46 @@ public class BillController {
 		@ApiResponse(code = 404, message = "Not found")})
 	public ResponseEntity<BillDTO> findBill(
 			@ApiParam(value = "The ID of the bill.", required = true) @PathVariable("id") Long id) {
-
+		System.out.println("kezdet get/bill");
 		Bill bill = billService.findOne(id);
 		if (bill == null) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		} else {
 			BillDTO billDTO = new BillDTO(bill);
+			System.out.println("price  "+bill.getPrice());
+			System.out.println("priceDTO  "+billDTO.getPrice());
 			return new ResponseEntity<>(billDTO, HttpStatus.OK);
 		}
 	}
 
+	@RequestMapping(value = "companies/{id}/bills", method = RequestMethod.GET, produces = "application/json")
+	@ApiOperation(value = "Get the bills.", notes = "Returns the bill being saved.",
+		httpMethod = "GET", produces = "application/json", consumes = "application/json")
+	@ApiResponses(value = { 
+		@ApiResponse(code = 200, message = "Ok", response=BillDTO.class),
+		@ApiResponse(code = 404, message = "Not found")})
+	public ResponseEntity<List<BillDTO>> getBills(
+			Pageable page, 
+			@ApiParam(value = "The ID of the company.", required = true) @PathVariable("id") Long id) {
+
+		System.out.println("kezet ");
+		User user = userService.findOne(id);
+
+		Page<Bill> billsPage = billService.findAllByCompnany(page, user.getId());
+		System.out.println("length:"+billsPage.getTotalElements());
+		List<Bill> bills =billsPage.getContent();
+		System.out.println("length:"+bills.size());
+		List<BillDTO> billsDTO = new ArrayList<>();
+
+		for (Bill bill : bills) {
+			System.out.println("in");
+			billsDTO.add(new BillDTO(bill));
+		}
+		System.out.println("length:"+billsDTO.size());
+		
+		System.out.println("vege");
+		return new ResponseEntity<>(billsDTO, HttpStatus.OK);
+	}
 	
 	@RequestMapping(value = "/apartments/{ap_id}/glitches/{glitch_id}/bill", method = RequestMethod.GET, produces = "application/json")
 	@ApiOperation(value = "Get the bill by id.", notes = "Returns the bill being saved.",
@@ -264,5 +301,23 @@ public class BillController {
 			BillDTO billDTO = new BillDTO(bill);
 			return new ResponseEntity<>(billDTO, HttpStatus.OK);
 		}
+	}
+	
+	@RequestMapping(value = "companies/{id}/bills/count", method = RequestMethod.GET)
+	@ApiOperation(value = "Get a count of bills by a company.", httpMethod = "GET")
+	@ApiImplicitParam(paramType = "header", name = "X-Auth-Token", required = true, value = "JWT token")
+	@ApiResponse(code = 200, message = "Success")
+	/*** get a count of buildings ***/
+	public ResponseEntity<Long> getCountOfBill(@ApiParam(value = "The ID of the bill.", required = true) @PathVariable("id") Long id) {
+		
+		User company= userService.findOne(id);
+		if (company==null){
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}else{
+			Long count = billService.getCountOfBill(id);
+			System.out.println("count:"+count);
+			return new ResponseEntity<>(count, HttpStatus.OK);
+		}
+		
 	}
 }
