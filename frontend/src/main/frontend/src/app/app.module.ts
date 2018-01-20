@@ -1,9 +1,12 @@
 import { BrowserModule } from '@angular/platform-browser';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { DropdownModule } from 'ngx-dropdown';
+import { OwlDateTimeModule, OwlNativeDateTimeModule } from 'ng-pick-datetime';
 
+import { SurveyService } from './surveys/survey.service';
 import { GlitchService } from './glitches/glitch.service';
 import { TokenInterceptorService } from './services/token-interceptor.service';
 import { PagerService } from './services/pager.service';
@@ -58,6 +61,8 @@ import { ProfileUpdateComponent } from './users/profile/profile-update/profile-u
 import { GlitchesComponent } from './glitches/glitches.component';
 import { AddGlitchComponent } from './glitches/add-glitch/add-glitch.component';
 import { GlitchDetailComponent } from './glitches/glitch-detail/glitch-detail.component';
+import { AddSurveyComponent } from './surveys/add-survey/add-survey.component';
+import { AddQuestionComponent } from './surveys/add-question/add-question.component';
 
 
 
@@ -103,15 +108,20 @@ import { GlitchDetailComponent } from './glitches/glitch-detail/glitch-detail.co
     ProfileUpdateComponent,
     GlitchesComponent,
     AddGlitchComponent,
-    GlitchDetailComponent
+    GlitchDetailComponent,
+    AddSurveyComponent,
+    AddQuestionComponent
   ],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
     AppRoutingModule,
     FormsModule,
     HttpClientModule,
     DropdownModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    OwlDateTimeModule, 
+    OwlNativeDateTimeModule
   ],
   providers: [
     AuthGuardService,

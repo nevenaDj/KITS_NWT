@@ -42,6 +42,8 @@ import { GlitchesComponent } from './glitches/glitches.component';
 import { AddGlitchComponent } from './glitches/add-glitch/add-glitch.component';
 import { GlitchDetailComponent } from './glitches/glitch-detail/glitch-detail.component';
 import { HomeAdminComponent } from './home-admin/home-admin.component';
+import { AddSurveyComponent } from './surveys/add-survey/add-survey.component';
+import { AddQuestionComponent } from './surveys/add-question/add-question.component';
 
 
 const routers: Routes = [
@@ -158,10 +160,14 @@ const routers: Routes = [
   {
     path:'president',
     component: HomePresidentComponent,
-    canActivate: [AuthGuardService,RoleGuardService], 
+    /* canActivate: [AuthGuardService,RoleGuardService], 
     data: { 
       expectedRole: 'ROLE_PRESIDENT'
-    }
+    }, */
+    children: [
+      {path: 'meeting/:id/addSurvey', component: AddSurveyComponent},
+      {path: 'meeting/:id/survey/addQuestion', component: AddQuestionComponent}
+    ]
   },
   {
     path: '',
