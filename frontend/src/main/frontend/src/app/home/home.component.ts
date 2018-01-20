@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import * as decode from 'jwt-decode';
 
 import { AuthService } from '../login/auth.service';
 
