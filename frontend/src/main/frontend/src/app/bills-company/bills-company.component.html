@@ -106,7 +106,7 @@
 										<div class="lists">
 											<div class="first">{{bill.date | date}}</div>
 											<div class="sec">
-												<b>{{bill.price}}</b> -
+												<b>{{bill.price}}</b> 
 												
 											</div>
 										</div>
@@ -115,6 +115,27 @@
 							</div>
 						</div>
 					</div>
+					<div class="row">
+							<nav data-pagination *ngIf="pager.totalPages > 1">
+							  <ul *ngIf="pager.pages && pager.pages.length">
+								<li [ngClass]="{disabled:pager.currentPage === 1}">
+								  <a (click)="setPage(1)">First</a>
+								</li>
+								<li [ngClass]="{disabled:pager.currentPage === 1}">
+								  <a (click)="setPage(pager.currentPage - 1)">Previous</a>
+								</li>
+								<li *ngFor="let page of pager.pages" [ngClass]="{active:pager.currentPage === page}" class=current>
+								  <a (click)="setPage(page)">{{page}}</a>
+								</li>
+								<li [ngClass]="{disabled:pager.currentPage === pager.totalPages}">
+								  <a (click)="setPage(pager.currentPage + 1)">Next</a>
+								</li>
+								<li [ngClass]="{disabled:pager.currentPage === pager.totalPages}">
+								  <a (click)="setPage(pager.totalPages)">Last</a>
+								</li>
+							  </ul>
+							</nav>
+						  </div>
 				</div>
 			</div>
 		</section>

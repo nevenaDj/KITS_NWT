@@ -44,4 +44,7 @@ public class BillService {
 		return billRepository.findAllByCompnany(id, page);
 	}
 
+	public Long getCountOfBill(Long id) {
+		return billRepository.countByCompany(id);
+	}
 }

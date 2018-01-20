@@ -115,8 +115,10 @@
 						<div class="col-lg-10 border">
 							<div class="border-title">ITEMS</div>
 							<div *ngFor="let item of bill.items" class="border-desc">
-								{{item.nameOfType}}  
+								{{item.nameOfItem}}  
+								
 								<div class="border-title-hover" style="float:right;">{{item.price}}  </div>
+								<div class="border-title-hover" style="float:right; margin-right:10%;">{{item.piece}}  </div>
 							</div>
 							
 						</div>

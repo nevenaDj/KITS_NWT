@@ -54,6 +54,15 @@ export class CompanyDataService {
             .catch(this.handleError);
   }
 
+  getBillsCount(id:number): Promise<number>{
+    const url =`/api/companies/`+id+`/bills/count`;
+    return this.http
+        .get(url)
+        .toPromise()
+        .then(res => res)
+        .catch(this.handleError);
+  }
+
   getPricelist(id:number):Promise<Pricelist>{
   const url = `/api/company/`+id+`/pricelist`;
    return this.http.get<Pricelist>(url, {headers: this.headers})

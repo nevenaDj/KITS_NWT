@@ -17,9 +17,6 @@ public class ItemInPrincelist {
 	
 	@ManyToOne(fetch = FetchType.EAGER)
 	private Pricelist pricelist;
-	
-	@ManyToOne(fetch = FetchType.LAZY)
-	private Bill bill;
 
 
 	public ItemInPrincelist(){
@@ -63,14 +60,6 @@ public class ItemInPrincelist {
 
 	public void setPricelist(Pricelist pricelist) {
 		this.pricelist = pricelist;
-	}
-
-	public Bill getBill() {
-		return bill;
-	}
-
-	public void setBill(Bill bill) {
-		this.bill = bill;
 	}
 
 	@Override

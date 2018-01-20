@@ -1,11 +1,12 @@
 import { ItemInPricelist } from './item-in-pricelist';
+import { ItemInBill } from './item-in-bill';
 
 interface BillInterface {
   id: number;
   price: number;
   date: Date;
   approved: boolean;
-  items: ItemInPricelist[];
+  items: ItemInBill[];
 }
 
 export class Bill {
@@ -13,7 +14,7 @@ export class Bill {
   public price: number;
   public date: Date;
   public approved: boolean;
-  public items: ItemInPricelist[];
+  public items: ItemInBill[];
   
       
   constructor(itemCfg:BillInterface)

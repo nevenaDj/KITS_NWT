@@ -5,6 +5,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import com.example.model.Bill;
+import com.example.model.ItemInBill;
 import com.example.model.ItemInPrincelist;
 
 public class BillDTO {
@@ -14,7 +15,7 @@ public class BillDTO {
 	private Double price;
 	private Date date;
 	private boolean approved;
-	private Set<ItemInPricelistDTO> items = new HashSet<>();
+	private Set<ItemInBillDTO> items = new HashSet<>();
 
 	public BillDTO() {
 	}
@@ -24,13 +25,13 @@ public class BillDTO {
 		price= bill.getPrice();
 		date=bill.getDate();
 		approved=bill.isApproved();
-		for (ItemInPrincelist item : bill.getItems()) {
-			items.add(new ItemInPricelistDTO(item));
+		for (ItemInBill item : bill.getItems()) {
+			items.add(new ItemInBillDTO(item));
 		}
 
 	}
 
-	public BillDTO(Long id, Double price, Set<ItemInPricelistDTO> items) {
+	public BillDTO(Long id, Double price, Set<ItemInBillDTO> items) {
 		super();
 		this.id = id;
 		this.date = new Date();
@@ -77,18 +78,18 @@ public class BillDTO {
 		this.price = price;
 	}
 
-	public Set<ItemInPricelistDTO> getItems() {
+	public Set<ItemInBillDTO> getItems() {
 		return items;
 	}
 
-	public void setItems(Set<ItemInPricelistDTO> items) {
+	public void setItems(Set<ItemInBillDTO> items) {
 		this.items = items;
 	}
 
 	public static Bill getBill(BillDTO billDTO) {
-		Set<ItemInPrincelist> newItems = new HashSet<>();
-		for (ItemInPricelistDTO itemInPrincelist : billDTO.getItems()) {
-			newItems.add(ItemInPricelistDTO.getItemInPricelist(itemInPrincelist));
+		Set<ItemInBill> newItems = new HashSet<>();
+		for (ItemInBillDTO itemInBillDTO : billDTO.getItems()) {
+			newItems.add(ItemInBillDTO.getItemInBill(itemInBillDTO));
 		}
 		return new Bill(billDTO.getId(), billDTO.getPrice(), billDTO.getDate(), billDTO.isApproved(), newItems);
 	}

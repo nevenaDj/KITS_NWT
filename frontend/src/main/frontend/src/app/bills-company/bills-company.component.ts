@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 
 import { User } from '../models/user'
 import { Subscription } from 'rxjs/Subscription';
+import { PagerService } from '../services/pager.service';
 
 @Component({
   selector: 'app-bills-company',
@@ -17,8 +18,11 @@ token = '';
   company: User;
   subscription: Subscription;
   bills: Bill[];
+  billsCount: number;
 
-  constructor(private router: Router, private companyService: CompanyDataService) {
+  pager: any = {};
+
+  constructor(private router: Router, private companyService: CompanyDataService, private pagerService: PagerService)  {
     this.company = {
       id: null,
       password: '',
@@ -34,15 +38,29 @@ token = '';
       }
     };
     this.subscription = companyService.RegenerateData$
-      .subscribe(() => this.getCompany());
-   // this.subscription = companyService.RegenerateData$
-     // .subscribe(() => this.getBills());
+      .subscribe(() => {this.getCompany();
+        this.getData();
+
+      });
+  }
+
+  getData(){
+    this.companyService.getBillsCount(this.company.id)
+        .then(count => {
+          this.billsCount = count;
+          this.setPage(1);
+        });
+  }
+
+  getBills(page: number, size: number){
+    this.companyService.getBills(page,size, this.company.id)
+    .then(bills => this.bills = bills);
   }
 
   ngOnInit() {
     this.token = localStorage.getItem('token');
     this.getCompany();
-    //this.getBills()
+
   }
 
   logout() {
@@ -54,13 +72,20 @@ token = '';
   getCompany() {
     this.companyService.getCompany().then(
       company => {this.company = company;
-        console.log(JSON.stringify(this.company));
-        this.companyService.getBills(1, 10, this.company.id).then(
-      bills => this.bills = bills);
+        this.getData();
+       
       }
     );
   }
 
+  setPage(page: number){
+    if (page < 1 || page > this.pager.totalPages){
+      return;
+    }
+
+    this.pager = this.pagerService.getPager(this.billsCount, page);
+    this.getBills(this.pager.currentPage - 1, this.pager.pageSize);
+  }
   
   gotoGetBill(id: number) {
     this.router.navigate(['company/bills', id]);

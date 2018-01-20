@@ -302,4 +302,22 @@ public class BillController {
 			return new ResponseEntity<>(billDTO, HttpStatus.OK);
 		}
 	}
+	
+	@RequestMapping(value = "companies/{id}/bills/count", method = RequestMethod.GET)
+	@ApiOperation(value = "Get a count of bills by a company.", httpMethod = "GET")
+	@ApiImplicitParam(paramType = "header", name = "X-Auth-Token", required = true, value = "JWT token")
+	@ApiResponse(code = 200, message = "Success")
+	/*** get a count of buildings ***/
+	public ResponseEntity<Long> getCountOfBill(@ApiParam(value = "The ID of the bill.", required = true) @PathVariable("id") Long id) {
+		
+		User company= userService.findOne(id);
+		if (company==null){
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}else{
+			Long count = billService.getCountOfBill(id);
+			System.out.println("count:"+count);
+			return new ResponseEntity<>(count, HttpStatus.OK);
+		}
+		
+	}
 }
