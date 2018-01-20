@@ -77,10 +77,20 @@
 			<version>0.7.7.201606060606</version>
 		</dependency>
 		<dependency>
-    		<groupId>com.example</groupId>
-    		<artifactId>frontend</artifactId>
-    		<version>${project.parent.version}</version>
-    		<scope>runtime</scope>
+			<groupId>com.example</groupId>
+			<artifactId>frontend</artifactId>
+			<version>${project.parent.version}</version>
+			<scope>runtime</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.seleniumhq.selenium</groupId>
+			<artifactId>selenium-server</artifactId>
+			<version>3.0.0-beta3</version>
+		</dependency>
+		<dependency>
+			<groupId>org.testng</groupId>
+			<artifactId>testng</artifactId>
+			<version>6.9.10</version>
 		</dependency>
 
 	</dependencies>

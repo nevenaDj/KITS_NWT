@@ -13,27 +13,27 @@
         <div class="col-lg-1"></div>
         <div class="col-lg-5 border">
           <div class="border-title">city</div>
-          <div class="border-desc">{{building.address.city}}</div>
+          <div class="border-desc" id="city">{{building.address.city}}</div>
         </div>
         <div class="col-lg-5 border">
           <div class="border-title">
             zip code
           </div>
-          <div class="border-desc">{{building.address.zipCode}}</div>
+          <div class="border-desc" id="zipCode">{{building.address.zipCode}}</div>
         </div>
       </div>
       <div class="row">
         <div class="col-lg-1"></div>
         <div class="col-lg-10 border">
           <div class="border-title">street</div>
-          <div class="border-desc">{{building.address.street}}</div>
+          <div class="border-desc" id="street">{{building.address.street}}</div>
         </div>
       </div>
       <div class="row">
         <div class="col-lg-1"></div>
         <div class="col-lg-10 border">
           <div class="border-title">number</div>
-          <div class="border-desc">{{building.address.number}}</div>
+          <div class="border-desc" id="number">{{building.address.number}}</div>
         </div>
       </div>
       <div class="row">
@@ -75,7 +75,7 @@
       <h3>APARTMENTS</h3>
       <div class="weather-new pn">
         <i class="fa fa-plus"></i>
-        <h2><a (click)="gotoAddApartment()">NEW</a></h2>
+        <h2><a id="new" (click)="gotoAddApartment()">NEW</a></h2>
         <h4></h4>
       </div>  
         <div *ngFor="let apartment of apartments">

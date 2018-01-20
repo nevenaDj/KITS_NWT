@@ -18,7 +18,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import com.example.model.AgendaItem;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest(webEnvironment = WebEnvironment.DEFINED_PORT)
+@SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 @TestPropertySource(locations = "classpath:test.properties")
 public class AgendaItemRepositoryIntegrationTest {
 	@Autowired

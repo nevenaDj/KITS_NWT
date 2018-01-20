@@ -55,7 +55,7 @@ import com.example.dto.UserDTO;
 import com.jayway.restassured.RestAssured;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest(webEnvironment = WebEnvironment.DEFINED_PORT)
+@SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 @TestPropertySource(locations = "classpath:test.properties")
 public class GlitchControllerTest {
 	private String accessTokenTenant;
@@ -284,8 +284,10 @@ public class GlitchControllerTest {
 	@Rollback(true)
 	public void testChangeGlitchPhotoBadRequstGlitch() throws Exception {
 
-		mockMvc.perform(put("/api/apartments/" + ID_APARTMENT + "/glitches/" + ID_GLITCH_NOT_FOUND + "/photo?image=" + IMAGE_UPLOAD)
-				.header("X-Auth-Token", accessTokenTenant)).andExpect(status().isBadRequest());
+		mockMvc.perform(put(
+				"/api/apartments/" + ID_APARTMENT + "/glitches/" + ID_GLITCH_NOT_FOUND + "/photo?image=" + IMAGE_UPLOAD)
+						.header("X-Auth-Token", accessTokenTenant))
+				.andExpect(status().isBadRequest());
 
 	}
 

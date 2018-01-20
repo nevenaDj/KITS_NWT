@@ -41,7 +41,7 @@ import com.example.dto.LoginDTO;
 import com.jayway.restassured.RestAssured;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest(webEnvironment = WebEnvironment.DEFINED_PORT)
+@SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 @TestPropertySource(locations="classpath:test.properties")
 public class GlitchTypeControllerTest {
 	private String accessToken;

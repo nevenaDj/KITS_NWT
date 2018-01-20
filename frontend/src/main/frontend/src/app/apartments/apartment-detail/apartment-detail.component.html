@@ -13,14 +13,14 @@
         <div class="col-lg-1"></div>
         <div class="col-lg-5 border">
           <div class="border-title">number</div>
-          <div class="border-desc">{{apartment.number}}</div>
+          <div class="border-desc" id="number">{{apartment.number}}</div>
         </div>
       </div>
       <div class="row">
         <div class="col-lg-1"></div>
         <div class="col-lg-10 border">
           <div class="border-title">description</div>
-          <div class="border-desc">{{apartment.description}}</div>
+          <div class="border-desc" id="description">{{apartment.description}}</div>
         </div>
       </div>
       <div class="row">
@@ -62,7 +62,7 @@
       <h3>TENANTS</h3>
       <div class="weather-new pn">
         <i class="fa fa-plus"></i>
-        <h2><a (click)="gotoAddTenant()">NEW</a></h2>
+        <h2><a id="new" (click)="gotoAddTenant()">NEW</a></h2>
         <h4></h4>
       </div> 
       <div *ngFor="let tenant of tenants">
