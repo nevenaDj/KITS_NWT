@@ -37,7 +37,6 @@ import { ChangePasswordCompanyComponent } from './change-password-company/change
 import { BillDetailsCompanyComponent } from './bill-details-company/bill-details-company.component';
 import { GlitchDetailsCompanyComponent } from './glitch-details-company/glitch-details-company.component'
 import { LoginLayoutComponent } from './login/login-layout/login-layout.component';
-import { TenantsComponent } from './tenants/tenants.component';
 import { ApartmentDetailComponent } from './apartments/apartment-detail/apartment-detail.component';
 import { AddTenantComponent } from './tenants/add-tenant/add-tenant.component';
 import { TenantDetailComponent } from './tenants/tenant-detail/tenant-detail.component';
@@ -84,7 +83,6 @@ import { GlitchDetailComponent } from './glitches/glitch-detail/glitch-detail.co
     GlitchDetailsCompanyComponent,
     HomeCompanyComponent,
     LoginLayoutComponent,
-    TenantsComponent,
     ApartmentDetailComponent,
     AddTenantComponent,
     TenantDetailComponent,

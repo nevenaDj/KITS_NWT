@@ -76,7 +76,7 @@ describe('BuildingsComponent', () => {
     expect(buildingService.getBuildings).toHaveBeenCalled();
   }));
 
-  it('should call getPage()', fakeAsync(() => {
+  it('should call setPage()', fakeAsync(() => {
     component.setPage(1);
     expect(pagerService.getPager).toHaveBeenCalled();
     tick();

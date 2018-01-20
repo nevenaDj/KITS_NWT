@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 
 import { Glitch } from '../../models/glitch';
 import { GlitchService } from '../glitch.service';
@@ -22,8 +22,7 @@ export class GlitchDetailComponent implements OnInit {
 
   comment: Comment;
 
-  constructor(private router: Router,
-              private route: ActivatedRoute,
+  constructor(private route: ActivatedRoute,
               private glitchService: GlitchService,
               private authService: AuthService) {
     this.glitch = {
@@ -73,7 +72,6 @@ export class GlitchDetailComponent implements OnInit {
   }
 
   saveComment(){
-    console.log(this.comment);
     this.glitchService.addComment(this.glitch.id, this.comment)
         .then(() => {
           this.getComments();

@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
+import { Location } from '@angular/common';
 
 import { UserPassword } from '../../models/user-password';
 import { UserService } from '../../users/user.service';
 import { AuthService } from '../../login/auth.service';
+
 
 
 @Component({
@@ -18,14 +20,14 @@ export class PasswordComponent implements OnInit {
   }
 
   constructor(private userService: UserService,
-              private authSerice: AuthService) { }
+              private location: Location) { }
 
   ngOnInit() {
   }
 
   save(){
     this.userService.changePassword(this.user)
-        .then(() => this.authSerice.logout());
+        .then(() => this.location.back());
 
   }
 

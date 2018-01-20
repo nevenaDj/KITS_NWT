@@ -4,7 +4,9 @@ import { AppRoutingModule } from './app-routing.module';
 describe('AppComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [AppRoutingModule],
+      imports: [
+        AppRoutingModule
+      ],
       declarations: [
         AppComponent
       ],

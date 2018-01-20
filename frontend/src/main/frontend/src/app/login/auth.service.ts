@@ -5,7 +5,7 @@ import * as decode from 'jwt-decode';
 
 @Injectable()
 export class AuthService {
-  private authUrl = 'api/login';
+  private authUrl = '/api/login';
   private roles: string[];
 
   constructor(private http: HttpClient,

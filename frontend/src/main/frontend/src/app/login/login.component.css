@@ -35,3 +35,19 @@
     margin-left: auto; 
     margin-right: auto;
 }
+
+.btn-theme {
+    color: #fff;
+    background-color: #4c586F;
+    border-color: #cbc5c1;
+}
+.btn-theme:hover,
+.btn-theme:focus,
+.btn-theme:active,
+.btn-theme.active,
+.open .dropdown-toggle.btn-theme {
+    color: #fff;
+    background-color: #cbc5c1;
+    border-color: #cbc5c1;
+}
+  

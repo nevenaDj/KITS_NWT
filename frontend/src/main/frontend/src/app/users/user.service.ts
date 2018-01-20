@@ -19,7 +19,7 @@ export class UserService {
     this.RegenerateData.next();
   }
 
-  getUsers(page: number, size: number): Promise<User[]>{
+  getUsers(page: number, size: number = 15): Promise<User[]>{
     const httpParams = new HttpParams().set('page', page.toString()).set('size', size.toString());
     return this.http
           .get<User[]>(this.userUrl, { params: httpParams})

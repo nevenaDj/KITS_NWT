@@ -5,7 +5,6 @@ import { AuthGuardService } from './guards/auth-guard.service';
 import { RoleGuardService } from './guards/role-guard.service';
 import { LoginComponent } from './login/login.component';
 import { HomeComponent } from './home/home.component';
-import { HomeAdminComponent } from './home-admin/home-admin.component';
 import { BuildingsComponent } from './buildings/buildings.component';
 import { BuildingDetailComponent } from './buildings/building-detail/building-detail.component';
 import { AddBuildingComponent } from './buildings/add-building/add-building.component';
@@ -42,6 +41,7 @@ import { ProfileUpdateComponent } from './users/profile/profile-update/profile-u
 import { GlitchesComponent } from './glitches/glitches.component';
 import { AddGlitchComponent } from './glitches/add-glitch/add-glitch.component';
 import { GlitchDetailComponent } from './glitches/glitch-detail/glitch-detail.component';
+import { HomeAdminComponent } from './home-admin/home-admin.component';
 
 
 const routers: Routes = [

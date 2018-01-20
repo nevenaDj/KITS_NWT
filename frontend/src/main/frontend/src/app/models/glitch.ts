@@ -1,3 +1,4 @@
+
 import { Apartment } from "./apartment";
 import { User } from "./user";
 import { GlitchType } from "./glitch-type";
@@ -39,4 +40,3 @@ interface GlitchInterface{
     type: GlitchType;
     state: GlitchState;
     repairApproved?: boolean;
-}
