@@ -4,6 +4,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { DropdownModule } from 'ngx-dropdown';
 
+import {GlitchDataService} from './glitch-details-company/glitch-data.service'
 import { GlitchService } from './glitches/glitch.service';
 import { TokenInterceptorService } from './services/token-interceptor.service';
 import { PagerService } from './services/pager.service';
@@ -59,8 +60,7 @@ import { ProfileUpdateComponent } from './users/profile/profile-update/profile-u
 import { GlitchesComponent } from './glitches/glitches.component';
 import { AddGlitchComponent } from './glitches/add-glitch/add-glitch.component';
 import { GlitchDetailComponent } from './glitches/glitch-detail/glitch-detail.component';
-
-
+import { OwlDateTimeModule, OwlNativeDateTimeModule } from 'ng-pick-datetime';
 
 @NgModule({
   declarations: [
@@ -105,7 +105,8 @@ import { GlitchDetailComponent } from './glitches/glitch-detail/glitch-detail.co
     ProfileUpdateComponent,
     GlitchesComponent,
     AddGlitchComponent,
-    GlitchDetailComponent
+    GlitchDetailComponent,
+    
   ],
   imports: [
     BrowserModule,
@@ -113,7 +114,9 @@ import { GlitchDetailComponent } from './glitches/glitch-detail/glitch-detail.co
     FormsModule,
     HttpClientModule,
     DropdownModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    OwlDateTimeModule, 
+    OwlNativeDateTimeModule,
   ],
   providers: [
     AuthGuardService,
@@ -129,6 +132,7 @@ import { GlitchDetailComponent } from './glitches/glitch-detail/glitch-detail.co
     GlitchTypeService,
     PagerService,
     GlitchService,
+    GlitchDataService,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: TokenInterceptorService,

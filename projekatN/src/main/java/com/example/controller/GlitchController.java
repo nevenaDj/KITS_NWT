@@ -32,6 +32,7 @@ import com.example.dto.UserDTO;
 import com.example.model.Apartment;
 import com.example.model.Building;
 import com.example.model.Glitch;
+import com.example.model.GlitchState;
 import com.example.model.Picture;
 import com.example.model.Pricelist;
 import com.example.model.User;
@@ -400,6 +401,32 @@ public class GlitchController {
 
 		User company = userService.findOne(companyDTO.getId());
 		glitch.setCompany(company);
+		glitch = glitchService.save(glitch);
+
+		return new ResponseEntity<>(new GlitchDTO(glitch), HttpStatus.OK);
+	}
+	
+	@RequestMapping(value = "/glitches/{id}/state/{state_id}", method = RequestMethod.PUT, produces = "application/json", consumes = "application/json")
+	@ApiOperation(value = "Choose a componany for a glitch.", notes = "Returns the glitch that was saved.", httpMethod = "PUT", produces = "application/json", consumes = "application/json")
+	@ApiImplicitParam(paramType = "header", name = "X-Auth-Token", required = true, value = "JWT token")
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "Ok", response = GlitchDTO.class),
+			@ApiResponse(code = 400, message = "Bad request") })
+	@PreAuthorize("hasRole('ROLE_COMPANY')")
+	public ResponseEntity<GlitchDTO> chooseCompany(
+			@ApiParam(value = "The ID of the company.", required = true) @PathVariable Long id,
+			@ApiParam(value = "The UserDTO object", required = true) @PathVariable Long state_id ) {
+
+		Glitch glitch = glitchService.findOne(id);
+		if (glitch == null) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+
+		GlitchState state = glitchService.findGlitchState(state_id);
+		if (state == null) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+		
+		glitch.setState(state);
 		glitch = glitchService.save(glitch);
 
 		return new ResponseEntity<>(new GlitchDTO(glitch), HttpStatus.OK);

@@ -4,6 +4,9 @@ import {User} from '../models/user';
 import {Component, OnInit} from '@angular/core';
 import {Router, ActivatedRoute} from '@angular/router';
 import {Subscription} from 'rxjs/Subscription';
+import { GlitchDataService } from './glitch-data.service';
+import * as decode from 'jwt-decode';
+import { FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-glitch-details-company',
@@ -12,6 +15,7 @@ import {Subscription} from 'rxjs/Subscription';
 })
 export class GlitchDetailsCompanyComponent implements OnInit {
 
+  public selectedMoment = new Date();
   token = '';
   company: User;
   subscription: Subscription;
@@ -19,7 +23,8 @@ export class GlitchDetailsCompanyComponent implements OnInit {
 
   constructor(private router: Router,
               private route:ActivatedRoute,
-              private companyService: CompanyDataService) {
+              private companyService: CompanyDataService,
+              private glitchService: GlitchDataService) {
     this.company = {
       id: null,
       password: '',
@@ -36,6 +41,8 @@ export class GlitchDetailsCompanyComponent implements OnInit {
     };
     this.subscription = companyService.RegenerateData$
       .subscribe(() => this.getCompany());
+    this.subscription = glitchService.RegenerateData$
+      .subscribe(() => this.acceptGlitch());
 
   }
 
@@ -45,9 +52,19 @@ export class GlitchDetailsCompanyComponent implements OnInit {
     this.companyService.getGlitch(+this.route.snapshot.params['id'])
         .then(glitch => {
           this.glitch = glitch;
-          console.log(JSON.stringify(glitch.state));
+          
         }
       );
+  }
+
+  acceptGlitch(){
+    console.log('accept');
+    this.glitchService.updateState(this.glitch.id, 2)
+      .then( glitch => {
+        console.log(JSON.stringify(glitch));
+        this.router.navigate(['company/activeGlitches', this.glitch.id]);
+    } 
+  );
   }
 
   logout() {
