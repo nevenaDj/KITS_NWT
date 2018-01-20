@@ -117,8 +117,7 @@
 							<div class="border-desc">{{glitch.type.type}}</div>
 						</div>
 
-					</div>
-					
+					</div>					
 					<div class="row">
 						<div class="col-lg-1"></div>
 						<div class="col-lg-10 border">
@@ -128,17 +127,55 @@
 							<div class="border-desc">{{glitch.apartment.number}}</div>
 						</div>
 					</div>
-					<div class="row">
+					<div class="row" *ngIf="glitch.state.id==1">
 						<div class="col-lg-1"></div>
 						<div class="col-lg-5 border">
-							<div class="border-title">DATE OF REPORT</div>
-							<div class="border-desc">{{glitch.state.valueOf()}}</div>
+							<div class="full-button" style="background: #cbc5c1">
+								<input type="submit" style="background: #cbc5c1" class="save-button-text"  value="Send to other company">
+							</div>
 						</div>
 						<div class="col-lg-5 border">
-							<div class="border-title">Glitch type</div>
-							<div class="border-desc">{{glitch.type.type}}</div>
+							<div class="full-button" >
+								<input type="submit" class="save-button-text" value="Accept">
+							</div>
+						</div>	
+					</div>
+					<div *ngIf="glitch.state.id==2">
+						<div class="row" *ngIf="glitch.dateOfRepair==null">
+							<div class="col-lg-1"></div>
+							<div class="col-lg-5 border">
+							</div>
+							<div class="col-lg-5 border">
+								<div class="full-button" >
+									<input type="submit" class="save-button-text" value="Schedule...">
+								</div>
+							</div>
 						</div>
-
+						<div *ngIf="glitch.dateOfRepair!=null"> 
+							<div class="row" *ngIf="!glitch.repairApproved">
+								<div class="col-lg-1"></div>
+								<div class="col-lg-5 border">
+									<div class="border-title">DATE OF REPAIR</div>
+									<div class="border-desc">{{glitch.dateOfRepair | date}}</div>
+								</div>
+								<div class="col-lg-5 border">
+									<div class="border-title">DATE IS APPROVED</div>
+									<div class="border-desc">No</div>
+								</div>
+							</div>	
+							<div class="row" *ngIf="glitch.repairApproved">
+								<div class="col-lg-1"></div>
+								<div class="col-lg-5 border">
+									<div class="border-title">DATE OF REPAIR</div>
+									<div class="border-desc">{{glitch.dateOfRepair | date}}</div>
+								</div>
+								<div class="col-lg-5 border">
+									<div class="full-button" >
+										<input type="submit" class="save-button-text" value="Send a bill...">
+									</div>
+								</div>
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>
