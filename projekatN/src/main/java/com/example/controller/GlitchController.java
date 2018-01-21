@@ -5,6 +5,8 @@ import static com.example.utils.Constants.TOKEN;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
@@ -16,6 +18,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -244,36 +247,24 @@ public class GlitchController {
 	public ResponseEntity<GlitchDTO> changeDateOfRepair(
 			@ApiParam(value = "The ID of the apartment.", required = true) @PathVariable("id") Long apartmentId,
 			@ApiParam(value = "The ID of the glitch.", required = true) @PathVariable("glitch_id") Long glitchId,
-			@ApiParam(name = "date", value = "date", required = true) @RequestParam("date") Date dateOfReparing) {
-		return new ResponseEntity<>(
-				HttpStatus.ALREADY_REPORTED);/*
-												 * Apartment apartment =
-												 * apartmentService.findOne(
-												 * apartmentId);
-												 * 
-												 * if (apartment == null) {
-												 * return new
-												 * ResponseEntity<>(HttpStatus.
-												 * BAD_REQUEST); }
-												 * 
-												 * Glitch glitch =
-												 * glitchService.findOne(
-												 * glitchId);
-												 * 
-												 * if (glitch == null) { return
-												 * new
-												 * ResponseEntity<>(HttpStatus.
-												 * BAD_REQUEST); }
-												 * 
-												 * glitch.setDateOfRepair(
-												 * dateOfReparing);
-												 * glitchService.save(glitch);
-												 * 
-												 * return new
-												 * ResponseEntity<>(new
-												 * GlitchDTO(glitch),
-												 * HttpStatus.OK);
-												 */
+			@ApiParam(name = "date", value = "date", required = true) @RequestParam("date") String dateOfReparing) throws ParseException {
+				Apartment apartment =apartmentService.findOne(apartmentId);
+				System.out.println("apartmen: "+apartmentId);
+				if (apartment == null) {
+					return new ResponseEntity<>(HttpStatus.BAD_REQUEST); }
+				
+				System.out.println("glitch: "+glitchId);
+				Glitch glitch =glitchService.findOne(glitchId);
+				if (glitch == null) { 
+					return new ResponseEntity<>(HttpStatus.BAD_REQUEST); }
+				
+				String[] dateSplit= dateOfReparing.split("/.");
+				SimpleDateFormat formatted = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+				Date date= formatted.parse(dateSplit[0]);
+				System.out.println("date: "+date);
+				glitch.setDateOfRepair(date);
+				glitchService.save(glitch);
+				return new ResponseEntity<>(new GlitchDTO(glitch), HttpStatus.OK);
 	}
 
 	@RequestMapping(value = "/apartments/{id}/glitches/{glitch_id}", method = RequestMethod.PUT, produces = "application/json")

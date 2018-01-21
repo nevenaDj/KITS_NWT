@@ -61,6 +61,7 @@ import { GlitchesComponent } from './glitches/glitches.component';
 import { AddGlitchComponent } from './glitches/add-glitch/add-glitch.component';
 import { GlitchDetailComponent } from './glitches/glitch-detail/glitch-detail.component';
 import { OwlDateTimeModule, OwlNativeDateTimeModule } from 'ng-pick-datetime';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [
@@ -117,6 +118,7 @@ import { OwlDateTimeModule, OwlNativeDateTimeModule } from 'ng-pick-datetime';
     ReactiveFormsModule,
     OwlDateTimeModule, 
     OwlNativeDateTimeModule,
+    BrowserAnimationsModule,
   ],
   providers: [
     AuthGuardService,

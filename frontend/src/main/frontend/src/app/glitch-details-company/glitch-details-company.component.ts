@@ -16,6 +16,8 @@ import { FormControl } from '@angular/forms';
 export class GlitchDetailsCompanyComponent implements OnInit {
 
   public selectedMoment = new Date();
+  public min = new Date();
+  
   token = '';
   company: User;
   subscription: Subscription;
@@ -57,9 +59,27 @@ export class GlitchDetailsCompanyComponent implements OnInit {
       );
   }
 
+  public myFilter = (d: Date): boolean => {
+    const day = d.getDay();
+    // Prevent Saturday and Sunday from being selected.
+    return day !== 0 && day !== 6;
+}
+
   acceptGlitch(){
     console.log('accept');
     this.glitchService.updateState(this.glitch.id, 2)
+      .then( glitch => {
+        console.log(JSON.stringify(glitch));
+        this.router.navigate(['company/activeGlitches', this.glitch.id]);
+    } 
+  );
+  }
+
+
+  setTime(){
+    console.log('accept');
+    this.glitch.dateOfRepair=this.selectedMoment;
+    this.glitchService.setTime(this.glitch)
       .then( glitch => {
         console.log(JSON.stringify(glitch));
         this.router.navigate(['company/activeGlitches', this.glitch.id]);
