@@ -35,6 +35,14 @@ export class SurveyService {
         .catch(this.handleError);
   }
 
+  deleteSurvey(id: number): Promise<{}>{
+    const url = `/api/surveys/${id}`;
+    return this.http
+        .delete(url)
+        .toPromise()
+        .catch(this.handleError);
+  }
+
   private handleError(error: any): Promise<any> {
     console.error("Error... ", error);
     return Promise.reject(error.message || error);

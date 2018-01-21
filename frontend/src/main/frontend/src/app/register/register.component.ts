@@ -37,6 +37,8 @@ export class RegisterComponent implements OnInit {
     this.city = '';
     this.apartmentNumber = null;
 
+    this.apartment = null;
+
   }
 
   ngOnInit() {
@@ -44,14 +46,29 @@ export class RegisterComponent implements OnInit {
 
   findApartment(){
     this.apartmentService.findApartment(this.street, this.number, this.city, this.apartmentNumber)
-        .then(apartment => this.apartment = apartment);
+        .then(apartment => {
+          this.apartment = apartment;
+          console.log(apartment);
+        }
+        );
   }
 
   save(){
-    this.user.apartmentId = this.apartment.id;
-    this.userService.registration(this.user)
+    if (this.user.apartmentId === null){
+      console.log('apartman je null');
+    }else{
+      this.userService.registration(this.user)
         .then(() => this.router.navigate(['login']));
+    }
+  }
 
+  add(){
+    this.user.apartmentId = this.apartment.id;
+    console.log(this.user.apartmentId);
+  }
+
+  delete(){
+    this.user.apartmentId = null;
   }
 
 }

@@ -30,7 +30,7 @@ public class Survey {
 	@ManyToOne(fetch = FetchType.EAGER)
 	private Meeting meeting;
 
-	@OneToMany(mappedBy = "survey", fetch = FetchType.EAGER)
+	@OneToMany(mappedBy = "survey", fetch = FetchType.EAGER, orphanRemoval=true)
 	private Set<Question> questions = new HashSet<>();
 
 	public Survey() {

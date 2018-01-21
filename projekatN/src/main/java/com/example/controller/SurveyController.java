@@ -21,6 +21,7 @@ import com.example.dto.OptionDTO;
 import com.example.dto.QuestionDTO;
 import com.example.dto.SurveyDTO;
 import com.example.model.Answer;
+import com.example.model.Building;
 import com.example.model.Meeting;
 import com.example.model.Option;
 import com.example.model.Question;
@@ -61,11 +62,9 @@ public class SurveyController {
 	UserService userService;
 
 	@RequestMapping(value = "/meetings/{id}/surveys", method = RequestMethod.POST, consumes = "application/json")
-	@ApiOperation(value = "Create a survey.", notes = "Returns the survey being saved.", httpMethod = "POST", 
-				produces = "application/json", consumes = "application/json")
-	@ApiImplicitParam(paramType="header", name="X-Auth-Token", required=true, value="JWT token")
-	@ApiResponses(value = { 
-			@ApiResponse(code = 201, message = "Created", response = SurveyDTO.class),
+	@ApiOperation(value = "Create a survey.", notes = "Returns the survey being saved.", httpMethod = "POST", produces = "application/json", consumes = "application/json")
+	@ApiImplicitParam(paramType = "header", name = "X-Auth-Token", required = true, value = "JWT token")
+	@ApiResponses(value = { @ApiResponse(code = 201, message = "Created", response = SurveyDTO.class),
 			@ApiResponse(code = 400, message = "Bad request") })
 	@PreAuthorize("hasRole('ROLE_PRESIDENT')")
 	/*** add new survey ***/
@@ -100,16 +99,14 @@ public class SurveyController {
 	}
 
 	@RequestMapping(value = "/surveys/{id}/answers", method = RequestMethod.POST, consumes = "application/json")
-	@ApiOperation(value = "Create an answer.", httpMethod = "POST", 
-	produces = "application/json", consumes = "application/json")
-	@ApiImplicitParam(paramType="header", name="X-Auth-Token", required=true, value="JWT token")
-	@ApiResponses(value = { 
-			@ApiResponse(code = 201, message = "Created"),
+	@ApiOperation(value = "Create an answer.", httpMethod = "POST", produces = "application/json", consumes = "application/json")
+	@ApiImplicitParam(paramType = "header", name = "X-Auth-Token", required = true, value = "JWT token")
+	@ApiResponses(value = { @ApiResponse(code = 201, message = "Created"),
 			@ApiResponse(code = 400, message = "Bad request") })
 	@PreAuthorize("hasRole('ROLE_OWNER')")
 	/*** add answer to the survey ***/
 	public ResponseEntity<List<AnswerDTO>> addAnswers(
-			@ApiParam(value = "The ID of the survey.", required = true) @PathVariable Long id, 
+			@ApiParam(value = "The ID of the survey.", required = true) @PathVariable Long id,
 			@ApiParam(value = "The list of answerDTOs objects", required = true) @RequestBody List<AnswerDTO> answersDTO,
 			HttpServletRequest request) {
 		String token = request.getHeader("X-Auth-Token");
@@ -140,36 +137,59 @@ public class SurveyController {
 			}
 		}
 
-		return new ResponseEntity<>(answersDTO,HttpStatus.CREATED);
+		return new ResponseEntity<>(answersDTO, HttpStatus.CREATED);
 	}
-	
+
 	@RequestMapping(value = "/surveys/{id}", method = RequestMethod.GET)
 	@ApiOperation(value = "Get a survey.", httpMethod = "GET")
 	@ApiImplicitParam(paramType = "header", name = "X-Auth-Token", required = true, value = "JWT token")
-	@ApiResponses(value = { 
-			@ApiResponse(code = 200, message = "Success", response = SurveyDTO.class),
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "Success", response = SurveyDTO.class),
 			@ApiResponse(code = 404, message = "Not found") })
 	/*** get survey by id ***/
 	public ResponseEntity<SurveyDTO> getSurvey(
-			@ApiParam(value = "The ID of the survey.", required = true) @PathVariable Long id){
+			@ApiParam(value = "The ID of the survey.", required = true) @PathVariable Long id) {
 		Survey survey = surveyService.findOne(id);
-		
-		if (survey == null){
+
+		if (survey == null) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
-		
+
 		Set<QuestionDTO> questions = new HashSet<>();
-		
+
 		for (Question question : survey.getQuestions()) {
 			Set<OptionDTO> options = new HashSet<>();
 			for (Option option : question.getOptions()) {
 				options.add(new OptionDTO(option));
 			}
-			questions.add(new QuestionDTO(question,options));
+			questions.add(new QuestionDTO(question, options));
 		}
 
 		return new ResponseEntity<>(new SurveyDTO(survey, questions), HttpStatus.OK);
-		
+
+	}
+
+	@RequestMapping(value = "/surveys/{id}", method = RequestMethod.DELETE)
+	@ApiOperation(value = "Delete a survey.", httpMethod = "DELETE")
+	@ApiImplicitParam(paramType = "header", name = "X-Auth-Token", required = true, value = "JWT token")
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "Success"),
+			@ApiResponse(code = 404, message = "Not found"), @ApiResponse(code = 400, message = "Bad request") })
+	@PreAuthorize("hasRole('ROLE_PRESIDENT')")
+	/*** delete a building ***/
+	public ResponseEntity<Void> deletesSurvey(
+			@ApiParam(value = "The ID of the survey.", required = true) @PathVariable Long id) {
+		Survey survey = surveyService.findOne(id);
+		if (survey == null) {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+
+		boolean flag = surveyService.remove(id);
+
+		if (flag) {
+			return new ResponseEntity<>(HttpStatus.OK);
+		} else {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+
 	}
 
 }

@@ -1,10 +1,8 @@
 <section>
+    <form (ngSubmit)="save()">
   <div class="row">
     <div class="col-lg-9 main-chart">
       <p class="title">SURVEY</p>
-      <p class="delete-button">
-        <a class="delete-x" (click)="deleteSurvey()">x</a>
-      </p>
     </div>
   </div>
   <div class="row">
@@ -36,6 +34,7 @@
           <div class="col-lg-10">
               <ul>
                 <li *ngFor="let option of question.options; let j=index"> 
+                    <input id="check" type="checkbox" name="isChecked" [(ngModel)]="questionAnswer[i].optionAnswers[j].isChecked"/>
                     <div class="lists">
                         <div class="first">{{j+1}}</div> 
                         <div class="sec">{{option.text}}</div>
@@ -51,9 +50,17 @@
       
       <br>
     </div>
+    <div class="row">
+        <div class="col-lg-1"></div>
+        <div class="col-lg-10">
+          <div class="full-button">
+            <input type="submit"  class="save-button-text" value="Save answer">
+          </div>
+        </div>
+      </div>
     </div>
     </div>
     
-
+    </form>    
 </section>
   

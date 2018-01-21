@@ -80,7 +80,7 @@ export class AddSurveyComponent implements OnInit {
   save(){
     console.log(this.meetingID);
     this.surveyService.addSurvey(this.meetingID, this.survey)
-      .then(survey => console.log(survey));
+      .then(survey => this.router.navigate([`/president/surveys/${survey.id}`]));
 
   }
 

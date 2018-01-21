@@ -63,6 +63,7 @@ import { AddGlitchComponent } from './glitches/add-glitch/add-glitch.component';
 import { GlitchDetailComponent } from './glitches/glitch-detail/glitch-detail.component';
 import { AddSurveyComponent } from './surveys/add-survey/add-survey.component';
 import { SurveyDetailComponent } from './surveys/survey-detail/survey-detail.component';
+import { AddAnswerComponent } from './surveys/add-answer/add-answer.component';
 
 
 
@@ -110,7 +111,8 @@ import { SurveyDetailComponent } from './surveys/survey-detail/survey-detail.com
     AddGlitchComponent,
     GlitchDetailComponent,
     AddSurveyComponent,
-    SurveyDetailComponent
+    SurveyDetailComponent,
+    AddAnswerComponent
   ],
   imports: [
     BrowserModule,

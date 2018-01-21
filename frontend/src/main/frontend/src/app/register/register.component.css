@@ -1,5 +1,5 @@
 .form-login {
-	max-width: 330px;
+	max-width: 600px;
 	margin: 100px auto 0;
 	background-color:rgba(200, 200, 200, 0.4);
 	border-radius: 5px;
@@ -34,4 +34,13 @@
     display: block; 
     margin-left: auto; 
     margin-right: auto;
+}
+
+.form-find{
+	background: snow;
+	padding: 10px;
+}
+
+table{
+	color: darkblue;;
 }

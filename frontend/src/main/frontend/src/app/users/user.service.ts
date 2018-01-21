@@ -71,6 +71,16 @@ export class UserService {
         .catch(this.handleError);
   }
 
+  findUser(username: string): Promise<User>{
+    const httpParams = new HttpParams().set('username', username);
+    const url = `/api/user`;
+    return this.http
+         .get(url, { params: httpParams})
+         .toPromise()
+         .then(res => res)
+         .catch(this.handleError);
+  }
+
   private handleError(error: any): Promise<any> {
     console.error("Error... ", error);
     return Promise.reject(error.message || error);

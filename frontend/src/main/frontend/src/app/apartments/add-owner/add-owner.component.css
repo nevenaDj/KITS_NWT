@@ -26,3 +26,13 @@
     -moz-border-radius: 5px;
     border-radius: 5px;
   }
+
+.subtitle{
+    margin-left: 80px;
+}
+
+table{
+    margin-left: 10%;
+    margin-top: 20px;
+    width: 70%;
+}

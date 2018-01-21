@@ -44,6 +44,7 @@ import { GlitchDetailComponent } from './glitches/glitch-detail/glitch-detail.co
 import { HomeAdminComponent } from './home-admin/home-admin.component';
 import { AddSurveyComponent } from './surveys/add-survey/add-survey.component';
 import { SurveyDetailComponent } from './surveys/survey-detail/survey-detail.component';
+import { AddAnswerComponent } from './surveys/add-answer/add-answer.component';
 
 
 const routers: Routes = [
@@ -152,12 +153,12 @@ const routers: Routes = [
   {
     path:'owner',
     component: HomeOwnerComponent,
-    /* canActivate: [AuthGuardService,RoleGuardService], 
+    canActivate: [AuthGuardService,RoleGuardService], 
     data: { 
       expectedRole: 'ROLE_OWNER'
-    }, */
+    },
     children: [
-      {path: 'surveys/:id', component: SurveyDetailComponent}
+      {path: 'surveys/:id/addAnswer', component: AddAnswerComponent}
     ]
   },
   {
@@ -168,7 +169,8 @@ const routers: Routes = [
       expectedRole: 'ROLE_PRESIDENT'
     },
     children: [
-      {path: 'meeting/:id/addSurvey', component: AddSurveyComponent}
+      {path: 'meeting/:id/addSurvey', component: AddSurveyComponent},
+      {path: 'surveys/:id', component: SurveyDetailComponent}
     ]
   },
   {

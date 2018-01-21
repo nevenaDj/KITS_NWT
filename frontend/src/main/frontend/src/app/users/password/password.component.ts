@@ -28,7 +28,10 @@ export class PasswordComponent implements OnInit {
   save(){
     this.userService.changePassword(this.user)
         .then(() => this.location.back());
+  }
 
+  cancel(){
+    this.location.back();
   }
 
 }

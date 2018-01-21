@@ -25,7 +25,8 @@ export class ApartmentDetailComponent implements OnInit {
       id: null,
       number: null,
       description: '',
-      owner: null
+      owner: null,
+      building: null
     }
   }
 

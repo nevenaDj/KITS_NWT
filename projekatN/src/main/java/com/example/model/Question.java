@@ -20,7 +20,7 @@ public class Question {
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	private Survey survey;
-	@OneToMany(mappedBy = "question", fetch = FetchType.EAGER)
+	@OneToMany(mappedBy = "question", fetch = FetchType.EAGER, orphanRemoval=true)
 	private Set<Option> options = new HashSet<>();
 
 	public Question() {

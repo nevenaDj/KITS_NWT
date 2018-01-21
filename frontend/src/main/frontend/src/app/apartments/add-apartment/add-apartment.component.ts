@@ -33,7 +33,8 @@ export class AddApartmentComponent implements OnInit {
         email: '',
         phoneNo: '',
         address: null
-      }
+      },
+      building: null
     }
     this.buildingID = this.route.snapshot.params['idBuilding'];
     this.mode = 'ADD';

@@ -115,4 +115,8 @@ public class UserService {
 	public Long getCountOfUsers() {
 		return userRepository.count();
 	}
+
+	public List<String> getUsersAuthority(User user) {
+		return userRepository.getUserAuthority(user.getId());
+	}
 }
