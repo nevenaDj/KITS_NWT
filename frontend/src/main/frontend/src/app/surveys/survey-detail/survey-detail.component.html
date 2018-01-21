@@ -1,0 +1,71 @@
+<section>
+    <form (ngSubmit)="save()">
+  <div class="row">
+    <div class="col-lg-9 main-chart">
+      <p class="title">SURVEY</p>
+      <p class="delete-button">
+        <a class="delete-x">x</a>
+      </p>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-lg-9 main-chart">
+      <div class="row">
+        <div class="col-lg-1"></div>
+        <div class="col-lg-10 border">
+          <div class="border-title">title</div>
+          <div class="border-desc" id="title">{{survey.title}}</div>
+        </div>
+      </div>
+      <br><br>
+      <div *ngFor="let question of survey.questions; let i=index">
+      <div class="row">
+        <div class="col-lg-9 main-chart president">
+          <p class="title pFont">QUESTION {{i+1}}</p>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-lg-1"></div>
+        <div class="col-lg-10 border">
+          <div class="border-title">text</div>
+          <div class="border-desc" id="title">{{question.text}}</div>
+        </div>
+      </div>
+      <div *ngFor="let option of question.options; let j=index">
+                
+        <div class="row" style="margin-left: 30px;">
+            <div class="row">
+                <div class="col-lg-1"></div>
+                <div class="col-lg-10">      
+                    <div class="container">
+                          
+                            <input id="check" type="checkbox" name="isChecked" [(ngModel)]="questionAnswer[i].optionAnswers[j].isChecked"/>
+                            <label for="check">
+                              
+                              <div class="text">{{option.text}}</div>
+                            </label>
+                          
+                        </div>
+        </div>
+      </div>
+    </div>
+    </div>
+
+    
+
+      
+      <br>
+    </div>
+    </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-1"></div>
+        <div class="col-lg-10">
+          <div class="full-button">
+            <input type="submit"  class="save-button-text" value="Save answer">
+          </div>
+        </div>
+      </div>
+    </form>
+    </section>
+  

@@ -140,7 +140,7 @@ public class SurveyController {
 			}
 		}
 
-		return new ResponseEntity<>(HttpStatus.CREATED);
+		return new ResponseEntity<>(answersDTO,HttpStatus.CREATED);
 	}
 	
 	@RequestMapping(value = "/surveys/{id}", method = RequestMethod.GET)
