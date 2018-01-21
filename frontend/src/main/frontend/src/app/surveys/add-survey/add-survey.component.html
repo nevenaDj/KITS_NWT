@@ -29,18 +29,65 @@
           </div>
         </div>
       </div>
+      <div *ngFor="let question of survey.questions; let i=index">
       <div class="row">
-        <div class="col-lg-1"></div>
-        <div class="col-lg-10 border">
-          <div class="border-title"> </div>
-          <div class="box">
-            <div class="container-4">
-              <a class="small-btn" (click)="gotoAddQuestion()" >Add question</a>
+          <div class="col-lg-9 main-chart">
+            <p class="title">QUESTION {{i+1}} <button (click)="deleteQuestion(i)" class="btn btn-danger btn-xs"><i class="fa fa-trash-o "></i></button> </p>
+          </div>
+        </div >
+        <div class="row">
+          
+            <div class="col-lg-9 main-chart">
+              <div class="row">
+                <div class="col-lg-1"></div>
+                <div class="col-lg-10 border">
+                  <div class="border-title">text</div>
+                  <div class="box">
+                    <div class="container-4">
+                      <input type="text" id="text" [(ngModel)]="question.text" name="text" required>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div *ngFor="let option of question.options; let j=index">
+                
+                <div class="row" style="margin-left: 30px;">
+                  <div class="col-lg-1"></div>
+                  <div class="col-lg-5 border">
+                    <div class="border-title">option  {{j+1}}</div>
+                    <div class="container-4">
+                      <input (keyup)="onKey($event, i, j)" type="text" id="option" [(ngModel)]="survey.questions[i].options[j].text" style="margin-left: 5px;" required [ngModelOptions]="{standalone: true}">
+                    </div>
+                  </div>
+                  <div class="col-lg-5 border">
+                      <div class="border-title"></div>
+                      <div class="container-4">
+                          <button (click)="deleteOption(i,j)" class="btn btn-danger btn-xs" style="margin-top: 20px;"><i class="fa fa-trash-o "></i></button>
+                      </div>
+                    </div>
+                </div>
+              </div>
+  
               
             </div>
-          </div>
         </div>
       </div>
+        
+                          
+        
+        
+      
+        <div class="row">
+            <div class="col-lg-1"></div>
+            <div class="col-lg-10 border">
+              <div class="border-title"> </div>
+              <div class="box">
+                <div class="container-4">
+                  <a class="small-btn" (click)="gotoAddQuestion()" >Add question</a>
+                </div>
+              </div>
+            </div>
+          </div>
       <div class="row">
         <div class="col-lg-1"></div>
         <div class="col-lg-10">
