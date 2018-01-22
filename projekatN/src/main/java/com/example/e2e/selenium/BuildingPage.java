@@ -2,6 +2,7 @@ package com.example.e2e.selenium;
 
 import java.util.List;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -23,6 +24,7 @@ public class BuildingPage {
 
 	public void ensureIsDisplayed() {
 		(new WebDriverWait(driver, 10)).until(ExpectedConditions.elementToBeClickable(newElement));
+		(new WebDriverWait(driver, 10)).until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.className("weather")));
 	}
 
 	public WebElement getNewElement() {

@@ -1,5 +1,6 @@
 package com.example.e2e.selenium;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -27,22 +28,21 @@ public class BuildingDetailPage {
 	@FindBy(id = "new")
 	private WebElement newApartmentElement;
 
+	@FindBy(className = "small-btn")
+	private WebElement addPresidentElement;
+
 	public BuildingDetailPage(WebDriver webDriver) {
 		this.driver = webDriver;
 	}
 
 	public void ensureIsDisplayed() {
-		/*
-		 * (new WebDriverWait(driver,
-		 * 10)).until(ExpectedConditions.textToBe(By.id("street"),
-		 * "new street")); (new WebDriverWait(driver,
-		 * 10)).until(ExpectedConditions.textToBe(By.id("city"), "new city"));
-		 * (new WebDriverWait(driver,
-		 * 10)).until(ExpectedConditions.textToBe(By.id("number"), "1")); (new
-		 * WebDriverWait(driver,
-		 * 10)).until(ExpectedConditions.textToBe(By.id("zipCode"), "15000"));
-		 */
+		(new WebDriverWait(driver, 10)).until(ExpectedConditions.textToBe(By.id("street"), "new street"));
 		(new WebDriverWait(driver, 10)).until(ExpectedConditions.elementToBeClickable(delteElement));
+
+	}
+
+	public void ensureIsDisplayedAddPresidentButton() {
+		(new WebDriverWait(driver, 10)).until(ExpectedConditions.elementToBeClickable(addPresidentElement));
 
 	}
 
@@ -68,6 +68,10 @@ public class BuildingDetailPage {
 
 	public WebElement getNewApartmentElement() {
 		return newApartmentElement;
+	}
+
+	public WebElement getAddPresidentElement() {
+		return addPresidentElement;
 	}
 
 }

@@ -33,7 +33,7 @@ public class LoginPageTest {
 
 	@Test
 	public void testLogin() {
-		assertEquals("https://localhost:8443/login", browser.getCurrentUrl());
+		assertEquals("https://localhost:8443/#/login", browser.getCurrentUrl());
 
 		loginPage.ensureIsDisplayed();
 
@@ -47,7 +47,7 @@ public class LoginPageTest {
 
 		buildingPage.ensureIsDisplayed();
 
-		assertEquals("https://localhost:8443/buildings", browser.getCurrentUrl());
+		assertEquals("https://localhost:8443/#/buildings", browser.getCurrentUrl());
 
 	}
 

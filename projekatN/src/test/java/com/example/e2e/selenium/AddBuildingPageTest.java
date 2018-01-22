@@ -37,7 +37,7 @@ public class AddBuildingPageTest {
 
 	@Test
 	public void testAddBuilding() {
-		assertEquals("https://localhost:8443/login", browser.getCurrentUrl());
+		assertEquals("https://localhost:8443/#/login", browser.getCurrentUrl());
 
 		loginPage.ensureIsDisplayed();
 
@@ -51,13 +51,13 @@ public class AddBuildingPageTest {
 
 		buildingPage.ensureIsDisplayed();
 
-		assertEquals("https://localhost:8443/buildings", browser.getCurrentUrl());
+		assertEquals("https://localhost:8443/#/buildings", browser.getCurrentUrl());
 
 		int elements = buildingPage.getBuildingsElement().size();
 
 		buildingPage.getNewElement().click();
 
-		assertEquals("https://localhost:8443/addBuilding", browser.getCurrentUrl());
+		assertEquals("https://localhost:8443/#/addBuilding", browser.getCurrentUrl());
 
 		assertTrue(addBuildingPage.getInputStreet().isDisplayed());
 		assertTrue(addBuildingPage.getInputNumber().isDisplayed());

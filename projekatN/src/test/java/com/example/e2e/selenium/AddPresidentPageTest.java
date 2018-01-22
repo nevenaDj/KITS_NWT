@@ -3,22 +3,24 @@ package com.example.e2e.selenium;
 import static org.junit.Assert.assertTrue;
 import static org.testng.AssertJUnit.assertEquals;
 
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-public class AddApartmentPageTest {
+public class AddPresidentPageTest {
 	private WebDriver browser;
 
 	LoginPage loginPage;
 	BuildingPage buildingPage;
 	AddBuildingPage addBuildingPage;
 	BuildingDetailPage buildigDetailPage;
-	AddApartmentPage addApartmentPage;
-	ApartmentDetailPage apartmentDetailPage;
+	AddPresidentPage addPresidentPage;
 
 	@BeforeMethod
 	public void setupSelenium() {
@@ -34,16 +36,14 @@ public class AddApartmentPageTest {
 		buildingPage = PageFactory.initElements(browser, BuildingPage.class);
 		addBuildingPage = PageFactory.initElements(browser, AddBuildingPage.class);
 		buildigDetailPage = PageFactory.initElements(browser, BuildingDetailPage.class);
-		addApartmentPage = PageFactory.initElements(browser, AddApartmentPage.class);
-		apartmentDetailPage = PageFactory.initElements(browser, ApartmentDetailPage.class);
+		addPresidentPage = PageFactory.initElements(browser, AddPresidentPage.class);
 
 	}
 
 	@Test
-	public void testAddApartment() {
+	public void testAddPresident() {
 		assertEquals("https://localhost:8443/#/login", browser.getCurrentUrl());
 
-		// login
 		loginPage.ensureIsDisplayed();
 
 		assertTrue(loginPage.getInputUsername().isDisplayed());
@@ -54,14 +54,12 @@ public class AddApartmentPageTest {
 
 		loginPage.getOkButton().click();
 
-		// home page for admin
 		buildingPage.ensureIsDisplayed();
 
 		assertEquals("https://localhost:8443/#/buildings", browser.getCurrentUrl());
 
 		int elements = buildingPage.getBuildingsElement().size();
 
-		// add new building
 		buildingPage.getNewElement().click();
 
 		assertEquals("https://localhost:8443/#/addBuilding", browser.getCurrentUrl());
@@ -78,7 +76,6 @@ public class AddApartmentPageTest {
 
 		addBuildingPage.getOkButton().click();
 
-		// building detail
 		buildigDetailPage.ensureIsDisplayed();
 
 		assertTrue(buildigDetailPage.getDivStreet().isDisplayed());
@@ -90,37 +87,35 @@ public class AddApartmentPageTest {
 		assertEquals(buildigDetailPage.getDivNumber().getText(), "1");
 		assertEquals(buildigDetailPage.getDivCity().getText(), "new city");
 		assertEquals(buildigDetailPage.getDivZipCode().getText(), "15000");
-
-		buildigDetailPage.getNewApartmentElement().click();
-
-		// add new apartment
-		addApartmentPage.ensureIsDisplayed();
-
-		assertTrue(addApartmentPage.getInputDescription().isDisplayed());
-		assertTrue(addApartmentPage.getInputNumber().isDisplayed());
-
-		addApartmentPage.setInputDescription("new apartment");
-		addApartmentPage.setInputNumber("15");
-
-		addApartmentPage.getOkButton().click();
-
-		apartmentDetailPage.ensureIsDisplayed();
-
-		assertTrue(apartmentDetailPage.getDivDescription().isDisplayed());
-		assertTrue(apartmentDetailPage.getDivNumber().isDisplayed());
-
-		assertEquals(apartmentDetailPage.getDivDescription().getText(), "new apartment");
-		assertEquals(apartmentDetailPage.getDivNumber().getText(), "15");
-
-		apartmentDetailPage.getDelteElement().click();
-
+		
+		buildigDetailPage.ensureIsDisplayedAddPresidentButton();
+		
+		buildigDetailPage.getAddPresidentElement().click();
+		
+		addPresidentPage.ensureIsDisplayed();
+		
+		assertTrue(addPresidentPage.getInputUsername().isDisplayed());
+		assertTrue(addPresidentPage.getInputPhoneNo().isDisplayed());
+		assertTrue(addPresidentPage.getInputEmail().isDisplayed());
+		
+		addPresidentPage.setInputUsername("new president");
+		addPresidentPage.setInputEmail("president@gmail.com");
+		addPresidentPage.setInputPhoneNo("123456");
+		
+		addPresidentPage.getOkButton().click();
+		
 		buildigDetailPage.ensureIsDisplayed();
-
-		buildigDetailPage.getDelteElement().click();
+        
+        ((JavascriptExecutor) browser).executeScript("window.scrollTo(0, 10)");
+        
+        buildigDetailPage.getDelteElement().click();
+		
 
 		buildingPage.ensureIsDisplayed();
 
 		assertEquals(buildingPage.getBuildingsElement().size(), elements);
+        
+        
 
 	}
 
@@ -129,5 +124,6 @@ public class AddApartmentPageTest {
 		// Shutdown the browser
 		browser.quit();
 	}
+
 
 }
