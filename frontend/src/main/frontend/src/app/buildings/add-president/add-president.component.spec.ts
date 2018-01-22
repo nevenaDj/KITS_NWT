@@ -6,17 +6,24 @@ import { By } from '@angular/platform-browser';
 import { AddPresidentComponent } from './add-president.component';
 import { BuildingService } from '../building.service';
 import { ActivatedRouteStub } from '../../testing/router-stubs';
+import { UserService } from '../../users/user.service';
 
 describe('AddPresidentComponent', () => {
   let component: AddPresidentComponent;
   let fixture: ComponentFixture<AddPresidentComponent>;
   let buildingService: any;
+  let userService: any;
   let route: any;
   let router: any;
 
   beforeEach(() => {
     let buildingServiceMock = {
       addPresident: jasmine.createSpy('addPresident')
+        .and.returnValue(Promise.resolve())
+    };
+
+    let userServiceMock = {
+      findUser: jasmine.createSpy('findUser')
         .and.returnValue(Promise.resolve())
     };
 
@@ -32,6 +39,7 @@ describe('AddPresidentComponent', () => {
       imports: [FormsModule],
       providers: [
         {provide: BuildingService, useValue: buildingServiceMock},
+        {provide: UserService, useValue: userServiceMock},
         {provide: ActivatedRoute, useValue: activateRouteStub},
         {provide: Router, useValue: routerMock}
       ]
@@ -40,6 +48,7 @@ describe('AddPresidentComponent', () => {
     fixture = TestBed.createComponent(AddPresidentComponent);
     component = fixture.componentInstance;
     buildingService = TestBed.get(BuildingService);
+    userService = TestBed.get(UserService);
     route = TestBed.get(ActivatedRoute);
     router = TestBed.get(Router);
   });
@@ -53,8 +62,12 @@ describe('AddPresidentComponent', () => {
     expect(buildingService.addPresident).toHaveBeenCalled();
     tick();
     expect(router.navigate).toHaveBeenCalled();
-
   }));
+
+  it('should find user', () => {
+    component.find();
+    expect(userService.findUser).toHaveBeenCalled();
+  });
 
   // a helper function to tell Angular that an event on the HTML page has happened
   function newEvent(eventName: string, bubbles = false, cancelable = false) {

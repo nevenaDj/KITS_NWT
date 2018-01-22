@@ -26,7 +26,7 @@ describe('ProfileUpdateComponent', () => {
   };
 
   let locationMock = {
-    back: jasmine.createSpy('back');
+    back: jasmine.createSpy('back')
   }
 
   beforeEach(async(() => {

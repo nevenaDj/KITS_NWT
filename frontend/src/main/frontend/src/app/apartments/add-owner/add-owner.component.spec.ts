@@ -26,8 +26,9 @@ describe('AddOwnerComponent', () => {
         .and.returnValue(Promise.resolve())
     }
 
-    let userServiceMock ={
-
+    let userServiceMock = {
+      findUser: jasmine.createSpy('findUser')
+        .and.returnValue(Promise.resolve())
     };
 
     let locationMock = {
@@ -67,8 +68,12 @@ describe('AddOwnerComponent', () => {
     expect(apartmentService.addOwner).toHaveBeenCalled();
     tick();
     expect(location.back).toHaveBeenCalled();
-
   }));
+
+  it('should find user', () => {
+    component.find();
+    expect(userService.findUser).toHaveBeenCalled();
+  });
 
   // a helper function to tell Angular that an event on the HTML page has happened
   function newEvent(eventName: string, bubbles = false, cancelable = false) {

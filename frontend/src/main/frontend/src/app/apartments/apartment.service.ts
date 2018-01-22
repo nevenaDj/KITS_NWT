@@ -70,6 +70,15 @@ export class ApartmentService {
             .catch(this.handleError);
    }
 
+   deleteOwner(apartmentID: number): Promise<Apartment>{
+     const url = `/api/apartments/${apartmentID}/owner`;
+     return this.http
+          .delete(url)
+          .toPromise()
+          .then(res => res)
+          .catch(this.handleError);
+   }
+
    findApartment(street: string, number: string, city: string, apartmentNumber: string): Promise<Apartment>{
      const httpParams = new HttpParams().set('street', street).set('number', number).set('city', city).set('number_apartment', apartmentNumber);
      const url = `/api/apartment`;

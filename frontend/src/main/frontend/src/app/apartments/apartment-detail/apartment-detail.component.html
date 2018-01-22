@@ -35,7 +35,10 @@
       <div class="row">
         <div class="col-lg-9 main-chart owner">
           <p class="title pFont">OWNER</p>
-            <a class="small-btn" *ngIf="!apartment.owner" (click)="gotoAddOwner()">Add owner</a>
+          <a class="small-btn" *ngIf="!apartment.owner" (click)="gotoAddOwner()">Add owner</a>
+          <button *ngIf="apartment.owner" (click)="deleteOwner()" class="btn btn-danger btn-xs pFont">
+            <i class="fa fa-trash-o "></i>
+          </button>
         </div>
       </div>
       <div class="row" *ngIf="apartment.owner">

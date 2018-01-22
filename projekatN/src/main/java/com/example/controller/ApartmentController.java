@@ -39,6 +39,7 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 
 import static com.example.utils.Constants.ROLE_OWNER;
+import static com.example.utils.Constants.ROLE_TENANT;
 
 @RestController
 @RequestMapping(value = "/api")
@@ -218,6 +219,29 @@ public class ApartmentController {
 		apartment = apartmentService.save(apartment);
 
 		return new ResponseEntity<>(new ApartmentDTO(apartment), HttpStatus.CREATED);
+	}
+
+	@RequestMapping(value = "/apartments/{id}/owner", method = RequestMethod.DELETE)
+	@ApiOperation(value = "Delete an apartment owner.", httpMethod = "DELETE")
+	@ApiImplicitParam(paramType = "header", name = "X-Auth-Token", required = true, value = "JWT token")
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "Success"),
+			@ApiResponse(code = 404, message = "Not found") })
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	/*** delete owner ***/
+	public ResponseEntity<ApartmentDTO> deleteTenant(
+			@ApiParam(value = "The ID of the apartment.", required = true) @PathVariable Long id) {
+
+		Apartment apartment = apartmentService.findOne(id);
+
+		if (apartment == null) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+
+		apartment.setOwner(null);
+		apartment = apartmentService.save(apartment);
+
+		return new ResponseEntity<>(new ApartmentDTO(apartment), HttpStatus.OK);
+
 	}
 
 	@RequestMapping(value = "/apartments/my", method = RequestMethod.GET)

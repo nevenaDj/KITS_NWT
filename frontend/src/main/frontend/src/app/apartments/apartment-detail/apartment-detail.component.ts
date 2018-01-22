@@ -63,6 +63,9 @@ export class ApartmentDetailComponent implements OnInit {
     this.router.navigate(['editApartment', this.apartment.id]);
   }
 
-  
+  deleteOwner(){
+    this.apartmentService.deleteOwner(this.apartment.id)
+        .then(apartment => this.apartment = apartment);
 
+  }
 }

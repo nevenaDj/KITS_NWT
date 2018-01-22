@@ -184,6 +184,18 @@ describe('ApartmentService', () => {
 
   });
 
+  it('deleteOwner() should query url and delete a owner', () => {
+    let apartmentID = 1;
+
+    this.apartmentService.deleteOwner(apartmentID).then((data)=> expect(data).toBeTruthy());
+
+    this.backend.expectOne((req: HttpRequest<any>) => {
+      return req.url === `/api/apartments/${apartmentID}/owner`
+          && req.method === 'DELETE'
+    }).flush(null, {status: 200, statusText: 'OK'});
+
+  });
+
   it('findApartment() should query url and return an apartment', () => {
     let apartment: Apartment = new Apartment({
       id: 1,

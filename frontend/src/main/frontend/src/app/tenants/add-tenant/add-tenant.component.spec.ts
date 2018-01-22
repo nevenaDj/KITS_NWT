@@ -7,11 +7,13 @@ import { By } from '@angular/platform-browser';
 import { AddTenantComponent } from './add-tenant.component';
 import { TenantService } from '../tenant.service';
 import { ActivatedRouteStub } from '../../testing/router-stubs';
+import { UserService } from '../../users/user.service';
 
 describe('AddTenantComponent', () => {
   let component: AddTenantComponent;
   let fixture: ComponentFixture<AddTenantComponent>;
   let tenantService: any;
+  let userService: any;
   let location: any;
   let route: any;
 
@@ -19,6 +21,11 @@ describe('AddTenantComponent', () => {
   beforeEach(() => {
     let tenantServiceMock = { 
       addTenant: jasmine.createSpy('addTenant')
+        .and.returnValue(Promise.resolve())
+    };
+
+    let userServiceMock = {
+      findUser: jasmine.createSpy('findUser')
         .and.returnValue(Promise.resolve())
     };
 
@@ -34,6 +41,7 @@ describe('AddTenantComponent', () => {
       imports: [FormsModule],
       providers: [
         {provide: TenantService, useValue: tenantServiceMock},
+        {provide: UserService, useValue: userServiceMock},
         {provide: ActivatedRoute, useValue: activatedRouteStub},
         {provide: Location, useValue: locationMock}
       ]
@@ -43,6 +51,7 @@ describe('AddTenantComponent', () => {
     fixture = TestBed.createComponent(AddTenantComponent);
     component = fixture.componentInstance;
     tenantService = TestBed.get(TenantService);
+    userService = TestBed.get(UserService);
     route = TestBed.get(ActivatedRoute);
     location = TestBed.get(Location);
   });
@@ -58,6 +67,11 @@ describe('AddTenantComponent', () => {
     expect(location.back).toHaveBeenCalled();
 
   }));
+
+  it('should find user', () => {
+    component.find();
+    expect(userService.findUser).toHaveBeenCalled();
+  });
 
   // a helper function to tell Angular that an event on the HTML page has happened
   function newEvent(eventName: string, bubbles = false, cancelable = false) {
