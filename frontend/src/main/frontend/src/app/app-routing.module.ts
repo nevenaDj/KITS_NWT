@@ -42,6 +42,8 @@ import { ProfileUpdateComponent } from './users/profile/profile-update/profile-u
 import { GlitchesComponent } from './glitches/glitches.component';
 import { AddGlitchComponent } from './glitches/add-glitch/add-glitch.component';
 import { GlitchDetailComponent } from './glitches/glitch-detail/glitch-detail.component';
+import { SendToTheOtherCompanyComponent } from './send-to-the-other-company/send-to-the-other-company.component';
+import { SendBillComponent } from './send-bill/send-bill.component';
 
 
 const routers: Routes = [
@@ -120,6 +122,14 @@ const routers: Routes = [
         { 
           path: 'company/activeGlitches/:id', 
           component: GlitchDetailsCompanyComponent, 
+        },
+        { 
+          path: 'company/activeGlitches/:id/send', 
+          component: SendToTheOtherCompanyComponent, 
+        },
+        { 
+          path: 'company/activeGlitches/:id/bill', 
+          component: SendBillComponent, 
         },
         { 
           path: 'company/pricelist', 

@@ -8,12 +8,17 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.example.model.Bill;
+import com.example.model.ItemInBill;
 import com.example.repository.BillRepository;
+import com.example.repository.ItemInBillRepository;
 
 @Service
 public class BillService {
 	@Autowired
 	BillRepository billRepository;
+	
+	@Autowired
+	ItemInBillRepository itemRepository;
 
 	public Bill findOne(Long id) {
 		return billRepository.findOne(id);
@@ -34,6 +39,10 @@ public class BillService {
 
 	public Bill save(Bill bill) {
 		return billRepository.save(bill);
+	}
+	
+	public ItemInBill saveItem(ItemInBill item) {
+		return itemRepository.save(item);
 	}
 
 	public void remove(Long id) {

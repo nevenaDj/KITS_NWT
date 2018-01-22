@@ -62,6 +62,8 @@ import { AddGlitchComponent } from './glitches/add-glitch/add-glitch.component';
 import { GlitchDetailComponent } from './glitches/glitch-detail/glitch-detail.component';
 import { OwlDateTimeModule, OwlNativeDateTimeModule } from 'ng-pick-datetime';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import { SendToTheOtherCompanyComponent } from './send-to-the-other-company/send-to-the-other-company.component';
+import { SendBillComponent } from './send-bill/send-bill.component';
 
 @NgModule({
   declarations: [
@@ -107,6 +109,8 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
     GlitchesComponent,
     AddGlitchComponent,
     GlitchDetailComponent,
+    SendToTheOtherCompanyComponent,
+    SendBillComponent,
     
   ],
   imports: [

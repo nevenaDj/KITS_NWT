@@ -356,7 +356,7 @@ public class GlitchController {
 	@ApiResponses(value = {
 			@ApiResponse(code = 200, message = "Ok", response = PricelistDTO.class, responseContainer = "List"),
 			@ApiResponse(code = 400, message = "Bad request") })
-	public ResponseEntity<List<PricelistDTO>> findPricelistsByGlitchType(
+	public ResponseEntity<List<UserDTO>> findCompanyByGlitchType(
 			@ApiParam(value = "The ID of the company.", required = true) @PathVariable Long id) {
 
 		Glitch glitch = glitchService.findOne(id);
@@ -365,32 +365,32 @@ public class GlitchController {
 		}
 
 		List<Pricelist> pricelist = pricelistService.findbyGlitchType(glitch.getType().getId());
-		List<PricelistDTO> pricelistDTO = new ArrayList<>();
+		List<UserDTO> usersDTO = new ArrayList<>();
 		for (Pricelist p : pricelist) {
-			PricelistDTO pDTO = new PricelistDTO(p);
-			pDTO.setCompany(new UserDTO(p.getCompany()));
-			pricelistDTO.add(pDTO);
+			UserDTO userDTO = new UserDTO(p.getCompany());
+			
+			usersDTO.add(userDTO);
 		}
 
-		return new ResponseEntity<>(pricelistDTO, HttpStatus.OK);
+		return new ResponseEntity<>(usersDTO, HttpStatus.OK);
 	}
 
-	@RequestMapping(value = "/glitches/{id}/company", method = RequestMethod.PUT, produces = "application/json", consumes = "application/json")
+	@RequestMapping(value = "/glitches/{id}/company/{company_id}", method = RequestMethod.PUT, produces = "application/json", consumes = "application/json")
 	@ApiOperation(value = "Choose a componany for a glitch.", notes = "Returns the glitch that was saved.", httpMethod = "PUT", produces = "application/json", consumes = "application/json")
 	@ApiImplicitParam(paramType = "header", name = "X-Auth-Token", required = true, value = "JWT token")
 	@ApiResponses(value = { @ApiResponse(code = 200, message = "Ok", response = GlitchDTO.class),
 			@ApiResponse(code = 400, message = "Bad request") })
-	@PreAuthorize("hasRole('ROLE_PRESIDENT')")
-	public ResponseEntity<GlitchDTO> chooseCompany(
-			@ApiParam(value = "The ID of the company.", required = true) @PathVariable Long id,
-			@ApiParam(value = "The UserDTO object", required = true) @RequestBody UserDTO companyDTO) {
+	@PreAuthorize("hasAnyRole('ROLE_COMPANY', 'ROLE_PRESIDENT')")
+	public ResponseEntity<GlitchDTO> setCompany(
+			@ApiParam(value = "The ID of the glich.", required = true) @PathVariable Long id,
+			@ApiParam(value = "The ID of the company.", required = true) @PathVariable Long company_id) {
 
 		Glitch glitch = glitchService.findOne(id);
 		if (glitch == null) {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 
-		User company = userService.findOne(companyDTO.getId());
+		User company = userService.findOne(company_id);
 		glitch.setCompany(company);
 		glitch = glitchService.save(glitch);
 
