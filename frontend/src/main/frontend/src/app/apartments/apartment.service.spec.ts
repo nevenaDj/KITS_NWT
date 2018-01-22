@@ -46,13 +46,15 @@ describe('ApartmentService', () => {
         id: 1,
         number: 1,
         description: 'apartment',
-        owner: null
+        owner: null,
+        building: null
       },
       {
         id: 2,
         number: 2,
         description: 'apartmet',
-        owner: null
+        owner: null,
+        building: null
       }
     ];
     

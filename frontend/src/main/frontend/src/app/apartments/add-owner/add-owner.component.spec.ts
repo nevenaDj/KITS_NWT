@@ -8,6 +8,7 @@ import { DebugElement } from '@angular/core';
 import { AddOwnerComponent } from './add-owner.component';
 import { ApartmentService } from '../apartment.service';
 import { ActivatedRouteStub } from '../../testing/router-stubs';
+import { UserService } from '../../users/user.service';
 
 
 
@@ -15,6 +16,7 @@ describe('AddOwnerComponent', () => {
   let component: AddOwnerComponent;
   let fixture: ComponentFixture<AddOwnerComponent>;
   let apartmentService: any;
+  let userService: any;
   let route: any;
   let location: any;
 
@@ -23,6 +25,10 @@ describe('AddOwnerComponent', () => {
       addOwner: jasmine.createSpy('addOwner')
         .and.returnValue(Promise.resolve())
     }
+
+    let userServiceMock ={
+
+    };
 
     let locationMock = {
       back: jasmine.createSpy('back')
@@ -36,6 +42,7 @@ describe('AddOwnerComponent', () => {
       imports: [FormsModule],
       providers: [
         {provide: ApartmentService, useValue: apartmentServiceMock},
+        {provide: UserService, useValue: userServiceMock},
         {provide: ActivatedRoute, useValue: activateRouteStub},
         {provide: Location, useValue: locationMock}
       ]
@@ -44,6 +51,7 @@ describe('AddOwnerComponent', () => {
     fixture = TestBed.createComponent(AddOwnerComponent);
     component = fixture.componentInstance;
     apartmentService = TestBed.get(ApartmentService);
+    userService = TestBed.get(UserService);
     route = TestBed.get(ActivatedRoute);
     location = TestBed.get(Location);
   });

@@ -64,7 +64,8 @@ describe('RegisterComponent', () => {
       id: 1,
       description: 'apartment',
       number: 1,
-      owner: null
+      owner: null,
+      building: null
     }
     component.save()
     expect(userService.registration).toHaveBeenCalled();
