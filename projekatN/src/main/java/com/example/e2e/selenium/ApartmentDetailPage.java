@@ -19,7 +19,13 @@ public class ApartmentDetailPage {
 	private WebElement delteElement;
 
 	@FindBy(id = "new")
-	private WebElement newApartmentElement;
+	private WebElement newTenantElement;
+
+	@FindBy(className = "small-btn")
+	private WebElement addOwnerElement;
+	
+	@FindBy(className = "tenant")
+	private WebElement tenantElement;
 
 	public ApartmentDetailPage(WebDriver webDriver) {
 		this.driver = webDriver;
@@ -27,6 +33,15 @@ public class ApartmentDetailPage {
 
 	public void ensureIsDisplayed() {
 		(new WebDriverWait(driver, 10)).until(ExpectedConditions.elementToBeClickable(delteElement));
+
+	}
+
+	public void ensureIsDisplayedAddOwnerButton() {
+		(new WebDriverWait(driver, 10)).until(ExpectedConditions.elementToBeClickable(addOwnerElement));
+	}
+	
+	public void ensureIsDisplayedTenant() {
+		(new WebDriverWait(driver, 10)).until(ExpectedConditions.elementToBeClickable(tenantElement));
 
 	}
 
@@ -42,8 +57,17 @@ public class ApartmentDetailPage {
 		return delteElement;
 	}
 
-	public WebElement getNewApartmentElement() {
-		return newApartmentElement;
+	public WebElement getNewTenantElement() {
+		return newTenantElement;
 	}
+
+	public WebElement getAddOwnerElement() {
+		return addOwnerElement;
+	}
+
+	public WebElement getTenantElement() {
+		return tenantElement;
+	}
+	
 
 }

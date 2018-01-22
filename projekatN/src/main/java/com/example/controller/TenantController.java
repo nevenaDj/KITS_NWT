@@ -109,8 +109,8 @@ public class TenantController {
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	/*** delete tenant ***/
 	public ResponseEntity<Void> deleteTenant(
-			@ApiParam(value = "The ID of the apartment.", required = true) @PathVariable Long idApartment,
-			@ApiParam(value = "The ID of the tenant.", required = true) @PathVariable Long id) {
+			@ApiParam(value = "The ID of the apartment.", required = true) @PathVariable("idApartment") Long idApartment,
+			@ApiParam(value = "The ID of the tenant.", required = true) @PathVariable("id") Long id) {
 		User user = userService.findOne(id);
 		if (user == null) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);

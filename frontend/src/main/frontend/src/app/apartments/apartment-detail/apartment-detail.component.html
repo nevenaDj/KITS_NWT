@@ -71,7 +71,7 @@
       <div *ngFor="let tenant of tenants">
         <div class="weather pn">
           <i class="fa fa-home"></i>
-          <h2><a (click)="gotoGetTenant(tenant.id)">{{tenant.username}}</a></h2>
+          <h2><a class="tenant" (click)="gotoGetTenant(tenant.id)">{{tenant.username}}</a></h2>
           <h4></h4>
         </div> 
       </div>

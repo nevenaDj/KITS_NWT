@@ -45,6 +45,8 @@ import { HomeAdminComponent } from './home-admin/home-admin.component';
 import { AddSurveyComponent } from './surveys/add-survey/add-survey.component';
 import { SurveyDetailComponent } from './surveys/survey-detail/survey-detail.component';
 import { AddAnswerComponent } from './surveys/add-answer/add-answer.component';
+import { SendToTheOtherCompanyComponent } from './send-to-the-other-company/send-to-the-other-company.component';
+import { SendBillComponent } from './send-bill/send-bill.component';
 
 
 const routers: Routes = [
