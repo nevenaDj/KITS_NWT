@@ -63,6 +63,16 @@ public class ItemInBill {
 		super();
 
 	}
+
+	public Bill getBill() {
+		return bill;
+	}
+
+	public void setBill(Bill bill) {
+		this.bill = bill;
+	}
+	
+	
 	
 
 }

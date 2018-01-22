@@ -3,6 +3,7 @@ import { Apartment } from "./apartment";
 import { User } from "./user";
 import { GlitchType } from "./glitch-type";
 import { GlitchState } from "./glitch-state";
+import { Bill } from "./bill";
 
 export class Glitch implements GlitchInterface{
     public id: number;
@@ -13,7 +14,8 @@ export class Glitch implements GlitchInterface{
     public responsiblePerson: User;
     public type: GlitchType;
     public state: GlitchState;
-    // Bill bill
+    public companyID: number;
+    public bill: Bill;
   	public repairApproved: boolean;
 		
 	constructor(glitchCfg:GlitchInterface)
@@ -26,6 +28,8 @@ export class Glitch implements GlitchInterface{
         this.responsiblePerson = glitchCfg.responsiblePerson;
         this.type = glitchCfg.type;
         this.state = glitchCfg.state;
+        this.companyID= glitchCfg.companyID;
+        this.bill= this.bill;
         this.repairApproved = glitchCfg.repairApproved;
 	}
 }
@@ -40,4 +44,6 @@ interface GlitchInterface{
     type: GlitchType;
     state?: GlitchState;
     repairApproved?: boolean;
+    companyID: number;
+    bill: Bill;
 }

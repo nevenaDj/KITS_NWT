@@ -7,6 +7,7 @@ import { DropdownModule } from 'ngx-dropdown';
 import { OwlDateTimeModule, OwlNativeDateTimeModule } from 'ng-pick-datetime';
 
 import { SurveyService } from './surveys/survey.service';
+import {GlitchDataService} from './glitch-details-company/glitch-data.service'
 import { GlitchService } from './glitches/glitch.service';
 import { TokenInterceptorService } from './services/token-interceptor.service';
 import { PagerService } from './services/pager.service';
@@ -64,8 +65,10 @@ import { GlitchDetailComponent } from './glitches/glitch-detail/glitch-detail.co
 import { AddSurveyComponent } from './surveys/add-survey/add-survey.component';
 import { SurveyDetailComponent } from './surveys/survey-detail/survey-detail.component';
 import { AddAnswerComponent } from './surveys/add-answer/add-answer.component';
-
-
+import { OwlDateTimeModule, OwlNativeDateTimeModule } from 'ng-pick-datetime';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import { SendToTheOtherCompanyComponent } from './send-to-the-other-company/send-to-the-other-company.component';
+import { SendBillComponent } from './send-bill/send-bill.component';
 
 @NgModule({
   declarations: [
@@ -113,6 +116,10 @@ import { AddAnswerComponent } from './surveys/add-answer/add-answer.component';
     AddSurveyComponent,
     SurveyDetailComponent,
     AddAnswerComponent
+    GlitchDetailComponent,
+    SendToTheOtherCompanyComponent,
+    SendBillComponent,
+    
   ],
   imports: [
     BrowserModule,
@@ -140,6 +147,7 @@ import { AddAnswerComponent } from './surveys/add-answer/add-answer.component';
     PagerService,
     GlitchService,
     SurveyService,
+    GlitchDataService,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: TokenInterceptorService,
