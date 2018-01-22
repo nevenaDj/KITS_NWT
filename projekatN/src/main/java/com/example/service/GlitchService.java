@@ -93,4 +93,8 @@ public class GlitchService {
 		List<Glitch> glitches = glitchRepository.findGlitchesOfTenantAll(user.getId());
 		return glitches.size();
 	}
+	
+	public GlitchState findGlitchState(Long id){
+		return glitchStateRepository.findOne(id);
+	}
 }

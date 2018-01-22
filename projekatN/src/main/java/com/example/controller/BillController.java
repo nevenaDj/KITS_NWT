@@ -23,9 +23,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.dto.BillDTO;
 import com.example.dto.GlitchDTO;
+import com.example.dto.ItemInBillDTO;
 import com.example.model.Apartment;
 import com.example.model.Bill;
 import com.example.model.Glitch;
+import com.example.model.GlitchState;
+import com.example.model.ItemInBill;
 import com.example.model.User;
 import com.example.security.TokenUtils;
 import com.example.service.ApartmentService;
@@ -81,18 +84,26 @@ public class BillController {
 		if (glitch == null) {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
-
+		
 		String token = request.getHeader("X-Auth-Token");
 		String username = tokenUtils.getUsernameFromToken(token);
 
 		User company = userService.findByUsername(username);
 		bill.setCompany(company);
-
 		bill = billService.save(bill);
 		billDTO.setId(bill.getId());
-
+		
+		GlitchState state= glitchService.findGlitchState(3L);
+		glitch.setState(state);
 		glitch.setBill(bill);
 		glitchService.save(glitch);
+		
+		System.out.println("itemsize:"+billDTO.getItems().size());
+		for (ItemInBillDTO itemDTO: billDTO.getItems()){
+			ItemInBill item = ItemInBillDTO.getItemInBill(itemDTO);
+			item.setBill(bill);
+			billService.saveItem(item);
+		}
 
 		return new ResponseEntity<>(billDTO, HttpStatus.CREATED);
 	}

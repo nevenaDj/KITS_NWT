@@ -125,6 +125,14 @@ const routers: Routes = [
           component: GlitchDetailsCompanyComponent, 
         },
         { 
+          path: 'company/activeGlitches/:id/send', 
+          component: SendToTheOtherCompanyComponent, 
+        },
+        { 
+          path: 'company/activeGlitches/:id/bill', 
+          component: SendBillComponent, 
+        },
+        { 
           path: 'company/pricelist', 
           component: PricelistCompanyComponent, 
         },

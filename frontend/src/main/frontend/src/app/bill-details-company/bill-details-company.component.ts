@@ -16,6 +16,7 @@ export class BillDetailsCompanyComponent implements OnInit {
   company: User;
   subscription: Subscription;
   bill: Bill;
+  height: number=0;
 
   constructor(private router: Router,
               private route:ActivatedRoute,
@@ -45,6 +46,7 @@ export class BillDetailsCompanyComponent implements OnInit {
     this.companyService.getBill(+this.route.snapshot.params['id'])
         .then(bill => {
           this.bill = bill;
+          this.height=50+bill.items.length*50;
           console.log(bill);
         }
       );
