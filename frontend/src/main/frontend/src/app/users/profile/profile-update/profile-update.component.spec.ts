@@ -1,6 +1,7 @@
 import { async, ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
+import { Location } from '@angular/common';
 
 import { ProfileUpdateComponent } from './profile-update.component';
 import { UserService } from '../../user.service';
@@ -11,6 +12,7 @@ describe('ProfileUpdateComponent', () => {
   let fixture: ComponentFixture<ProfileUpdateComponent>;
   let userService: any;
   let router: any;
+  let location: any;
 
   let userServiceMock = {
     getCurrentUser: jasmine.createSpy('getCurrentUser')
@@ -23,13 +25,18 @@ describe('ProfileUpdateComponent', () => {
     navigate: jasmine.createSpy('navigate')
   };
 
+  let locationMock = {
+    back: jasmine.createSpy('back');
+  }
+
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ ProfileUpdateComponent ],
       imports: [FormsModule],
       providers: [
         {provide: UserService, useValue: userServiceMock},
-        {provide: Router, useValue: routerMock}
+        {provide: Router, useValue: routerMock},
+        {provide: Location, useValue: locationMock}
       ]
     })
     .compileComponents();

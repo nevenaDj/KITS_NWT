@@ -25,4 +25,14 @@
     -webkit-border-radius: 5px;
     -moz-border-radius: 5px;
     border-radius: 5px;
-  }
+}
+
+.subtitle{
+    margin-left: 80px;
+}
+
+.tab{
+    margin-left: 2%;
+    width: 70%;
+}
+

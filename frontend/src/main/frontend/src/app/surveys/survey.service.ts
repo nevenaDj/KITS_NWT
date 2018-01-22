@@ -27,7 +27,7 @@ export class SurveyService {
   }
 
   addAnswer(surveyID: number,answers: Answer[]): Promise<Answer[]>{
-    const url = `api/surveys/${surveyID}/answers`;
+    const url = `/api/surveys/${surveyID}/answers`;
     return this.http
         .post<Answer[]>(url, answers)
         .toPromise()

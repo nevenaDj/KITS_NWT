@@ -4,6 +4,7 @@ import { Location } from '@angular/common';
 
 import { User } from '../../models/user';
 import { TenantService } from '../../tenants/tenant.service';
+import { UserService } from '../../users/user.service';
 
 
 @Component({
@@ -15,10 +16,13 @@ export class AddTenantComponent implements OnInit {
 
   tenant: User;
   apartmentID: number;
+  username: string;
+  user: User;
 
   constructor(private route: ActivatedRoute,
               private location: Location,
-              private tenantService: TenantService) {
+              private tenantService: TenantService,
+              private userService: UserService) {
     this.tenant = {
       id: null,
       username: '',
@@ -28,6 +32,7 @@ export class AddTenantComponent implements OnInit {
       address: null
     }
     this.apartmentID = this.route.snapshot.params['id'];
+    this.user = null;
   }
 
   ngOnInit() {
@@ -35,6 +40,17 @@ export class AddTenantComponent implements OnInit {
 
   save(): void{
     this.tenantService.addTenant(this.apartmentID, this.tenant)
+        .then(tenant => this.location.back());
+  }
+
+  find(): void {
+    this.user = null;
+    this.userService.findUser(this.username)
+        .then(user => this.user = user);
+  }
+
+  add(): void {
+    this.tenantService.addTenant(this.apartmentID, this.user)
         .then(tenant => this.location.back());
   }
 

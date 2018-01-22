@@ -60,12 +60,13 @@ describe('RegisterComponent', () => {
   });
 
   it('should call save()', fakeAsync(() => {
-    component.apartment = {
-      id: 1,
-      description: 'apartment',
-      number: 1,
-      owner: null,
-      building: null
+    component.user = {
+      apartmentId: 1,
+      email: '',
+      phoneNo: '',
+      password: '',
+      password2: '',
+      username: ''
     }
     component.save()
     expect(userService.registration).toHaveBeenCalled();
