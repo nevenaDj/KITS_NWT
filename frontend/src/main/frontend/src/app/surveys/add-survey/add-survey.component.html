@@ -18,22 +18,29 @@
         </div>
       </div>
       <div class="row">
-        <div class="col-lg-1"></div>
-        <div class="col-lg-10 border">
-          <div class="border-title">Date end </div>
-          <div class="box">
+          <div class="col-lg-1"></div>
+          <div class="col-lg-5 border">
+            <div class="border-title">Date end</div>
             <div class="container-4">
-              <input [owlDateTime]="dt1" [owlDateTimeTrigger]="dt1" placeholder="Date Time">
-              <owl-date-time #dt1></owl-date-time>
+                <input [owlDateTime]="dt1" [owlDateTimeTrigger]="dt1" placeholder="Date Time">
+                <owl-date-time #dt1></owl-date-time>
             </div>
           </div>
-        </div>
-      </div>
+      </div> 
       <div *ngFor="let question of survey.questions; let i=index">
       <div class="row">
           <div class="col-lg-9 main-chart">
-            <p class="title">QUESTION {{i+1}} <button (click)="deleteQuestion(i)" class="btn btn-danger btn-xs"><i class="fa fa-trash-o "></i></button> </p>
+            <p class="title">QUESTION {{i+1}} 
+              <button (click)="deleteQuestion(i)" class="btn btn-danger btn-xs"><i class="fa fa-trash-o "></i>
+              </button> 
+              &nbsp; &nbsp; &nbsp; &nbsp;
+              <select [(ngModel)]="question.type" [ngModelOptions]="{standalone: true}">
+                  <option selected>checkbox</option>
+                  <option>radio</option>
+              </select>
+            </p>
           </div>
+          
         </div >
         <div class="row">
           

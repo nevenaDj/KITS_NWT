@@ -174,10 +174,10 @@ const routers: Routes = [
   {
     path:'president',
     component: HomePresidentComponent,
-    canActivate: [AuthGuardService,RoleGuardService], 
+    /* canActivate: [AuthGuardService,RoleGuardService], 
     data: { 
       expectedRole: 'ROLE_PRESIDENT'
-    },
+    }, */
     children: [
       {path: 'meeting/:id/addSurvey', component: AddSurveyComponent},
       {path: 'surveys/:id', component: SurveyDetailComponent}

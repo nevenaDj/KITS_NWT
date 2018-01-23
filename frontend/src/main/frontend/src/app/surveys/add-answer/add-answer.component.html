@@ -34,7 +34,9 @@
           <div class="col-lg-10">
               <ul>
                 <li *ngFor="let option of question.options; let j=index"> 
-                    <input id="check" type="checkbox" name="isChecked" [(ngModel)]="questionAnswer[i].optionAnswers[j].isChecked"/>
+                    <input *ngIf="question.type === 'checkbox'" id="check" type="checkbox" name="isChecked" [(ngModel)]="questionAnswer[i].optionAnswers[j].isChecked"/>
+                    <input *ngIf="question.type === 'radio'" id="radio" type="radio" name="{{question.id}}" (click)="onChange(question.id, option.id)"/>
+                    
                     <div class="lists">
                         <div class="first">{{j+1}}</div> 
                         <div class="sec">{{option.text}}</div>

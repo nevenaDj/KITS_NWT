@@ -3,6 +3,7 @@ import { Option } from "./option";
 export class Question implements QuestionInterface{
     public id: number;
     public text: string;
+    public type: string;
     public options: Option[];
    
 		
@@ -10,6 +11,7 @@ export class Question implements QuestionInterface{
 	{	
         this.id = questionCfg.id;
         this.text = questionCfg.text;  
+        this.type = questionCfg.type;
         this.options = questionCfg.options;      
 	}
 }
@@ -17,6 +19,7 @@ export class Question implements QuestionInterface{
 interface QuestionInterface{
     id?: number;
     text: string;
+    type: string;
     options: Option[];
     
 }

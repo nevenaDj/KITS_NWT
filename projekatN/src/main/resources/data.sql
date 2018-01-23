@@ -44,8 +44,8 @@ insert into meeting (building_id, date_and_time, active) values (1,'2017-11-11',
 
 insert into survey (title, end, meeting_id) values ('survey','2017-12-12',1);
 
-insert into question (text, survey_id) values ('question 1', 1);
-insert into question (text, survey_id) values ('question 2', 1);
+insert into question (text, type, survey_id) values ('question 1', 'checkbox', 1);
+insert into question (text, type, survey_id) values ('question 2', 'radio', 1);
 
 insert into question_option (text, question_id) values ('option 1', 1);
 insert into question_option (text, question_id) values ('option 2', 1);

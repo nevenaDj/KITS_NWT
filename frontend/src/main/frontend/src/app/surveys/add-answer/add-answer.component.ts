@@ -38,6 +38,7 @@ export class AddAnswerComponent implements OnInit {
           for(let question of survey.questions){
             this.questionAnswer.push(new QuestionAnswer({
               id: question.id,
+              type: question.type,
               optionAnswers: []
             }));
             for(let option of question.options){
@@ -82,6 +83,24 @@ export class AddAnswerComponent implements OnInit {
       this.surveyService.addAnswer(this.survey.id, answers)
           .then(answers => console.log(answers));
     }
+  }
+
+  onChange(questionID: number, optionID: number){
+    console.log(questionID);
+    console.log(optionID);
+    console.log(this.questionAnswer);
+    for(let qA of this.questionAnswer){
+      if (qA.id === questionID){
+        for(let oA of qA.optionAnswers){
+          if(oA.id === optionID){
+            oA.isChecked = true;
+          }else{
+            oA.isChecked = false;
+          }
+        }
+      }
+    }
+    console.log(this.questionAnswer);
   }
 
 }

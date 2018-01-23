@@ -26,6 +26,7 @@ export class AddSurveyComponent implements OnInit {
         {
         id:null,
         text: '',
+        type: 'checkbox',
         options: [
           {
             id: null,
@@ -49,6 +50,7 @@ export class AddSurveyComponent implements OnInit {
     this.survey.questions.push(
       new Question({
         text: '',
+        type: 'checkbox',
         options: [
           {
             id: null,

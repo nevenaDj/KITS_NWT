@@ -126,6 +126,11 @@ public class SurveyController {
 				return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 			}
 
+			if (question.getType().equals("radio")){
+				if (answerDTO.getOptions().size() != 1){
+					return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+				}
+			}
 			for (Long optionID : answerDTO.getOptions()) {
 				Option option = optionService.findOne(optionID);
 				if (option == null) {

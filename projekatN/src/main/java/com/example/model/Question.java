@@ -18,19 +18,22 @@ public class Question {
 
 	private String text;
 
+	private String type;
+
 	@ManyToOne(fetch = FetchType.LAZY)
 	private Survey survey;
-	@OneToMany(mappedBy = "question", fetch = FetchType.EAGER, orphanRemoval=true)
+	@OneToMany(mappedBy = "question", fetch = FetchType.EAGER, orphanRemoval = true)
 	private Set<Option> options = new HashSet<>();
 
 	public Question() {
 
 	}
 
-	public Question(Long id, String text, Survey survey) {
+	public Question(Long id, String text, String type, Survey survey) {
 		super();
 		this.id = id;
 		this.text = text;
+		this.type = type;
 		this.survey = survey;
 	}
 
@@ -64,6 +67,14 @@ public class Question {
 
 	public void setOptions(Set<Option> options) {
 		this.options = options;
+	}
+
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
 	}
 
 }
