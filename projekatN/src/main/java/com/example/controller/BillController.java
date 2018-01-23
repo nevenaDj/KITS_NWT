@@ -26,6 +26,7 @@ import com.example.dto.GlitchDTO;
 import com.example.dto.ItemInBillDTO;
 import com.example.model.Apartment;
 import com.example.model.Bill;
+import com.example.model.Building;
 import com.example.model.Glitch;
 import com.example.model.GlitchState;
 import com.example.model.ItemInBill;
@@ -33,6 +34,7 @@ import com.example.model.User;
 import com.example.security.TokenUtils;
 import com.example.service.ApartmentService;
 import com.example.service.BillService;
+import com.example.service.BuildingService;
 import com.example.service.GlitchService;
 import com.example.service.UserService;
 
@@ -54,6 +56,8 @@ public class BillController {
 	GlitchService glitchService;
 	@Autowired
 	BillService billService;
+	@Autowired
+	BuildingService buildingService;
 	@Autowired
 	TokenUtils tokenUtils;
 
@@ -207,6 +211,38 @@ public class BillController {
 		return new ResponseEntity<>(billsDTO, HttpStatus.OK);
 	}
 	
+	@RequestMapping(value = "users/{id}/bills", method = RequestMethod.GET, produces = "application/json")
+	@ApiOperation(value = "Get the bills.", notes = "Returns the bill being saved.",
+		httpMethod = "GET", produces = "application/json", consumes = "application/json")
+	@ApiResponses(value = { 
+		@ApiResponse(code = 200, message = "Ok", response=BillDTO.class),
+		@ApiResponse(code = 404, message = "Not found")})
+	@PreAuthorize("hasRole('ROLE_PRESIDENT')")
+	public ResponseEntity<List<BillDTO>> getBillsByBuilding(
+			Pageable page, 
+			@ApiParam(value = "The ID of the president.", required = true) @PathVariable("id") Long id) {
+
+		User president = userService.findOne(id);
+		if (president==null)
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		
+		Page<Bill> billsPage = billService.findAllByPresident(page,id);
+		System.out.println("length:"+billsPage.getTotalElements());
+		List<Bill> bills =billsPage.getContent();
+		System.out.println("length:"+bills.size());
+		List<BillDTO> billsDTO = new ArrayList<>();
+
+		for (Bill bill : bills) {
+			System.out.println("in");
+			billsDTO.add(new BillDTO(bill));
+		}
+		System.out.println("length:"+billsDTO.size());
+		
+		System.out.println("vege");
+		return new ResponseEntity<>(billsDTO, HttpStatus.OK);
+	}
+	
+	
 	@RequestMapping(value = "/apartments/{ap_id}/glitches/{glitch_id}/bill", method = RequestMethod.GET, produces = "application/json")
 	@ApiOperation(value = "Get the bill by id.", notes = "Returns the bill being saved.",
 		httpMethod = "GET", produces = "application/json", consumes = "application/json")
@@ -326,6 +362,24 @@ public class BillController {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}else{
 			Long count = billService.getCountOfBill(id);
+			System.out.println("count:"+count);
+			return new ResponseEntity<>(count, HttpStatus.OK);
+		}
+		
+	}
+	
+	@RequestMapping(value = "users/{id}/bills/count", method = RequestMethod.GET)
+	@ApiOperation(value = "Get a count of bills by a company.", httpMethod = "GET")
+	@ApiImplicitParam(paramType = "header", name = "X-Auth-Token", required = true, value = "JWT token")
+	@ApiResponse(code = 200, message = "Success")
+	/*** get a count of buildings ***/
+	public ResponseEntity<Long> getCountOfBillByUser(@ApiParam(value = "The ID of the user.", required = true) @PathVariable("id") Long id) {
+		
+		User president= userService.findOne(id);
+		if (president==null){
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}else{
+			Long count = billService.getCountOfBillByUser(id);
 			System.out.println("count:"+count);
 			return new ResponseEntity<>(count, HttpStatus.OK);
 		}

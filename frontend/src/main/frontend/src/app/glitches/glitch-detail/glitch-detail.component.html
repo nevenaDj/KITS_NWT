@@ -30,14 +30,39 @@
         <div class="col-lg-1"></div>
         <div class="col-lg-5 border">
           <div class="border-title">date of report</div>
-          <div class="border-desc">{{glitch.dateOfReport}}</div>
+          <div class="border-desc">{{glitch.dateOfReport | date}}</div>
         </div>
-        <div class="col-lg-5 border">
-          <div class="border-title">
+        <div class="col-lg-5 border" *ngIf="glitch.repairApproved">
+          <div class="border-title" >
             date of repair
           </div>
-          <div class="border-desc">{{glitch.dateOfRepair}}</div>
+          <div class="border-desc">{{glitch.dateOfRepair | date : "dd.MM.y HH:mm"}}</div>
         </div>
+        <div class="col-lg-5 border" *ngIf="!glitch.repairApproved">
+          <div *ngIf="glitch.dateOfRepair==null">
+            <div class="border-title" >
+              date of repair
+            </div>
+            <div class="border-desc">{{glitch.dateOfRepair | date : "dd.MM.y HH:mm"}}</div>
+          </div>
+          <div *ngIf="glitch.dateOfRepair!=null">
+              <div class="border-title" >
+                  date of repair - {{glitch.dateOfRepair | date : "dd.MM.y HH:mm"}}
+                </div>
+                <div class="full-button" *ngIf="glitch.responsiblePerson.username==username">
+                    <input type="text"  class="save-button-text" value="Approve the date" (click)="approve()">
+                 </div>
+            </div>
+        </div>
+        </div>
+        <div class="row" *ngIf="changeResponsiblePerson">
+            <div class="col-lg-1"></div>
+            <div class="col-lg-10 border">
+              <div class="border-title"></div>
+              <div class="full-button" style="background: #cbc5c1">
+                    <input type="text" style="background: #cbc5c1" class="save-button-text" value="Change responsible person..." (click)="sendToOtherUser()">
+                 </div>
+            </div>
         </div>
       <br><br>
       <div class="row" *ngFor="let comment of comments">

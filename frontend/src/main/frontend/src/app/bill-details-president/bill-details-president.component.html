@@ -1,0 +1,50 @@
+<div class="row">
+  <div class="col-lg-9 main-chart">
+    <p class="title">BILL DETAILS</p>
+  </div>
+</div>
+<div class="row">
+
+  <div class="col-lg-9 main-chart">
+    <div class="row">
+      <div class="col-lg-1"></div>
+      <div class="col-lg-5 border">
+        <div class="border-title">DATE</div>
+        <div class="border-desc">{{bill.date | date}}</div>
+      </div>
+      <div class="col-lg-5 border">
+        
+      </div>
+
+    </div>
+    
+    <div class="row">
+      <div class="col-lg-1"></div>
+      <div class="col-lg-10 border2" [style.height]="height+'px'">
+        <div class="border-title">ITEMS</div>
+        <div *ngFor="let item of bill.items" class="border-desc">
+          {{item.nameOfItem}}  
+          
+          <div class="border-title-hover" style="float:right;">{{item.price}}  </div>
+          <div class="border-title-hover" style="float:right; margin-right:10%;">{{item.piece}}  </div>
+        </div>
+        
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-lg-1"></div>
+      <div class="col-lg-5 border" >
+          <div class="border-title"></div>
+          <div class="full-button" *ngIf="!bill.approved">
+              <input type="text"  class="save-button-text" value="Approve the bill" (click)="approveBill()">
+           </div>
+              <div *ngIf="bill.approved" class="border-desc">approved</div>
+      </div>
+      <div class="col-lg-5 border">
+        <div class="border-title">Price</div>
+        <div class="border-desc">{{bill.price}}</div>
+      </div>
+
+    </div>
+  </div>
+</div>

@@ -47,6 +47,12 @@ import { SurveyDetailComponent } from './surveys/survey-detail/survey-detail.com
 import { AddAnswerComponent } from './surveys/add-answer/add-answer.component';
 import { SendToTheOtherCompanyComponent } from './send-to-the-other-company/send-to-the-other-company.component';
 import { SendBillComponent } from './send-bill/send-bill.component';
+import { SendToTheOtherCompanyComponent } from './send-to-the-other-company/send-to-the-other-company.component';
+import { SendBillComponent } from './send-bill/send-bill.component';
+import { BillsPresidentComponent } from './bills-president/bills-president.component';
+import { BillDetailsPresidentComponent } from './bill-details-president/bill-details-president.component';
+import { ResponsibilitiesComponent } from './glitches/responsibilities/responsibilities.component';
+import { ChangeResponsiblePersonComponent } from './glitches/change-responsible-person/change-responsible-person.component';
 
 
 const routers: Routes = [
@@ -157,7 +163,9 @@ const routers: Routes = [
       { path: 'update', component: ProfileUpdateComponent},
       { path: 'glitches', component: GlitchesComponent},
       { path: 'glitches/:id', component: GlitchDetailComponent},
-      { path: 'addGlitch', component: AddGlitchComponent}
+      { path: 'addGlitch', component: AddGlitchComponent},
+      { path: 'myResponsiblities', component:ResponsibilitiesComponent },
+      { path: 'myResponsiblities/:id', component:GlitchDetailComponent }
     ]
   },
   {
@@ -174,13 +182,18 @@ const routers: Routes = [
   {
     path:'president',
     component: HomePresidentComponent,
-    /* canActivate: [AuthGuardService,RoleGuardService], 
+     canActivate: [AuthGuardService,RoleGuardService], 
     data: { 
       expectedRole: 'ROLE_PRESIDENT'
-    }, */
+    },
     children: [
       {path: 'meeting/:id/addSurvey', component: AddSurveyComponent},
-      {path: 'surveys/:id', component: SurveyDetailComponent}
+      {path: 'surveys/:id', component: SurveyDetailComponent},
+      {path: 'bills', component: BillsPresidentComponent},
+      {path: 'bills/:id', component: BillDetailsPresidentComponent},
+      { path: 'responsiblities', component:ResponsibilitiesComponent },
+      { path: 'responsiblities/:id', component:GlitchDetailComponent },
+      { path: 'responsiblities/:id/change', component:ChangeResponsiblePersonComponent }
     ]
   },
   {

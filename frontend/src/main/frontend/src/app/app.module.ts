@@ -67,6 +67,11 @@ import { SurveyDetailComponent } from './surveys/survey-detail/survey-detail.com
 import { AddAnswerComponent } from './surveys/add-answer/add-answer.component';
 import { SendToTheOtherCompanyComponent } from './send-to-the-other-company/send-to-the-other-company.component';
 import { SendBillComponent } from './send-bill/send-bill.component';
+import { BillsPresidentComponent } from './bills-president/bills-president.component';
+import { BillsDataService } from './bills-president/bills-data.service';
+import { BillDetailsPresidentComponent } from './bill-details-president/bill-details-president.component';
+import { ResponsibilitiesComponent } from './glitches/responsibilities/responsibilities.component';
+import { ChangeResponsiblePersonComponent } from './glitches/change-responsible-person/change-responsible-person.component';
 
 @NgModule({
   declarations: [
@@ -117,6 +122,10 @@ import { SendBillComponent } from './send-bill/send-bill.component';
     GlitchDetailComponent,
     SendToTheOtherCompanyComponent,
     SendBillComponent,
+    BillsPresidentComponent,
+    BillDetailsPresidentComponent,
+    ResponsibilitiesComponent,
+    ChangeResponsiblePersonComponent,
     
   ],
   imports: [
@@ -146,6 +155,7 @@ import { SendBillComponent } from './send-bill/send-bill.component';
     GlitchService,
     SurveyService,
     GlitchDataService,
+    BillsDataService,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: TokenInterceptorService,

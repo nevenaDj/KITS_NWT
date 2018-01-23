@@ -39,6 +39,7 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 
 import static com.example.utils.Constants.ROLE_TENANT;
+import static com.example.utils.Constants.TOKEN;
 
 @RestController
 @RequestMapping(value = "/api")
@@ -133,7 +134,7 @@ public class TenantController {
 	@ApiImplicitParam(paramType = "header", name = "X-Auth-Token", required = true, value = "JWT token")
 	@ApiResponses(value = { @ApiResponse(code = 200, message = "Success"),
 			@ApiResponse(code = 404, message = "Not found") })
-	@PreAuthorize("hasRole('ROLE_USER')")
+	@PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_PRESIDENT')")
 	public ResponseEntity<List<GlitchDTO>> getGlitches(HttpServletRequest request, Pageable page) {
 		String token = request.getHeader("X-Auth-Token");
 		String username = tokenUtils.getUsernameFromToken(token);
@@ -141,7 +142,7 @@ public class TenantController {
 		User tenant = userService.findByUsername(username);
 
 		Page<Glitch> glitches = glitchService.findByResponsibility(page, tenant.getId());
-
+		System.out.println("size: "+glitches.getSize());
 		List<GlitchDTO> glitchesDTO = new ArrayList<>();
 		for (Glitch glitch : glitches) {
 			glitchesDTO.add(new GlitchDTO(glitch));
@@ -149,6 +150,23 @@ public class TenantController {
 
 		return new ResponseEntity<>(glitchesDTO, HttpStatus.OK);
 
+	}
+	
+
+	@RequestMapping(value = "/responsibleGlitches/count", method = RequestMethod.GET)
+	@ApiOperation(value = "Get a count of glitches.", httpMethod = "GET")
+	@ApiImplicitParam(paramType = "header", name = "X-Auth-Token", required = true, value = "JWT token")
+	@ApiResponse(code = 200, message = "Success")
+	/*** get a count of glitches ***/
+	public ResponseEntity<Integer> getCountOfGlitches(HttpServletRequest request) {
+		String token = request.getHeader(TOKEN);
+		String username = tokenUtils.getUsernameFromToken(token);
+
+		User user = userService.findByUsername(username);
+
+		Integer count = glitchService.getCountOfMyResponsabilities(user);
+		System.out.println("count: "+count);
+		return new ResponseEntity<>(count, HttpStatus.OK);
 	}
 
 	@RequestMapping(value = "/aparments/{id}/tenants", method = RequestMethod.GET)

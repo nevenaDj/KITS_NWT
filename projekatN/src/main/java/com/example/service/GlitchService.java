@@ -8,6 +8,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import com.example.model.Building;
 import com.example.model.Glitch;
 import com.example.model.GlitchState;
 import com.example.model.GlitchType;
@@ -74,7 +75,10 @@ public class GlitchService {
 	}
 
 	public Page<Glitch> findByResponsibility(Pageable page, Long id) {
-		return glitchRepository.findGlitchByResponsiblePerson(id, page);
+		System.out.println("id: "+id);
+		Page<Glitch> g= glitchRepository.findGlitchByResponsiblePerson(id, page);
+		System.out.println("count: "+g.getContent().size());
+		return g;
 	}
 
 	public List<Glitch> findWithoutMeeting() {
@@ -96,5 +100,19 @@ public class GlitchService {
 	
 	public GlitchState findGlitchState(Long id){
 		return glitchStateRepository.findOne(id);
+	}
+
+	public Integer getCountOfMyResponsabilities(User user) {
+		System.out.println("username: "+user.getUsername()+", id: "+user.getId());
+		int c=glitchRepository.findMyResponsibilitiesCount(user.getId());
+		System.out.println("count: "+c);
+		return c;
+	}
+
+	public List<User> findUsersByBuilding(Long id) {
+		// TODO Auto-generated method stub
+		Building b= glitchRepository.findBuilding(id);
+		return glitchRepository.findUserByBuilding(b.getId());
+		
 	}
 }
