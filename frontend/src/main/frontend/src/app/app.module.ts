@@ -65,10 +65,11 @@ import { GlitchDetailComponent } from './glitches/glitch-detail/glitch-detail.co
 import { AddSurveyComponent } from './surveys/add-survey/add-survey.component';
 import { SurveyDetailComponent } from './surveys/survey-detail/survey-detail.component';
 import { AddAnswerComponent } from './surveys/add-answer/add-answer.component';
-import { OwlDateTimeModule, OwlNativeDateTimeModule } from 'ng-pick-datetime';
-import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import { SendToTheOtherCompanyComponent } from './send-to-the-other-company/send-to-the-other-company.component';
 import { SendBillComponent } from './send-bill/send-bill.component';
+import { BillsPresidentComponent } from './bills-president/bills-president.component';
+import { BillsDataService } from './bills-president/bills-data.service';
+import { BillDetailsPresidentComponent } from './bill-details-president/bill-details-president.component';
 
 @NgModule({
   declarations: [
@@ -115,10 +116,12 @@ import { SendBillComponent } from './send-bill/send-bill.component';
     GlitchDetailComponent,
     AddSurveyComponent,
     SurveyDetailComponent,
-    AddAnswerComponent
+    AddAnswerComponent,
     GlitchDetailComponent,
     SendToTheOtherCompanyComponent,
     SendBillComponent,
+    BillsPresidentComponent,
+    BillDetailsPresidentComponent,
     
   ],
   imports: [
@@ -148,6 +151,7 @@ import { SendBillComponent } from './send-bill/send-bill.component';
     GlitchService,
     SurveyService,
     GlitchDataService,
+    BillsDataService,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: TokenInterceptorService,

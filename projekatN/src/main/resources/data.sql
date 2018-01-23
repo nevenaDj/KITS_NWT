@@ -62,17 +62,17 @@ insert into glitch_state (state) values ('DONE');
 insert into glitch_type (type) values ('TYPE');
 insert into glitch_type (type) values ('WATER');
 
-insert into bill(company_id, price, date, approved) values (3, 1000, '2017-12-03', false);
-
-insert into glitch (description, date_of_report, apartment_id, company_id, responsible_person_id, state_id, tenant_id, date_of_repair_approved, bill_id, type_id) 
-			values ('glitch','2017-12-03', 1, 3, 5, 1, 2, false, 1,2);
+insert into glitch (description, date_of_report, apartment_id, company_id, responsible_person_id, state_id, tenant_id, date_of_repair_approved, type_id) 
+			values ('glitch','2017-12-03', 1, 3, 5, 1, 2, false, 2);
 insert into glitch (description, date_of_report, apartment_id, company_id, responsible_person_id, state_id, tenant_id, date_of_repair_approved, type_id) 
 			values ('glitch2','2017-12-03', 1, 3, 5, 1, 2, false,1);
 insert into glitch (description, date_of_report, apartment_id, company_id, responsible_person_id, state_id, tenant_id, date_of_repair_approved, type_id) 
 			values ('glitch3','2017-12-03', 1, 6, 5, 2, 2, false,1);			
 insert into glitch (description, date_of_report, apartment_id, company_id, responsible_person_id, state_id, tenant_id, date_of_repair_approved, type_id, date_of_repair) 
 			values ('glitch3','2018-01-03', 1, 3, 5, 2, 2, true,2,'2018-01-03');		
-			
+
+insert into bill(company_id, price, date, approved, glitch_id) values (3, 1000, '2017-12-03', false,1);
+
 insert into comment (text, user_id, glitch_id) values ('comment', 2, 1);
 insert into comment (text, user_id, glitch_id) values ('new comment', 3, 1);
 			

@@ -45,6 +45,10 @@ import { HomeAdminComponent } from './home-admin/home-admin.component';
 import { AddSurveyComponent } from './surveys/add-survey/add-survey.component';
 import { SurveyDetailComponent } from './surveys/survey-detail/survey-detail.component';
 import { AddAnswerComponent } from './surveys/add-answer/add-answer.component';
+import { SendToTheOtherCompanyComponent } from './send-to-the-other-company/send-to-the-other-company.component';
+import { SendBillComponent } from './send-bill/send-bill.component';
+import { BillsPresidentComponent } from './bills-president/bills-president.component';
+import { BillDetailsPresidentComponent } from './bill-details-president/bill-details-president.component';
 
 
 const routers: Routes = [
@@ -178,7 +182,9 @@ const routers: Routes = [
     },
     children: [
       {path: 'meeting/:id/addSurvey', component: AddSurveyComponent},
-      {path: 'surveys/:id', component: SurveyDetailComponent}
+      {path: 'surveys/:id', component: SurveyDetailComponent},
+      {path: 'bills', component: BillsPresidentComponent},
+      {path: 'bills/:id', component: BillDetailsPresidentComponent}
     ]
   },
   {

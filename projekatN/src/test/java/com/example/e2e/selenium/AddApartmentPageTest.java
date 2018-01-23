@@ -11,7 +11,7 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 public class AddApartmentPageTest {
-	private WebDriver browser;
+/*	private WebDriver browser;
 
 	LoginPage loginPage;
 	BuildingPage buildingPage;
@@ -23,7 +23,7 @@ public class AddApartmentPageTest {
 	@BeforeMethod
 	public void setupSelenium() {
 		// instantiate browser
-		System.setProperty("webdriver.chrome.driver", "C:/javatools/selenium-chrome-driver/chromedriver.exe");
+		System.setProperty("webdriver.chrome.driver", "/Users/sabinomi/Downloads/chromedriver");
 		browser = new ChromeDriver();
 		// maximize window
 		browser.manage().window().maximize();
@@ -129,5 +129,5 @@ public class AddApartmentPageTest {
 		// Shutdown the browser
 		browser.quit();
 	}
-
+*/
 }
