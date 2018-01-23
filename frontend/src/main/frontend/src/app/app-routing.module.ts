@@ -168,7 +168,10 @@ const routers: Routes = [
       expectedRole: 'ROLE_OWNER'
     },
     children: [
-      {path: 'surveys/:id/addAnswer', component: AddAnswerComponent}
+      { path: 'password', component: PasswordComponent},
+      { path: 'profile', component: ProfileComponent},
+      { path: 'update', component: ProfileUpdateComponent},
+      { path: 'surveys/:id/addAnswer', component: AddAnswerComponent},
     ]
   },
   {
@@ -179,8 +182,11 @@ const routers: Routes = [
       expectedRole: 'ROLE_PRESIDENT'
     }, */
     children: [
-      {path: 'meeting/:id/addSurvey', component: AddSurveyComponent},
-      {path: 'surveys/:id', component: SurveyDetailComponent}
+      { path: 'password', component: PasswordComponent},
+      { path: 'profile', component: ProfileComponent},
+      { path: 'update', component: ProfileUpdateComponent},
+      { path: 'meeting/:id/addSurvey', component: AddSurveyComponent},
+      { path: 'surveys/:id', component: SurveyDetailComponent}
     ]
   },
   {

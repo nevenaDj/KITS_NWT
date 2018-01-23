@@ -33,4 +33,8 @@ export class HomeOwnerComponent implements OnInit {
   logout(){
     this.authService.logout();
   }
+
+  gotoProfile(){
+    this.router.navigate(['/owner/profile']);
+  }
 }
