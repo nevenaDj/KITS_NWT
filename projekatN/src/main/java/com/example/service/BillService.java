@@ -56,4 +56,12 @@ public class BillService {
 	public Long getCountOfBill(Long id) {
 		return billRepository.countByCompany(id);
 	}
+
+	public Page<Bill> findAllByPresident(Pageable page, Long id) {
+		return billRepository.findAllByPresident(id, page);
+	}
+
+	public Long getCountOfBillByUser(Long id) {
+		return billRepository.countByPresident(id);
+	}
 }

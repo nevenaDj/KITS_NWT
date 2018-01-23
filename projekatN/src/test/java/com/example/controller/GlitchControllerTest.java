@@ -229,7 +229,7 @@ public class GlitchControllerTest {
 	@Rollback(true)
 	public void testChangeGlitchDateApprove() throws Exception {
 
-		mockMvc.perform(put("/api/apartments/" + ID_APARTMENT + "/glitches/" + ID_GLITCH).header("X-Auth-Token",
+		mockMvc.perform(put("/api/glitches/" + ID_GLITCH).header("X-Auth-Token",
 				accessTokenPresident)).andExpect(status().isOk()).andExpect(content().contentType(contentType))
 				.andExpect(jsonPath("$.repairApproved").value(true));
 
@@ -238,19 +238,9 @@ public class GlitchControllerTest {
 	@Test
 	@Transactional
 	@Rollback(true)
-	public void testChangeGlitchDateApproveBadRequestApartment() throws Exception {
-
-		mockMvc.perform(put("/api/apartments/" + ID_APARTMENT_NOT_FOUND + "/glitches/" + ID_GLITCH)
-				.header("X-Auth-Token", accessTokenPresident)).andExpect(status().isBadRequest());
-
-	}
-
-	@Test
-	@Transactional
-	@Rollback(true)
 	public void testChangeGlitchDateApproveBadRequestGlitch() throws Exception {
 
-		mockMvc.perform(put("/api/apartments/" + ID_APARTMENT + "/glitches/" + ID_GLITCH_NOT_FOUND)
+		mockMvc.perform(put("/api/glitches/" + ID_GLITCH_NOT_FOUND)
 				.header("X-Auth-Token", accessTokenPresident)).andExpect(status().isBadRequest());
 
 	}

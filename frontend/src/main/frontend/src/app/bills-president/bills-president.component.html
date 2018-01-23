@@ -1,0 +1,47 @@
+<div class="row">
+  <div class="col-lg-9 main-chart">
+    <p class="title">BILLS</p>
+  </div>
+</div>
+<div class="row">
+  <div class="col-lg-9 main-chart">
+    <div class="row">
+      <div class="col-lg-1"></div>
+      <div class="col-lg-10">
+        <div *ngFor="let bill of bills">
+          <ul (click)="gotoGetBill(bill.id)">
+            <li>
+              <div class="lists">
+                <div class="first">{{bill.date | date}}</div>
+                <div class="sec">
+                  <b>{{bill.price}}</b> 
+                </div>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+        <nav data-pagination *ngIf="pager.totalPages > 1">
+          <ul *ngIf="pager.pages && pager.pages.length">
+          <li [ngClass]="{disabled:pager.currentPage === 1}">
+            <a (click)="setPage(1)">First</a>
+          </li>
+          <li [ngClass]="{disabled:pager.currentPage === 1}">
+            <a (click)="setPage(pager.currentPage - 1)">Previous</a>
+          </li>
+          <li *ngFor="let page of pager.pages" [ngClass]="{active:pager.currentPage === page}" class=current>
+            <a (click)="setPage(page)">{{page}}</a>
+          </li>
+          <li [ngClass]="{disabled:pager.currentPage === pager.totalPages}">
+            <a (click)="setPage(pager.currentPage + 1)">Next</a>
+          </li>
+          <li [ngClass]="{disabled:pager.currentPage === pager.totalPages}">
+            <a (click)="setPage(pager.totalPages)">Last</a>
+          </li>
+          </ul>
+        </nav>
+        </div>
+  </div>
+</div>

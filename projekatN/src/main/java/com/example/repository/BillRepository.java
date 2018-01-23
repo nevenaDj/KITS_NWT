@@ -25,6 +25,14 @@ public interface BillRepository extends JpaRepository<Bill, Long>  {
 
 	@Query(value = "SELECT count(b) FROM Bill b WHERE b.company.id = ?1")
 	public Long countByCompany(Long id);
+
+	@Query(value = "SELECT b FROM Bill b WHERE b.glitch.apartment.building.president.id  = ?1",
+			  countQuery = "SELECT count(*) FROM Bill b WHERE b.glitch.apartment.building.president.id = ?1",
+			    nativeQuery = false)
+	public Page<Bill> findAllByPresident(Long id, Pageable page);
+
+	@Query(value = "SELECT count(b) FROM Bill b WHERE b.glitch.apartment.building.president.id  = ?1")
+	public Long countByPresident(Long id);
 		
 	
 
