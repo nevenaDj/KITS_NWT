@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 import { Glitch } from '../../models/glitch';
 import { GlitchService } from '../glitch.service';
 import { Comment } from '../../models/comment';
 import { AuthService } from '../../login/auth.service';
+import { take } from 'rxjs/operators/take';
 
 
 @Component({
@@ -22,8 +23,11 @@ export class GlitchDetailComponent implements OnInit {
 
   comment: Comment;
 
+  changeResponsiblePerson:boolean;
+
   constructor(private route: ActivatedRoute,
               private glitchService: GlitchService,
+              private router: Router,
               private authService: AuthService) {
     this.glitch = {
       id: null,
@@ -51,7 +55,7 @@ export class GlitchDetailComponent implements OnInit {
         state: ''
       }
     }
-
+    this.changeResponsiblePerson=false;
     this.comment = {
       id: null,
       text: '',
@@ -66,6 +70,8 @@ export class GlitchDetailComponent implements OnInit {
           this.getComments();
         });
     this.username = this.authService.getCurrentUser();
+    if (this.authService.isPresident())
+        this.changeResponsiblePerson=true;
   }
 
   getComments(){
@@ -83,5 +89,14 @@ export class GlitchDetailComponent implements OnInit {
             user: null
           }
         });
+  }
+
+  approve(){
+    this.glitch.repairApproved=true;
+    this.glitchService.approveRepair(this.glitch.id);
+  }
+
+  sendToOtherUser(){
+    this.router.navigate(['/president/responsiblities', this.glitch.id,'change']);
   }
 }

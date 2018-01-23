@@ -7,7 +7,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
+import com.example.model.Building;
 import com.example.model.Glitch;
+import com.example.model.User;
 
 public interface GlitchRepository extends JpaRepository<Glitch, Long> {
 
@@ -33,6 +35,15 @@ public interface GlitchRepository extends JpaRepository<Glitch, Long> {
 	
 	@Query(value = "SELECT g FROM Glitch g WHERE g.company.id=?1 AND g.state.id=1")
 	public List<Glitch> findPendingGlitches(Long id);
+
+	@Query(value = "SELECT count(g) FROM Glitch g WHERE g.responsiblePerson.id = ?1")
+	public Integer findMyResponsibilitiesCount(Long id);
+
+	@Query(value = "SELECT g.apartment.building FROM  Glitch g WHERE g.id = ?1")
+	public Building findBuilding(Long id);
+
+	@Query(value = "SELECT au.tenant FROM UserAparment au WHERE au.apartment.building.id = ?1")
+	public List<User> findUserByBuilding(Long id);
 
 
 }

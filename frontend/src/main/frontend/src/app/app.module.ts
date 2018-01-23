@@ -70,6 +70,8 @@ import { SendBillComponent } from './send-bill/send-bill.component';
 import { BillsPresidentComponent } from './bills-president/bills-president.component';
 import { BillsDataService } from './bills-president/bills-data.service';
 import { BillDetailsPresidentComponent } from './bill-details-president/bill-details-president.component';
+import { ResponsibilitiesComponent } from './glitches/responsibilities/responsibilities.component';
+import { ChangeResponsiblePersonComponent } from './glitches/change-responsible-person/change-responsible-person.component';
 
 @NgModule({
   declarations: [
@@ -122,6 +124,8 @@ import { BillDetailsPresidentComponent } from './bill-details-president/bill-det
     SendBillComponent,
     BillsPresidentComponent,
     BillDetailsPresidentComponent,
+    ResponsibilitiesComponent,
+    ChangeResponsiblePersonComponent,
     
   ],
   imports: [

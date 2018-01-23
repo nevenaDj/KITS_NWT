@@ -1,0 +1,33 @@
+<div class="row">
+    <div class="col-lg-9 main-chart">
+        <div class="row">
+          <p class="title">CHANGE RESPONSIBLE PERSON</p>
+        </div>
+        <div class="row">
+   
+            <div class="container">
+                <div class="check" *ngFor="let user of users ; let i=index; ">
+                      <input id="{{i}}" type="radio" name="users" [value]="user" [checked]="user.id === president.id" (change)="onSelectionChange(user)"/>
+                      <label for="{{i}}" (change)="onSelectionChange(user)"> 
+                        <div class="box" (change)="onSelectionChange(user)"><i class="fa fa-check"></i></div>
+                        <div class="text" (change)="onSelectionChange(user)">{{user.username}}</div>
+                      </label>                
+                </div>   
+            </div>
+      </div>
+      <div class="row">
+          <div class="col-lg-1"></div>
+          <div class="col-lg-5">
+            <div class="full-button" style="background-color: #cbc5c1;" >
+              <a class="full-button-text" (click)="goBack()" >Cancel
+                </a>
+            </div>
+          </div>
+          <div class="col-lg-5">
+            <div class="full-button" >
+              <input type="submit" class="save-button-text" (click)="update()" value="Save">
+            </div>
+          </div>
+        </div>
+  </div>
+  </div>
