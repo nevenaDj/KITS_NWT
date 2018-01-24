@@ -5,6 +5,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { DropdownModule } from 'ngx-dropdown';
 import { OwlDateTimeModule, OwlNativeDateTimeModule } from 'ng-pick-datetime';
+import { Ng2OrderModule } from 'ng2-order-pipe';
 
 import { SurveyService } from './surveys/survey.service';
 import {GlitchDataService} from './glitch-details-company/glitch-data.service'
@@ -72,6 +73,7 @@ import { BillsDataService } from './bills-president/bills-data.service';
 import { BillDetailsPresidentComponent } from './bill-details-president/bill-details-president.component';
 import { ResponsibilitiesComponent } from './glitches/responsibilities/responsibilities.component';
 import { ChangeResponsiblePersonComponent } from './glitches/change-responsible-person/change-responsible-person.component';
+import { CurrentApartmentComponent } from './apartments/current-apartment/current-apartment.component';
 
 @NgModule({
   declarations: [
@@ -126,6 +128,7 @@ import { ChangeResponsiblePersonComponent } from './glitches/change-responsible-
     BillDetailsPresidentComponent,
     ResponsibilitiesComponent,
     ChangeResponsiblePersonComponent,
+    CurrentApartmentComponent,
     
   ],
   imports: [
@@ -137,7 +140,8 @@ import { ChangeResponsiblePersonComponent } from './glitches/change-responsible-
     DropdownModule,
     ReactiveFormsModule,
     OwlDateTimeModule, 
-    OwlNativeDateTimeModule
+    OwlNativeDateTimeModule,
+    Ng2OrderModule
   ],
   providers: [
     AuthGuardService,

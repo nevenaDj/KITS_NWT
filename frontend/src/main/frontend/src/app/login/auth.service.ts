@@ -3,13 +3,16 @@ import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import * as decode from 'jwt-decode';
 
+import { ApartmentService } from '../apartments/apartment.service';
+
 @Injectable()
 export class AuthService {
   private authUrl = '/api/login';
   private roles: string[];
 
   constructor(private http: HttpClient,
-              private router: Router) { }
+              private router: Router,
+              private apartmentService: ApartmentService) { }
 
   login(username:string, password:string): Promise<any>{
     return this.http
@@ -28,6 +31,7 @@ export class AuthService {
   }
 
   logout(): void {
+    this.apartmentService.setMyApartment(undefined);
     localStorage.removeItem('token');
     this.router.navigate(['login']);
   }

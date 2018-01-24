@@ -1,0 +1,17 @@
+<div class="row">
+    <div class="col-lg-12 main-chart">  
+      <div *ngFor="let apartment of apartments">
+        <div [ngClass]="apartment.id === currentApartment.id ? 'col-lg-3 weather2 pn' : 'col-lg-3 weather pn'">
+          <i class="fa fa-home"></i>
+          <h2>
+            <a (click)="chooseApartment(apartment)">{{apartment.building.address.city}}</a>
+          </h2>
+          <h4> 
+            <a (click)="chooseApartment(apartment)">{{apartment.building.address.street | slice: 0: 20}} {{apartment.building.address.number | slice: 0: 3}}/{{apartment.number}}</a>
+          </h4>
+        </div> 
+      </div>
+    </div>
+  </div>
+  
+  

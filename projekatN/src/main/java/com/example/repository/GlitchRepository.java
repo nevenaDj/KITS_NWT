@@ -13,8 +13,8 @@ import com.example.model.User;
 
 public interface GlitchRepository extends JpaRepository<Glitch, Long> {
 
-	@Query("SELECT g FROM Glitch g WHERE g.tenant.id = ?1")
-	public Page<Glitch> findGlitchesOfTenant(Long id, Pageable page);
+	@Query("SELECT g FROM Glitch g WHERE g.tenant.id = ?1 AND g.apartment.id = ?2")
+	public Page<Glitch> findGlitchesOfTenant(Long id, Long idApartment, Pageable page);
 
 	@Query("SELECT g FROM Glitch g WHERE g.company.id = ?1")
 	public Page<Glitch> findGlitchesOfCompany(Long id, Pageable page);
@@ -27,8 +27,8 @@ public interface GlitchRepository extends JpaRepository<Glitch, Long> {
 	@Query(value = "SELECT g FROM Glitch g WHERE g.item.id IS NULL")
 	public List<Glitch> findWithoutMeeting();
 	
-	@Query("SELECT g FROM Glitch g WHERE g.tenant.id = ?1")
-	public List<Glitch> findGlitchesOfTenantAll(Long id);
+	@Query("SELECT g FROM Glitch g WHERE g.tenant.id = ?1 AND g.apartment.id = ?2")
+	public List<Glitch> findGlitchesOfTenantAll(Long id, Long idApartment);
 
 	@Query(value = "SELECT g FROM Glitch g WHERE g.company.id=?1 AND g.state.id=2")
 	public List<Glitch> findActiveGlitches(Long id);

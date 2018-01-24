@@ -11,6 +11,8 @@ export class ApartmentService {
 
   RegenerateData$ = this.RegenerateData.asObservable();
 
+  apartment: Apartment;
+
   constructor(private http:HttpClient) {}
 
    announceChange(){
@@ -89,14 +91,21 @@ export class ApartmentService {
           .catch(this.handleError);
    }
 
-   getMyApartment(): Promise<Apartment>{
-     const url = '/api/apartments/my';
-     return this.http
-          .get(url)
-          .toPromise()
-          .then(res => res)
-          .catch(this.handleError);
+   getApartmentsOfTenant(): Promise<Apartment[]>{
+    const url = '/api/apartments/my';
+    return this.http
+         .get(url)
+         .toPromise()
+         .then(res => res)
+         .catch(this.handleError);
+   }
 
+   setMyApartment(apartment: Apartment){
+     this.apartment = apartment;
+   }
+
+   getMyApartment(){
+     return this.apartment;
    }
 
    private handleError(error: any): Promise<any> {

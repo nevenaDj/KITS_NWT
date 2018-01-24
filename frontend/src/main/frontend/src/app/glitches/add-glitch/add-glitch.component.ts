@@ -53,9 +53,7 @@ export class AddGlitchComponent implements OnInit {
   }
 
   getMyApartment(){
-    this.apartmentService.getMyApartment()
-        .then(apartment => this.apartmentID = apartment.id);
-
+    this.apartmentID = this.apartmentService.getMyApartment().id;
   }
 
   save(){

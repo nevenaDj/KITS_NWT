@@ -1,0 +1,221 @@
+.weather-new {
+    margin: 10px;
+	background: #4c586f;
+	text-align: center;
+	background-position: center center;
+    height: 150px;
+    border-radius:30px;
+    box-shadow:3px 3px 3px #999999;
+    opacity: 0.8;
+} 
+.weather-new:hover {
+    margin: 10px;
+	background: #4c586f;
+	text-align: center;
+	background-position: center center;
+    height: 150px;
+    border-radius:30px;
+    box-shadow:5px 5px 5px #999999;
+    opacity: 0.2;
+} 
+.weather-new i {
+	color: white;
+	margin-top: 15px;
+}
+.weather-new h2 {
+	color: white;
+	font-weight: 900;
+}
+.weather-new h4 {
+	color: white;
+	font-weight: 900;
+	letter-spacing: 1px;
+}
+
+.weather2 {
+  margin: 10px;
+background: #121213;
+text-align: center;
+background-position: center center;
+  height: 150px;
+  border-radius:30px;
+  box-shadow:3px 3px 3px #999999;
+  opacity: 0.4;
+}
+
+.weather2:hover {
+  margin: 10px;
+background:#121213;
+text-align: center;
+background-position: center center;
+  height: 150px;
+  border-radius:30px;
+  box-shadow:5px 5px 5px #999999;
+  opacity: 0.5;
+}
+.weather2 i {
+color: white;
+margin-top: 15px;
+}
+.weather2 h2 {
+color: white;
+font-weight: 900;
+}
+.weather2 h4 {
+color: white;
+font-weight: 900;
+letter-spacing: 1px;
+}
+
+
+
+.weather {
+    margin: 10px;
+	background: #4c586f;
+	text-align: center;
+	background-position: center center;
+    height: 150px;
+    border-radius:30px;
+    box-shadow:3px 3px 3px #999999;
+    opacity: 0.4;
+}
+
+.weather:hover {
+    margin: 10px;
+	background: #4c586f;
+	text-align: center;
+	background-position: center center;
+    height: 150px;
+    border-radius:30px;
+    box-shadow:5px 5px 5px #999999;
+    opacity: 0.5;
+}
+.weather i {
+	color: white;
+	margin-top: 15px;
+}
+.weather h2 {
+	color: white;
+	font-weight: 900;
+}
+.weather h4 {
+	color: white;
+	font-weight: 900;
+	letter-spacing: 1px;
+}
+[data-pagination],
+[data-pagination] *,
+[data-pagination] *:before,
+[data-pagination] *:after { 
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-kerning: auto;
+}
+[data-pagination] {
+  font-size: 12px;
+  line-height: 1;
+  font-weight: 400;
+  font-family: 'Open Sans', 'Source Sans Pro', Roboto, 'HelveticaNeue-Light', 'Helvetica Neue Light', 'Helvetica Neue', 'Myriad Pro', 'Segoe UI', Myriad, Helvetica, 'Lucida Grande', 'DejaVu Sans Condensed', 'Liberation Sans', 'Nimbus Sans L', Tahoma, Geneva, Arial, sans-serif;
+  -webkit-text-size-adjust: 100%;
+  margin: 1em auto;
+  text-align: center;
+  transition: font-size .2s ease-in-out;
+}
+[data-pagination] ul {
+  list-style-type: none;
+  display: inline;
+  font-size: 100%;
+  margin: 0;
+  padding: .5em;
+}
+[data-pagination] ul li {
+  display: inline-block;
+  font-size: 100%;
+  width: auto;
+  border-radius: 3px;
+}
+[data-pagination] > a {
+  font-size: 140%;
+}
+[data-pagination] a {
+  color: #777;
+  font-size: 100%;
+  padding: .5em;
+}
+[data-pagination] a:focus,
+[data-pagination] a:hover {
+  color: #4c586f;
+}
+[data-pagination] li.current {
+  background: rgba(0,0,0,.1)
+}
+/* Disabled & Hidden Styles */
+[data-pagination] .disabled,
+[data-pagination] [hidden],
+[data-pagination] [disabled] {
+  opacity: .5;
+  pointer-events: none;
+}
+@media (min-width: 350px) {
+  [data-pagination] {
+    font-size: 10pt;
+  }
+}
+@media (min-width: 500px) {
+  [data-pagination] {
+    font-size: 12pt;
+  }
+}
+@media (min-width: 700px) {
+  [data-pagination] {
+    font-size: 12pt;
+  }
+}
+@media (min-width: 900px) {
+  [data-pagination] {
+    font-size: 12pt;
+  }
+}
+.container .check label {
+  min-width: 100px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: left;
+      -ms-flex-pack: left;
+          justify-content: left;
+  -webkit-box-align: left;
+      -ms-flex-align: left;
+          align-items: left;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  min-height: 40px;
+  cursor: pointer;
+}
+.notify-row {
+  float: left;
+  margin-top: 15px;
+  margin-left: 92px;
+}
+
+.notify-row .notification span.label {
+  display: inline-block;
+  height: 18px;
+  width: 20px;
+  padding: 5px;
+}
+.notify-row .badge {
+    position: absolute;
+    right: -10px;
+    top: -10px;
+    z-index: 100;
+}
+.main-chart {
+	padding-top: 20px;
+}

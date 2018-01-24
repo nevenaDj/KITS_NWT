@@ -21,17 +21,18 @@ export class GlitchService {
     this.RegenerateData.next();
   }
 
-  getGlitches(page: number, size: number = 15): Promise<Glitch[]>{
+  getGlitches(apartmentID: number, page: number, size: number = 15): Promise<Glitch[]>{
+    const url = `/api/apartments/${apartmentID}/glitches`;
     const httpParams = new HttpParams().set('page', page.toString()).set('size', size.toString());
     return this.http
-          .get<Glitch[]>(this.glitchesUrl, {params: httpParams})
+          .get<Glitch[]>(url, {params: httpParams})
           .toPromise()
           .then(res => res)
           .catch(this.handleError);
   }
 
-  getGlitchesCount(): Promise<number>{
-    const url =  `${this.glitchesUrl}/count`;
+  getGlitchesCount(apartmentID: number): Promise<number>{
+    const url =  `/api/apartments/${apartmentID}/glitches/count`;
     return this.http
           .get(url)
           .toPromise()

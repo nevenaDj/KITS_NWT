@@ -8,6 +8,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import com.example.model.Apartment;
 import com.example.model.Building;
 import com.example.model.Glitch;
 import com.example.model.GlitchState;
@@ -41,10 +42,10 @@ public class GlitchService {
 		return glitchRepository.save(glitch);
 	}
 
-	public Page<Glitch> findGlitches(Pageable page, User user) {
+	public Page<Glitch> findGlitches(Pageable page, User user, Apartment apartment) {
 		List<String> authority = userRepository.getUserAuthority(user.getId());
 		if (authority.contains("ROLE_USER") || authority.contains("ROLE_OWNER")) {
-			return glitchRepository.findGlitchesOfTenant(user.getId(), page);
+			return glitchRepository.findGlitchesOfTenant(user.getId(), apartment.getId(), page);
 		} else {
 			return glitchRepository.findGlitchesOfCompany(user.getId(), page);
 		}
@@ -75,9 +76,9 @@ public class GlitchService {
 	}
 
 	public Page<Glitch> findByResponsibility(Pageable page, Long id) {
-		System.out.println("id: "+id);
-		Page<Glitch> g= glitchRepository.findGlitchByResponsiblePerson(id, page);
-		System.out.println("count: "+g.getContent().size());
+		System.out.println("id: " + id);
+		Page<Glitch> g = glitchRepository.findGlitchByResponsiblePerson(id, page);
+		System.out.println("count: " + g.getContent().size());
 		return g;
 	}
 
@@ -93,26 +94,26 @@ public class GlitchService {
 		return glitchRepository.findPendingGlitches(id);
 	}
 
-	public Integer getCountOfGlitches(User user) {
-		List<Glitch> glitches = glitchRepository.findGlitchesOfTenantAll(user.getId());
+	public Integer getCountOfGlitches(User user, Apartment apartment) {
+		List<Glitch> glitches = glitchRepository.findGlitchesOfTenantAll(user.getId(), apartment.getId());
 		return glitches.size();
 	}
-	
-	public GlitchState findGlitchState(Long id){
+
+	public GlitchState findGlitchState(Long id) {
 		return glitchStateRepository.findOne(id);
 	}
 
 	public Integer getCountOfMyResponsabilities(User user) {
-		System.out.println("username: "+user.getUsername()+", id: "+user.getId());
-		int c=glitchRepository.findMyResponsibilitiesCount(user.getId());
-		System.out.println("count: "+c);
+		System.out.println("username: " + user.getUsername() + ", id: " + user.getId());
+		int c = glitchRepository.findMyResponsibilitiesCount(user.getId());
+		System.out.println("count: " + c);
 		return c;
 	}
 
 	public List<User> findUsersByBuilding(Long id) {
 		// TODO Auto-generated method stub
-		Building b= glitchRepository.findBuilding(id);
+		Building b = glitchRepository.findBuilding(id);
 		return glitchRepository.findUserByBuilding(b.getId());
-		
+
 	}
 }

@@ -39,7 +39,6 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 
 import static com.example.utils.Constants.ROLE_OWNER;
-import static com.example.utils.Constants.ROLE_TENANT;
 
 @RestController
 @RequestMapping(value = "/api")
@@ -250,7 +249,7 @@ public class ApartmentController {
 	@ApiResponses(value = { @ApiResponse(code = 200, message = "Success", response = ApartmentDTO.class),
 			@ApiResponse(code = 404, message = "Not found") })
 	/*** get a current user ***/
-	public ResponseEntity<ApartmentDTO> getCurrentUser(HttpServletRequest request) {
+	public ResponseEntity<List<ApartmentDTO>> getCurrentUser(HttpServletRequest request) {
 		String token = request.getHeader("X-Auth-Token");
 		String username = tokenUtils.getUsernameFromToken(token);
 
@@ -260,12 +259,14 @@ public class ApartmentController {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
 
-		Apartment apartment = userApartmentService.getApartment(user.getId());
+		List<Apartment> apartments = userApartmentService.getApartments(user.getId());
 
-		if (apartment == null) {
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		List<ApartmentDTO> apartmentsDTO = new ArrayList<>();
+
+		for (Apartment apartment : apartments) {
+			apartmentsDTO.add(new ApartmentDTO(apartment));
 		}
 
-		return new ResponseEntity<>(new ApartmentDTO(apartment), HttpStatus.OK);
+		return new ResponseEntity<>(apartmentsDTO, HttpStatus.OK);
 	}
 }
