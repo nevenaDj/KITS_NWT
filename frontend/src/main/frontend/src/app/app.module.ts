@@ -72,6 +72,13 @@ import { BillsDataService } from './bills-president/bills-data.service';
 import { BillDetailsPresidentComponent } from './bill-details-president/bill-details-president.component';
 import { ResponsibilitiesComponent } from './glitches/responsibilities/responsibilities.component';
 import { ChangeResponsiblePersonComponent } from './glitches/change-responsible-person/change-responsible-person.component';
+import { MeetingsComponent } from './meetings/meetings.component';
+import { AddMeetingComponent } from './meetings/add-meeting/add-meeting.component';
+import { MeatingDetailsComponent } from './meetings/meating-details/meating-details.component';
+import { AddItemComponent } from './meetings/add-item/add-item.component';
+import { ItemDetailsComponent } from './meetings/item-details/item-details.component';
+import { UpdateItemComponent } from './meetings/update-item/update-item.component';
+import { MeetingsService } from './meetings/meetings.service';
 
 @NgModule({
   declarations: [
@@ -126,6 +133,12 @@ import { ChangeResponsiblePersonComponent } from './glitches/change-responsible-
     BillDetailsPresidentComponent,
     ResponsibilitiesComponent,
     ChangeResponsiblePersonComponent,
+    MeetingsComponent,
+    AddMeetingComponent,
+    MeatingDetailsComponent,
+    AddItemComponent,
+    ItemDetailsComponent,
+    UpdateItemComponent,
     
   ],
   imports: [
@@ -156,6 +169,7 @@ import { ChangeResponsiblePersonComponent } from './glitches/change-responsible-
     SurveyService,
     GlitchDataService,
     BillsDataService,
+    MeetingsService,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: TokenInterceptorService,

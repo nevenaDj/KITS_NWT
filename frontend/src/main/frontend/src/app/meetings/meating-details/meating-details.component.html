@@ -1,0 +1,57 @@
+<div class="row">
+  <div class="col-lg-9 main-chart">
+      <div class="row">
+          <p class="title">MEETING </p>
+
+          </div>
+        </div>
+    <div class="row">
+      <div class="col-lg-1"></div>
+      <div class="col-lg-5 border">
+        <div class="border-title">Date and time</div>
+        <div class="border-desc">{{meeting.dateAndTime | date}}</div>
+      </div>
+      <div class="col-lg-5 border">
+          <div class="border-title">Expired</div>
+          <div class="border-desc">{{expired}}</div>
+      </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-1"></div>
+        <div class="col-lg-5 border">
+            <div class="border-title"></div>
+            <div class="border-title"><SURVEYS/div>
+        </div>
+        <div class="col-lg-5 border">
+            
+        </div>
+      </div>
+    <br><br>
+    <div class="row" *ngIf="agendaSize">
+        <div class="col-lg-1"></div>
+        <div class="col-lg-5 border">
+            <a (click)="newItem()" class="small-btn">New item</a>
+        </div>
+    </div>
+    <br><br>
+    <div class="row">
+      <div class="col-lg-1"></div>
+      <div class="col-lg-10">
+        <div *ngFor="let item of meeting.agenda.agendaPoints ; let i=index;">
+          <ul >
+            <li>
+              <div class="lists">
+                <div class="first">{{item.number}}</div>
+                <div class="sec" (click)="goToItem(item)">
+                  <b>{{item.title}}</b> 
+                </div>
+                <div class="update"> <i class="fa fa-trash-o" aria-hidden="true" (click)="deleteItem(item)"></i></div>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

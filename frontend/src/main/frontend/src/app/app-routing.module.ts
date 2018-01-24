@@ -51,6 +51,11 @@ import { BillsPresidentComponent } from './bills-president/bills-president.compo
 import { BillDetailsPresidentComponent } from './bill-details-president/bill-details-president.component';
 import { ResponsibilitiesComponent } from './glitches/responsibilities/responsibilities.component';
 import { ChangeResponsiblePersonComponent } from './glitches/change-responsible-person/change-responsible-person.component';
+import { MeetingsComponent } from './meetings/meetings.component';
+import { AddMeetingComponent } from './meetings/add-meeting/add-meeting.component';
+import { MeatingDetailsComponent } from './meetings/meating-details/meating-details.component';
+import { AddItemComponent } from './meetings/add-item/add-item.component';
+import { ItemDetailsComponent } from './meetings/item-details/item-details.component';
 
 
 const routers: Routes = [
@@ -191,7 +196,13 @@ const routers: Routes = [
       {path: 'bills/:id', component: BillDetailsPresidentComponent},
       { path: 'responsiblities', component:ResponsibilitiesComponent },
       { path: 'responsiblities/:id', component:GlitchDetailComponent },
-      { path: 'responsiblities/:id/change', component:ChangeResponsiblePersonComponent }
+      { path: 'responsiblities/:id/change', component:ChangeResponsiblePersonComponent },
+      { path: 'meetings', component:MeetingsComponent },
+      { path: 'meetings/:id', component:MeatingDetailsComponent },
+      { path: 'buildings/:id/meetings/add', component:AddMeetingComponent },
+      { path: 'meetings/:iditems/add', component: AddItemComponent},
+      { path: 'meetings/:iditems/:id', component:ItemDetailsComponent },
+      { path: 'meetings/:iditems/:id', component:AddItemComponent },
     ]
   },
   {

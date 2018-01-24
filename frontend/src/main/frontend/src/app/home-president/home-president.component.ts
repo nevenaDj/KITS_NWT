@@ -34,4 +34,7 @@ export class HomePresidentComponent implements OnInit {
     this.authService.logout();
   }
 
+  goToMeeting(){
+    this.router.navigate(['/president/meetings']);
+  }
 }

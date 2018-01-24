@@ -12,7 +12,6 @@ public class AgendaItemDTO {
 	private String title;
 
 	private String content;
-	private MeetingDTO meeting;
 
 	private String conclusion;
 	private Set<ItemCommentDTO> comments = new HashSet<>();
@@ -46,8 +45,6 @@ public class AgendaItemDTO {
 			this.content = agendaPoint.getContent();
 		if (agendaPoint.getGlitch()!=null)
 			this.glitch = new GlitchDTO(agendaPoint.getGlitch());
-		if (agendaPoint.getMeeting()!=null)
-			this.meeting = new MeetingDTO(agendaPoint.getMeeting());
 		if (agendaPoint.getNotification()!=null)
 			this.notification = new NotificationDTO(agendaPoint.getNotification());
 		
@@ -86,15 +83,7 @@ public class AgendaItemDTO {
 	public void setContent(String content) {
 		this.content = content;
 	}
-
-	public MeetingDTO getMeeting() {
-		return meeting;
-	}
-
-	public void setMeeting(MeetingDTO meeting) {
-		this.meeting = meeting;
-	}
-
+	
 	public String getConclusion() {
 		return conclusion;
 	}
@@ -178,8 +167,6 @@ public class AgendaItemDTO {
 			item.setContent(agendaPointDTO.getContent());
 		if (agendaPointDTO.getGlitch()!=null)
 			item.setGlitch(GlitchDTO.getGlitch(agendaPointDTO.getGlitch()));
-		if (agendaPointDTO.getMeeting()!=null)
-			item.setMeeting(MeetingDTO.getMeeting(agendaPointDTO.getMeeting()));
 		if (agendaPointDTO.getNotification()!=null)
 			item.setNotification(NotificationDTO.getNotification(agendaPointDTO.getNotification()));
 		return item;

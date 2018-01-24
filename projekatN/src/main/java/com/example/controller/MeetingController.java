@@ -1,9 +1,12 @@
 package com.example.controller;
 
+import java.awt.print.Pageable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -58,9 +61,72 @@ public class MeetingController {
 		meeting = meetingService.save(meeting);
 		return new ResponseEntity<>(new MeetingDTO(meeting), HttpStatus.CREATED);
 	}
+	
+	
+	@RequestMapping(value = "/meetings/{id_meeting}", method = RequestMethod.GET, produces = "application/json")
+	@ApiOperation(value = "Get meetings.", notes = "Returns the meeting", httpMethod = "GET", 
+	produces = "application/json", consumes = "application/json")
+	@ApiImplicitParam(paramType="header", name="X-Auth-Token", required=true, value="JWT token")
+	@ApiResponses(value = { 
+			@ApiResponse(code = 201, message = "Created", response = MeetingDTO.class),
+			@ApiResponse(code = 400, message = "Bad request") })
+	/*** get meetings ***/
+	public ResponseEntity<MeetingDTO> getMeeting(
+			@ApiParam(value = "The ID of the meeting.", required = true) @PathVariable Long id_meeting){
+		Meeting meeting = meetingService.findOne(id_meeting);	
+		if (meeting==null)
+			return new ResponseEntity<>( HttpStatus.NOT_FOUND);
+		System.out.println("MEETING: "+meeting.getDateAndTime()+", agenda: "+meeting.getPoints().size());
+		return new ResponseEntity<>(new MeetingDTO(meeting), HttpStatus.OK);
+	}
+	
+	@RequestMapping(value = "/buildings/{id}/meetings", method = RequestMethod.GET, produces = "application/json")
+	@ApiOperation(value = "Get meetings.", notes = "Returns the meeting", httpMethod = "GET", 
+	produces = "application/json", consumes = "application/json")
+	@ApiImplicitParam(paramType="header", name="X-Auth-Token", required=true, value="JWT token")
+	@ApiResponses(value = { 
+			@ApiResponse(code = 201, message = "Created", response = MeetingDTO.class),
+			@ApiResponse(code = 400, message = "Bad request") })
+	/*** get meetings ***/
+	public ResponseEntity<List<MeetingDTO>> getMeetings(
+			@ApiParam(value = "The ID of the building.", required = true) @PathVariable Long id,
+			org.springframework.data.domain.Pageable page){
+		Building building = buildingService.findOne(id);
+		if (building == null) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
 
+		Page<Meeting> meetings = meetingService.findByBuilding(id, page);
+		List<MeetingDTO> meetingDTO = new ArrayList<>();
+		for (Meeting meeting:meetings){
+			meetingDTO.add(new MeetingDTO(meeting));
+		}
+	
+		return new ResponseEntity<>(meetingDTO, HttpStatus.OK);
+	}
+	
+	@RequestMapping(value = "/buildings/{id}/meetings/count", method = RequestMethod.GET, produces = "application/json")
+	@ApiOperation(value = "Get meetings.", notes = "Returns the meeting", httpMethod = "GET", 
+	produces = "application/json", consumes = "application/json")
+	@ApiImplicitParam(paramType="header", name="X-Auth-Token", required=true, value="JWT token")
+	@ApiResponses(value = { 
+			@ApiResponse(code = 201, message = "Created", response = MeetingDTO.class),
+			@ApiResponse(code = 400, message = "Bad request") })
+	/*** get meetings ***/
+	public ResponseEntity<Integer> getMeetingsCount(
+			@ApiParam(value = "The ID of the building.", required = true) @PathVariable Long id ){
+		Building building = buildingService.findOne(id);
+		if (building == null) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+
+		Integer count = meetingService.findByBuildingCount(id);
+		return new ResponseEntity<>(count, HttpStatus.OK);
+	}
+
+/*
 	@RequestMapping(value = "/buildings/{id}/meetings", method = RequestMethod.GET, produces = "application/json", params = {
-			"date" })
+			"date" }) 
 	@ApiOperation(value = "Get meeting by a date.", notes = "Returns the meeting", httpMethod = "POST", 
 	produces = "application/json", consumes = "application/json")
 	@ApiImplicitParam(paramType="header", name="X-Auth-Token", required=true, value="JWT token")
@@ -68,6 +134,7 @@ public class MeetingController {
 			@ApiResponse(code = 201, message = "Created", response = MeetingDTO.class),
 			@ApiResponse(code = 400, message = "Bad request") })
 	/*** get meeting by date ***/
+	/*
 	public ResponseEntity<MeetingDTO> findMeetingByDate(
 			@ApiParam(value = "The ID of the building.", required = true) @PathVariable Long id,
 			@ApiParam(name = "date", value = "Date of the meeting",required=true) @RequestParam("date") Date date) {
@@ -79,7 +146,7 @@ public class MeetingController {
 		}
 		return new ResponseEntity<>(new MeetingDTO(meeting), HttpStatus.CREATED);
 	}
-
+*/
 	@RequestMapping(value = "/buildings/{id}/meetings/dates", method = RequestMethod.GET, produces = "application/json")
 	@ApiOperation(value = "Get the dates where are meetings.", notes = "Returns the list of date.", httpMethod = "POST", 
 	produces = "application/json")
