@@ -66,17 +66,16 @@ export class MeetingsService {
   }
 
   deleteAgendaItem(meeting_id:number, item_id:number){
-    //add
-    const url= '/api/building/'+meeting_id+'/meetings'
+    const url= '/api/meetings/'+meeting_id+'/items/'+item_id
     return this.http
-          .get<Meeting>(url)
+          .delete<Meeting>(url)
           .toPromise()
           .then(res => res)
           .catch(this.handleError);
   }
 
   addMeeting(id:number, meeting: Meeting ): Promise<Meeting>{
-    const url= '/api/building/'+id+'/meetings'
+    const url= '/api/buildings/'+id+'/meetings'
     return this.http
           .post<Meeting>(url, meeting)
           .toPromise()

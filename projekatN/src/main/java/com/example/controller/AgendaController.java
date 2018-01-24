@@ -202,6 +202,7 @@ public class AgendaController {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
 		agendaPointService.delete(id);
+		
 		// glich.item????
 
 		return new ResponseEntity<>(HttpStatus.OK);

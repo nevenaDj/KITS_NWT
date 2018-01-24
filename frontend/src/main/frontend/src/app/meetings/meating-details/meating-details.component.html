@@ -4,7 +4,6 @@
           <p class="title">MEETING </p>
 
           </div>
-        </div>
     <div class="row">
       <div class="col-lg-1"></div>
       <div class="col-lg-5 border">
@@ -20,8 +19,8 @@
     <div class="row">
         <div class="col-lg-1"></div>
         <div class="col-lg-5 border">
-            <div class="border-title"></div>
-            <div class="border-title"><SURVEYS/div>
+            <br>
+            <div class="border-title">SURVEYS</div>
         </div>
         <div class="col-lg-5 border">
             
@@ -30,7 +29,7 @@
     <br><br>
     <div class="row" *ngIf="agendaSize">
         <div class="col-lg-1"></div>
-        <div class="col-lg-5 border">
+        <div class="col-lg-5">
             <a (click)="newItem()" class="small-btn">New item</a>
         </div>
     </div>
@@ -38,7 +37,7 @@
     <div class="row">
       <div class="col-lg-1"></div>
       <div class="col-lg-10">
-        <div *ngFor="let item of meeting.agenda.agendaPoints ; let i=index;">
+        <div *ngFor="let item of meeting.agenda.agendaPoints; let i=index;">
           <ul >
             <li>
               <div class="lists">

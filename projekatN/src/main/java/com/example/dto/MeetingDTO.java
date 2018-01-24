@@ -13,6 +13,7 @@ public class MeetingDTO {
 	private Date dateAndTime;
 	private boolean active;
 	private AgendaDTO agenda = new AgendaDTO();
+	private BuildingDTO building= new BuildingDTO();
 
 	public MeetingDTO() {
 
@@ -30,6 +31,8 @@ public class MeetingDTO {
 			surveyDTO.add(new SurveyDTO(survey));
 		}
 		agenda.setSurveys(surveyDTO);
+		if (meeting.getBuilding()!=null)
+			this.building= new BuildingDTO(meeting.getBuilding());
 	}
 
 	public MeetingDTO(Date dateAndTime) {
@@ -68,6 +71,15 @@ public class MeetingDTO {
 		this.active = active;
 	}
 	
+	
+
+	public BuildingDTO getBuilding() {
+		return building;
+	}
+
+	public void setBuilding(BuildingDTO building) {
+		this.building = building;
+	}
 
 	public AgendaDTO getAgenda() {
 		return agenda;
@@ -78,17 +90,37 @@ public class MeetingDTO {
 	}
 
 	public static Meeting getMeeting(MeetingDTO meetingDTO) {
-		Set<AgendaItem> items = new HashSet<AgendaItem>();
-		for (AgendaItemDTO itemDTO: meetingDTO.getAgenda().getAgendaPoints()){
-			items.add(AgendaItemDTO.getAgendaPoint(itemDTO));
-		}
-		Set<Survey> surveys = new HashSet<Survey>();
-		for (SurveyDTO surveyDTO: meetingDTO.getAgenda().getSurveys()){
-			surveys.add(SurveyDTO.getSurvey(surveyDTO));
-		}
 		Meeting m= new Meeting(meetingDTO.getId(), meetingDTO.getDateAndTime(), meetingDTO.isActive());
-		m.setPoints(items);
-		m.setSurveys(surveys);
+		Set<AgendaItem> items = new HashSet<AgendaItem>();
+		if (meetingDTO.getAgenda()!=null) {
+			if (meetingDTO.getAgenda().getAgendaPoints()!=null) {
+				for (AgendaItemDTO itemDTO: meetingDTO.getAgenda().getAgendaPoints()){
+					items.add(AgendaItemDTO.getAgendaPoint(itemDTO));
+				}
+				m.setPoints(items);
+			}
+			else {
+				m.setPoints(new HashSet<AgendaItem>());
+			}
+			if (meetingDTO.getAgenda().getSurveys()!=null) {
+				Set<Survey> surveys = new HashSet<Survey>();
+				for (SurveyDTO surveyDTO: meetingDTO.getAgenda().getSurveys()){
+					surveys.add(SurveyDTO.getSurvey(surveyDTO));
+				}
+				m.setSurveys(surveys);
+			}
+			else {
+				m.setSurveys(new HashSet<Survey>());
+			}
+		}else {
+			m.setPoints(new HashSet<AgendaItem>());
+			m.setSurveys(new HashSet<Survey>());
+		}
+		
+		
+
+		if (meetingDTO.getBuilding()!=null)
+			m.setBuilding(BuildingDTO.getBuilding(meetingDTO.getBuilding()));
 		return m;
 
 	}

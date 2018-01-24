@@ -1,3 +1,29 @@
-<p>
-  add-meeting works!
-</p>
+			<div class="row">
+				<div class="col-lg-9 main-chart">
+					<p class="title">Add new meeting</p>
+				</div>
+			</div>
+			<div class="row">
+
+				<div class="col-lg-9 main-chart">
+					
+						<div class="row">
+							<div class="col-lg-1"></div>
+							<div class="col-lg-5 border">
+								<label>
+									<div class="border-title">Date Of meeting</div>
+									<input id="update" [owlDateTime]="dt1" [(ngModel)]="selectedMoment" [min]="min" >
+									<span class="trigger" [owlDateTimeTrigger]="dt1">
+										<i class="fa fa-calendar" aria-hidden="true"></i>
+									</span>
+									<owl-date-time #dt1></owl-date-time>
+								</label>
+							</div>
+							<div class="col-lg-5 border">
+								<div class="full-button" >
+									<input type="submit" class="save-button-text" value="Schedule..." (click)="addNewMeeting()">
+								</div>
+							</div>
+						</div>
+				</div>
+			</div>

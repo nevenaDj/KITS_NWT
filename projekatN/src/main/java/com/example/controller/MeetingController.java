@@ -57,6 +57,7 @@ public class MeetingController {
 		if (building == null) {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
+		System.out.println("date: "+meetingDTO.getDateAndTime());
 		meeting.setBuilding(building);
 		meeting = meetingService.save(meeting);
 		return new ResponseEntity<>(new MeetingDTO(meeting), HttpStatus.CREATED);

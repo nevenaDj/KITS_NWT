@@ -14,7 +14,7 @@ export class MeatingDetailsComponent implements OnInit {
   meeting:Meeting;
 
   // if the date is in the past (-1 day)
-  expired:boolean; 
+  expired:boolean=false; 
 
   //if there are more than twenty agendaPoints, then false
   agendaSize:boolean=true;
@@ -27,6 +27,7 @@ export class MeatingDetailsComponent implements OnInit {
         id:null,
         active:false,
         dateAndTime:new Date(),
+        building:null,
         agenda:{
           id:null,
           surveys:[],
@@ -46,6 +47,7 @@ export class MeatingDetailsComponent implements OnInit {
           this.expired=true;
         if (this.meeting.agenda.agendaPoints.length>20)
           this.agendaSize=false;
+        this.meeting.agenda.agendaPoints.sort((a,b)=>a.number-b.number);
       });
 
     }

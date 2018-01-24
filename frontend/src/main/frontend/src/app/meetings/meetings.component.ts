@@ -82,7 +82,9 @@ export class MeetingsComponent implements OnInit {
   }
 
   newMeeting(){
-    this.router.navigate(['president/buildings', this.selectedBuilding, 'meetings/add']);
+    let route: string= '/president/buildings/'+ this.selectedBuilding.id+'/meetings/add';
+    console.log(route);
+    this.router.navigate([route]);
   }
 
   getMeetings(page: number, size: number){
@@ -110,7 +112,7 @@ export class MeetingsComponent implements OnInit {
   }
   
   gotoGetMeeting(id: number) {
-    this.router.navigate(['president/meetings', id]);
+    this.router.navigate(['/president/meetings', id]);
   }
 
 }

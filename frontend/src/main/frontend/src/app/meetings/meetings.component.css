@@ -30,7 +30,7 @@ error{
 .lists:hover>.first{
     height: 40px;
     background: #4c586f;
-    width: 110px;
+    width: 440px;
     text-align: center;
     display: inline-block;
     border-radius:10px 0px 0px 10px;
@@ -40,7 +40,7 @@ error{
 .lists:hover>.first-error{
     height: 40px;
     background: #ed5565;
-    width: 110px;
+    width: 40px;
     text-align: center;
     display: inline-block;
     border-radius:10px 0px 0px 10px;
@@ -49,7 +49,7 @@ error{
 .lists>.first{
     height: 40px;
     background: #4c586f;
-    width: 100px;
+    width: 35px;
     text-align: center;
     display: inline-block;
     border-radius:10px 0px 0px 10px;
