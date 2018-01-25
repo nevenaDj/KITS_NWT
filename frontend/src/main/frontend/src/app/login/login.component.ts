@@ -1,8 +1,8 @@
-import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component, OnInit, ViewContainerRef } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import * as decode from 'jwt-decode';
-
+import { Router } from '@angular/router';
+import { ToastsManager } from 'ng2-toastr/ng2-toastr';
+    
 import { AuthService } from './auth.service';
 import { User } from '../models/user';
 
@@ -18,7 +18,10 @@ export class LoginComponent implements OnInit {
 
   constructor(private authService:AuthService,
               private router:Router,
-              private formBuilder: FormBuilder) { 
+              private formBuilder: FormBuilder,
+              private toastr: ToastsManager, 
+              private vcr: ViewContainerRef) { 
+    this.toastr.setRootViewContainerRef(vcr);
     this.user = {
       id: 1,
       username: '',
@@ -54,7 +57,9 @@ export class LoginComponent implements OnInit {
             this.router.navigate(['president/buildings']);
           }              
       })
-      .catch(error => console.log(error));
+      .catch(error => {
+        this.toastr.error('Invalid username or password.');
+      });
   }
 
   gotoRegister(){

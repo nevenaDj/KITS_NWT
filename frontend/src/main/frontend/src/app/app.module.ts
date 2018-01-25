@@ -6,6 +6,7 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { DropdownModule } from 'ngx-dropdown';
 import { OwlDateTimeModule, OwlNativeDateTimeModule } from 'ng-pick-datetime';
 import { Ng2OrderModule } from 'ng2-order-pipe';
+import { ToastModule, ToastOptions} from 'ng2-toastr/ng2-toastr';
 
 import { NotificationService } from './notifications/notification.service';
 import { SurveyService } from './surveys/survey.service';
@@ -79,6 +80,15 @@ import { NotificationsComponent } from './notifications/notifications.component'
 import { AddNotificationComponent } from './notifications/add-notification/add-notification.component';
 import { CurrentBuildingComponent } from './buildings/current-building/current-building.component';
 
+
+export class CustomOption extends ToastOptions {
+  animate = 'flyRight'; // you can override any options available
+  newestOnTop = false;
+  showCloseButton = true;
+}
+
+
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -148,7 +158,8 @@ import { CurrentBuildingComponent } from './buildings/current-building/current-b
     ReactiveFormsModule,
     OwlDateTimeModule, 
     OwlNativeDateTimeModule,
-    Ng2OrderModule
+    Ng2OrderModule,
+    ToastModule.forRoot()
   ],
   providers: [
     AuthGuardService,
@@ -168,6 +179,7 @@ import { CurrentBuildingComponent } from './buildings/current-building/current-b
     GlitchDataService,
     BillsDataService,
     NotificationService,
+    {provide: ToastOptions, useClass: CustomOption},
     {
       provide: HTTP_INTERCEPTORS,
       useClass: TokenInterceptorService,
