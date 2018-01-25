@@ -77,6 +77,7 @@ import { ChangeResponsiblePersonComponent } from './glitches/change-responsible-
 import { CurrentApartmentComponent } from './apartments/current-apartment/current-apartment.component';
 import { NotificationsComponent } from './notifications/notifications.component';
 import { AddNotificationComponent } from './notifications/add-notification/add-notification.component';
+import { CurrentBuildingComponent } from './buildings/current-building/current-building.component';
 
 @NgModule({
   declarations: [
@@ -134,6 +135,7 @@ import { AddNotificationComponent } from './notifications/add-notification/add-n
     CurrentApartmentComponent,
     NotificationsComponent,
     AddNotificationComponent,
+    CurrentBuildingComponent,
     
   ],
   imports: [

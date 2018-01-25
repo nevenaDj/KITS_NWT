@@ -9,25 +9,27 @@
       <div class="row">
         <div class="col-lg-1"></div>
         <div class="col-lg-5 border">
-          <div class="border-title">city</div>
+          <div class="border-title">city*</div>
           <div class="container-4">
-            <input type="text" id="city" [(ngModel)]="building.address.city" name="city" required autofocus>
+            <div class="form-group" [ngClass]="{'has-error':!complexForm.controls['city'].valid && complexForm.controls['city'].touched}">
+              <input type="text" id="city" [(ngModel)]="building.address.city" name="city" [formControl]="complexForm.controls['city']" required autofocus>
+            </div>
           </div>
         </div>
         <div class="col-lg-5 border">
-          <div class="border-title">zip code</div>
-          <div class="container-4">
-            <input type="number" id="zipCode" [(ngModel)]="building.address.zipCode" name="Zip code" required>
+          <div class="border-title">zip code*</div>
+          <div class="container-4" [ngClass]="{'has-error':!complexForm.controls['zipCode'].valid && complexForm.controls['zipCode'].touched}">
+            <input type="number" id="zipCode" [(ngModel)]="building.address.zipCode" name="Zip code" [formControl]="complexForm.controls['zipCode']" required>
           </div>
         </div>
       </div>
       <div class="row">
         <div class="col-lg-1"></div>
         <div class="col-lg-10 border">
-          <div class="border-title">street</div>
+          <div class="border-title">street*</div>
           <div class="box">
-            <div class="container-4">
-              <input type="text" id="street" [(ngModel)]="building.address.street" name="street" required>
+            <div class="container-4" [ngClass]="{'has-error':!complexForm.controls['street'].valid && complexForm.controls['street'].touched}">
+              <input type="text" id="street" [(ngModel)]="building.address.street" name="street" [formControl]="complexForm.controls['street']" required>
             </div>
           </div>
         </div>
@@ -35,10 +37,10 @@
       <div class="row">
         <div class="col-lg-1"></div>
         <div class="col-lg-10 border">
-          <div class="border-title">number</div>
+          <div class="border-title">number*</div>
           <div class="box">
-            <div class="container-4">
-              <input type="text" id="number" [(ngModel)]="building.address.number" name="number" required>
+            <div class="container-4" [ngClass]="{'has-error':!complexForm.controls['number'].valid && complexForm.controls['number'].touched}">
+              <input type="text" id="number" [(ngModel)]="building.address.number" name="number" [formControl]="complexForm.controls['number']" required>
             </div>
           </div>
         </div>
@@ -47,7 +49,7 @@
         <div class="col-lg-1"></div>
         <div class="col-lg-10">
           <div class="full-button">
-            <input type="submit"  class="save-button-text" value="Save building">
+            <button type="submit"  class="save-button-text" [disabled]="!complexForm.valid">Save building</button>
           </div>
         </div>
       </div>

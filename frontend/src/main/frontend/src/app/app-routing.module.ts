@@ -54,6 +54,7 @@ import { ChangeResponsiblePersonComponent } from './glitches/change-responsible-
 import { CurrentApartmentComponent } from './apartments/current-apartment/current-apartment.component';
 import { NotificationsComponent } from './notifications/notifications.component';
 import { AddNotificationComponent } from './notifications/add-notification/add-notification.component';
+import { CurrentBuildingComponent } from './buildings/current-building/current-building.component';
 
 
 const routers: Routes = [
@@ -63,10 +64,10 @@ const routers: Routes = [
   {
     path: '',
     component: HomeAdminComponent,
-    canActivate: [AuthGuardService,RoleGuardService], 
+    /* canActivate: [AuthGuardService,RoleGuardService], 
     data: { 
       expectedRole: 'ROLE_ADMIN'
-    },
+    }, */
     children: [
           { path: 'buildings', component: BuildingsComponent},
           { path: 'addBuilding', component: AddBuildingComponent},
@@ -206,7 +207,10 @@ const routers: Routes = [
       {path: 'bills/:id', component: BillDetailsPresidentComponent},
       { path: 'responsiblities', component:ResponsibilitiesComponent },
       { path: 'responsiblities/:id', component:GlitchDetailComponent },
-      { path: 'responsiblities/:id/change', component:ChangeResponsiblePersonComponent }
+      { path: 'responsiblities/:id/change', component:ChangeResponsiblePersonComponent },
+      { path: 'buildings', component: CurrentBuildingComponent},
+      { path: 'notifications', component: NotificationsComponent},
+      { path: 'addNotification', component: AddNotificationComponent}
     ]
   },
   {

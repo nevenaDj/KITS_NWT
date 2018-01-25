@@ -14,6 +14,8 @@ export class BuildingService {
 
   RegenerateData$ = this.RegenerateData.asObservable();
 
+  building: Building;
+
   constructor(private http: HttpClient) { 
   }
 
@@ -79,6 +81,31 @@ export class BuildingService {
           .toPromise()
           .then(res => res)
           .catch(this.handleError);
+  }
+
+  getBuildingsOfPresident(): Promise<Building[]>{
+    const url = '/api/buildings/my';
+    return this.http
+         .get(url)
+         .toPromise()
+         .then(res => res)
+         .catch(this.handleError);
+   }
+
+   setMyBuilding(building: Building){
+    this.building = building;
+  }
+
+  getMyBuilding(){
+    if (this.building === undefined){
+      this.getBuildingsOfPresident()
+          .then(buildings => {
+               if (buildings.length > 0){
+                 this.building = buildings[0];
+               }
+          });
+   }
+    return this.building;
   }
 
   private handleError(error: any): Promise<any> {

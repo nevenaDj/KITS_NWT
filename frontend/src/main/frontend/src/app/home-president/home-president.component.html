@@ -59,24 +59,36 @@
         <ul class="sidebar-menu" id="nav-accordion">
             <nav>
                 <li class="mt">
+                    <a [routerLink]="['/president/buildings']">
+                        <i class="fa fa-building"></i>
+                        <span>My buildings</span>
+                    </a>
+                </li>
+                 <li class="sub-menu">
+                    <a [routerLink]="['/president/notifications']">
+                        <i class="fa fa-bell" aria-hidden="true"></i>
+                        <span>Notifications</span>
+                  </a>
+                </li>
+                <li class="sub-menu">
                     <a [routerLink]="['/meetings']">
                         <i class="fa fa-cogs"></i>
                         <span>Meetings</span>
                     </a>
                 </li>
-                <li class="mt">
+                <li class="sub-menu">
                     <a [routerLink]="['/surveys']">
                         <i class="fa fa-cogs"></i>
                         <span>Surveys</span>
                     </a>
                 </li>
-                <li class="mt">
+                <li class="sub-menu">
                     <a [routerLink]="['/president/bills']">
                         <i class="fa fa-cogs"></i>
                         <span>Bills</span>
                     </a>
                 </li>
-                <li class="mt">
+                <li class="sub-menu">
                         <a [routerLink]="['/president/responsiblities']">
                             <i class="fa fa-cogs"></i>
                             <span>My responsibilities</span>

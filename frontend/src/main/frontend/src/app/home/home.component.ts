@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { AuthService } from '../login/auth.service';
+import { ApartmentService } from '../apartments/apartment.service';
 
 @Component({
   selector: 'app-home',
@@ -13,6 +14,7 @@ export class HomeComponent implements OnInit {
   roles: string[];
 
   constructor(private router: Router,
+              private apartmentService: ApartmentService,
               private authService: AuthService) { }
 
   ngOnInit() {
@@ -25,9 +27,10 @@ export class HomeComponent implements OnInit {
     if (role === 'ROLE_TENANT'){
       this.router.navigate(['tenant/apartments']);
     } else if (role === 'ROLE_OWNER'){
+      this.apartmentService.setMyApartment(undefined);
       this.router.navigate(['owner/apartments']);
     } else if (role === 'ROLE_PRESIDENT'){
-      this.router.navigate(['president']);
+      this.router.navigate(['president/buildings']);
     }
   }
 
