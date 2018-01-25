@@ -22,9 +22,9 @@ export class HomePresidentComponent implements OnInit {
 
   goto(role: string){
     if (role === 'ROLE_TENANT'){
-      this.router.navigate(['tenant']);
+      this.router.navigate(['tenant/apartments']);
     } else if (role === 'ROLE_OWNER'){
-      this.router.navigate(['owner']);
+      this.router.navigate(['owner/apartments']);
     } else if (role === 'ROLE_PRESIDENT'){
       this.router.navigate(['president']);
     }

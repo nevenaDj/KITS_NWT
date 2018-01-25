@@ -1,9 +1,11 @@
 import { Injectable } from '@angular/core';
 import { HttpClient ,HttpParams } from '@angular/common/http';
+import { Router } from '@angular/router';
 import { Subject } from 'rxjs/Rx';
 
 import { Apartment } from '../models/apartment';
 import { User } from '../models/user';
+
 
 @Injectable()
 export class ApartmentService {
@@ -13,7 +15,8 @@ export class ApartmentService {
 
   apartment: Apartment;
 
-  constructor(private http:HttpClient) {}
+  constructor(private http:HttpClient,
+              private router: Router) {}
 
    announceChange(){
      this.RegenerateData.next();
@@ -100,11 +103,39 @@ export class ApartmentService {
          .catch(this.handleError);
    }
 
+   getApartmentsOfOwner(): Promise<Apartment[]>{
+    const url = '/api/apartments/owner/my';
+    return this.http
+         .get(url)
+         .toPromise()
+         .then(res => res)
+         .catch(this.handleError);
+   }
+
    setMyApartment(apartment: Apartment){
      this.apartment = apartment;
    }
 
    getMyApartment(){
+     if (this.apartment === undefined){
+       if (this.router.url.startsWith("/tenant")){
+         this.getApartmentsOfTenant()
+              .then(apartments => {
+                if (apartments.length > 0){
+                  this.apartment = apartments[0];
+                }
+              });
+       }
+       else if (this.router.url.startsWith("/owner")){
+        this.getApartmentsOfOwner()
+             .then(apartments => {
+               if (apartments.length > 0){
+                 this.apartment = apartments[0];
+               }
+             });
+      }
+    }
+
      return this.apartment;
    }
 

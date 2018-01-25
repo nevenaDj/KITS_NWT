@@ -52,6 +52,8 @@ import { BillDetailsPresidentComponent } from './bill-details-president/bill-det
 import { ResponsibilitiesComponent } from './glitches/responsibilities/responsibilities.component';
 import { ChangeResponsiblePersonComponent } from './glitches/change-responsible-person/change-responsible-person.component';
 import { CurrentApartmentComponent } from './apartments/current-apartment/current-apartment.component';
+import { NotificationsComponent } from './notifications/notifications.component';
+import { AddNotificationComponent } from './notifications/add-notification/add-notification.component';
 
 
 const routers: Routes = [
@@ -152,10 +154,10 @@ const routers: Routes = [
   {
     path:'tenant',
     component: HomeComponent,
-    canActivate: [AuthGuardService,RoleGuardService], 
+    /* canActivate: [AuthGuardService,RoleGuardService], 
     data: { 
       expectedRole: 'ROLE_USER'
-    },
+    }, */
     children: [
       { path: 'password', component: PasswordComponent},
       { path: 'profile', component: ProfileComponent},
@@ -165,7 +167,9 @@ const routers: Routes = [
       { path: 'addGlitch', component: AddGlitchComponent},
       { path: 'myResponsiblities', component:ResponsibilitiesComponent },
       { path: 'myResponsiblities/:id', component:GlitchDetailComponent },
-      { path: 'apartments', component: CurrentApartmentComponent}
+      { path: 'apartments', component: CurrentApartmentComponent},
+      { path: 'notifications', component: NotificationsComponent},
+      { path: 'addNotification', component: AddNotificationComponent}
     ]
   },
   {
@@ -180,6 +184,9 @@ const routers: Routes = [
       { path: 'profile', component: ProfileComponent},
       { path: 'update', component: ProfileUpdateComponent},
       { path: 'surveys/:id/addAnswer', component: AddAnswerComponent},
+      { path: 'apartments', component: CurrentApartmentComponent},
+      { path: 'notifications', component: NotificationsComponent},
+      { path: 'addNotification', component: AddNotificationComponent}
     ]
   },
   {

@@ -124,7 +124,6 @@ public class TenantController {
 		}
 		
 		userService.removeUserApartment(id, idApartment);
-		userService.remove(id, ROLE_TENANT);
 		return new ResponseEntity<>(HttpStatus.OK);
 
 	}

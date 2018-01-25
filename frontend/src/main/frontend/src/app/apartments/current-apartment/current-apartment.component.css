@@ -34,9 +34,9 @@
 
 .weather2 {
   margin: 10px;
-background: #121213;
-text-align: center;
-background-position: center center;
+  background: #292929;
+  text-align: center;
+  background-position: center center;
   height: 150px;
   border-radius:30px;
   box-shadow:3px 3px 3px #999999;
@@ -45,9 +45,9 @@ background-position: center center;
 
 .weather2:hover {
   margin: 10px;
-background:#121213;
-text-align: center;
-background-position: center center;
+  background:#292929;
+  text-align: center;
+  background-position: center center;
   height: 150px;
   border-radius:30px;
   box-shadow:5px 5px 5px #999999;

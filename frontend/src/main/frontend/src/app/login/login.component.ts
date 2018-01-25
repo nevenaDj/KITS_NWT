@@ -41,7 +41,7 @@ export class LoginComponent implements OnInit {
           } else if (this.authService.isTenant()) {
             this.router.navigate(['tenant/apartments']);
           } else if(this.authService.isOwner()){
-            this.router.navigate(['owner']);
+            this.router.navigate(['owner/apartments']);
           } else if(this.authService.isPresident()){
             this.router.navigate(['president']);
           }              

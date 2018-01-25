@@ -7,8 +7,9 @@ import { DropdownModule } from 'ngx-dropdown';
 import { OwlDateTimeModule, OwlNativeDateTimeModule } from 'ng-pick-datetime';
 import { Ng2OrderModule } from 'ng2-order-pipe';
 
+import { NotificationService } from './notifications/notification.service';
 import { SurveyService } from './surveys/survey.service';
-import {GlitchDataService} from './glitch-details-company/glitch-data.service'
+import { GlitchDataService } from './glitch-details-company/glitch-data.service'
 import { GlitchService } from './glitches/glitch.service';
 import { TokenInterceptorService } from './services/token-interceptor.service';
 import { PagerService } from './services/pager.service';
@@ -74,6 +75,8 @@ import { BillDetailsPresidentComponent } from './bill-details-president/bill-det
 import { ResponsibilitiesComponent } from './glitches/responsibilities/responsibilities.component';
 import { ChangeResponsiblePersonComponent } from './glitches/change-responsible-person/change-responsible-person.component';
 import { CurrentApartmentComponent } from './apartments/current-apartment/current-apartment.component';
+import { NotificationsComponent } from './notifications/notifications.component';
+import { AddNotificationComponent } from './notifications/add-notification/add-notification.component';
 
 @NgModule({
   declarations: [
@@ -129,6 +132,8 @@ import { CurrentApartmentComponent } from './apartments/current-apartment/curren
     ResponsibilitiesComponent,
     ChangeResponsiblePersonComponent,
     CurrentApartmentComponent,
+    NotificationsComponent,
+    AddNotificationComponent,
     
   ],
   imports: [
@@ -160,6 +165,7 @@ import { CurrentApartmentComponent } from './apartments/current-apartment/curren
     SurveyService,
     GlitchDataService,
     BillsDataService,
+    NotificationService,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: TokenInterceptorService,

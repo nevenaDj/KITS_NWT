@@ -248,8 +248,8 @@ public class ApartmentController {
 	@ApiImplicitParam(paramType = "header", name = "X-Auth-Token", required = true, value = "JWT token")
 	@ApiResponses(value = { @ApiResponse(code = 200, message = "Success", response = ApartmentDTO.class),
 			@ApiResponse(code = 404, message = "Not found") })
-	/*** get a current user ***/
-	public ResponseEntity<List<ApartmentDTO>> getCurrentUser(HttpServletRequest request) {
+	/*** get a apartments of user ***/
+	public ResponseEntity<List<ApartmentDTO>> getApartmentsOfTenant(HttpServletRequest request) {
 		String token = request.getHeader("X-Auth-Token");
 		String username = tokenUtils.getUsernameFromToken(token);
 
@@ -260,6 +260,33 @@ public class ApartmentController {
 		}
 
 		List<Apartment> apartments = userApartmentService.getApartments(user.getId());
+
+		List<ApartmentDTO> apartmentsDTO = new ArrayList<>();
+
+		for (Apartment apartment : apartments) {
+			apartmentsDTO.add(new ApartmentDTO(apartment));
+		}
+
+		return new ResponseEntity<>(apartmentsDTO, HttpStatus.OK);
+	}
+
+	@RequestMapping(value = "/apartments/owner/my", method = RequestMethod.GET)
+	@ApiOperation(value = "Get a current apartment of user.", httpMethod = "GET")
+	@ApiImplicitParam(paramType = "header", name = "X-Auth-Token", required = true, value = "JWT token")
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "Success", response = ApartmentDTO.class),
+			@ApiResponse(code = 404, message = "Not found") })
+	/*** get apartments ***/
+	public ResponseEntity<List<ApartmentDTO>> getCurrentUser(HttpServletRequest request) {
+		String token = request.getHeader("X-Auth-Token");
+		String username = tokenUtils.getUsernameFromToken(token);
+
+		User user = userService.findByUsername(username);
+
+		if (user == null) {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+
+		List<Apartment> apartments = apartmentService.getApartmentsOfOwner(user.getId());
 
 		List<ApartmentDTO> apartmentsDTO = new ArrayList<>();
 
