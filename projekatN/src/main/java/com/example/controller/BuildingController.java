@@ -3,6 +3,9 @@ package com.example.controller;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
+import org.apache.http.HttpRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -22,6 +25,7 @@ import com.example.dto.BuildingDTO;
 import com.example.dto.UserDTO;
 import com.example.model.Building;
 import com.example.model.User;
+import com.example.security.TokenUtils;
 import com.example.service.BuildingService;
 import com.example.service.UserService;
 
@@ -45,6 +49,9 @@ public class BuildingController {
 
 	@Autowired
 	UserService userService;
+	
+	@Autowired
+	TokenUtils tokenUtils;
 
 	@Autowired
 	PasswordEncoder passwordEncoder;
@@ -208,4 +215,24 @@ public class BuildingController {
 		return new ResponseEntity<>(new BuildingDTO(building), HttpStatus.CREATED);
 	}
 
+
+	@RequestMapping(value = "/president", method = RequestMethod.GET)
+	@ApiOperation(value = "Get a list of buildings, where president is the current user.", httpMethod = "GET")
+	/*** get a list of the buildings ***/
+	public ResponseEntity<List<BuildingDTO>> getBuildingsByPresident(HttpServletRequest request) {
+		System.out.println("eddig eljut");
+		String token = request.getHeader("X-Auth-Token");
+		String username = tokenUtils.getUsernameFromToken(token);
+
+		User president = userService.findByUsername(username);		
+		
+		List<Building> buildings = buildingService.findAllByPresident(president.getId());
+
+		List<BuildingDTO> buildingsDTO = new ArrayList<>();
+		for (Building building : buildings) {
+			buildingsDTO.add(new BuildingDTO(building));
+		}
+		System.out.println("vege");
+		return new ResponseEntity<>(buildingsDTO, HttpStatus.OK);
+	}
 }

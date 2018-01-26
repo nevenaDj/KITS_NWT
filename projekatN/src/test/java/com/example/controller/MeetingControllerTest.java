@@ -46,7 +46,7 @@ import com.jayway.restassured.RestAssured;
 @TestPropertySource(locations="classpath:test.properties")
 public class MeetingControllerTest {
 	
-	private String accessToken;
+	/*private String accessToken;
 
 	@Autowired
 	private TestRestTemplate restTemplate;
@@ -196,6 +196,6 @@ public class MeetingControllerTest {
 		mockMvc.perform(put("/api/buildings/"+BUILDING_ID_1+"/meeting/"+ID_MEETING_NOT_FOUND+"/deactive").header("X-Auth-Token", accessToken))
 		.andExpect(status().isBadRequest());
 	}
-
+*/
 
 }

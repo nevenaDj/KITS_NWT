@@ -9,7 +9,7 @@ import com.example.model.CommunalProblem;
 
 public interface CommunalProblemRepository extends JpaRepository<CommunalProblem, Long> {
 
-	@Query(value = "SELECT p FROM CommunalProblem p WHERE p.item.id IS NULL")
-	List<CommunalProblem> findWithoutMeeting();
+	@Query(value = "SELECT p FROM CommunalProblem p WHERE p.item.id IS NULL AND p.building.id=?1")
+	List<CommunalProblem> findWithoutMeeting(Long id);
 
 }

@@ -1,5 +1,7 @@
 package com.example.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -45,6 +47,11 @@ public class BuildingService {
 
 	public Long getCountOfBuilding() {
 		return buildingRepository.count();
+	}
+
+	public List<Building> findAllByPresident(Long id) {
+		// TODO Auto-generated method stub
+		return buildingRepository.findAllByPresident(id);
 	}
 
 }

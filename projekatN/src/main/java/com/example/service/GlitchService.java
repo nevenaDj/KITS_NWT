@@ -81,8 +81,8 @@ public class GlitchService {
 		return g;
 	}
 
-	public List<Glitch> findWithoutMeeting() {
-		return glitchRepository.findWithoutMeeting();
+	public List<Glitch> findWithoutMeeting(Long id) {
+		return glitchRepository.findWithoutMeeting(id);
 	}
 
 	public List<Glitch> findActiveGlitches(Long id) {

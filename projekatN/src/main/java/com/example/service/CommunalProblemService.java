@@ -21,7 +21,7 @@ public class CommunalProblemService {
 		return communalProblemRepository.findOne(id);
 	}
 
-	public List<CommunalProblem> findWithoutMeeting() {
-		return communalProblemRepository.findWithoutMeeting();
+	public List<CommunalProblem> findWithoutMeeting(Long id) {
+		return communalProblemRepository.findWithoutMeeting(id);
 	}
 }

@@ -15,13 +15,13 @@ public class ItemComment {
 	@GeneratedValue
 	private Long id;
 	
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	private User writer;
 	
 	private String text;
 	private Date date;
 	
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	private AgendaItem item;
 	
 	public ItemComment() {
@@ -65,6 +65,14 @@ public class ItemComment {
 
 	public void setDate(Date date) {
 		this.date = date;
+	}
+
+	public AgendaItem getItem() {
+		return item;
+	}
+
+	public void setItem(AgendaItem item) {
+		this.item = item;
 	}
 	
 	

@@ -167,7 +167,7 @@ public class TenantControllerTest {
 	public void testGetTenants() throws Exception{
 		mockMvc.perform(get("/api/tenants?page=0&size=" + PAGE_SIZE).header("X-Auth-Token", accessToken))
 		.andExpect(status().isOk())
-		.andExpect(jsonPath("$", hasSize(1)))
+		.andExpect(jsonPath("$", hasSize(2)))
 		.andExpect(content().contentType(contentType))
 		.andExpect(jsonPath("$.[*].username").value(hasItem(USERNAME)));	
 	}	

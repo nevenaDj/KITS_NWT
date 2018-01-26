@@ -53,6 +53,12 @@ import { BillsPresidentComponent } from './bills-president/bills-president.compo
 import { BillDetailsPresidentComponent } from './bill-details-president/bill-details-president.component';
 import { ResponsibilitiesComponent } from './glitches/responsibilities/responsibilities.component';
 import { ChangeResponsiblePersonComponent } from './glitches/change-responsible-person/change-responsible-person.component';
+import { MeetingsComponent } from './meetings/meetings.component';
+import { AddMeetingComponent } from './meetings/add-meeting/add-meeting.component';
+import { MeatingDetailsComponent } from './meetings/meating-details/meating-details.component';
+import { AddItemComponent } from './meetings/add-item/add-item.component';
+import { ItemDetailsComponent } from './meetings/item-details/item-details.component';
+import { UpdateItemComponent } from './meetings/update-item/update-item.component';
 
 
 const routers: Routes = [
@@ -176,7 +182,8 @@ const routers: Routes = [
       expectedRole: 'ROLE_OWNER'
     },
     children: [
-      {path: 'surveys/:id/addAnswer', component: AddAnswerComponent}
+      {path: 'surveys/:id/addAnswer', component: AddAnswerComponent},
+      { path: 'glitches/:id', component:GlitchDetailComponent }
     ]
   },
   {
@@ -193,7 +200,14 @@ const routers: Routes = [
       {path: 'bills/:id', component: BillDetailsPresidentComponent},
       { path: 'responsiblities', component:ResponsibilitiesComponent },
       { path: 'responsiblities/:id', component:GlitchDetailComponent },
-      { path: 'responsiblities/:id/change', component:ChangeResponsiblePersonComponent }
+      { path: 'responsiblities/:id/change', component:ChangeResponsiblePersonComponent },
+      { path: 'meetings', component:MeetingsComponent },
+      { path: 'meetings/:id', component:MeatingDetailsComponent },
+      { path: 'buildings/:id/meetings/add', component:AddMeetingComponent },
+      { path: 'meetings/:id/items/add', component: AddItemComponent},
+      { path: 'meetings/:id/items/:id_item', component:ItemDetailsComponent },
+      { path: 'meetings/:id/update', component:UpdateItemComponent },
+      { path: 'glitches/:id', component:GlitchDetailComponent }
     ]
   },
   {

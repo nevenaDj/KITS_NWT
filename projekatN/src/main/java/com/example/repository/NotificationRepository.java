@@ -21,7 +21,7 @@ public interface NotificationRepository extends JpaRepository<Notification, Long
 			    nativeQuery = false)
 	public Page<Notification> findByWriter(Long userId, Pageable pageable);
 
-	@Query(value = "SELECT n FROM Notification n WHERE n.item.id IS NULL")
-	public List<Notification> findWithoutMeeting();
+	@Query(value = "SELECT n FROM Notification n WHERE n.item.id IS NULL AND n.building.id=?1")
+	public List<Notification> findWithoutMeeting(Long id);
 		
 }

@@ -35,7 +35,7 @@ insert into address (street,number, zip_code, city) values ('address','1a', 2100
 insert into address (street,number, zip_code, city) values ('address','1b', 21000, 'Novi Sad');
 
 insert into building (address_id, president_id) values (1,5);
-insert into building (address_id) values (2);
+insert into building (address_id, president_id) values (2,5);
 
 insert into apartment (description,number, building_id, owner_id) values ('description 1', 1, 1, 4);
 insert into apartment (description,number, building_id, owner_id) values ('description 2', 2, 1, 2);
@@ -45,7 +45,8 @@ insert into user_aparment (tenant_id, apartment_id) values (2, 1);
 insert into user_aparment (tenant_id, apartment_id) values (7, 2);
 
 insert into meeting (building_id, date_and_time, active) values (1,'2017-11-11', true);
-
+insert into meeting (building_id, date_and_time, active) values (1,'2018-01-26', false);
+insert into meeting (building_id, date_and_time, active) values (2,'2018-01-20', false);
 
 insert into survey (title, end, meeting_id) values ('survey','2017-12-12',1);
 
@@ -81,7 +82,11 @@ insert into bill(company_id, price, date, approved, glitch_id) values (3, 1000, 
 insert into comment (text, user_id, glitch_id) values ('comment', 2, 1);
 insert into comment (text, user_id, glitch_id) values ('new comment', 3, 1);
 			
-insert into agenda_item(title, meeting_id, number, glitch_id ) values ('Title',1, 1, 1);
+insert into agenda_item(title, meeting_id, number, glitch_id ) values ('Title2',2, 2, 1);
+insert into agenda_item(title, meeting_id, number ) values ('Title1',2, 1 );
+insert into agenda_item(title, meeting_id, number ) values ('Title3',2, 3 );
+insert into agenda_item(title, meeting_id, number ) values ('Title',1, 1 );
+
 insert into item_comment(writer_id, text, date) values (1, 'text', '2017-12-03');
 insert into agenda_item_comments(agenda_item_id, comments_id) values (1,1);
 
