@@ -1,3 +1,39 @@
-<p>
-  update-item works!
-</p>
+<div class="row">
+  <div class="col-lg-9 main-chart">
+      <div class="row">
+          <p class="title">UPDATE ORDER OF MEETING</p>
+          <br>
+          </div>
+    <div class="row">
+      <div class="col-lg-1"></div>
+      <div class="col-lg-10">
+        <div *ngFor="let item of meeting.agenda.agendaPoints">
+          <ul >
+            <li>
+              <div class="lists">
+                <div class="first">
+                  <select #selectElem (change)="setNewNumber(selectElem.value, item)" [(ngModel)]="item.number">
+                    <option *ngFor="let number of select" >
+                        {{number}}
+                    </option>
+                </select>
+                </div>
+                <div class="sec">
+                  <b>{{item.title}}</b> 
+                </div>
+               </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-lg-1"></div>
+      <div class="col-lg-10">
+          <div class="full-button" >
+              <input type="submit" class="save-button-text" value="Save..." (click)="save()">
+            </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -37,7 +37,7 @@ public class CommunalProblem {
 	@ManyToMany(fetch = FetchType.EAGER)
 	private Set<Apartment> apartments = new HashSet<>();
 	
-	@OneToOne(fetch = FetchType.LAZY)
+	@OneToOne(fetch = FetchType.EAGER)
 	private AgendaItem item;
 	
 
@@ -112,4 +112,13 @@ public class CommunalProblem {
 		this.apartments.add(apartment);
 	}
 
+	public AgendaItem getItem() {
+		return item;
+	}
+
+	public void setItem(AgendaItem item) {
+		this.item = item;
+	}
+
+	
 }

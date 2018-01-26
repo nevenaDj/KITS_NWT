@@ -3,6 +3,7 @@ package com.example.dto;
 import java.util.Date;
 
 import com.example.model.ItemComment;
+import com.example.model.User;
 
 public class ItemCommentDTO {
 	private Long id;
@@ -60,7 +61,10 @@ public class ItemCommentDTO {
 	}
 
 	public static ItemComment getComment(ItemCommentDTO commentDTO) {
-		return new ItemComment(commentDTO.getId(), UserDTO.getUser(commentDTO.getWriter()), commentDTO.getText(),
+		User user= null;
+		if (commentDTO.getWriter()!=null)
+			user=UserDTO.getUser(commentDTO.getWriter());
+		return new ItemComment(commentDTO.getId(), user, commentDTO.getText(),
 				commentDTO.getDate());
 
 	}

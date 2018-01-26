@@ -56,6 +56,7 @@ import { AddMeetingComponent } from './meetings/add-meeting/add-meeting.componen
 import { MeatingDetailsComponent } from './meetings/meating-details/meating-details.component';
 import { AddItemComponent } from './meetings/add-item/add-item.component';
 import { ItemDetailsComponent } from './meetings/item-details/item-details.component';
+import { UpdateItemComponent } from './meetings/update-item/update-item.component';
 
 
 const routers: Routes = [
@@ -179,7 +180,8 @@ const routers: Routes = [
       expectedRole: 'ROLE_OWNER'
     },
     children: [
-      {path: 'surveys/:id/addAnswer', component: AddAnswerComponent}
+      {path: 'surveys/:id/addAnswer', component: AddAnswerComponent},
+      { path: 'glitches/:id', component:GlitchDetailComponent }
     ]
   },
   {
@@ -200,9 +202,10 @@ const routers: Routes = [
       { path: 'meetings', component:MeetingsComponent },
       { path: 'meetings/:id', component:MeatingDetailsComponent },
       { path: 'buildings/:id/meetings/add', component:AddMeetingComponent },
-      { path: 'meetings/:iditems/add', component: AddItemComponent},
-      { path: 'meetings/:iditems/:id', component:ItemDetailsComponent },
-      { path: 'meetings/:iditems/:id', component:AddItemComponent },
+      { path: 'meetings/:id/items/add', component: AddItemComponent},
+      { path: 'meetings/:id/items/:id_item', component:ItemDetailsComponent },
+      { path: 'meetings/:id/update', component:UpdateItemComponent },
+      { path: 'glitches/:id', component:GlitchDetailComponent }
     ]
   },
   {

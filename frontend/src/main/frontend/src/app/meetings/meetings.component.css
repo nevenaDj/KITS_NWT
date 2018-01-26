@@ -30,7 +30,7 @@ error{
 .lists:hover>.first{
     height: 40px;
     background: #4c586f;
-    width: 440px;
+    width: 40px;
     text-align: center;
     display: inline-block;
     border-radius:10px 0px 0px 10px;

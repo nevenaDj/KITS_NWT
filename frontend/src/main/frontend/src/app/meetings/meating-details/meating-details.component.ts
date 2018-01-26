@@ -3,6 +3,7 @@ import { Meeting } from '../../models/meeting';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MeetingsService } from '../meetings.service';
 import { AgendaItem } from '../../models/agendaItem';
+import { AuthService } from '../../login/auth.service';
 
 @Component({
   selector: 'app-meating-details',
@@ -16,13 +17,18 @@ export class MeatingDetailsComponent implements OnInit {
   // if the date is in the past (-1 day)
   expired:boolean=false; 
 
-  //if there are more than twenty agendaPoints, then false
+  //if there are more than twenty agendaPoints or user is not a president, then false
   agendaSize:boolean=true;
+
+  allReported:boolean=false;
+
+
 
 
   constructor(private route: ActivatedRoute,
               private meetingService: MeetingsService,
-              private router: Router) {
+              private router: Router,
+              private authService: AuthService) {
       this.meeting={
         id:null,
         active:false,
@@ -42,11 +48,16 @@ export class MeatingDetailsComponent implements OnInit {
         this.meeting = meeting;
         console.log("meeting: "+JSON.stringify( meeting))
         let now= new Date();
-        let diff= this.meeting.dateAndTime.getTime()-now.getTime();
+        let date= new Date(this.meeting.dateAndTime);
+        let diff= date.getTime()-now.getTime();
         if (diff<0)
           this.expired=true;
-        if (this.meeting.agenda.agendaPoints.length>20)
-          this.agendaSize=false;
+        if (!this.expired)
+          if (!this.authService.isPresident())
+            this.agendaSize=false;
+          else
+            if (this.meeting.agenda.agendaPoints.length>20 )
+              this.agendaSize=false;
         this.meeting.agenda.agendaPoints.sort((a,b)=>a.number-b.number);
       });
 
@@ -57,7 +68,9 @@ export class MeatingDetailsComponent implements OnInit {
     }
 
     newItem(){
-      this.router.navigate(['/president/meetings',+this.route.snapshot.params['id'], 'items/add']);
+      let route:string= '/president/meetings/'+this.route.snapshot.params['id']+ '/items/add';
+      console.log(route)
+      this.router.navigate([route]);
     }
 
     deleteItem(item:AgendaItem){
@@ -70,4 +83,15 @@ export class MeatingDetailsComponent implements OnInit {
       });
     }
 
+
+  activate(){
+    this.meeting.active=true;
+    this.meetingService.activateMeeting(this.meeting.building.id, this.meeting.id);
+  }
+
+
+
+  updateOrder(){
+    this.router.navigate(['/president/meetings',+this.route.snapshot.params['id'], 'update']);
+  }
 }

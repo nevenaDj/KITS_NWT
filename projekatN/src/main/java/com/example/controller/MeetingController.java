@@ -167,8 +167,8 @@ public class MeetingController {
 		return new ResponseEntity<>(dates, HttpStatus.OK);
 	}
 	
-	@RequestMapping(value = "/buildings/{b_id}/meeting/{m_id}/active", method = RequestMethod.PUT, produces = "application/json")
-	@ApiOperation(value = "Set the agenda active.", notes = "Returns the meeting being saved.", httpMethod = "POST", 
+	@RequestMapping(value = "/buildings/{b_id}/meetings/{m_id}/active", method = RequestMethod.PUT, produces = "application/json")
+	@ApiOperation(value = "Set the agenda active.", notes = "Returns the meeting being saved.", httpMethod = "PUT", 
 	produces = "application/json")
 	@ApiImplicitParam(paramType="header", name="X-Auth-Token", required=true, value="JWT token")
 	@ApiResponses(value = { 
@@ -189,6 +189,7 @@ public class MeetingController {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 		
+	
 		meeting.setActive(true);
 		meeting= meetingService.save(meeting);
 		return new ResponseEntity<>(new MeetingDTO(meeting), HttpStatus.OK);

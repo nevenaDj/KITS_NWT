@@ -31,6 +31,7 @@ import com.example.model.AgendaItem;
 import com.example.model.CommunalProblem;
 import com.example.model.Glitch;
 import com.example.model.ItemComment;
+import com.example.model.ItemType;
 import com.example.model.Meeting;
 import com.example.model.Notification;
 import com.example.model.Survey;
@@ -97,6 +98,21 @@ public class AgendaController {
 		agendaPoint.setMeeting(meeting);
 
 		agendaPoint = agendaPointService.save(agendaPoint);
+		if (agendaPoint.getType()==ItemType.GLITCH) {
+			Glitch glitch = glitchService.findOne(agendaPoint.getGlitch().getId());
+			glitch.setItem(agendaPoint);
+			glitchService.save(glitch);
+		}
+		if (agendaPoint.getType()==ItemType.NOTIFICATION) {
+			Notification notification = notificationService.findOne(agendaPoint.getNotification().getId());
+			notification.setItem(agendaPoint);
+			notificationService.save(notification);
+		}
+		if (agendaPoint.getType()==ItemType.COMMUNAL_PROBLEM) {
+			CommunalProblem communalProblem = comProblemsService.findOne(agendaPoint.getCommunalProblem().getId());
+			communalProblem.setItem(agendaPoint);
+			comProblemsService.save(communalProblem);
+		}
 
 		return new ResponseEntity<>(new AgendaItemDTO(agendaPoint), HttpStatus.CREATED);
 
@@ -151,17 +167,18 @@ public class AgendaController {
 
 	}
 
-	@RequestMapping(value = "/agendas/no_meeting", method = RequestMethod.GET)
+	@RequestMapping(value = "buildings/{id}/agendas/no_meeting", method = RequestMethod.GET)
 	@ApiOperation(value = "Get contents(glitches, notifications, commaunal problems) whiach are not in any agenda.", notes = "Returns the contnts.", httpMethod = "GET", produces = "application/json")
 	@ApiImplicitParam(paramType = "header", name = "X-Auth-Token", required = true, value = "JWT token")
 	@ApiResponses(value = { @ApiResponse(code = 200, message = "Ok", response = ContentWithoutAgendaDTO.class) })
 	@PreAuthorize("hasAnyRole( 'ROLE_PRESIDENT')")
-	public ResponseEntity<ContentWithoutAgendaDTO> getAgendaWithoutMeeting() {
+	public ResponseEntity<ContentWithoutAgendaDTO> getAgendaWithoutMeeting(
+			@ApiParam(value = "The ID of the building.", required = true) @PathVariable Long id) {
 
 		ContentWithoutAgendaDTO noMeeting = new ContentWithoutAgendaDTO();
-		List<Notification> notifications = notificationService.findWithoutMeeting();
-		List<Glitch> glitches = glitchService.findWithoutMeeting();
-		List<CommunalProblem> problems = comProblemsService.findWithoutMeeting();
+		List<Notification> notifications = notificationService.findWithoutMeeting(id);
+		List<Glitch> glitches = glitchService.findWithoutMeeting(id);
+		List<CommunalProblem> problems = comProblemsService.findWithoutMeeting(id);
 		List<NotificationDTO> notificationsDTO = new ArrayList<>();
 		List<GlitchDTO> glitchesDTO = new ArrayList<>();
 		List<CommunalProblemDTO> problemsDTO = new ArrayList<>();
@@ -201,9 +218,23 @@ public class AgendaController {
 		if (agendaItem == null) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
-		agendaPointService.delete(id);
 		
-		// glich.item????
+		if (agendaItem.getType()==ItemType.GLITCH) {
+			Glitch glitch = glitchService.findOne(agendaItem.getGlitch().getId());
+			glitch.setItem(null);
+			glitchService.save(glitch);
+		}
+		if (agendaItem.getType()==ItemType.NOTIFICATION) {
+			Notification notification = notificationService.findOne(agendaItem.getNotification().getId());
+			notification.setItem(null);
+			notificationService.save(notification);
+		}
+		if (agendaItem.getType()==ItemType.COMMUNAL_PROBLEM) {
+			CommunalProblem communalProblem = comProblemsService.findOne(agendaItem.getCommunalProblem().getId());
+			communalProblem.setItem(null);
+			comProblemsService.save(communalProblem);
+		}
+		agendaPointService.delete(id);
 
 		return new ResponseEntity<>(HttpStatus.OK);
 
@@ -273,7 +304,7 @@ public class AgendaController {
 
 	}
 
-	@RequestMapping(value = "/agendas/", method = RequestMethod.PUT, consumes = "application/json", produces = "application/json")
+	@RequestMapping(value = "/agendas", method = RequestMethod.PUT, consumes = "application/json", produces = "application/json")
 	@ApiOperation(value = "Update an item's number in the agenda", notes = "Returns the updated items.", httpMethod = "PUT", consumes = "application/json", produces = "application/json")
 	@ApiImplicitParam(paramType = "header", name = "X-Auth-Token", required = true, value = "JWT token")
 	@ApiResponses(value = { @ApiResponse(code = 200, message = "Ok", response = AgendaDTO.class),
@@ -281,7 +312,7 @@ public class AgendaController {
 	@PreAuthorize("hasAnyRole('ROLE_PRESIDENT')")
 	public ResponseEntity<AgendaDTO> updateAgendaItemNumber(
 			@ApiParam(value = "The AgendaDTO obejct.", required = true) @RequestBody AgendaDTO agendaDTO) {
-
+		System.out.println("kezet");
 		for (AgendaItemDTO itemDTO : agendaDTO.getAgendaPoints()) {
 			AgendaItem agendaItem = agendaPointService.findOne(itemDTO.getId());
 			if (agendaItem == null) {
@@ -300,12 +331,13 @@ public class AgendaController {
 	@ApiImplicitParam(paramType = "header", name = "X-Auth-Token", required = true, value = "JWT token")
 	@ApiResponses(value = { @ApiResponse(code = 201, message = "Created", response = AgendaItemDTO.class),
 			@ApiResponse(code = 400, message = "Bad request"), @ApiResponse(code = 404, message = "Not found") })
-	@PreAuthorize("hasAnyRole('ROLE_OWNER')")
+	@PreAuthorize("hasAnyRole('ROLE_OWNER','ROLE_PRESIDENT')")
 	public ResponseEntity<AgendaItemDTO> addComment(
 			@ApiParam(value = "The ID of the item.", required = true) @PathVariable("id") Long id,
 			@ApiParam(value = "The ID of the meeting.", required = true) @PathVariable("m_id") Long meetingId,
 			@ApiParam(value = "The ItemCommentDTO object.", required = true) @RequestBody ItemCommentDTO commentDTO,
 			HttpServletRequest request) {
+		
 		AgendaItem agendaItem = agendaPointService.findOne(id);
 		Meeting meeting = meetingService.findOne(meetingId);
 		if (meeting == null) {
@@ -321,6 +353,8 @@ public class AgendaController {
 		User writer = userService.findByUsername(username);
 		ItemComment comment = ItemCommentDTO.getComment(commentDTO);
 		comment.setWriter(writer);
+		comment.setItem(agendaItem);
+		commentService.save(comment);
 		Set<ItemComment> comments = agendaItem.getComments();
 		if (comments == null)
 			comments = new HashSet<>();

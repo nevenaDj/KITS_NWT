@@ -1,8 +1,12 @@
 <div class="row">
   <div class="col-lg-9 main-chart">
       <div class="row">
-          <p class="title">MEETING </p>
-
+          <p class="title">MEETING 
+           
+          </p>
+          <div *ngIf="expired">
+              <a (click)="activate()" class="small-btn" style="float: right;" *ngIf="!meeting.active">Activate</a>
+         </div>
           </div>
     <div class="row">
       <div class="col-lg-1"></div>
@@ -11,8 +15,8 @@
         <div class="border-desc">{{meeting.dateAndTime | date}}</div>
       </div>
       <div class="col-lg-5 border">
-          <div class="border-title">Expired</div>
-          <div class="border-desc">{{expired}}</div>
+          <div class="border-title">Building</div>
+          <div class="border-desc">{{meeting.building.address.street}} {{meeting.building.address.number}}, {{meeting.building.address.city}}</div>
       </div>
     </div>
 
@@ -27,11 +31,15 @@
         </div>
       </div>
     <br><br>
-    <div class="row" *ngIf="agendaSize">
+    <div class="row">
         <div class="col-lg-1"></div>
-        <div class="col-lg-5">
-            <a (click)="newItem()" class="small-btn">New item</a>
+        <div class="col-lg-10" *ngIf="!expired">
+            <a (click)="newItem()" class="small-btn"  *ngIf="agendaSize">New item
+                
+            </a>  
+            <a (click)="updateOrder()" class="small-btn" style="float: right;"> Update order</a>         
         </div>
+
     </div>
     <br><br>
     <div class="row">

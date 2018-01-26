@@ -6,7 +6,7 @@ import { ItemComment } from "./itemComment";
 export class AgendaItem implements AgendaItemInterface{
     public id: number;
     public title: string;
-    public content: Date;
+    public content: string;
     public conclusion: string;
     public number: number;
     //public notification: Notification;
@@ -33,7 +33,7 @@ export class AgendaItem implements AgendaItemInterface{
 interface AgendaItemInterface{
     id: number;
     title: string;
-    content: Date;
+    content: string;
     conclusion?: string;
     number: number;
     // notification: Notification;

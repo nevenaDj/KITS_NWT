@@ -96,6 +96,12 @@ export class MeetingsComponent implements OnInit {
             if (!m.active)
               this.canWeAddMeeting=false;
           }
+          this.meetings.sort(function(x, y) {
+            // true values first
+            return (x.active === y.active)? 0 : y.active? -1 : 1;
+            // false values first
+            // return (x === y)? 0 : x? 1 : -1;
+        });
           console.log("active : "+JSON.stringify(this.canWeAddMeeting));
         });
   }
@@ -115,4 +121,5 @@ export class MeetingsComponent implements OnInit {
     this.router.navigate(['/president/meetings', id]);
   }
 
+  
 }

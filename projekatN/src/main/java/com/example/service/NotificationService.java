@@ -39,7 +39,7 @@ public class NotificationService {
 		notificationRepository.delete(id);
 	}
 
-	public List<Notification> findWithoutMeeting() {
-		return notificationRepository.findWithoutMeeting();
+	public List<Notification> findWithoutMeeting(Long id) {
+		return notificationRepository.findWithoutMeeting(id);
 	}
 }
