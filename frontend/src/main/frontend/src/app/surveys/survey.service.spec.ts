@@ -48,6 +48,7 @@ describe('SurveyService', () => {
         {
           id: 1,
           text: 'question',
+          type: 'radio',
           options: [
             {
               id:1,

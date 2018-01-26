@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Location } from '@angular/common';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 import { UserPassword } from '../../models/user-password';
 import { UserService } from '../../users/user.service';
@@ -19,8 +20,17 @@ export class PasswordComponent implements OnInit {
     newPassword2: ''
   }
 
+  complexForm: FormGroup;
+
   constructor(private userService: UserService,
-              private location: Location) { }
+              private location: Location,
+              private formBuilder: FormBuilder) {
+    this.complexForm = formBuilder.group({
+      'currentPassword': [null, Validators.required],
+      'newPassword1': [null, Validators.required],
+      'newPassword2': [null, Validators.required]
+    })
+    }
 
   ngOnInit() {
   }

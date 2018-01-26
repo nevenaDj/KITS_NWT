@@ -49,7 +49,7 @@ public class BuildingController {
 
 	@Autowired
 	UserService userService;
-	
+
 	@Autowired
 	TokenUtils tokenUtils;
 
@@ -215,7 +215,6 @@ public class BuildingController {
 		return new ResponseEntity<>(new BuildingDTO(building), HttpStatus.CREATED);
 	}
 
-
 	@RequestMapping(value = "/president", method = RequestMethod.GET)
 	@ApiOperation(value = "Get a list of buildings, where president is the current user.", httpMethod = "GET")
 	/*** get a list of the buildings ***/
@@ -224,8 +223,8 @@ public class BuildingController {
 		String token = request.getHeader("X-Auth-Token");
 		String username = tokenUtils.getUsernameFromToken(token);
 
-		User president = userService.findByUsername(username);		
-		
+		User president = userService.findByUsername(username);
+
 		List<Building> buildings = buildingService.findAllByPresident(president.getId());
 
 		List<BuildingDTO> buildingsDTO = new ArrayList<>();
@@ -235,11 +234,11 @@ public class BuildingController {
 		System.out.println("vege");
 		return new ResponseEntity<>(buildingsDTO, HttpStatus.OK);
 	}
-	
+
 	@RequestMapping(value = "/my", method = RequestMethod.GET)
 	@ApiOperation(value = "Get a current buildings of president.", httpMethod = "GET")
 	@ApiImplicitParam(paramType = "header", name = "X-Auth-Token", required = true, value = "JWT token")
-	@ApiResponses(value = { @ApiResponse(code = 200, message = "Success", response = ApartmentDTO.class),
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "Success", response = BuildingDTO.class),
 			@ApiResponse(code = 404, message = "Not found") })
 	/*** get a buildings of president ***/
 	@PreAuthorize("hasRole('ROLE_PRESIDENT')")
@@ -262,5 +261,5 @@ public class BuildingController {
 
 		return new ResponseEntity<>(buildingsDTO, HttpStatus.OK);
 	}
-	
+
 }

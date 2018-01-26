@@ -75,4 +75,8 @@ export class AddApartmentComponent implements OnInit {
         });
   }
 
+  cancel(){
+    this.location.back();
+  }
+
 }

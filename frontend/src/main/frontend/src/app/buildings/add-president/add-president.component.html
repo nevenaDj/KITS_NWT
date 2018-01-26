@@ -16,7 +16,7 @@
           <div class="col-lg-5 border">
             <div class="border-title">username</div>
             <div class="container-4">
-              <input type="text" id="usernameFind" [(ngModel)]="username" name="username" required autofocus>
+              <input type="text" id="usernameFind" [(ngModel)]="username" name="username" autofocus>
             </div>
           </div>
           <div class="col-lg-5 border">
@@ -67,15 +67,15 @@
       <div class="row">
         <div class="col-lg-1"></div>
         <div class="col-lg-5 border">
-          <div class="border-title">username</div>
-          <div class="container-4">
-            <input type="text" id="username" [(ngModel)]="president.username" name="username" required>
+          <div class="border-title">username*</div>
+          <div class="form-group" [ngClass]="{'has-error':!complexForm.controls['username'].valid && complexForm.controls['username'].touched}">
+            <input type="text" id="username" class="form-control" [(ngModel)]="president.username" [formControl]="complexForm.controls['username']" name="username" autofocus>
           </div>
         </div>
         <div class="col-lg-5 border">
           <div class="border-title">phone number</div>
-          <div class="container-4">
-            <input type="text" id="phoneNo" [(ngModel)]="president.phoneNo" name="phoneNo" required>
+          <div class="form-group">
+            <input type="text" id="phoneNo" class="form-control" [(ngModel)]="president.phoneNo" name="phoneNo" required>
           </div>
         </div>
       </div>
@@ -84,19 +84,25 @@
         <div class="col-lg-10 border">
           <div class="border-title">email</div>
           <div class="box">
-            <div class="container-4">
-              <input type="text" id="email" [(ngModel)]="president.email" name="email" required>
+            <div class="form-group">
+              <input type="text" id="email" class="form-control" [(ngModel)]="president.email" name="email" required>
             </div>
           </div>
         </div>
       </div>
       <div class="row">
-        <div class="col-lg-1"></div>
-        <div class="col-lg-10">
-          <div class="full-button">
-            <input type="submit" id="save-president"  class="save-button-text" value="Save president">
+          <div class="col-lg-1"></div>
+          <div class="col-lg-5">
+            <div class="full-button cancel" >
+              <a class="full-button-text" (click)="cancel()">Cancel
+              </a>
+            </div>
           </div>
-        </div>
+          <div class="col-lg-5">
+            <div class="full-button">
+                <button type="submit" id="save-president"  class="save-button-text" [disabled]="!complexForm.valid">Save president</button>
+          </div>
+          </div>
       </div>
     </div>
   </form>

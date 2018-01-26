@@ -61,4 +61,8 @@ export class AddTenantComponent implements OnInit {
         .then(tenant => this.location.back());
   }
 
+  cancel(){
+    this.location.back();
+  }
+
 }

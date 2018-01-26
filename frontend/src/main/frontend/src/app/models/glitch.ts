@@ -36,7 +36,7 @@ export class Glitch implements GlitchInterface{
 
 interface GlitchInterface{
     id?: number;
-    description: string;
+    description?: string;
     dateOfReport?: Date;
     dateOfRepair?: Date;
     apartment?: Apartment;
@@ -44,6 +44,6 @@ interface GlitchInterface{
     type: GlitchType;
     state?: GlitchState;
     repairApproved?: boolean;
-    companyID: number;
-    bill: Bill;
+    companyID?: number;
+    bill?: Bill;
 }

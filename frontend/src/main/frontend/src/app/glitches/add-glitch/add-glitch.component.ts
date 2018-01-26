@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 import { Glitch } from '../../models/glitch';
 import { GlitchService } from '../glitch.service';
@@ -14,17 +15,16 @@ import { ApartmentService } from '../../apartments/apartment.service';
   styleUrls: ['./add-glitch.component.css']
 })
 export class AddGlitchComponent implements OnInit {
-
   glitch: Glitch;
-
   apartmentID: number;
-
   glitchTypes: GlitchType[];
+  complexForm: FormGroup;
 
   constructor(private glitchService: GlitchService,
               private glitchTypeService: GlitchTypeService,
               private apartmentService: ApartmentService,
-              private router: Router) {
+              private router: Router,
+              private formBuilder: FormBuilder) {
     this.glitch = {
       id: null,
       description: '',
@@ -41,6 +41,9 @@ export class AddGlitchComponent implements OnInit {
       },
       state: null
     }
+    this.complexForm = formBuilder.group({
+      'description': [null, Validators.required]
+    })
    }
 
   ngOnInit() {
@@ -62,6 +65,10 @@ export class AddGlitchComponent implements OnInit {
           this.glitch = glitch;
           this.router.navigate(['/tenant/glitches', this.glitch.id]);
         }); 
+  }
+
+  cancel(){
+    this.router.navigate(['/tenant/glitches']);
   }
 
 }

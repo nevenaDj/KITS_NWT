@@ -11,8 +11,8 @@
           <div class="col-lg-10 border">
             <div class="border-title">text</div>
             <div class="box">
-              <div class="container-4">
-                <input type="text" id="text" [(ngModel)]="notification.text" name="text" required autofocus>
+              <div class="form-group" [ngClass]="{'has-error':!complexForm.controls['text'].valid && complexForm.controls['text'].touched}">
+                <input type="text" class="form-control" id="text" [(ngModel)]="notification.text" [formControl]="complexForm.controls['text']" name="text" autofocus>
               </div>
             </div>
           </div>
@@ -27,7 +27,7 @@
             </div>
             <div class="col-lg-5">
               <div class="full-button">
-                <input type="submit"  class="save-button-text" value="Save">
+                <button type="submit" class="save-button-text" [disabled]="!complexForm.valid">Save</button>
               </div>
             </div>
           </div>

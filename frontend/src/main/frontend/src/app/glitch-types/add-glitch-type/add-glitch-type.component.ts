@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Location } from '@angular/common';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 import { GlitchType } from '../../models/glitch-type';
 import { GlitchTypeService } from '../glitch-type.service';
@@ -12,13 +13,18 @@ import { GlitchTypeService } from '../glitch-type.service';
 })
 export class AddGlitchTypeComponent implements OnInit {
   glitchType: GlitchType;
+  complexForm: FormGroup;
 
   constructor(private location: Location,
-              private glitchTypeService: GlitchTypeService) {
+              private glitchTypeService: GlitchTypeService,
+              private formBuilder: FormBuilder) {
     this.glitchType = {
       id: null,
       type: ''
     }
+    this.complexForm = formBuilder.group({
+      'type': [null, Validators.required]
+    })
    }
 
   ngOnInit() {
@@ -30,6 +36,10 @@ export class AddGlitchTypeComponent implements OnInit {
           this.glitchTypeService.announceChange();
           this.location.back();
         });
+  }
+
+  cancel(){
+    this.location.back();
   }
 
 }

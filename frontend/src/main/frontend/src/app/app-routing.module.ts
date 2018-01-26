@@ -47,8 +47,6 @@ import { SurveyDetailComponent } from './surveys/survey-detail/survey-detail.com
 import { AddAnswerComponent } from './surveys/add-answer/add-answer.component';
 import { SendToTheOtherCompanyComponent } from './send-to-the-other-company/send-to-the-other-company.component';
 import { SendBillComponent } from './send-bill/send-bill.component';
-import { SendToTheOtherCompanyComponent } from './send-to-the-other-company/send-to-the-other-company.component';
-import { SendBillComponent } from './send-bill/send-bill.component';
 import { BillsPresidentComponent } from './bills-president/bills-president.component';
 import { BillDetailsPresidentComponent } from './bill-details-president/bill-details-president.component';
 import { ResponsibilitiesComponent } from './glitches/responsibilities/responsibilities.component';
@@ -59,6 +57,10 @@ import { MeatingDetailsComponent } from './meetings/meating-details/meating-deta
 import { AddItemComponent } from './meetings/add-item/add-item.component';
 import { ItemDetailsComponent } from './meetings/item-details/item-details.component';
 import { UpdateItemComponent } from './meetings/update-item/update-item.component';
+import { CurrentApartmentComponent } from './apartments/current-apartment/current-apartment.component';
+import { NotificationsComponent } from './notifications/notifications.component';
+import { AddNotificationComponent } from './notifications/add-notification/add-notification.component';
+import { CurrentBuildingComponent } from './buildings/current-building/current-building.component';
 
 
 const routers: Routes = [
@@ -186,7 +188,7 @@ const routers: Routes = [
     },
     children: [
       {path: 'surveys/:id/addAnswer', component: AddAnswerComponent},
-      { path: 'glitches/:id', component:GlitchDetailComponent }
+      { path: 'glitches/:id', component:GlitchDetailComponent },
       { path: 'password', component: PasswordComponent},
       { path: 'profile', component: ProfileComponent},
       { path: 'update', component: ProfileUpdateComponent},
@@ -209,8 +211,8 @@ const routers: Routes = [
       { path: 'update', component: ProfileUpdateComponent},
       { path: 'meeting/:id/addSurvey', component: AddSurveyComponent},
       { path: 'surveys/:id', component: SurveyDetailComponent},
-      {path: 'bills', component: BillsPresidentComponent},
-      {path: 'bills/:id', component: BillDetailsPresidentComponent},
+      { path: 'bills', component: BillsPresidentComponent},
+      { path: 'bills/:id', component: BillDetailsPresidentComponent},
       { path: 'responsiblities', component:ResponsibilitiesComponent },
       { path: 'responsiblities/:id', component:GlitchDetailComponent },
       { path: 'responsiblities/:id/change', component:ChangeResponsiblePersonComponent },
@@ -220,7 +222,7 @@ const routers: Routes = [
       { path: 'meetings/:id/items/add', component: AddItemComponent},
       { path: 'meetings/:id/items/:id_item', component:ItemDetailsComponent },
       { path: 'meetings/:id/update', component:UpdateItemComponent },
-      { path: 'glitches/:id', component:GlitchDetailComponent }
+      { path: 'glitches/:id', component:GlitchDetailComponent },
       { path: 'responsiblities/:id/change', component:ChangeResponsiblePersonComponent },
       { path: 'buildings', component: CurrentBuildingComponent},
       { path: 'notifications', component: NotificationsComponent},

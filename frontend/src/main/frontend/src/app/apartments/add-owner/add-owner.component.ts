@@ -61,4 +61,8 @@ export class AddOwnerComponent implements OnInit {
         .then(owner => this.location.back());
   }
 
+  cancel(){
+    this.location.back();
+  }
+
 }

@@ -31,6 +31,10 @@
     margin-left: 80px;
 }
 
+.cancel {
+    background-color: #cbc5c1;
+}
+
 table{
     margin-left: 10%;
     margin-top: 20px;

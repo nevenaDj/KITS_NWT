@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Location } from '@angular/common';
 import { Router } from '@angular/router';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 import { Apartment } from '../../models/apartment';
 import { Notification } from '../../models/notification';
@@ -20,20 +21,24 @@ export class AddNotificationComponent implements OnInit {
   apartment: Apartment;
   building: Building;
   notification: Notification;
-
   buidlingID: number;
+  complexForm: FormGroup;
 
   constructor(private notificationService: NotificationService,
               private apartmentService: ApartmentService,
               private buildingService: BuildingService,
               private location: Location,
-              private router: Router) { 
+              private router: Router,
+              private formBuilder: FormBuilder) { 
     this.notification = {
       id: null,
       text: '',
       user: null,
       date: null
     }
+    this.complexForm = formBuilder.group({
+      'text': [null, Validators.required]
+    })
   }
 
   ngOnInit() {

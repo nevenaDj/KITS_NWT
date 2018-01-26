@@ -56,7 +56,9 @@ describe('GlitchService', () => {
         apartment: null,
         description: 'description',
         responsiblePerson: null,
-        repairApproved: false
+        repairApproved: false,
+        bill: null,
+        companyID: null
       }
     ];
 
