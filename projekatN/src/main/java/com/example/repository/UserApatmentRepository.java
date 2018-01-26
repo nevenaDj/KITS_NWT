@@ -19,6 +19,6 @@ public interface UserApatmentRepository extends JpaRepository<UserAparment, Long
 	public Long get(Long idTenant, Long idApartment);
 	
 	@Query("SELECT a FROM Apartment a, UserAparment au WHERE au.tenant.id=?1 AND au.apartment.id=a.id")
-	public Apartment getApartmentOfTenant(Long idTenant);
+	public List<Apartment> getApartmentsOfTenant(Long idTenant);
 
 }

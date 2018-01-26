@@ -15,4 +15,7 @@ public interface BuildingRepository extends JpaRepository<Building, Long> {
 	@Query("SELECT b FROM Building b WHERE b.president.id=?1")
 	List<Building> findAllByPresident(Long id);
 
+	@Query("SELECT b FROM Building b WHERE b.president.id=?1")
+	public List<Building> getBuildingsOfPresident(Long idPresident);
+
 }

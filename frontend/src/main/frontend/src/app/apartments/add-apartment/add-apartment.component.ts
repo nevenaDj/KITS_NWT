@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Location } from '@angular/common';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 import { Apartment } from '../../models/apartment';
 import { ApartmentService } from '../../apartments/apartment.service';
@@ -17,11 +18,13 @@ export class AddApartmentComponent implements OnInit {
   buildingID: number;
 
   mode: string;
+  complexForm: FormGroup;
 
   constructor(private route:ActivatedRoute,
               private router: Router,
               private location: Location,
-              private apartmentService: ApartmentService) { 
+              private apartmentService: ApartmentService,
+              private formBuilder: FormBuilder) { 
     this.apartment ={
       id: null,
       description: '',
@@ -38,6 +41,11 @@ export class AddApartmentComponent implements OnInit {
     }
     this.buildingID = this.route.snapshot.params['idBuilding'];
     this.mode = 'ADD';
+
+    this.complexForm = formBuilder.group({
+      'description': [null, Validators.required], 
+      'number': [null, Validators.required]
+    })
   }
 
   ngOnInit() {

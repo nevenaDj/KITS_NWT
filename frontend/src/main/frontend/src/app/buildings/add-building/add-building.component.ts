@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 import { Building } from '../../models/building';
 import { BuildingService } from '../../buildings/building.service';
@@ -14,13 +15,14 @@ import { BuildingService } from '../../buildings/building.service';
 export class AddBuildingComponent implements OnInit {
 
   building: Building;
-
   mode: string;
+  complexForm: FormGroup;
 
   constructor(private router:Router,
               private route: ActivatedRoute,
               private location: Location,
-              private buildingService: BuildingService) { 
+              private buildingService: BuildingService,
+              private formBuilder: FormBuilder) { 
     this.building = {
       id: null,
       address: {
@@ -40,6 +42,13 @@ export class AddBuildingComponent implements OnInit {
       }
     }
     this.mode = 'ADD';
+
+    this.complexForm = formBuilder.group({
+      'street': [null, Validators.required], 
+      'number': [null, Validators.required],
+      'city': [null, Validators.required],
+      'zipCode': [null, Validators.required]
+    })
   }
 
   ngOnInit() {
@@ -65,5 +74,9 @@ export class AddBuildingComponent implements OnInit {
           this.buildingService.announceChange();
           this.location.back();
         });
+  }
+
+  cancel(){
+    this.location.back();
   }
 }

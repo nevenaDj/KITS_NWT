@@ -4,6 +4,8 @@ import { Router } from '@angular/router';
 import { Glitch } from '../models/glitch';
 import { GlitchService } from './glitch.service';
 import { PagerService } from '../services/pager.service';
+import { ApartmentService } from '../apartments/apartment.service';
+import { Apartment } from '../models/apartment';
 
 
 @Component({
@@ -18,12 +20,16 @@ export class GlitchesComponent implements OnInit {
 
   pager: any = {};
 
+  apartment: Apartment;
+
   constructor(private glitchService: GlitchService,
+              private apartmentService: ApartmentService,
               private pagerService: PagerService,
               private router: Router) { }
 
   ngOnInit() {
-    this.glitchService.getGlitchesCount()
+    this.apartment = this.apartmentService.getMyApartment();
+    this.glitchService.getGlitchesCount(this.apartment.id)
         .then(count => {
           this.glitchesCount = count;
           this.setPage(1);
@@ -31,7 +37,7 @@ export class GlitchesComponent implements OnInit {
   }
 
   getGlitches(page: number, size: number){
-    this.glitchService.getGlitches(page, size)
+    this.glitchService.getGlitches(this.apartment.id, page, size)
         .then(glitches => this.glitches = glitches);
   }
 

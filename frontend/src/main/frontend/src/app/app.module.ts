@@ -5,9 +5,12 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { DropdownModule } from 'ngx-dropdown';
 import { OwlDateTimeModule, OwlNativeDateTimeModule } from 'ng-pick-datetime';
+import { Ng2OrderModule } from 'ng2-order-pipe';
+import { ToastModule, ToastOptions} from 'ng2-toastr/ng2-toastr';
 
+import { NotificationService } from './notifications/notification.service';
 import { SurveyService } from './surveys/survey.service';
-import {GlitchDataService} from './glitch-details-company/glitch-data.service'
+import { GlitchDataService } from './glitch-details-company/glitch-data.service'
 import { GlitchService } from './glitches/glitch.service';
 import { TokenInterceptorService } from './services/token-interceptor.service';
 import { PagerService } from './services/pager.service';
@@ -79,6 +82,18 @@ import { AddItemComponent } from './meetings/add-item/add-item.component';
 import { ItemDetailsComponent } from './meetings/item-details/item-details.component';
 import { UpdateItemComponent } from './meetings/update-item/update-item.component';
 import { MeetingsService } from './meetings/meetings.service';
+import { CurrentApartmentComponent } from './apartments/current-apartment/current-apartment.component';
+import { NotificationsComponent } from './notifications/notifications.component';
+import { AddNotificationComponent } from './notifications/add-notification/add-notification.component';
+import { CurrentBuildingComponent } from './buildings/current-building/current-building.component';
+
+
+export class CustomOption extends ToastOptions {
+  animate = 'flyRight'; // you can override any options available
+  newestOnTop = false;
+  showCloseButton = true;
+}
+
 
 @NgModule({
   declarations: [
@@ -139,6 +154,10 @@ import { MeetingsService } from './meetings/meetings.service';
     AddItemComponent,
     ItemDetailsComponent,
     UpdateItemComponent,
+    CurrentApartmentComponent,
+    NotificationsComponent,
+    AddNotificationComponent,
+    CurrentBuildingComponent,
     
   ],
   imports: [
@@ -150,7 +169,9 @@ import { MeetingsService } from './meetings/meetings.service';
     DropdownModule,
     ReactiveFormsModule,
     OwlDateTimeModule, 
-    OwlNativeDateTimeModule
+    OwlNativeDateTimeModule,
+    Ng2OrderModule,
+    ToastModule.forRoot()
   ],
   providers: [
     AuthGuardService,
@@ -170,6 +191,8 @@ import { MeetingsService } from './meetings/meetings.service';
     GlitchDataService,
     BillsDataService,
     MeetingsService,
+    NotificationService,
+    {provide: ToastOptions, useClass: CustomOption},
     {
       provide: HTTP_INTERCEPTORS,
       useClass: TokenInterceptorService,

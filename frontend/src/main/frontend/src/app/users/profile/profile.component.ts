@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 
 import { User } from '../../models/user';
 import { UserService } from '../../users/user.service';
+import { AuthService } from '../../login/auth.service';
 
 @Component({
   selector: 'app-profile',
@@ -20,7 +21,8 @@ export class ProfileComponent implements OnInit {
   };
 
   constructor(private router: Router,
-              private userService: UserService) { }
+              private userService: UserService,
+              private authService: AuthService) { }
 
   ngOnInit() {
     this.userService.getCurrentUser()
@@ -28,11 +30,24 @@ export class ProfileComponent implements OnInit {
   }
 
   gotoChangePassword(){
-    this.router.navigate(['/tenant/password']);
+    if (this.authService.isTenant()){
+      this.router.navigate(['/tenant/password']);
+    } else if(this.authService.isPresident()){
+      this.router.navigate(['/president/password']);
+    } else if(this.authService.isOwner()){
+      this.router.navigate(['/owner/password']);
+    }
   }
 
   gotoUpdateUser(){
-    this.router.navigate(['/tenant/update']);
+    if (this.authService.isTenant()){
+      this.router.navigate(['/tenant/update']);
+    } else if(this.authService.isPresident()){
+      this.router.navigate(['/president/update']);
+    } else if(this.authService.isOwner()){
+      this.router.navigate(['/owner/update']);
+    }
+    
   }
 
 }

@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
 import { Location } from '@angular/common';
 
 import { User } from '../../../models/user';
@@ -21,8 +20,7 @@ export class ProfileUpdateComponent implements OnInit {
     address: null
   };
 
-  constructor(private router: Router,
-              private location: Location,
+  constructor(private location: Location,
               private userService: UserService) { }
 
   ngOnInit() {
@@ -32,7 +30,7 @@ export class ProfileUpdateComponent implements OnInit {
 
   save() {
     this.userService.updateUser(this.user)
-        .then(user => this.router.navigate(['/tenant/profile']));
+        .then(user => this.location.back());
   }
 
   cancel(){

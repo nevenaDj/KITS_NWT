@@ -171,7 +171,10 @@ const routers: Routes = [
       { path: 'glitches/:id', component: GlitchDetailComponent},
       { path: 'addGlitch', component: AddGlitchComponent},
       { path: 'myResponsiblities', component:ResponsibilitiesComponent },
-      { path: 'myResponsiblities/:id', component:GlitchDetailComponent }
+      { path: 'myResponsiblities/:id', component:GlitchDetailComponent },
+      { path: 'apartments', component: CurrentApartmentComponent},
+      { path: 'notifications', component: NotificationsComponent},
+      { path: 'addNotification', component: AddNotificationComponent}
     ]
   },
   {
@@ -184,6 +187,13 @@ const routers: Routes = [
     children: [
       {path: 'surveys/:id/addAnswer', component: AddAnswerComponent},
       { path: 'glitches/:id', component:GlitchDetailComponent }
+      { path: 'password', component: PasswordComponent},
+      { path: 'profile', component: ProfileComponent},
+      { path: 'update', component: ProfileUpdateComponent},
+      { path: 'surveys/:id/addAnswer', component: AddAnswerComponent},
+      { path: 'apartments', component: CurrentApartmentComponent},
+      { path: 'notifications', component: NotificationsComponent},
+      { path: 'addNotification', component: AddNotificationComponent}
     ]
   },
   {
@@ -194,8 +204,11 @@ const routers: Routes = [
       expectedRole: 'ROLE_PRESIDENT'
     },
     children: [
-      {path: 'meeting/:id/addSurvey', component: AddSurveyComponent},
-      {path: 'surveys/:id', component: SurveyDetailComponent},
+      { path: 'password', component: PasswordComponent},
+      { path: 'profile', component: ProfileComponent},
+      { path: 'update', component: ProfileUpdateComponent},
+      { path: 'meeting/:id/addSurvey', component: AddSurveyComponent},
+      { path: 'surveys/:id', component: SurveyDetailComponent},
       {path: 'bills', component: BillsPresidentComponent},
       {path: 'bills/:id', component: BillDetailsPresidentComponent},
       { path: 'responsiblities', component:ResponsibilitiesComponent },
@@ -208,6 +221,10 @@ const routers: Routes = [
       { path: 'meetings/:id/items/:id_item', component:ItemDetailsComponent },
       { path: 'meetings/:id/update', component:UpdateItemComponent },
       { path: 'glitches/:id', component:GlitchDetailComponent }
+      { path: 'responsiblities/:id/change', component:ChangeResponsiblePersonComponent },
+      { path: 'buildings', component: CurrentBuildingComponent},
+      { path: 'notifications', component: NotificationsComponent},
+      { path: 'addNotification', component: AddNotificationComponent}
     ]
   },
   {

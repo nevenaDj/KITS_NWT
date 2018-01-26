@@ -23,5 +23,10 @@ public interface NotificationRepository extends JpaRepository<Notification, Long
 
 	@Query(value = "SELECT n FROM Notification n WHERE n.item.id IS NULL AND n.building.id=?1")
 	public List<Notification> findWithoutMeeting(Long id);
+	
+	@Query("SELECT count(*) FROM Notification n WHERE n.building.id = ?1")
+	public Long getCountOfNotifications(Long idBuilding);
+	
+	
 		
 }

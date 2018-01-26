@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 import { User } from '../../models/user';
 import { ApartmentService } from '../../apartments/apartment.service';
@@ -17,11 +18,13 @@ export class AddOwnerComponent implements OnInit {
   apartmentID: number;
   username: string;
   user: User;
+  complexForm: FormGroup;
 
   constructor(private route: ActivatedRoute,
               private location: Location,
               private apartmentService: ApartmentService,
-              private userService: UserService) {
+              private userService: UserService,
+              private formBuilder: FormBuilder) {
     this.owner = {
       id: null,
       username: '',
@@ -33,6 +36,10 @@ export class AddOwnerComponent implements OnInit {
 
     this.user = null;
     this.apartmentID = this.route.snapshot.params['id'];
+
+    this.complexForm = formBuilder.group({
+      'username': [null, Validators.required]
+    })
   }
 
   ngOnInit() {

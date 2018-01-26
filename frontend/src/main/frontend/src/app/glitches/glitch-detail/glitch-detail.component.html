@@ -30,7 +30,7 @@
         <div class="col-lg-1"></div>
         <div class="col-lg-5 border">
           <div class="border-title">date of report</div>
-          <div class="border-desc">{{glitch.dateOfReport | date}}</div>
+          <div class="border-desc">{{glitch.dateOfReport | date: "dd.MM.y HH:mm"}}</div>
         </div>
         <div class="col-lg-5 border" *ngIf="glitch.repairApproved">
           <div class="border-title" >

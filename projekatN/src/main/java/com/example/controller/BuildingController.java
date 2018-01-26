@@ -235,4 +235,32 @@ public class BuildingController {
 		System.out.println("vege");
 		return new ResponseEntity<>(buildingsDTO, HttpStatus.OK);
 	}
+	
+	@RequestMapping(value = "/my", method = RequestMethod.GET)
+	@ApiOperation(value = "Get a current buildings of president.", httpMethod = "GET")
+	@ApiImplicitParam(paramType = "header", name = "X-Auth-Token", required = true, value = "JWT token")
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "Success", response = ApartmentDTO.class),
+			@ApiResponse(code = 404, message = "Not found") })
+	/*** get a buildings of president ***/
+	@PreAuthorize("hasRole('ROLE_PRESIDENT')")
+	public ResponseEntity<List<BuildingDTO>> getApartmentsOfTenant(HttpServletRequest request) {
+		String token = request.getHeader("X-Auth-Token");
+		String username = tokenUtils.getUsernameFromToken(token);
+
+		User user = userService.findByUsername(username);
+
+		if (user == null) {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+		List<Building> buildings = buildingService.getBuildingsOfPresident(user.getId());
+
+		List<BuildingDTO> buildingsDTO = new ArrayList<>();
+		for (Building building : buildings) {
+			buildingsDTO.add(new BuildingDTO(building));
+
+		}
+
+		return new ResponseEntity<>(buildingsDTO, HttpStatus.OK);
+	}
+	
 }

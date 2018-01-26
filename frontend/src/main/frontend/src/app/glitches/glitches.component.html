@@ -17,9 +17,9 @@
               </tr>
               </thead>
               <tbody>
-              <tr *ngFor="let glitch of glitches" (click)="gotoGetGlitch(glitch.id)">
+              <tr *ngFor="let glitch of glitches | orderBy: 'dateOfReport': true" (click)="gotoGetGlitch(glitch.id)">
                   <td>{{glitch.id}}</td>
-                  <td>{{glitch.dateOfReport}}</td>
+                  <td>{{glitch.dateOfReport | date: "dd.MM.y HH:mm"}}</td>
                   <td>{{glitch.description}}</td>
               </tr>
               </tbody>

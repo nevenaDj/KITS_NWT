@@ -25,7 +25,7 @@ public class UserApartmentService {
 		return userApartmentRepostitory.getTenants(idApartment);
 	}
 
-	public Apartment getApartment(Long idTenant) {
-		return userApartmentRepostitory.getApartmentOfTenant(idTenant);
+	public List<Apartment> getApartments(Long idTenant) {
+		return userApartmentRepostitory.getApartmentsOfTenant(idTenant);
 	}
 }

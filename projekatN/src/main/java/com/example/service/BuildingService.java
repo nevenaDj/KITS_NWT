@@ -53,5 +53,9 @@ public class BuildingService {
 		// TODO Auto-generated method stub
 		return buildingRepository.findAllByPresident(id);
 	}
+	
+	public List<Building> getBuildingsOfPresident(Long id) {
+		return buildingRepository.getBuildingsOfPresident(id);
+	}
 
 }

@@ -58,10 +58,16 @@
   <div id="sidebar"  class="nav-collapse ">
       <ul class="sidebar-menu" id="nav-accordion">
           <nav>
-              <li class="mt">
-                  <a [routerLink]="">
-                      <i class="fa fa-building"></i>
-                      <span>Notifications</span>
+            <li class="mt">
+                <a [routerLink]="['/tenant/apartments']">
+                    <i class="fa fa-building"></i>
+                    <span>My apartments</span>
+                </a>
+            </li>
+              <li class="sub-menu">
+                  <a [routerLink]="['/tenant/notifications']">
+                    <i class="fa fa-bell" aria-hidden="true"></i>
+                    <span>Notifications</span>
                   </a>
               </li>
               <li class="sub-menu">

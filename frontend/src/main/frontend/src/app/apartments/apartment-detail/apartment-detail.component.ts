@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewContainerRef } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
+import { ToastsManager } from 'ng2-toastr/ng2-toastr';
 
 import { Apartment } from '../../models/apartment';
 import { User } from '../../models/user';
@@ -20,7 +21,10 @@ export class ApartmentDetailComponent implements OnInit {
   constructor(private router: Router,
               private route: ActivatedRoute,
               private apartmentService: ApartmentService,
-              private tenantService: TenantService) { 
+              private tenantService: TenantService,
+              private toastr: ToastsManager, 
+              private vcr: ViewContainerRef) { 
+    this.toastr.setRootViewContainerRef(vcr);
     this.apartment ={
       id: null,
       number: null,
@@ -35,9 +39,7 @@ export class ApartmentDetailComponent implements OnInit {
         .then(apartment => {
           this.apartment = apartment;
           this.tenantService.getTenantsApartment(this.apartment.id)
-              .then(tenants => {
-                console.log(tenants);
-                this.tenants = tenants;});
+              .then(tenants => this.tenants = tenants);
         });
   }
 
@@ -49,12 +51,6 @@ export class ApartmentDetailComponent implements OnInit {
     this.router.navigate([`/apartments/${this.apartment.id}/addTenant`]);
   }
 
-  deleteApartment(){
-    this.apartmentService.deleteApartment(this.apartment.id)
-        .then(() => {
-        this.router.navigate([`/buildings/${+this.route.snapshot.params['idBuilding']}`])});
-  }
-
   gotoGetTenant(id: number){
     this.router.navigate([`/apartments/${this.apartment.id}/tenants/${id}`]);
   }
@@ -63,9 +59,18 @@ export class ApartmentDetailComponent implements OnInit {
     this.router.navigate(['editApartment', this.apartment.id]);
   }
 
+  deleteApartment(){
+    this.apartmentService.deleteApartment(this.apartment.id)
+        .then(() => {
+        this.router.navigate([`/buildings/${+this.route.snapshot.params['idBuilding']}`])
+      }).catch(error => {
+        this.toastr.error('The apartment can not be deleted.');
+      });
+  }
+  
   deleteOwner(){
     this.apartmentService.deleteOwner(this.apartment.id)
-        .then(apartment => this.apartment = apartment);
-
+        .then(apartment => this.apartment = apartment)
+        .catch(error => this.toastr.error('The owner can not be deleted.'));
   }
 }
