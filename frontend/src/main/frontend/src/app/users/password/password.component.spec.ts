@@ -1,6 +1,6 @@
 import { async, ComponentFixture, TestBed, tick, fakeAsync } from '@angular/core/testing';
 import { Location } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 
 import { PasswordComponent } from './password.component';
@@ -25,7 +25,7 @@ describe('PasswordComponent', () => {
 
     TestBed.configureTestingModule({
       declarations: [ PasswordComponent ],
-      imports: [FormsModule],
+      imports: [FormsModule, ReactiveFormsModule],
       providers: [
         {provide: UserService, useValue: userServiceMock},
         {provide: Location, useValue: locationMock}

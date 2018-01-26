@@ -1,5 +1,4 @@
 import { async, ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
-import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { Location } from '@angular/common';
 
@@ -21,9 +20,6 @@ describe('ProfileUpdateComponent', () => {
       .and.returnValue(Promise.resolve())
   };
 
-  let routerMock = {
-    navigate: jasmine.createSpy('navigate')
-  };
 
   let locationMock = {
     back: jasmine.createSpy('back')
@@ -35,7 +31,6 @@ describe('ProfileUpdateComponent', () => {
       imports: [FormsModule],
       providers: [
         {provide: UserService, useValue: userServiceMock},
-        {provide: Router, useValue: routerMock},
         {provide: Location, useValue: locationMock}
       ]
     })
@@ -46,7 +41,7 @@ describe('ProfileUpdateComponent', () => {
     fixture = TestBed.createComponent(ProfileUpdateComponent);
     component = fixture.componentInstance;
     userService = TestBed.get(UserService);
-    router = TestBed.get(Router);
+    location = TestBed.get(Location);
     
   });
 
@@ -65,7 +60,7 @@ describe('ProfileUpdateComponent', () => {
     expect(userService.updateUser).toHaveBeenCalled();
     tick();
 
-    expect(router.navigate).toHaveBeenCalledWith(['/tenant/profile']);
+    expect(location.back).toHaveBeenCalled();
   }));
 
 

@@ -1,9 +1,12 @@
 import { async, ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { Router } from '@angular/router';
+import { Ng2OrderModule } from 'ng2-order-pipe';
 
 import { GlitchesComponent } from './glitches.component';
 import { GlitchService } from './glitch.service';
 import { PagerService } from '../services/pager.service';
+import { ApartmentService } from '../apartments/apartment.service';
+import { Apartment } from '../models/apartment';
 
 
 describe('GlitchesComponent', () => {
@@ -23,6 +26,10 @@ describe('GlitchesComponent', () => {
         subscribe: jasmine.createSpy('subscribe')
       }
     };
+
+    let apartmentServiceMock = {
+
+    };
     
     let pagerServiceMock = {
       getPager: jasmine.createSpy('getPager')
@@ -35,8 +42,10 @@ describe('GlitchesComponent', () => {
 
     TestBed.configureTestingModule({
       declarations: [ GlitchesComponent ],
+      imports: [ Ng2OrderModule ],
       providers: [
         {provide: GlitchService, useValue: glitchServiceMock},
+        {provide: ApartmentService, useValue: apartmentServiceMock},
         {provide: PagerService, useValue: pagerServiceMock},
         {provide: Router, useValue: routerMock}
 
@@ -67,11 +76,25 @@ describe('GlitchesComponent', () => {
   });
 
   it('should call getGlitches()', () => {
+    component.apartment = {
+      id: 1,
+      building: null,
+      description: '',
+      number: 1,
+      owner: null
+    }
     component.getGlitches(0,8);
-    expect(glitchService.getGlitches).toHaveBeenCalledWith(0,8);
+    expect(glitchService.getGlitches).toHaveBeenCalledWith(1,0,8);
   });
 
   it('should call setPage()', fakeAsync(() => {
+    component.apartment = {
+      id: 1,
+      building: null,
+      description: '',
+      number: 1,
+      owner: null
+    }
     component.setPage(1);
     expect(pagerService.getPager).toHaveBeenCalled();
     tick();

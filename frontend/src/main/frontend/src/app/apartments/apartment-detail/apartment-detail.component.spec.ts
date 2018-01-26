@@ -1,6 +1,7 @@
 import { async, ComponentFixture, TestBed, tick, fakeAsync } from '@angular/core/testing';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormsModule } from '@angular/forms';
+import { ToastsManager, ToastOptions } from 'ng2-toastr';
 
 import { ApartmentDetailComponent } from './apartment-detail.component';
 import { Apartment } from '../../models/apartment';
@@ -47,6 +48,8 @@ describe('ApartmentDetailComponent', () => {
       declarations: [ ApartmentDetailComponent ],
       imports: [ FormsModule ],
       providers: [
+        ToastsManager,
+        ToastOptions,
         {provide: ApartmentService, useValue: apartmentServiceMock},
         {provide: TenantService, useValue: tenantServiceMock},
         {provide: Router, useValue: routerMock},

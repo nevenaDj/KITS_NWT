@@ -29,17 +29,19 @@ describe('GlitchService', () => {
   }));
 
   it('getGlitches() send request', () => {
-    this.glitchService.getGlitches(0).then((data: Glitch[]) => expect(data).toBeTruthy());
+    let apartmentID: number = 1;
+    this.glitchService.getGlitches(apartmentID,0).then((data: Glitch[]) => expect(data).toBeTruthy());
 
     this.backend.expectOne((req: HttpRequest<any>) => {
       const params = new HttpParams({fromString: req.urlWithParams});
-      return req.url === '/api/glitches'
+      return req.url === `/api/apartments/${apartmentID}/glitches`
           && params.set('page','0').set('size', '8')
           && req.method === 'GET';
     });
   });
 
   it('getGlitches() should return some glitches', () => {
+    let apartmentID: number = 1;
     let glitches: Glitch[] = [
       {
         id: 1,
@@ -62,7 +64,7 @@ describe('GlitchService', () => {
       }
     ];
 
-    this.glitchService.getGlitches(0).then((data: Glitch[]) => {
+    this.glitchService.getGlitches(apartmentID,0).then((data: Glitch[]) => {
       expect(data).toBeTruthy();
       expect(data.length).toBe(1);
       expect(data).toEqual(glitches);
@@ -71,7 +73,7 @@ describe('GlitchService', () => {
 
     this.backend.expectOne((req: HttpRequest<any>) => {
       const params = new HttpParams({fromString: req.urlWithParams});
-      return req.url === '/api/glitches'
+      return req.url === `/api/apartments/${apartmentID}/glitches`
           && params.set('page','0').set('size', '15')
           && req.method === 'GET'
       })
@@ -156,14 +158,15 @@ describe('GlitchService', () => {
 
   it('getGlitchesCount() should query url and return number of glitches', () => {
     let count: number = 2;
+    let apartmentID: number = 1;
 
-    this.glitchService.getGlitchesCount().then(data => {
+    this.glitchService.getGlitchesCount(apartmentID).then(data => {
       expect(data).toBeTruthy();
       expect(data).toEqual(2);
     });
 
     this.backend.expectOne((req: HttpRequest<any>) => {
-      return req.url === '/api/glitches/count'
+      return req.url === `/api/apartments/${apartmentID}/glitches/count`
           && req.method === 'GET'
     })
       .flush(count, {status: 200, statusText: 'OK'});

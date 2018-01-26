@@ -1,6 +1,7 @@
 import { async, ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { ActivatedRoute } from '@angular/router';
 import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
 
 import { GlitchDetailComponent } from './glitch-detail.component';
 import { GlitchService } from '../glitch.service';
@@ -15,6 +16,7 @@ describe('GlitchDetailComponent', () => {
   let glitchService: any;
   let authService: any;
   let route: any;
+  let router: any;
 
   beforeEach(() => {
     let glitchServiceMock = {
@@ -46,11 +48,15 @@ describe('GlitchDetailComponent', () => {
 
     let authServiceMock = {
       getCurrentUser: jasmine.createSpy('getCurrentUser')
+        .and.returnValue(Promise.resolve()),
+      isPresident: jasmine.createSpy('isPresident')
         .and.returnValue(Promise.resolve())
     };
 
     let activatedRouteStub: ActivatedRouteStub = new ActivatedRouteStub();
     activatedRouteStub.testParams = { id: 1 } ;
+
+    let routerMock = {};
 
     TestBed.configureTestingModule({
       declarations: [ GlitchDetailComponent ],
@@ -58,7 +64,8 @@ describe('GlitchDetailComponent', () => {
       providers: [
         {provide: GlitchService, useValue: glitchServiceMock},
         {provide: AuthService, useValue: authServiceMock},
-        {provide: ActivatedRoute, useValue: activatedRouteStub}
+        {provide: ActivatedRoute, useValue: activatedRouteStub},
+        {provide: Router, useValue: routerMock}
       ]
     });
 

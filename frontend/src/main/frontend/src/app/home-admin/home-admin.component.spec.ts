@@ -7,6 +7,7 @@ import { AuthService } from '../login/auth.service';
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { HttpHandler } from '@angular/common/http';
+import { ApartmentService } from '../apartments/apartment.service';
 
 
 
@@ -14,8 +15,7 @@ import { HttpHandler } from '@angular/common/http';
 describe('HomeAdminComponent', () => {
   let component: HomeAdminComponent;
   let fixture: ComponentFixture<HomeAdminComponent>;
-
-
+  let apartmentServiceMock = {};
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -27,7 +27,8 @@ describe('HomeAdminComponent', () => {
       providers: [
         AuthService,
         HttpClient,
-        HttpHandler
+        HttpHandler,
+        {provide: ApartmentService, useValue: apartmentServiceMock}
       ]
       
     })

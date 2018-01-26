@@ -1,6 +1,6 @@
 import { async, ComponentFixture, TestBed, tick, fakeAsync } from '@angular/core/testing';
 import { Router } from '@angular/router';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 
 import { AddCompanyComponent } from './add-company.component';
@@ -25,7 +25,7 @@ describe('AddCompanyComponent', () => {
 
     TestBed.configureTestingModule({
       declarations: [ AddCompanyComponent ],
-      imports: [FormsModule],
+      imports: [FormsModule, ReactiveFormsModule],
       providers: [
         {provide: CompanyService, useValue: companyServiceMock},
         {provide: Router, useValue: routerMock}

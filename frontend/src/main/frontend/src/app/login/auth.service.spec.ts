@@ -4,12 +4,15 @@ import { HttpClientTestingModule, HttpTestingController } from '@angular/common/
 import { Router } from '@angular/router';
 
 import { AuthService } from './auth.service';
+import { ApartmentService } from '../apartments/apartment.service';
 
 
 describe('AuthService', () => {
   let routerMock = {
     navigate: jasmine.createSpy('navigate')
   };
+
+  let apartmentServiceMock = {};
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -19,7 +22,8 @@ describe('AuthService', () => {
       ],
       providers: [
         AuthService,
-        {provide: Router, useValue: routerMock}
+        {provide: Router, useValue: routerMock},
+        {provide: ApartmentService, useValue: apartmentServiceMock}
 
       ]
     });

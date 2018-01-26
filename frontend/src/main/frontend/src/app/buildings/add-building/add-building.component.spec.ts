@@ -1,7 +1,7 @@
 import { async, ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { Location } from '@angular/common';
 import { Router,ActivatedRoute } from '@angular/router';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 
 import { AddBuildingComponent } from './add-building.component';
@@ -61,7 +61,7 @@ describe('AddBuildingComponent', () => {
 
     TestBed.configureTestingModule({
       declarations: [ AddBuildingComponent ],
-      imports: [FormsModule],
+      imports: [FormsModule, ReactiveFormsModule],
       providers: [
         {provide: BuildingService, useValue: buildingServiceMock},
         {provide: ActivatedRoute, useValue: activatedRouteStub},

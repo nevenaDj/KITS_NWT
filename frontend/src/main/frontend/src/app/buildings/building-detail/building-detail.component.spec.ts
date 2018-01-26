@@ -1,12 +1,14 @@
 import { async, ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormsModule } from '@angular/forms';
+import { ToastOptions, ToastsManager } from 'ng2-toastr';
 
 import { BuildingDetailComponent } from './building-detail.component';
 import { Building } from '../../models/building';
 import { ActivatedRouteStub } from '../../testing/router-stubs';
 import { BuildingService } from '../building.service';
 import { ApartmentService } from '../../apartments/apartment.service';
+
 
 describe('BuildingDetailComponent', () => {
   let component: BuildingDetailComponent;
@@ -51,7 +53,9 @@ describe('BuildingDetailComponent', () => {
         {provide: BuildingService, useValue: buildingServiceMock},
         {provide: ApartmentService, useValue: apartmentServiceMock},
         {provide: Router, useValue: routerMock},
-        {provide: ActivatedRoute, useValue: activatedRouteStub}
+        {provide: ActivatedRoute, useValue: activatedRouteStub},
+        ToastsManager,
+        ToastOptions
       ]
     });
 

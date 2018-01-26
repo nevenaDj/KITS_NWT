@@ -1,6 +1,6 @@
 import { async, ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { Location } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 
 import { AddGlitchTypeComponent } from './add-glitch-type.component';
@@ -26,7 +26,7 @@ describe('AddGlitchTypeComponent', () => {
 
     TestBed.configureTestingModule({
       declarations: [ AddGlitchTypeComponent ],
-      imports: [ FormsModule ],
+      imports: [ FormsModule, ReactiveFormsModule ],
        providers:    [ 
         {provide: GlitchTypeService, useValue: glitchTypeServiceMock },
         { provide: Location, useValue: locationMock} ]

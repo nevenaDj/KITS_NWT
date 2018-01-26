@@ -1,6 +1,7 @@
 import { async, ComponentFixture, TestBed, tick, fakeAsync } from '@angular/core/testing';
 import { Router } from '@angular/router';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ToastsManager, ToastOptions } from 'ng2-toastr';
 
 import { LoginComponent } from './login.component';
 import { AuthService } from './auth.service';
@@ -26,10 +27,12 @@ describe('LoginComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ LoginComponent ],
-      imports: [FormsModule],
+      imports: [FormsModule, ReactiveFormsModule],
       providers: [
         {provide: AuthService, useValue: authServiceMock},
-        {provide: Router, useValue: routerMock}
+        {provide: Router, useValue: routerMock},
+        ToastOptions,
+        ToastsManager
       ]
 
     })

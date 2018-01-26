@@ -1,14 +1,21 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { CurrentBuildingComponent } from './current-building.component';
+import { BuildingService } from '../building.service';
 
 describe('CurrentBuildingComponent', () => {
   let component: CurrentBuildingComponent;
   let fixture: ComponentFixture<CurrentBuildingComponent>;
+  let buidlingService: BuildingService;
+
+  let buildingServiceMock = {};
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ CurrentBuildingComponent ]
+      declarations: [ CurrentBuildingComponent ],
+      providers: [
+        {provide: BuildingService, useValue: buildingServiceMock}
+      ]
     })
     .compileComponents();
   }));
@@ -16,7 +23,6 @@ describe('CurrentBuildingComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(CurrentBuildingComponent);
     component = fixture.componentInstance;
-    fixture.detectChanges();
   });
 
   it('should create', () => {

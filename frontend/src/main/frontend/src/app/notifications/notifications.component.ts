@@ -43,9 +43,6 @@ export class NotificationsComponent implements OnInit {
       this.buildingID = this.building.id;
     }
 
-    console.log(this.apartment);
-    console.log(this.building);
-
     this.notificationService.getNotificationsCount(this.buildingID)
         .then(count => {
           this.notificationsCount = count;

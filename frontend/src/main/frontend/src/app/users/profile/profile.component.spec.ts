@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 
 import { ProfileComponent } from './profile.component';
 import { UserService } from '../user.service';
+import { AuthService } from '../../login/auth.service';
 
 
 describe('ProfileComponent', () => {
@@ -10,6 +11,11 @@ describe('ProfileComponent', () => {
   let fixture: ComponentFixture<ProfileComponent>;
   let userService: any;
   let router: any;
+
+  let authServiceMock = {
+    isTenant: jasmine.createSpy('isTenant')
+      .and.returnValue(Promise.resolve())
+  };
 
   let userServiceMock = {
     getCurrentUser: jasmine.createSpy('getCurrentUser')
@@ -25,6 +31,7 @@ describe('ProfileComponent', () => {
       declarations: [ ProfileComponent ],
       providers: [
         {provide: UserService, useValue: userServiceMock},
+        {provide: AuthService, useValue: authServiceMock},
         {provide: Router, useValue: routerMock}
       ]
     })

@@ -1,19 +1,27 @@
 import { TestBed, async, inject, getTestBed } from '@angular/core/testing';
 import { HttpClientModule, HttpRequest, HttpParams } from '@angular/common/http';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import { Router } from '@angular/router';
 
 import { ApartmentService } from './apartment.service';
 import { Apartment } from '../models/apartment';
 import { User } from '../models/user';
 
 describe('ApartmentService', () => {
+  let routerMock = {
+
+  };
+
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [
         HttpClientModule,
         HttpClientTestingModule
       ],
-      providers: [ApartmentService]
+      providers: [
+        ApartmentService,
+        {provide: Router, useValue: routerMock}
+      ]
     });
 
     this.apartmentService = getTestBed().get(ApartmentService);
@@ -223,34 +231,58 @@ describe('ApartmentService', () => {
 
   });
 
-  it('getMyApartment() should query url and return an apartment', () =>{
-    let apartment: Apartment = new Apartment({
+  it('getApartmentsOfTenant() should query url and return apartments', () =>{
+    let apartments: Apartment[] = [new Apartment({
       id: 1,
       number: 5,
       description: 'description',
       owner: null
-    });
+    })];
 
 
-    this.apartmentService.getMyApartment().then((data: Apartment) => {
+    this.apartmentService.getApartmentsOfTenant().then((data: Apartment[]) => {
       expect(data).toBeTruthy();
       expect(data).toBeDefined();
-      expect(data.id).toEqual(1);
-      expect(data.number).toEqual(5);
-      expect(data.description).toEqual('description')
-      expect(data.owner).toEqual(null);
+      expect(data[0].id).toEqual(1);
+      expect(data[0].number).toEqual(5);
+      expect(data[0].description).toEqual('description')
+      expect(data[0].owner).toEqual(null);
     });
 
     this.backend.expectOne((req: HttpRequest<any>) => {
       return req.url === '/api/apartments/my'
           && req.method === 'GET';
-    }).flush(apartment, {status: 200, statusText: 'OK'});
+    }).flush(apartments, {status: 200, statusText: 'OK'});
+
+  });
+
+  it('getApartmentsOfOwner() should query url and return apartments', () =>{
+    let apartments: Apartment[] = [new Apartment({
+      id: 1,
+      number: 5,
+      description: 'description',
+      owner: null
+    })];
+
+
+    this.apartmentService.getApartmentsOfOwner().then((data: Apartment[]) => {
+      expect(data).toBeTruthy();
+      expect(data).toBeDefined();
+      expect(data[0].id).toEqual(1);
+      expect(data[0].number).toEqual(5);
+      expect(data[0].description).toEqual('description')
+      expect(data[0].owner).toEqual(null);
+    });
+
+    this.backend.expectOne((req: HttpRequest<any>) => {
+      return req.url === '/api/apartments/owner/my'
+          && req.method === 'GET';
+    }).flush(apartments, {status: 200, statusText: 'OK'});
 
   });
 
   it('should call handleError if getApartment produces an error', () => {
     this.apartmentService.getApartment(1).then((data) => expect(data).toBeFalsy() );
-
     this.backend.expectOne('/api/apartments/1').flush(null, {status: 400, statusText:'Bad request'});
   });
 

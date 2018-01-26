@@ -1,6 +1,6 @@
 import { async, ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { ActivatedRoute, Router } from '@angular/router';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 
 import { AddPresidentComponent } from './add-president.component';
@@ -36,7 +36,7 @@ describe('AddPresidentComponent', () => {
 
     TestBed.configureTestingModule({
       declarations: [ AddPresidentComponent ],
-      imports: [FormsModule],
+      imports: [FormsModule, ReactiveFormsModule],
       providers: [
         {provide: BuildingService, useValue: buildingServiceMock},
         {provide: UserService, useValue: userServiceMock},

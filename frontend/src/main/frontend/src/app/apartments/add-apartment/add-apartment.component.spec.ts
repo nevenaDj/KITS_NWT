@@ -1,5 +1,5 @@
 import { async, ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Location } from '@angular/common';
 import { By } from '@angular/platform-browser';
@@ -53,7 +53,7 @@ describe('AddApartmentComponent', () => {
 
     TestBed.configureTestingModule({
       declarations: [ AddApartmentComponent ],
-      imports: [FormsModule],
+      imports: [FormsModule, ReactiveFormsModule],
       providers: [
         {provide: ApartmentService, useValue: apartmentServiceMock},
         {provide: ActivatedRoute, useValue: activatedRouteStub },
