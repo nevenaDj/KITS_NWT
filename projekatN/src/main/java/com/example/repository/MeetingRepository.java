@@ -8,6 +8,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
+import com.example.model.Building;
 import com.example.model.Meeting;
 
 public interface MeetingRepository extends JpaRepository<Meeting, Long> {
@@ -26,5 +27,15 @@ public interface MeetingRepository extends JpaRepository<Meeting, Long> {
 	@Query(value = "SELECT count(*) FROM Meeting m WHERE m.building.id = ?1",
 			   nativeQuery = false)
 		public Integer findByBuildingCount(Long id);
+
+	
+	@Query(value = "SELECT a.building FROM Apartment a WHERE a.owner.id=?1", nativeQuery = false)
+	public List<Building> findBuildingByOwner(Long id);
+	
+
+	@Query(value = "SELECT m FROM Meeting m WHERE m.building.id=?1", 
+		   nativeQuery = false)
+	public List<Meeting> findByBuilding(Long id);
+
 
 }

@@ -41,6 +41,22 @@ export class MeetingsService {
             .catch(this.handleError);
   }
 
+  getBuildingsOwner():Promise<Building[]>{
+    const url = `/api/buildings/owner`;
+      return this.http.get<Building[]>(url, {headers: this.headers})
+            .toPromise()
+            .then(res => {return res})
+            .catch(this.handleError);
+  }
+
+  getBuildingsTenant():Promise<Building[]>{
+    const url = `/api/buildings/tenant`;
+      return this.http.get<Building[]>(url, {headers: this.headers})
+            .toPromise()
+            .then(res => {return res})
+            .catch(this.handleError);
+  }
+
   getMeetings(page: number, size: number = 15, id:number): Promise<Meeting[]>{
     const url= '/api/buildings/'+id+'/meetings';
     const httpParams = new HttpParams().set('page', page.toString()).set('size', size.toString());
@@ -161,6 +177,24 @@ export class MeetingsService {
           .then(res => res)
           .catch(this.handleError);
   }
+
+  getActiveMeeting(id:number): Promise<Meeting[]> {
+    const url = '/api/owner/'+id+'/meetings';
+    return this.http
+          .get<Meeting[]>(url, {headers: this.headers})
+          .toPromise()
+          .then(res => res)
+          .catch(this.handleError);
+  }
+  
+  getOwner():Promise<User>{
+    const url = `/api/me`;
+      return this.http.get<User>(url, {headers: this.headers})
+            .toPromise()
+            .then(res => {return res})
+            .catch(this.handleError);
+  }
+
 
   private handleError(error: any): Promise<any> {
     console.error("Error... ", error);

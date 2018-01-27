@@ -20,7 +20,7 @@ export class MeatingDetailsComponent implements OnInit {
   //if there are more than twenty agendaPoints or user is not a president, then false
   agendaSize:boolean=true;
 
-  allReported:boolean=false;
+  canActivate:boolean=false;
 
 
 
@@ -50,8 +50,13 @@ export class MeatingDetailsComponent implements OnInit {
         let now= new Date();
         let date= new Date(this.meeting.dateAndTime);
         let diff= date.getTime()-now.getTime();
-        if (diff<0)
+        if (diff<0){
+          let one_day:Date= new Date(date.getTime() + (1000 * 60 * 60 * 24));
+          let diff2=one_day.getTime()-now.getTime();
           this.expired=true;
+            if (diff2<0)
+              this.canActivate=true;
+        }
         if (!this.expired)
           if (!this.authService.isPresident())
             this.agendaSize=false;
@@ -64,7 +69,10 @@ export class MeatingDetailsComponent implements OnInit {
     }
 
     goToItem(item: AgendaItem){
-      this.router.navigate(['/president/meetings',+this.route.snapshot.params['id'], 'items',item.id]);
+      if (this.authService.isPresident())
+        this.router.navigate(['/president/meetings',+this.route.snapshot.params['id'], 'items',item.id]);
+      if (this.authService.isOwner())
+        this.router.navigate(['/owner/meetings',+this.route.snapshot.params['id'], 'items',item.id]);
     }
 
     newItem(){

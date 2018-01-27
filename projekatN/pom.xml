@@ -10,7 +10,8 @@
 	</parent>
 
 	<artifactId>projekatN</artifactId>
-
+    <packaging>jar</packaging>
+    <version>1.0</version>
 
 	<dependencies>
 

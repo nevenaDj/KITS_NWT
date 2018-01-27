@@ -58,4 +58,11 @@ public class BuildingService {
 		return buildingRepository.getBuildingsOfPresident(id);
 	}
 
+	public List<Building> getBuildingsByOwner(Long id) {
+		return buildingRepository.getBuildingsOfOwner(id);
+	}
+	
+	public List<Building> getBuildingsOfTenant(Long id) {
+		return buildingRepository.getBuildingsOfTenane(id);
+	}
 }

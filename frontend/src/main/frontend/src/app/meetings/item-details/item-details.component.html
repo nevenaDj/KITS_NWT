@@ -47,7 +47,7 @@
           <div class="col-lg-10">
             <div class="speech-bubble-right" *ngIf="comment.writer.username === username">
             <p class="name">
-               {{comment.writer.username}} ({{comment.date | date}}):<br>
+               {{comment.writer.username}} ({{comment.date | date : "dd.MM.y HH:mm"}}):<br>
             </p>
              {{comment.text}}
             </div>
@@ -59,7 +59,9 @@
             </div>
           </div>   
           <br>
+          <br>
           </div>
+
           <div class="row" *ngIf="active">
 							<form name="form" (ngSubmit)="saveComment()">
 							  <div class="col-lg-1"></div>
@@ -69,6 +71,7 @@
 							</form>
 						  </div>
           <div class="row" *ngIf="expired">
+              <div  *ngIf="!meeting.active">
               <div  *ngIf="item.conclusion==null">
                   <form name="form" (ngSubmit)="saveReport()">
                     <div class="col-lg-1"></div>
@@ -78,6 +81,7 @@
                     </div>
                   </form>
                   </div>
+                </div>
                 </div>
   
     </div>

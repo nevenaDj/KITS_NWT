@@ -118,6 +118,15 @@ export class GlitchService {
           .catch(this.handleError);
   }
 
+  upload(id_apartment:number, id_glitch:number, file:string): Promise<Glitch>{
+    const url = '/api/apartments/'+id_apartment+'/glitches/'+id_glitch+'/photo?image='+file;
+    return this.http.put<Glitch>(url, {headers: this.headers})
+          .toPromise()
+          .then(res => res)
+          .catch(this.handleError);
+  }
+
+
   private handleError(error: any): Promise<any> {
     console.error("Error... ", error);
     return Promise.reject(error.message || error);

@@ -4,7 +4,7 @@
           <p class="title">MEETING 
            
           </p>
-          <div *ngIf="expired">
+          <div *ngIf="canActivate">
               <a (click)="activate()" class="small-btn" style="float: right;" *ngIf="!meeting.active">Activate</a>
          </div>
           </div>
@@ -53,7 +53,7 @@
                 <div class="sec" (click)="goToItem(item)">
                   <b>{{item.title}}</b> 
                 </div>
-                <div class="update"> <i class="fa fa-trash-o" aria-hidden="true" (click)="deleteItem(item)"></i></div>
+                <div class="update" *ngIf="!expired"> <i class="fa fa-trash-o" aria-hidden="true"  (click)="deleteItem(item)"></i></div>
               </div>
             </li>
           </ul>

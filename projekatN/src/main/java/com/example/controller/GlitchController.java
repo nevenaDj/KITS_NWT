@@ -321,8 +321,7 @@ public class GlitchController {
 		return new ResponseEntity<>(new GlitchDTO(glitch), HttpStatus.OK);
 	}
 
-	@RequestMapping(value = "/apartments/{id}/glitches/{glitch_id}/photo", method = RequestMethod.PUT, params = {
-			"image" })
+	@RequestMapping(value = "/apartments/{id}/glitches/{glitch_id}/photo", method = RequestMethod.PUT)
 	@ApiOperation(value = "Save a photo for glitch.", notes = "Returns the glitch being saved.", httpMethod = "PUT", produces = "application/json", consumes = "application/json")
 	@ApiImplicitParam(paramType = "header", name = "X-Auth-Token", required = true, value = "JWT token")
 	@ApiResponses(value = { @ApiResponse(code = 200, message = "Success", response = GlitchDTO.class),
