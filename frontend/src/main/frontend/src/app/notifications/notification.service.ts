@@ -46,6 +46,22 @@ export class NotificationService {
         .catch(this.handleError);
   }
 
+  getNotification(id: number): Promise<Notification>{
+    const url = `/api/notifications/${id}`;
+    return this.http
+        .get(url)
+        .toPromise()
+        .then(res => res)
+        .catch(this.handleError);
+  }
+
+  deleteNotification(id: number): Promise<{}>{
+    const url = `/api/notifications/${id}`;
+    return this.http
+        .delete(url)
+        .toPromise()
+        .catch(this.handleError);
+  }
 
   private handleError(error: any): Promise<any> {
     console.error("Error... ", error);

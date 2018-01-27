@@ -75,5 +75,17 @@ export class NotificationsComponent implements OnInit {
       this.router.navigate(['/president/addNotification']);
     }
   }
+
+  gotoGetNotification(id: number){
+    if (this.router.url.startsWith("/tenant")){
+      this.router.navigate([`/tenant/notifications/${id}`]);
+    }else if (this.router.url.startsWith("/owner")){
+      this.router.navigate([`/owner/notifications/${id}`]);
+    }else if(this.router.url.startsWith("/president")){
+      this.router.navigate([`/president/notifications/${id}`]);
+    }
+    
+
+  }
 }
 

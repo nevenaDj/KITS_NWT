@@ -86,6 +86,7 @@ import { CurrentApartmentComponent } from './apartments/current-apartment/curren
 import { NotificationsComponent } from './notifications/notifications.component';
 import { AddNotificationComponent } from './notifications/add-notification/add-notification.component';
 import { CurrentBuildingComponent } from './buildings/current-building/current-building.component';
+import { NotificationDetailComponent } from './notifications/notification-detail/notification-detail.component';
 
 
 export class CustomOption extends ToastOptions {
@@ -158,6 +159,7 @@ export class CustomOption extends ToastOptions {
     NotificationsComponent,
     AddNotificationComponent,
     CurrentBuildingComponent,
+    NotificationDetailComponent,
     
   ],
   imports: [

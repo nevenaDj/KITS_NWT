@@ -18,13 +18,20 @@ public class BuildingPage {
 	@FindBy(className = "weather")
 	private List<WebElement> buildingsElement;
 
+	@FindBy(id = "companies")
+	private WebElement companiesElement;
+
+	@FindBy(id = "glitchTypes")
+	private WebElement glitchTypesElement;
+
 	public BuildingPage(WebDriver webDriver) {
 		this.driver = webDriver;
 	}
 
 	public void ensureIsDisplayed() {
 		(new WebDriverWait(driver, 10)).until(ExpectedConditions.elementToBeClickable(newElement));
-		(new WebDriverWait(driver, 10)).until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.className("weather")));
+		(new WebDriverWait(driver, 10))
+				.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.className("weather")));
 	}
 
 	public WebElement getNewElement() {
@@ -34,4 +41,13 @@ public class BuildingPage {
 	public List<WebElement> getBuildingsElement() {
 		return buildingsElement;
 	}
+
+	public WebElement getCompaniesElement() {
+		return companiesElement;
+	}
+
+	public WebElement getGlitchTypesElement() {
+		return glitchTypesElement;
+	}
+
 }

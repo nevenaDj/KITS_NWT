@@ -18,7 +18,7 @@
               </tr>
               </thead>
               <tbody>
-              <tr *ngFor="let notification of notifications | orderBy: 'date': true">
+              <tr *ngFor="let notification of notifications | orderBy: 'date': true" (click)="gotoGetNotification(notification.id)">
                   <td>&nbsp;</td>
                   <td>{{notification.user.username}}</td>
                   <td>{{notification.date | date: "dd.MM.y HH:mm"}}</td>

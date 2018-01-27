@@ -170,7 +170,7 @@ public class GlitchControllerTest {
 
 	@Test
 	public void testGetGlitches() throws Exception {
-		mockMvc.perform(get("/api/glitches?page=0&size=" + PAGE_SIZE).header("X-Auth-Token", accessTokenTenant))
+		mockMvc.perform(get("/api/apartments/1/glitches?page=0&size=" + PAGE_SIZE).header("X-Auth-Token", accessTokenTenant))
 				.andExpect(status().isOk()).andExpect(jsonPath("$.[*].id").value(hasItem(ID_GLITCH.intValue())))
 				.andExpect(jsonPath("$.[*].description").value(hasItem(DESCRIPTION)));
 

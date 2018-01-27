@@ -55,7 +55,11 @@ public class AddCompanyPageTest {
 
 		assertEquals("https://localhost:8443/#/buildings", browser.getCurrentUrl());
 
-		browser.navigate().to("https://localhost:8443/#/companies");
+		buildingPage.getCompaniesElement().click();
+
+		assertEquals("https://localhost:8443/#/companies", browser.getCurrentUrl());
+
+		companyPage.ensureIsDisplayed();
 
 		int elements = companyPage.getCompaniesElement().size();
 

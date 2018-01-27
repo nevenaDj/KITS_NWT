@@ -53,7 +53,9 @@ public class AddGlitchTypePageTest {
 
 		assertEquals("https://localhost:8443/#/buildings", browser.getCurrentUrl());
 
-		browser.navigate().to("https://localhost:8443/#/glitchTypes");
+		buildingPage.getGlitchTypesElement().click();
+
+		assertEquals("https://localhost:8443/#/glitchTypes", browser.getCurrentUrl());
 
 		glitchTypePage.ensureIsDisplayed();
 
@@ -78,9 +80,9 @@ public class AddGlitchTypePageTest {
 		int num = glitchTypePage.getDeleteElements().size();
 
 		glitchTypePage.getDeleteElements().get(num - 1).click();
-		
+
 		browser.navigate().to("https://localhost:8443/#/glitchTypes");
-		
+
 		glitchTypePage.ensureIsDisplayed();
 
 		assertEquals(numGlitchTypes, glitchTypePage.getGlitchTypeTableSize());

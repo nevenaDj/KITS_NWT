@@ -110,19 +110,14 @@ public class NotificationController {
 		return new ResponseEntity<>(notificationsDTO, HttpStatus.OK);
 	}
 
-	@RequestMapping(value = "/buildings/{id}/notifications/{not_id}", method = RequestMethod.DELETE)
+	@RequestMapping(value = "/notifications/{id}", method = RequestMethod.DELETE)
 	@ApiOperation(value = "Delete a notification.", httpMethod = "DELETE")
 	@ApiImplicitParam(paramType = "header", name = "X-Auth-Token", required = true, value = "JWT token")
 	@ApiResponses(value = { @ApiResponse(code = 200, message = "Success"),
 			@ApiResponse(code = 400, message = "Bad request"), @ApiResponse(code = 404, message = "Not found") })
 	@PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_OWNER', 'ROLE_PRESIDENT')")
 	public ResponseEntity<Void> deleteNotificaton(
-			@ApiParam(value = "The ID of the building.", required = true) @PathVariable("id") Long id,
-			@ApiParam(value = "The ID of the notification.", required = true) @PathVariable("not_id") Long notificationId) {
-		Building building = buildingService.findOne(id);
-		if (building == null) {
-			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-		}
+			@ApiParam(value = "The ID of the notification.", required = true) @PathVariable("id") Long notificationId) {
 
 		Notification notification = notificationService.findOne(notificationId);
 		if (notification == null) {
@@ -133,19 +128,14 @@ public class NotificationController {
 		}
 	}
 
-	@RequestMapping(value = "/buildings/{id}/notifications/{not_id}", method = RequestMethod.GET, produces = "application/json")
+	@RequestMapping(value = "/notifications/{id}", method = RequestMethod.GET, produces = "application/json")
 	@ApiOperation(value = "Get a notification.", httpMethod = "GET")
 	@ApiImplicitParam(paramType = "header", name = "X-Auth-Token", required = true, value = "JWT token")
 	@ApiResponses(value = { @ApiResponse(code = 200, message = "Success", response = NotificationDTO.class),
 			@ApiResponse(code = 404, message = "Not found") })
 	@PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_OWNER', 'ROLE_PRESIDENT')")
 	public ResponseEntity<NotificationDTO> getNotificaton(
-			@ApiParam(value = "The ID of the building.", required = true) @PathVariable("id") Long id,
-			@ApiParam(value = "The ID of the notification.", required = true) @PathVariable("not_id") Long notificationId) {
-		Building building = buildingService.findOne(id);
-		if (building == null) {
-			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-		}
+			@ApiParam(value = "The ID of the notification.", required = true) @PathVariable("id") Long notificationId) {
 
 		Notification notification = notificationService.findOne(notificationId);
 		if (notification == null) {

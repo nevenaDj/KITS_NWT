@@ -61,6 +61,7 @@ import { CurrentApartmentComponent } from './apartments/current-apartment/curren
 import { NotificationsComponent } from './notifications/notifications.component';
 import { AddNotificationComponent } from './notifications/add-notification/add-notification.component';
 import { CurrentBuildingComponent } from './buildings/current-building/current-building.component';
+import { NotificationDetailComponent } from './notifications/notification-detail/notification-detail.component';
 
 
 const routers: Routes = [
@@ -176,7 +177,8 @@ const routers: Routes = [
       { path: 'myResponsiblities/:id', component:GlitchDetailComponent },
       { path: 'apartments', component: CurrentApartmentComponent},
       { path: 'notifications', component: NotificationsComponent},
-      { path: 'addNotification', component: AddNotificationComponent}
+      { path: 'addNotification', component: AddNotificationComponent},
+      { path: 'notifications/:id', component: NotificationDetailComponent}
     ]
   },
   {
@@ -195,7 +197,8 @@ const routers: Routes = [
       { path: 'surveys/:id/addAnswer', component: AddAnswerComponent},
       { path: 'apartments', component: CurrentApartmentComponent},
       { path: 'notifications', component: NotificationsComponent},
-      { path: 'addNotification', component: AddNotificationComponent}
+      { path: 'addNotification', component: AddNotificationComponent},
+      { path: 'notifications/:id', component: NotificationDetailComponent}
     ]
   },
   {
@@ -226,7 +229,8 @@ const routers: Routes = [
       { path: 'responsiblities/:id/change', component:ChangeResponsiblePersonComponent },
       { path: 'buildings', component: CurrentBuildingComponent},
       { path: 'notifications', component: NotificationsComponent},
-      { path: 'addNotification', component: AddNotificationComponent}
+      { path: 'addNotification', component: AddNotificationComponent},
+      { path: 'notifications/:id', component: NotificationDetailComponent}
     ]
   },
   {
