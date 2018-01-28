@@ -39,52 +39,43 @@ public class AddGlitchTypePageTest {
 	public void testAddBuilding() {
 		assertEquals("https://localhost:8443/#/login", browser.getCurrentUrl());
 
+		//login
 		loginPage.ensureIsDisplayed();
-
 		assertTrue(loginPage.getInputUsername().isDisplayed());
 		assertTrue(loginPage.getInputPassword().isDisplayed());
-
 		loginPage.setInputUsername("admin");
 		loginPage.setInputPassword("admin");
-
 		loginPage.getOkButton().click();
 
+		//admin home page
 		buildingPage.ensureIsDisplayed();
-
 		assertEquals("https://localhost:8443/#/buildings", browser.getCurrentUrl());
-
+		
+		//go to glitch types
 		buildingPage.getGlitchTypesElement().click();
 
+		//glitch types
 		assertEquals("https://localhost:8443/#/glitchTypes", browser.getCurrentUrl());
-
 		glitchTypePage.ensureIsDisplayed();
-
 		int numGlitchTypes = glitchTypePage.getGlitchTypeTableSize();
-
 		glitchTypePage.getNewElement().click();
-
+		
+		//add new glitch type
 		addGlitchTypePage.ensureIsDisplayed();
-
 		assertEquals("https://localhost:8443/#/addGlitchType", browser.getCurrentUrl());
-
 		assertTrue(addGlitchTypePage.getInputType().isDisplayed());
-
 		addGlitchTypePage.setInputType("new type");
-
 		addGlitchTypePage.getOkButton().click();
-
+		
+		//glitch types
 		glitchTypePage.ensureIsDisplayed();
-
 		assertEquals(numGlitchTypes + 1, glitchTypePage.getGlitchTypeTableSize());
-
 		int num = glitchTypePage.getDeleteElements().size();
 
+		//delete glitch type
 		glitchTypePage.getDeleteElements().get(num - 1).click();
-
 		browser.navigate().to("https://localhost:8443/#/glitchTypes");
-
 		glitchTypePage.ensureIsDisplayed();
-
 		assertEquals(numGlitchTypes, glitchTypePage.getGlitchTypeTableSize());
 
 	}

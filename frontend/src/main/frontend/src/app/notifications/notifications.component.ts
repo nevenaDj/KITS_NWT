@@ -16,15 +16,9 @@ import { Building } from '../models/building';
   styleUrls: ['./notifications.component.css']
 })
 export class NotificationsComponent implements OnInit {
-
   notifications: Notification[];
-
   notificationsCount: number;
-
-  apartment: Apartment;
   building: Building;
-  buildingID: number;
-
   pager: any = {};
 
   constructor(private notificationService: NotificationService,
@@ -35,15 +29,13 @@ export class NotificationsComponent implements OnInit {
 
   ngOnInit() {
     if (this.router.url.startsWith("/tenant") || this.router.url.startsWith("/owner")){
-      this.apartment = this.apartmentService.getMyApartment();
-      this.buildingID = this.apartment.building.id;
+      this.building = this.apartmentService.getMyApartment().building;
     }
     if (this.router.url.startsWith("/president")){
       this.building = this.buildingService.getMyBuilding();
-      this.buildingID = this.building.id;
     }
 
-    this.notificationService.getNotificationsCount(this.buildingID)
+    this.notificationService.getNotificationsCount(this.building.id)
         .then(count => {
           this.notificationsCount = count;
           this.setPage(1);
@@ -51,7 +43,7 @@ export class NotificationsComponent implements OnInit {
   }
 
   getNotifications(page: number, size: number = 15){
-    this.notificationService.getNotifications(this.buildingID, page, size)
+    this.notificationService.getNotifications(this.building.id, page, size)
         .then(notifications => this.notifications = notifications);
 
   }
@@ -84,8 +76,6 @@ export class NotificationsComponent implements OnInit {
     }else if(this.router.url.startsWith("/president")){
       this.router.navigate([`/president/notifications/${id}`]);
     }
-    
-
   }
 }
 

@@ -2,6 +2,9 @@
 <div class="row">
   <div class="col-lg-10">
     <a (click)="gotoAddNotification()"  class="small-btn">Add notification</a>
+    <span class="building-view"> 
+        <b>Building: </b> {{building.address.street}} {{building.address.number}}
+    </span>
   </div>   
 </div>
 <br><br>
@@ -18,7 +21,7 @@
               </tr>
               </thead>
               <tbody>
-              <tr *ngFor="let notification of notifications | orderBy: 'date': true" (click)="gotoGetNotification(notification.id)">
+              <tr class="notifications" *ngFor="let notification of notifications | orderBy: 'date': true" (click)="gotoGetNotification(notification.id)">
                   <td>&nbsp;</td>
                   <td>{{notification.user.username}}</td>
                   <td>{{notification.date | date: "dd.MM.y HH:mm"}}</td>

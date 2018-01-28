@@ -75,3 +75,8 @@
     font-size: 12pt;
   }
 }
+
+.building-view{
+  float: right;
+  font-size: 20px;
+}

@@ -108,6 +108,7 @@ public class AddTenantPageTest {
 
 		addApartmentPage.getOkButton().click();
 
+		// apartment detail
 		apartmentDetailPage.ensureIsDisplayed();
 
 		assertTrue(apartmentDetailPage.getDivDescription().isDisplayed());
@@ -118,6 +119,7 @@ public class AddTenantPageTest {
 
 		apartmentDetailPage.getNewTenantElement().click();
 
+		// add new tenant
 		addTenantPage.ensureIsDisplayed();
 
 		assertTrue(addTenantPage.getInputUsername().isDisplayed());
@@ -136,13 +138,16 @@ public class AddTenantPageTest {
 
 		apartmentDetailPage.getTenantElement().click();
 
+		// tenant detail
 		tenantDetailPage.ensureIsDisplayed();
 
+		// delete tenant
 		tenantDetailPage.getDeleteElement().click();
 
 		apartmentDetailPage.ensureIsDisplayed();
 		apartmentDetailPage.ensureIsDisplayedAddOwnerButton();
 
+		// delete apartment
 		apartmentDetailPage.getDelteElement().click();
 
 		buildigDetailPage.ensureIsDisplayed();
@@ -151,10 +156,9 @@ public class AddTenantPageTest {
 		assertTrue(buildigDetailPage.getDivCity().isDisplayed());
 		assertTrue(buildigDetailPage.getDivStreet().isDisplayed());
 
+		// delete building
 		buildigDetailPage.getDelteElement().click();
-
 		buildingPage.ensureIsDisplayed();
-
 		assertEquals(buildingPage.getBuildingsElement().size(), elements);
 
 	}
