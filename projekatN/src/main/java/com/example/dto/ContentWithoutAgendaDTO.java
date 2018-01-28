@@ -7,14 +7,14 @@ public class ContentWithoutAgendaDTO {
 
 	List<GlitchDTO> glitches = new ArrayList<>();
 	List<NotificationDTO> notifications = new ArrayList<>();
-	List<CommunalProblemDTO> problems = new ArrayList<>();
+	List<CommunalProblemDTO> communalProblems = new ArrayList<>();
 	
 	public ContentWithoutAgendaDTO(List<GlitchDTO> glitches, List<NotificationDTO> notifications,
-			List<CommunalProblemDTO> problems) {
+			List<CommunalProblemDTO> communalProblems) {
 		super();
 		this.glitches = glitches;
 		this.notifications = notifications;
-		this.problems = problems;
+		this.communalProblems = communalProblems;
 	}
 	
 	public ContentWithoutAgendaDTO() {
@@ -37,16 +37,12 @@ public class ContentWithoutAgendaDTO {
 		this.notifications = notifications;
 	}
 
-	public List<CommunalProblemDTO> getProblems() {
-		return problems;
+	public List<CommunalProblemDTO> getCommunalProblems() {
+		return communalProblems;
 	}
 
-	public void setProblems(List<CommunalProblemDTO> problems) {
-		this.problems = problems;
-	}
-	
-	
-	
-	
-	
+	public void setCommunalProblems(List<CommunalProblemDTO> communalProblems) {
+		this.communalProblems = communalProblems;
+	}	
+
 }

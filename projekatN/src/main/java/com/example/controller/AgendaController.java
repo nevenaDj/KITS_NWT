@@ -178,23 +178,23 @@ public class AgendaController {
 		ContentWithoutAgendaDTO noMeeting = new ContentWithoutAgendaDTO();
 		List<Notification> notifications = notificationService.findWithoutMeeting(id);
 		List<Glitch> glitches = glitchService.findWithoutMeeting(id);
-		List<CommunalProblem> problems = comProblemsService.findWithoutMeeting(id);
+		List<CommunalProblem> communalProblems = comProblemsService.findWithoutMeeting(id);
 		List<NotificationDTO> notificationsDTO = new ArrayList<>();
 		List<GlitchDTO> glitchesDTO = new ArrayList<>();
-		List<CommunalProblemDTO> problemsDTO = new ArrayList<>();
+		List<CommunalProblemDTO> communalProblemsDTO = new ArrayList<>();
 		for (Notification n : notifications) {
 			notificationsDTO.add(new NotificationDTO(n));
 		}
 		for (Glitch g : glitches) {
 			glitchesDTO.add(new GlitchDTO(g));
 		}
-		for (CommunalProblem cp : problems) {
-			problemsDTO.add(new CommunalProblemDTO(cp));
+		for (CommunalProblem cp : communalProblems) {
+			communalProblemsDTO.add(new CommunalProblemDTO(cp));
 		}
 
 		noMeeting.setGlitches(glitchesDTO);
 		noMeeting.setNotifications(notificationsDTO);
-		noMeeting.setProblems(problemsDTO);
+		noMeeting.setCommunalProblems(communalProblemsDTO);
 		return new ResponseEntity<>(noMeeting, HttpStatus.OK);
 
 	}
