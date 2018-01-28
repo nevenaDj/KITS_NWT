@@ -2,29 +2,20 @@ package com.example.model;
 
 import org.springframework.web.multipart.MultipartFile;
 
+import com.gargoylesoftware.htmlunit.javascript.host.html.Image;
+
 public class UploadModel {
 
-	    private String extraField;
+	    private Image image;
 
-	    private MultipartFile[] files;
-
-		public String getExtraField() {
-			return extraField;
+		public Image getImage() {
+			return image;
 		}
 
-		public void setExtraField(String extraField) {
-			this.extraField = extraField;
+		public void setImage(Image image) {
+			this.image = image;
 		}
 
-		public MultipartFile[] getFiles() {
-			return files;
-		}
 
-		public void setFiles(MultipartFile[] files) {
-			this.files = files;
-		}
-
-	    //getters and setters
-	    
 	
 }

@@ -1,4 +1,4 @@
-import { AgendaItem } from "./agendaItem";
+import { AgendaItem } from "./agenda-item";
 import { Agenda } from "./agenda";
 import { Builder } from "selenium-webdriver";
 import { Building } from "./building";

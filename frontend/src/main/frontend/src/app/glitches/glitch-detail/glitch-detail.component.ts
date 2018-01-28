@@ -125,7 +125,8 @@ export class GlitchDetailComponent implements OnInit {
   }
 
   imageFinishedUploading(file: FileHolder) {
-    console.log(JSON.stringify(file.serverResponse));
+    console.log(JSON.stringify(file.file));
+    this.glitchService.upload(this.glitch.apartment.id, this.glitch.id, file.file).then();
   }
   
   onRemoved(file: FileHolder) {

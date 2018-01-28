@@ -15,8 +15,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.dto.GlitchTypeDTO;
+import com.example.dto.UserDTO;
 import com.example.model.GlitchType;
+import com.example.model.User;
 import com.example.service.GlitchService;
+import com.example.service.PricelistService;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -30,6 +33,9 @@ import io.swagger.annotations.ApiResponses;
 public class GlitchTypeController {
 	@Autowired
 	GlitchService glitchService;
+	
+	@Autowired
+	PricelistService pricelistService;
 
 	@RequestMapping(value = "/glitchTypes", method = RequestMethod.POST, consumes = "application/json")
 	@ApiOperation(value = "Create a new glitch type.", notes = "Returns the glitch type being saved.", httpMethod = "POST", produces = "application/json", consumes = "application/json")
@@ -106,4 +112,26 @@ public class GlitchTypeController {
 		return new ResponseEntity<>(glitchTypesDTO, HttpStatus.OK);
 	}
 
+	@RequestMapping(value = "/glitchTypes/{id}/companies", method = RequestMethod.GET)
+	@ApiOperation(value = "Get a companies by glitch type.", httpMethod = "GET")
+	@ApiImplicitParam(paramType="header", name="X-Auth-Token", required=true, value="JWT token")
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "Success", response = GlitchTypeDTO.class),
+			@ApiResponse(code = 404, message = "Not found") })
+	@PreAuthorize("hasRole('ROLE_PRESIDENT')")
+	/*** get a glitch type ***/
+	public ResponseEntity<List<UserDTO>> getCompaniesByGlitchType(@PathVariable Long id) {
+		GlitchType glitchType = glitchService.findOneGlitchType(id);
+
+		if (glitchType == null) {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+		
+		List<User> companies = pricelistService.findCompaniesByType(id);
+		List<UserDTO> companiesDTO = new ArrayList<UserDTO>();
+		for (User user :companies) {
+			companiesDTO.add(new UserDTO(user));	
+		}
+
+		return new ResponseEntity<>(companiesDTO, HttpStatus.OK);
+	}
 }

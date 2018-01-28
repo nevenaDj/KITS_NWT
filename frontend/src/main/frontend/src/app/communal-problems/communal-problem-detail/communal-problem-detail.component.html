@@ -1,3 +1,60 @@
-<p>
-  communal-problem-detail works!
-</p>
+<div class="row">
+    <div class="col-lg-9 main-chart">
+        <div class="row">
+            <p class="title">COMMUNAL PROBLEM </p>
+            </div>
+      <div class="row">
+        <div class="col-lg-1"></div>
+        <div class="col-lg-10 border">
+          <div class="border-title">Description</div>
+          <div class="border-desc">{{problem.description}}</div>
+        </div>
+      </div>
+  
+      <div class="row">
+          <div class="col-lg-1"></div>
+          <div class="col-lg-5 border">
+              <div class="border-title">TYPE</div>
+              <div class="border-desc">{{problem.type.type}}</div>
+          </div>
+          <div class="col-lg-5 border">
+            <div class="border-title">DATE OF REPAIR</div>
+            <div class="border-desc">{{problem.dateOfRepair | date}}</div>
+        </div>
+        </div>
+      <br><br>
+      <div class="row" *ngIf="owner">
+          <div class="col-lg-1 " ></div>
+          <div class="col-lg-10 border" [style.height]="height+'px'">
+              <div class="border-title">MY APARTMENTS</div>
+              <div class="container">
+                  <div class="check" *ngFor="let aparment of myApartments ; let i=index; ">
+                        <input id="{{i}}" type="checkbox" name="aparments" [value]="aparment" (change)="selectAparment(aparment)" />
+                        <label for="{{i}}" (change)="selectAparment(aparment)"> 
+                          <div class="box" (change)="selectAparment(aparment)"><i class="fa fa-check"></i></div>
+                          <div class="text" (change)="selectAparment(aparment)">{{aparment.number}}</div>
+                        </label>              
+                  </div>   
+              </div>
+          </div>
+      </div>
+      <br><br>
+      <div class="row">
+        <div class="col-lg-1"></div>
+        <div class="col-lg-10">
+          <div *ngFor="let apartment of problem.apartments; let i=index;">
+            <ul >
+              <li>
+                <div class="lists">
+                  <div class="first">{{i+1}}</div>
+                  <div class="sec" >
+                    <b>{{apartment.number}}</b> 
+                  </div>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

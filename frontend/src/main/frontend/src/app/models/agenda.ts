@@ -1,5 +1,5 @@
 import { Survey } from "./survey";
-import { AgendaItem } from "./agendaItem";
+import { AgendaItem } from "./agenda-item";
 
 
 export class Agenda implements AgendaInterface{

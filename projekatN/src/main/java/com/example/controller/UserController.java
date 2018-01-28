@@ -260,15 +260,12 @@ public class UserController {
 	/*** get user ***/
 	public ResponseEntity<UserDTO> getLogedINUser(HttpServletRequest request) {
 		String token = request.getHeader("X-Auth-Token");
-		System.out.println(token);
 		String username = tokenUtils.getUsernameFromToken(token);
-		System.out.println(username);
 		User user = userService.findByUsername(username);
 		if (user == null) {
 			return new ResponseEntity<UserDTO>(HttpStatus.NOT_FOUND);
 		}
 		UserDTO userDTO = new UserDTO(user);
-		System.out.println("userDTO: " + userDTO.getUsername());
 		return new ResponseEntity<UserDTO>(userDTO, HttpStatus.OK);
 	}
 }

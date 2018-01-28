@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Meeting } from '../../models/meeting';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MeetingsService } from '../meetings.service';
-import { AgendaItem } from '../../models/agendaItem';
+import { AgendaItem } from '../../models/agenda-item';
 import { AuthService } from '../../login/auth.service';
 
 @Component({

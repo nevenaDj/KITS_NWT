@@ -6,7 +6,7 @@ import { User } from '../models/user';
 import { Builder } from 'selenium-webdriver';
 import { Building } from '../models/building';
 import { ContentWithoutAgenda } from '../models/content-without-agenda';
-import { AgendaItem } from '../models/agendaItem';
+import { AgendaItem } from '../models/agenda-item';
 import { Agenda } from '../models/agenda';
 import { ItemComment } from '../models/itemComment';
 

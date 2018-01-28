@@ -90,7 +90,7 @@ insert into agenda_item(title, meeting_id, number ) values ('Title',1, 1 );
 insert into item_comment(writer_id, text, date) values (1, 'text', '2017-12-03');
 insert into agenda_item_comments(agenda_item_id, comments_id) values (1,1);
 
-insert into communal_problem (description) values ('communal problem');
+insert into communal_problem (description, building_id) values ('communal problem',1);
 
 insert into notification(text, building_id, writer_id ) values ('text', 1, 1);
 

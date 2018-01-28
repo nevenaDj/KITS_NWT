@@ -64,7 +64,6 @@ public class MeetingController {
 		if (building == null) {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
-		System.out.println("date: "+meetingDTO.getDateAndTime());
 		meeting.setBuilding(building);
 		meeting = meetingService.save(meeting);
 		return new ResponseEntity<>(new MeetingDTO(meeting), HttpStatus.CREATED);
@@ -84,7 +83,6 @@ public class MeetingController {
 		Meeting meeting = meetingService.findOne(id_meeting);	
 		if (meeting==null)
 			return new ResponseEntity<>( HttpStatus.NOT_FOUND);
-		System.out.println("MEETING: "+meeting.getDateAndTime()+", agenda: "+meeting.getPoints().size());
 		return new ResponseEntity<>(new MeetingDTO(meeting), HttpStatus.OK);
 	}
 	
@@ -254,17 +252,13 @@ public class MeetingController {
 		
 
 		for (Meeting m:meetings) {		
-			System.out.println(" meeting date: "+m.getDateAndTime());
 			if (m.getDateAndTime().getTime()-today.getTime()<=0 ) {
 				Date one_plus = new Date(m.getDateAndTime().getTime() + (1000 * 60 * 60 * 24));
-				System.out.println(" if1 ");
 				if (one_plus.getTime()- today.getTime()>=0) {
-					System.out.println(" if2 ");
 					meetingsDTO.add(new MeetingDTO(m));
 				}
 			}
 		}
-		System.out.println("meetingDTO size: "+meetingsDTO.size());
 		return new ResponseEntity<>(meetingsDTO, HttpStatus.OK);
 	}
 

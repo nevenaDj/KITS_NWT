@@ -63,6 +63,10 @@ import { NotificationsComponent } from './notifications/notifications.component'
 import { CurrentBuildingComponent } from './buildings/current-building/current-building.component';
 import { ActiveMeetingOwnerComponent } from './meetings/active-meeting-owner/active-meeting-owner.component';
 import { ReportsComponent } from './meetings/reports/reports.component';
+import { CommunalProblemsComponent } from './communal-problems/communal-problems.component';
+import { AddCommunalProblemComponent } from './communal-problems/add-communal-problem/add-communal-problem.component';
+import { CommunalProblemDetailComponent } from './communal-problems/communal-problem-detail/communal-problem-detail.component';
+import { ActivecommunalProblemComponent } from './communal-problems/activecommunal-problem/activecommunal-problem.component';
 
 
 const routers: Routes = [
@@ -181,7 +185,8 @@ const routers: Routes = [
       { path: 'addNotification', component: AddNotificationComponent},
       { path: 'reports', component: ReportsComponent},
       { path: 'reports/:id', component: MeatingDetailsComponent},
-      { path: 'meetings/:id/items/:id_item', component: ItemDetailsComponent}
+      { path: 'meetings/:id/items/:id_item', component: ItemDetailsComponent},
+      { path: 'buildings/:id_b/communalProblems/:id' ,  component: CommunalProblemDetailComponent}
     ]
   },
   {
@@ -206,7 +211,9 @@ const routers: Routes = [
       { path: 'meetings/:id/items/:id_item', component: ItemDetailsComponent},
       { path: 'reports', component: ReportsComponent},
       { path: 'reports/:id', component: MeatingDetailsComponent},
-      { path: 'meetings/:id/items/:id_item', component: ItemDetailsComponent}
+      { path: 'meetings/:id/items/:id_item', component: ItemDetailsComponent},
+      { path: 'communalProblems' ,  component: ActivecommunalProblemComponent},
+      { path: 'buildings/:id_b/communalProblems/:id' ,  component: CommunalProblemDetailComponent}
     ]
   },
   {
@@ -237,7 +244,10 @@ const routers: Routes = [
       { path: 'responsiblities/:id/change', component:ChangeResponsiblePersonComponent },
       { path: 'buildings', component: CurrentBuildingComponent},
       { path: 'notifications', component: NotificationsComponent},
-      { path: 'addNotification', component: AddNotificationComponent}
+      { path: 'addNotification', component: AddNotificationComponent},
+      { path: 'communalProblems' ,  component: CommunalProblemsComponent},
+      { path: 'buildings/:id/communalProblems/add' ,  component: AddCommunalProblemComponent},
+      { path: 'buildings/:id_b/communalProblems/:id' ,  component: CommunalProblemDetailComponent}
     ]
   },
   {

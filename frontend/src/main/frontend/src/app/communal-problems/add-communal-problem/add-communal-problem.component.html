@@ -1,3 +1,69 @@
-<p>
-  add-communal-problem works!
-</p>
+<div class="row">
+    <div class="col-lg-9 main-chart">
+        <div class="row">
+            <p class="title">COMMUNAL PROBLEM </p>
+            </div>
+      <div class="row">
+        <div class="col-lg-1"></div>
+        <div class="col-lg-10 border">
+          <div class="border-title">Description</div>
+          <div class="container-4">
+              <input  type="search" id="update" name="" [(ngModel)]="problem.description" pattern=".{6,}" required >
+        </div>	
+        </div>
+      </div>
+  
+      <div class="row">
+          <div class="col-lg-1"></div>
+          <div class="col-lg-5 border" style="height:250px; overflow:scroll;">
+              <div class="border-title">TYPE</div>
+              <div class="container">
+                  <div class="check" *ngFor="let type of types ; let i=index; ">
+                        <input id="{{i}}" type="radio" name="types" [value]="type" (change)="selectType(type)"/>
+                        <label for="{{i}}" (change)="selectType(type)"> 
+                          <div class="box" (change)="selectType(type)"><i class="fa fa-check"></i></div>
+                          <div class="text" (change)="selectType(type)">{{type.type}}</div>
+                        </label>              
+                  </div>   
+              </div>
+          </div>
+          <div class="col-lg-5 border" style="height:250px; overflow:scroll;">
+            <div class="border-title">COMPANY</div>
+            <div class="container">
+                <div class="check" *ngFor="let com of companies ; let i=index; ">
+                      <input id="c{{i}}" type="radio" name="comapnies" [value]="company" (change)="selectCompany(com)"/>
+                      <label for="c{{i}}" (change)="selectCompany(com)"> 
+                        <div class="box" (change)="selectCompany(com)"><i class="fa fa-check"></i></div>
+                        <div class="text" (change)="selectCompany(com)">{{com.username}}</div>
+                      </label>              
+                </div>   
+            </div>
+        </div>
+        </div>
+      <br><br>
+      <div class="row">
+          <div class="col-lg-1"></div>
+          <div class="col-lg-5 border">
+          </div>
+          <div class="col-lg-5 border">
+              <label>
+                <div class="border-title">Date Of repairing</div>
+                <input id="update" [owlDateTime]="dt1" [(ngModel)]="selectedMoment" [min]="min" 
+                  [owlDateTimeFilter]="myFilter">
+                <span class="trigger" [owlDateTimeTrigger]="dt1">
+                  <i class="fa fa-calendar" aria-hidden="true"></i>
+                </span>
+                <owl-date-time #dt1></owl-date-time>
+              </label>
+            </div>
+        </div>
+        <div class="row">
+						<div class="col-lg-1"></div>
+						<div class="col-lg-10">
+							<div class="full-button" >
+								<input type="submit" class="save-button-text" value="Save" (click)="save()">
+							</div>
+						</div>
+					</div>
+    </div>
+  </div>

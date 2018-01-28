@@ -30,7 +30,7 @@
             <br>
             <div class="border-desc" *ngIf="item.type=='GLITCH'" (click)="goToGlitch()"> GO TO THE GLITCH...</div>
             <div class="border-title" *ngIf="item.type=='NOTIFICATION'"> NOTIFICATION TEXT: </div>
-            <div class="border-desc" *ngIf="item.type=='NOTIFICATION'"> text </div>
+            <div class="border-desc" *ngIf="item.type=='NOTIFICATION'"> {{item.notification.text}} </div>
             <div class="border-desc" *ngIf="item.type=='COMMUNAL_PROBLEM'" (click)="goToCommProblem()"> GO TO THE COMMUNAL PROBLEM...</div>
           </div>
       </div>

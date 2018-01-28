@@ -54,7 +54,14 @@ token = '';
 
   getBills(page: number, size: number){
     this.companyService.getBills(page,size, this.company.id)
-    .then(bills => this.bills = bills);
+    .then(bills => {this.bills = bills;
+      this.bills.sort(function(x, y) {
+        // true values first
+        return (x.approved === y.approved)? 0 : y.approved? -1 : 1;
+        // false values first
+        // return (x === y)? 0 : x? 1 : -1;
+    });
+    });
   }
 
   ngOnInit() {

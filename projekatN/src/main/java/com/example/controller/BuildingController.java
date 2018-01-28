@@ -221,19 +221,16 @@ public class BuildingController {
 	@ApiOperation(value = "Get a list of buildings, where president is the current user.", httpMethod = "GET")
 	/*** get a list of the buildings ***/
 	public ResponseEntity<List<BuildingDTO>> getBuildingsByPresident(HttpServletRequest request) {
-		System.out.println("eddig eljut");
 		String token = request.getHeader("X-Auth-Token");
 		String username = tokenUtils.getUsernameFromToken(token);
 
 		User president = userService.findByUsername(username);		
 		
 		List<Building> buildings = buildingService.findAllByPresident(president.getId());
-		System.out.println("size of building: "+ buildings.size());
 		List<BuildingDTO> buildingsDTO = new ArrayList<>();
 		for (Building building : buildings) {
 			buildingsDTO.add(new BuildingDTO(building));
 		}
-		System.out.println("vege");
 		return new ResponseEntity<>(buildingsDTO, HttpStatus.OK);
 	}
 	
@@ -241,19 +238,18 @@ public class BuildingController {
 	@ApiOperation(value = "Get a list of buildings, where owner is the current user.", httpMethod = "GET")
 	/*** get a list of the buildings ***/
 	public ResponseEntity<List<BuildingDTO>> getBuildingsByOwner(HttpServletRequest request) {
-		System.out.println("eddig eljut");
 		String token = request.getHeader("X-Auth-Token");
 		String username = tokenUtils.getUsernameFromToken(token);
 
 		User owner = userService.findByUsername(username);		
 		
 		List<Building> buildings = buildingService.getBuildingsByOwner(owner.getId());
-		System.out.println("size of building: "+buildings.size());
+
 		List<BuildingDTO> buildingsDTO = new ArrayList<>();
 		for (Building building : buildings) {
 			buildingsDTO.add(new BuildingDTO(building));
 		}		
-		System.out.println("size of buildingDTO: "+buildingsDTO.size());
+	
 		return new ResponseEntity<>(buildingsDTO, HttpStatus.OK);
 	}
 	
@@ -269,12 +265,10 @@ public class BuildingController {
 		User tenant = userService.findByUsername(username);		
 		
 		List<Building> buildings = buildingService.getBuildingsOfTenant(tenant.getId());
-		System.out.println("size of building: "+ buildings.size());
 		List<BuildingDTO> buildingsDTO = new ArrayList<>();
 		for (Building building : buildings) {
 			buildingsDTO.add(new BuildingDTO(building));
 		}
-		System.out.println("size of buildingDTO: "+buildingsDTO.size());
 		return new ResponseEntity<>(buildingsDTO, HttpStatus.OK);
 	}
 	

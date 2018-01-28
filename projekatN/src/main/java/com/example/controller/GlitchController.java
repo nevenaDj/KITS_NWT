@@ -44,6 +44,7 @@ import com.example.service.BuildingService;
 import com.example.service.GlitchService;
 import com.example.service.PricelistService;
 import com.example.service.UserService;
+import com.gargoylesoftware.htmlunit.javascript.host.html.Image;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -272,12 +273,10 @@ public class GlitchController {
 			@ApiParam(name = "date", value = "date", required = true) @RequestParam("date") String dateOfReparing)
 			throws ParseException {
 		Apartment apartment = apartmentService.findOne(apartmentId);
-		System.out.println("apartmen: " + apartmentId);
 		if (apartment == null) {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 
-		System.out.println("glitch: " + glitchId);
 		Glitch glitch = glitchService.findOne(glitchId);
 		if (glitch == null) {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -286,7 +285,6 @@ public class GlitchController {
 		String[] dateSplit = dateOfReparing.split("/.");
 		SimpleDateFormat formatted = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
 		Date date = formatted.parse(dateSplit[0]);
-		System.out.println("date: " + date);
 		glitch.setDateOfRepair(date);
 		glitchService.save(glitch);
 		return new ResponseEntity<>(new GlitchDTO(glitch), HttpStatus.OK);
@@ -321,8 +319,8 @@ public class GlitchController {
 		return new ResponseEntity<>(new GlitchDTO(glitch), HttpStatus.OK);
 	}
 
-	@RequestMapping(value = "/apartments/{id}/glitches/{glitch_id}/photo", method = RequestMethod.PUT)
-	@ApiOperation(value = "Save a photo for glitch.", notes = "Returns the glitch being saved.", httpMethod = "PUT", produces = "application/json", consumes = "application/json")
+	@RequestMapping(value = "/apartments/{id}/glitches/{glitch_id}/photo", method = RequestMethod.PUT, consumes="multipart/form-data")
+	@ApiOperation(value = "Save a photo for glitch.", notes = "Returns the glitch being saved.", httpMethod = "PUT", produces = "application/json", consumes = "multipart/form-data")
 	@ApiImplicitParam(paramType = "header", name = "X-Auth-Token", required = true, value = "JWT token")
 	@ApiResponses(value = { @ApiResponse(code = 200, message = "Success", response = GlitchDTO.class),
 			@ApiResponse(code = 500, message = "Failure"), @ApiResponse(code = 400, message = "Bad request") })
@@ -331,7 +329,7 @@ public class GlitchController {
 			@ApiParam(value = "The ID of the apartment.", required = true) @PathVariable("id") Long apartmentId,
 			@ApiParam(value = "The ID of the glitch.", required = true) @PathVariable("glitch_id") Long glitchId,
 			HttpServletRequest request,
-			@ApiParam(name = "image", value = "Image", required = true) @RequestParam("image") String image) {
+			@RequestBody File image) {
 
 		Apartment apartment = apartmentService.findOne(apartmentId);
 
@@ -345,10 +343,10 @@ public class GlitchController {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 
-		File file = new File(image);
-		byte[] bFile = new byte[(int) file.length()];
+		//File file = new File(image);
+		byte[] bFile = new byte[(int) image.length()];
 
-		try (FileInputStream fileInputStream = new FileInputStream(file)) {
+		try (FileInputStream fileInputStream = new FileInputStream(image)) {
 
 			int count = fileInputStream.read(bFile);
 

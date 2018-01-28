@@ -96,7 +96,6 @@ public class AgendaController {
 
 		AgendaItem agendaPoint = AgendaItemDTO.getAgendaPoint(agendaPointDTO);
 		agendaPoint.setMeeting(meeting);
-
 		agendaPoint = agendaPointService.save(agendaPoint);
 		if (agendaPoint.getType()==ItemType.GLITCH) {
 			Glitch glitch = glitchService.findOne(agendaPoint.getGlitch().getId());
@@ -181,7 +180,7 @@ public class AgendaController {
 		List<CommunalProblem> problems = comProblemsService.findWithoutMeeting(id);
 		List<NotificationDTO> notificationsDTO = new ArrayList<>();
 		List<GlitchDTO> glitchesDTO = new ArrayList<>();
-		List<CommunalProblemDTO> problemsDTO = new ArrayList<>();
+		List<CommunalProblemDTO> communalProblemsDTO = new ArrayList<>();
 		for (Notification n : notifications) {
 			notificationsDTO.add(new NotificationDTO(n));
 		}
@@ -189,12 +188,12 @@ public class AgendaController {
 			glitchesDTO.add(new GlitchDTO(g));
 		}
 		for (CommunalProblem cp : problems) {
-			problemsDTO.add(new CommunalProblemDTO(cp));
+			communalProblemsDTO.add(new CommunalProblemDTO(cp));
 		}
 
 		noMeeting.setGlitches(glitchesDTO);
 		noMeeting.setNotifications(notificationsDTO);
-		noMeeting.setProblems(problemsDTO);
+		noMeeting.setCommunalProblems(communalProblemsDTO);
 		return new ResponseEntity<>(noMeeting, HttpStatus.OK);
 
 	}
@@ -312,7 +311,7 @@ public class AgendaController {
 	@PreAuthorize("hasAnyRole('ROLE_PRESIDENT')")
 	public ResponseEntity<AgendaDTO> updateAgendaItemNumber(
 			@ApiParam(value = "The AgendaDTO obejct.", required = true) @RequestBody AgendaDTO agendaDTO) {
-		System.out.println("kezet");
+
 		for (AgendaItemDTO itemDTO : agendaDTO.getAgendaPoints()) {
 			AgendaItem agendaItem = agendaPointService.findOne(itemDTO.getId());
 			if (agendaItem == null) {

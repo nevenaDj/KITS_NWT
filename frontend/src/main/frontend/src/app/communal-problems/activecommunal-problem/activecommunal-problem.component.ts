@@ -1,18 +1,18 @@
 import { Component, OnInit } from '@angular/core';
-import { Building } from '../models/building';
-import { CommunalProblem } from '../models/communal-problem';
-import { Subscription } from 'rxjs';
+import { Building } from '../../models/building';
+import { AuthService } from '../../login/auth.service';
+import { PagerService } from '../../services/pager.service';
+import { CommunalProblemService } from '../communal-problem.service';
 import { Router } from '@angular/router';
-import { PagerService } from '../services/pager.service';
-import { AuthService } from '../login/auth.service';
-import { CommunalProblemService } from './communal-problem.service';
+import { CommunalProblem } from '../../models/communal-problem';
+import { Subscription } from 'rxjs/Subscription';
 
 @Component({
-  selector: 'app-communal-problems',
-  templateUrl: './communal-problems.component.html',
-  styleUrls: ['./communal-problems.component.css']
+  selector: 'app-activecommunal-problem',
+  templateUrl: './activecommunal-problem.component.html',
+  styleUrls: ['./activecommunal-problem.component.css']
 })
-export class CommunalProblemsComponent implements OnInit {
+export class ActivecommunalProblemComponent implements OnInit {
 
   buildings: Building[];
   selectedBuilding: Building=null;
@@ -45,13 +45,13 @@ export class CommunalProblemsComponent implements OnInit {
 
 
   getBuildings(){
-    this.problemSerivce.getBuildings().then(
+    this.problemSerivce.getBuildingsOwner().then(
       buildings=>{
         this.buildings=buildings;
         console.log("buildings: "+JSON.stringify(buildings));
         if (buildings.length==1){
           this.selectedBuilding=buildings[0];
-          this.problemSerivce.getCommunalProblemCount(this.selectedBuilding.id).then(
+          this.problemSerivce.getActiveCommunalProblemCount(this.selectedBuilding.id).then(
             count => {
               this.problemsCount = count;
               this.setPage(1);
@@ -69,7 +69,7 @@ export class CommunalProblemsComponent implements OnInit {
     
     this.selectedBuilding=this.tempSelectedBuilding;
     console.log("selected: "+JSON.stringify(this.selectedBuilding));
-    this.problemSerivce.getCommunalProblemCount(this.selectedBuilding.id).then(
+    this.problemSerivce.getActiveCommunalProblemCount(this.selectedBuilding.id).then(
       count => {
         this.problemsCount = count;
         this.setPage(1);
@@ -82,17 +82,13 @@ export class CommunalProblemsComponent implements OnInit {
     console.log("on selected-building: "+JSON.stringify(this.tempSelectedBuilding));
   }
 
-  getCommunalProblems(page: number, size: number){
-    this.problemSerivce.getCommunalProblems(page,size,this.selectedBuilding.id)
+  getActiveCommunalProblems(page: number, size: number){
+    this.problemSerivce.getActiveCommunalProblems(page,size,this.selectedBuilding.id)
         .then(problems => {this.problems=problems;
           console.log("this.problems: "+JSON.stringify(this.problems));
           this.problems.sort(function(x, y) {
-            // true values first
             return (x.dateOfRepair === y.dateOfRepair)? 0 : y.dateOfRepair? -1 : 1;
-            // false values first
-            // return (x === y)? 0 : x? 1 : -1;
         });
-          console.log("active : "+JSON.stringify(this.canWeAddCommunalProblem));
         });
   }
 
@@ -104,17 +100,12 @@ export class CommunalProblemsComponent implements OnInit {
     }
 
     this.pager = this.pagerService.getPager(this.problemsCount, page);
-    this.getCommunalProblems(this.pager.currentPage - 1, this.pager.pageSize);
+    this.getActiveCommunalProblems(this.pager.currentPage - 1, this.pager.pageSize);
   }
   
   gotoGetProblem(id: number) {
-      this.router.navigate(['/president/buildings/'+this.selectedBuilding.id+'/communalProblems', id]);
+      this.router.navigate(['/owner/buildings/'+this.selectedBuilding.id+'/communalProblems', id]);
   }
 
 
-  newProblem(){
-    let route: string= '/president/buildings/'+this.selectedBuilding.id+'/communalProblems/add';
-    console.log(route);
-    this.router.navigate([route]);
-  }
 }

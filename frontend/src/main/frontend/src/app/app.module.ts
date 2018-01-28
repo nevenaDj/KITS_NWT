@@ -93,6 +93,7 @@ import { ReportsComponent } from './meetings/reports/reports.component';
 import { CommunalProblemsComponent } from './communal-problems/communal-problems.component';
 import { CommunalProblemDetailComponent } from './communal-problems/communal-problem-detail/communal-problem-detail.component';
 import { AddCommunalProblemComponent } from './communal-problems/add-communal-problem/add-communal-problem.component';
+import { ActivecommunalProblemComponent } from './communal-problems/activecommunal-problem/activecommunal-problem.component';
 
 
 export class CustomOption extends ToastOptions {
@@ -170,6 +171,7 @@ export class CustomOption extends ToastOptions {
     CommunalProblemsComponent,
     CommunalProblemDetailComponent,
     AddCommunalProblemComponent,
+    ActivecommunalProblemComponent,
     
   ],
   imports: [
