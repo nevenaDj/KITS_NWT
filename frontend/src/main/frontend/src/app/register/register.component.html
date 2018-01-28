@@ -1,0 +1,75 @@
+<div id="login-page">
+    <div class="container">
+      <form class="form-login" name="form">
+        <div class="login-wrap">
+          <br>
+          <input type="text" class="form-control" placeholder="User ID" name="username" [(ngModel)]="user.username" required autofocus>
+          <br>
+          <input type="password" class="form-control" placeholder="Password" name="password" [(ngModel)]="user.password" required>
+          <br>
+          <input type="password" class="form-control" placeholder="Password again" name="password" [(ngModel)]="user.password2" required>
+          <br>
+          <input type="email" class="form-control" placeholder="Email" name="email" [(ngModel)]="user.email" required>
+          <br>
+          <input type="text" class="form-control" placeholder="Phone number" name="phoneNo" [(ngModel)]="user.phoneNo" required>
+          <hr>
+          <div class="form-find">
+          <form name="form"  (ngSubmit)="findApartment()">
+            <input type="text" class="form-control" placeholder="Street" name="street" [(ngModel)]="street" required>
+            <br>
+            <input type="text" class="form-control" placeholder="Number" name="number" [(ngModel)]="number" required>
+            <br>
+            <input type="text" class="form-control" placeholder="City" name="city" [(ngModel)]="city" required>
+            <br>
+            <input type="number" class="form-control" placeholder="Apartment number" name="apartmentNumber" [(ngModel)]="apartmentNumber" required>
+            <br>
+            <button class="btn btn-theme btn-block" type="submit"> FIND APARTMENT</button>
+        </form>
+      </div>
+      <hr>
+        <br>
+        <div class="row" *ngIf="apartment !== null">
+            <div class="col-lg-1"></div>
+            <div class="col-lg-10">
+                  <table class="table table-hover">
+                        <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Street</th>
+                            <th>Number</th>
+                            <th>City</th>
+                            <th>Apartment</th>
+                            <th></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td>{{apartment.id}}</td>
+                            <td>{{apartment.building.address.street}}</td>
+                            <td>{{apartment.building.address.number}}</td>
+                            <td>{{apartment.building.address.city}}</td>
+                            <td>{{apartment.number}}</td>
+                            <td>
+                              <button *ngIf="user.apartmentId !== apartment.id" (click)="add()" class="btn btn-success btn-xs">
+                                <i class="fa fa-check"></i>
+                              </button>
+                              <button *ngIf="user.apartmentId === apartment.id" (click)="delete()" class="btn btn-danger btn-xs">
+                                <i class="fa fa-trash-o "></i>
+                              </button>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                <br>
+            </div>   
+          </div>
+        
+        <br>
+        <hr>
+          <button (click)="save()" class="btn btn-theme btn-block" type="submit"><i class="fa fa-lock"></i> SIGN UP</button>
+        </div>
+      </form>	
+    </div>
+  </div>
+  <br>
+  <br>

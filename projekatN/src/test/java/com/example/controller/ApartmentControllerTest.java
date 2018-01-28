@@ -60,7 +60,7 @@ import com.example.dto.UserDTO;
 import com.jayway.restassured.RestAssured;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest(webEnvironment = WebEnvironment.DEFINED_PORT)
+@SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 @TestPropertySource(locations = "classpath:test.properties")
 public class ApartmentControllerTest {
 
@@ -174,7 +174,7 @@ public class ApartmentControllerTest {
 	@Transactional
 	@Rollback(true)
 	public void testDeleteApartment() throws Exception {
-		mockMvc.perform(delete("/api/apartments/" + ID_APARTMENT).header("X-Auth-Token", accessToken))
+		mockMvc.perform(delete("/api/apartments/" + 2).header("X-Auth-Token", accessToken))
 				.andExpect(status().isOk());
 	}
 
@@ -188,14 +188,14 @@ public class ApartmentControllerTest {
 
 	@Test
 	public void testFindByAddress() throws Exception {
-		mockMvc.perform(get("/api/apartments?street=" + STREET + "&number=" + BUILDING_NUMBER + "&city=" + CITY
+		mockMvc.perform(get("/api/apartment?street=" + STREET + "&number=" + BUILDING_NUMBER + "&city=" + CITY
 				+ "&number_apartment=" + NUMBER).header("X-Auth-Token", accessToken)).andExpect(status().isOk());
 
 	}
 
 	@Test
 	public void testFindByAddressNotFound() throws Exception {
-		mockMvc.perform(get("/api/apartments?street=" + STREET + "&number=" + BUILDING_NUMBER + "&city=" + CITY
+		mockMvc.perform(get("/api/apartment?street=" + STREET + "&number=" + BUILDING_NUMBER + "&city=" + CITY
 				+ "&number_apartment=" + NEW_NUMBER).header("X-Auth-Token", accessToken))
 				.andExpect(status().isNotFound());
 

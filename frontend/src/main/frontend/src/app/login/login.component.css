@@ -1,0 +1,53 @@
+.form-login {
+	max-width: 330px;
+	margin: 100px auto 0;
+	background-color:rgba(200, 200, 200, 0.4);
+	border-radius: 5px;
+	-webkit-border-radius: 5px; 
+    box-shadow: 2px 2px 4px #000000;
+}
+
+.form-login h2.form-login-heading {
+	margin: 0;
+	padding: 25px 20px;
+	text-align: center;
+	background: #68dff0;
+	border-radius: 5px 5px 0 0;
+	-webkit-border-radius: 5px 5px 0 0;
+	color: #fff;
+	font-size: 20px;
+	text-transform: uppercase;
+	font-weight: 300;
+}
+.login-wrap {
+	padding: 20px;
+}
+
+.login-wrap .registration {
+    text-align: center;
+    color: darkblue;
+}
+
+.login-image {
+    height: 100px; 
+    margin: 20px; 
+    display: block; 
+    margin-left: auto; 
+    margin-right: auto;
+}
+
+.btn-theme {
+    color: #fff;
+    background-color: #4c586F;
+    border-color: #cbc5c1;
+}
+.btn-theme:hover,
+.btn-theme:focus,
+.btn-theme:active,
+.btn-theme.active,
+.open .dropdown-toggle.btn-theme {
+    color: #fff;
+    background-color: #cbc5c1;
+    border-color: #cbc5c1;
+}
+  

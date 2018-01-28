@@ -8,6 +8,7 @@ public class ApartmentDTO {
 	private Integer number;
 	private String description;
 	private UserDTO owner;
+	private BuildingDTO building;
 
 	public ApartmentDTO() {
 	}
@@ -17,6 +18,10 @@ public class ApartmentDTO {
 
 		if (apartment.getOwner() != null) {
 			this.owner = new UserDTO(apartment.getOwner());
+		}
+
+		if (apartment.getBuilding() != null) {
+			this.building = new BuildingDTO(apartment.getBuilding());
 		}
 	}
 
@@ -65,11 +70,22 @@ public class ApartmentDTO {
 		this.description = description;
 	}
 
+	public BuildingDTO getBuilding() {
+		return building;
+	}
+
+	public void setBuilding(BuildingDTO building) {
+		this.building = building;
+	}
+
 	public static Apartment getApartment(ApartmentDTO apartmentDTO) {
 		Apartment apartment = new Apartment(apartmentDTO.getId(), apartmentDTO.getNumber(),
 				apartmentDTO.getDescription());
-		if (apartmentDTO.getOwner() != null) {
+		if (apartmentDTO.getOwner() != null && apartmentDTO.getOwner().getId() != null) {
 			apartment.setOwner(UserDTO.getUser(apartmentDTO.getOwner()));
+		}
+		if (apartmentDTO.getBuilding() != null && apartmentDTO.getBuilding().getId() != null) {
+			apartment.setBuilding(BuildingDTO.getBuilding(apartmentDTO.getBuilding()));
 		}
 		return apartment;
 	}

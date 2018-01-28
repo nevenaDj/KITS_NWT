@@ -22,11 +22,11 @@ public class NotificationService {
 	public Page<Notification> findAll(Pageable page) {
 		return notificationRepository.findAll(page);
 	}
-	
+
 	public Page<Notification> findAllByBuilding(Pageable page, Long buildingId) {
 		return notificationRepository.findByBuilding(buildingId, page);
 	}
-	
+
 	public Page<Notification> findAllByWriter(Pageable page, Long writerId) {
 		return notificationRepository.findByWriter(writerId, page);
 	}
@@ -39,7 +39,11 @@ public class NotificationService {
 		notificationRepository.delete(id);
 	}
 
-	public List<Notification> findWithoutMeeting() {
-		return notificationRepository.findWithoutMeeting();
+	public List<Notification> findWithoutMeeting(Long id) {
+		return notificationRepository.findWithoutMeeting(id);
+	}
+
+	public Long getCountOfNotifications(Long idBuilding) {
+		return notificationRepository.getCountOfNotifications(idBuilding);
 	}
 }

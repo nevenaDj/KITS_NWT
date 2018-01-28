@@ -1,0 +1,42 @@
+<div class="row">
+  <div class="col-lg-12 main-chart">
+    <div class="col-lg-3 weather-new pn">
+      <i class="fa fa-plus"></i>
+      <h2><a id="new" (click)="gotoAdd()">NEW</a></h2>
+      <h4></h4>
+    </div>  
+    <div *ngFor="let building of buildings">
+      <div class="col-lg-3 weather pn">
+        <i class="fa fa-home"></i>
+        <h2>
+          <a (click)="gotoGetBuilding(building.id)">{{building.address.city}}</a>
+        </h2>
+        <h4> 
+          <a (click)="gotoGetBuilding(building.id)">{{building.address.street | slice: 0: 20}} {{building.address.number | slice: 0: 3}}</a>
+        </h4>
+      </div> 
+    </div>
+  </div>
+</div>
+<div class="row">
+  <nav data-pagination *ngIf="pager.totalPages > 1">
+    <ul *ngIf="pager.pages && pager.pages.length">
+      <li [ngClass]="{disabled:pager.currentPage === 1}">
+        <a (click)="setPage(1)">First</a>
+      </li>
+      <li [ngClass]="{disabled:pager.currentPage === 1}">
+        <a (click)="setPage(pager.currentPage - 1)">Previous</a>
+      </li>
+      <li *ngFor="let page of pager.pages" [ngClass]="{active:pager.currentPage === page}" class=current>
+        <a (click)="setPage(page)">{{page}}</a>
+      </li>
+      <li [ngClass]="{disabled:pager.currentPage === pager.totalPages}">
+        <a (click)="setPage(pager.currentPage + 1)">Next</a>
+      </li>
+      <li [ngClass]="{disabled:pager.currentPage === pager.totalPages}">
+        <a (click)="setPage(pager.totalPages)">Last</a>
+      </li>
+    </ul>
+  </nav>
+</div>
+

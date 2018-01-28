@@ -5,6 +5,8 @@ import static com.example.utils.Constants.TOKEN;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
@@ -32,6 +34,7 @@ import com.example.dto.UserDTO;
 import com.example.model.Apartment;
 import com.example.model.Building;
 import com.example.model.Glitch;
+import com.example.model.GlitchState;
 import com.example.model.Picture;
 import com.example.model.Pricelist;
 import com.example.model.User;
@@ -59,7 +62,7 @@ public class GlitchController {
 
 	@Autowired
 	GlitchService glitchService;
-	
+
 	@Autowired
 	PricelistService pricelistService;
 
@@ -88,11 +91,11 @@ public class GlitchController {
 
 		Glitch glitch = GlitchDTO.getGlitch(glitchDTO);
 
-		User company = userService.findOne(glitchDTO.getCompanyID());
+		// User company = userService.findOne(glitchDTO.getCompanyID());
 
-		if (company != null) {
-			glitch.setCompany(company);
-		}
+		/*
+		 * if (company != null) { glitch.setCompany(company); }
+		 */
 
 		User tenant = userService.findByUsername(username);
 		glitch.setTenant(tenant);
@@ -115,18 +118,32 @@ public class GlitchController {
 		return new ResponseEntity<>(new GlitchDTO(glitch), HttpStatus.CREATED);
 	}
 
-	@RequestMapping(value = "/glitches", method = RequestMethod.GET)
-	@PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_OWNER', 'ROLE_COMPANY')")
+	@RequestMapping(value = "/apartments/{id}/glitches", method = RequestMethod.GET)
 	@ApiOperation(value = "Get a list of glitches.", httpMethod = "GET")
 	@ApiImplicitParam(paramType = "header", name = "X-Auth-Token", required = true, value = "JWT token")
 	/*** get a list of glitches (for a user) ***/
-	public ResponseEntity<List<GlitchDTO>> getGlitches(Pageable page, HttpServletRequest request) {
+	public ResponseEntity<List<GlitchDTO>> getGlitches(
+			@ApiParam(value = "The ID of the apartment.", required = true) @PathVariable Long id, Pageable page,
+			HttpServletRequest request) {
 		String token = request.getHeader(TOKEN);
 		String username = tokenUtils.getUsernameFromToken(token);
 
 		User user = userService.findByUsername(username);
+		if (user == null) {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
 
-		Page<Glitch> glitches = glitchService.findGlitches(page, user);
+		List<String> roles = userService.getUsersAuthority(user);
+
+		Apartment apartment = null;
+		if (roles.contains("ROLE_USER")) {
+			apartment = apartmentService.findOne(id);
+			if (apartment == null) {
+				return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+			}
+		}
+
+		Page<Glitch> glitches = glitchService.findGlitches(page, user, apartment);
 
 		List<GlitchDTO> glitchesDTO = new ArrayList<>();
 
@@ -136,6 +153,46 @@ public class GlitchController {
 
 		return new ResponseEntity<>(glitchesDTO, HttpStatus.OK);
 
+	}
+
+	@RequestMapping(value = "/glitches/{id}", method = RequestMethod.GET)
+	@ApiOperation(value = "Get a glitch.", httpMethod = "GET")
+	@ApiImplicitParam(paramType = "header", name = "X-Auth-Token", required = true, value = "JWT token")
+	/*** get a list of glitches (for a user) ***/
+	public ResponseEntity<GlitchDTO> getGlitch(
+			@ApiParam(value = "The ID of the glitch.", required = true) @PathVariable Long id) {
+
+		Glitch glitch = glitchService.findOne(id);
+
+		if (glitch == null)
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+
+		return new ResponseEntity<>(new GlitchDTO(glitch), HttpStatus.OK);
+	}
+
+	@RequestMapping(value = "/apartments/{id}/glitches/count", method = RequestMethod.GET)
+	@ApiOperation(value = "Get a count of glitches.", httpMethod = "GET")
+	@ApiImplicitParam(paramType = "header", name = "X-Auth-Token", required = true, value = "JWT token")
+	@ApiResponse(code = 200, message = "Success")
+	/*** get a count of glitches ***/
+	public ResponseEntity<Integer> getCountOfGlitches(
+			@ApiParam(value = "The ID of the apartment.", required = true) @PathVariable Long id,
+			HttpServletRequest request) {
+		String token = request.getHeader(TOKEN);
+		String username = tokenUtils.getUsernameFromToken(token);
+
+		User user = userService.findByUsername(username);
+		if (user == null) {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+
+		Apartment apartment = apartmentService.findOne(id);
+		if (apartment == null) {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+
+		Integer count = glitchService.getCountOfGlitches(user, apartment);
+		return new ResponseEntity<>(count, HttpStatus.OK);
 	}
 
 	@RequestMapping(value = "/glitches/{id}/responsiblePerson", method = RequestMethod.PUT)
@@ -174,7 +231,7 @@ public class GlitchController {
 	/*** change the company for the glitch ***/
 	public ResponseEntity<GlitchDTO> changeCompany(
 			@ApiParam(value = "The ID of the apartment.", required = true) @PathVariable("id") Long apartmentId,
-			@ApiParam(value = "The ID of the glitch.", required = true) @PathVariable("glitch_id") Long glitchId, 
+			@ApiParam(value = "The ID of the glitch.", required = true) @PathVariable("glitch_id") Long glitchId,
 			@ApiParam(value = "The ID of the company.", required = true) @PathVariable("c_id") Long companyId) {
 
 		User company = userService.findOne(companyId);
@@ -212,27 +269,27 @@ public class GlitchController {
 	public ResponseEntity<GlitchDTO> changeDateOfRepair(
 			@ApiParam(value = "The ID of the apartment.", required = true) @PathVariable("id") Long apartmentId,
 			@ApiParam(value = "The ID of the glitch.", required = true) @PathVariable("glitch_id") Long glitchId,
-			@ApiParam(name="date", value = "date", required = true) @RequestParam("date") Date dateOfReparing) {
-		//return new ResponseEntity<>(HttpStatus.ALREADY_REPORTED);/*
+			@ApiParam(name = "date", value = "date", required = true) @RequestParam("date") String dateOfReparing)
+			throws ParseException {
 		Apartment apartment = apartmentService.findOne(apartmentId);
-
 		if (apartment == null) {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 
 		Glitch glitch = glitchService.findOne(glitchId);
-
 		if (glitch == null) {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 
-		glitch.setDateOfRepair(dateOfReparing);
+		String[] dateSplit = dateOfReparing.split("/.");
+		SimpleDateFormat formatted = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+		Date date = formatted.parse(dateSplit[0]);
+		glitch.setDateOfRepair(date);
 		glitchService.save(glitch);
-
 		return new ResponseEntity<>(new GlitchDTO(glitch), HttpStatus.OK);
 	}
 
-	@RequestMapping(value = "/apartments/{id}/glitches/{glitch_id}", method = RequestMethod.PUT, produces = "application/json")
+	@RequestMapping(value = "/glitches/{glitch_id}", method = RequestMethod.PUT, produces = "application/json")
 	@ApiOperation(value = "Approve time of repair for the glitch.", notes = "Returns the glitch being saved.", httpMethod = "PUT", produces = "application/json", consumes = "application/json")
 	@ApiImplicitParam(paramType = "header", name = "X-Auth-Token", required = true, value = "JWT token")
 	@ApiResponses(value = { @ApiResponse(code = 200, message = "Success", response = GlitchDTO.class),
@@ -240,16 +297,8 @@ public class GlitchController {
 	@PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_OWNER', 'ROLE_PRESIDENT')")
 	/*** approve time of repair for the glitch ***/
 	public ResponseEntity<GlitchDTO> approveTimeOfRepaing(
-			@ApiParam(value = "The ID of the apartment.", required = true) @PathVariable("id") Long apartmentId,
 			@ApiParam(value = "The ID of the glitch.", required = true) @PathVariable("glitch_id") Long glitchId,
 			HttpServletRequest request) {
-
-		Apartment apartment = apartmentService.findOne(apartmentId);
-
-		if (apartment == null) {
-			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-		}
-
 		Glitch glitch = glitchService.findOne(glitchId);
 
 		if (glitch == null) {
@@ -269,10 +318,8 @@ public class GlitchController {
 		return new ResponseEntity<>(new GlitchDTO(glitch), HttpStatus.OK);
 	}
 
-	@RequestMapping(value = "/apartments/{id}/glitches/{glitch_id}/photo", method = RequestMethod.PUT, params = {
-			"image" })
-	@ApiOperation(value = "Save a photo for glitch.", notes = "Returns the glitch being saved.", httpMethod = "PUT", 
-	produces = "application/json", consumes = "application/json")
+	@RequestMapping(value = "/apartments/{id}/glitches/{glitch_id}/photo", method = RequestMethod.PUT, consumes = "multipart/form-data")
+	@ApiOperation(value = "Save a photo for glitch.", notes = "Returns the glitch being saved.", httpMethod = "PUT", produces = "application/json", consumes = "multipart/form-data")
 	@ApiImplicitParam(paramType = "header", name = "X-Auth-Token", required = true, value = "JWT token")
 	@ApiResponses(value = { @ApiResponse(code = 200, message = "Success", response = GlitchDTO.class),
 			@ApiResponse(code = 500, message = "Failure"), @ApiResponse(code = 400, message = "Bad request") })
@@ -280,8 +327,7 @@ public class GlitchController {
 	public ResponseEntity<GlitchDTO> addPhoto(
 			@ApiParam(value = "The ID of the apartment.", required = true) @PathVariable("id") Long apartmentId,
 			@ApiParam(value = "The ID of the glitch.", required = true) @PathVariable("glitch_id") Long glitchId,
-			HttpServletRequest request, 
-			@ApiParam(name="image", value = "Image", required = true) @RequestParam("image") String image) {
+			HttpServletRequest request, @RequestBody File image) {
 
 		Apartment apartment = apartmentService.findOne(apartmentId);
 
@@ -295,19 +341,19 @@ public class GlitchController {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 
-		File file = new File(image);
-		byte[] bFile = new byte[(int) file.length()];
+		// File file = new File(image);
+		byte[] bFile = new byte[(int) image.length()];
 
-		try (FileInputStream fileInputStream = new FileInputStream(file)) {
+		try (FileInputStream fileInputStream = new FileInputStream(image)) {
 
 			int count = fileInputStream.read(bFile);
-			
+
 		} catch (IOException e) {
 			e.getMessage();
 		}
 
 		Set<Picture> images = new HashSet<>();
-		Picture p= new Picture();
+		Picture p = new Picture();
 		p.setImages(bFile);
 		images.add(p);
 
@@ -317,54 +363,99 @@ public class GlitchController {
 		return new ResponseEntity<>(new GlitchDTO(glitch), HttpStatus.OK);
 	}
 
-
-	@RequestMapping(value = "/glitches/{id}/company", method = RequestMethod.GET, produces= "application/json")
-	@ApiOperation(value = "Find pricelists by glitchtype.", notes = "Returns lists of pricelist by glitchtype.",
-		httpMethod = "GET", produces = "application/json")
-	@ApiResponses(value = { 
-			@ApiResponse(code = 200, message = "Ok", response = PricelistDTO.class, responseContainer="List"),
+	@RequestMapping(value = "/glitches/{id}/company", method = RequestMethod.GET, produces = "application/json")
+	@ApiOperation(value = "Find pricelists by glitchtype.", notes = "Returns lists of pricelist by glitchtype.", httpMethod = "GET", produces = "application/json")
+	@ApiResponses(value = {
+			@ApiResponse(code = 200, message = "Ok", response = PricelistDTO.class, responseContainer = "List"),
 			@ApiResponse(code = 400, message = "Bad request") })
-	public ResponseEntity<List<PricelistDTO>> findPricelistsByGlitchType(
+	public ResponseEntity<List<UserDTO>> findCompanyByGlitchType(
 			@ApiParam(value = "The ID of the company.", required = true) @PathVariable Long id) {
 
 		Glitch glitch = glitchService.findOne(id);
-		if (glitch== null) {
+		if (glitch == null) {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
-		
+
 		List<Pricelist> pricelist = pricelistService.findbyGlitchType(glitch.getType().getId());
-		List<PricelistDTO> pricelistDTO = new ArrayList<>();
-		for (Pricelist p : pricelist){
-			PricelistDTO pDTO= new PricelistDTO(p);
-			pDTO.setCompany(new UserDTO(p.getCompany()));
-			pricelistDTO.add(pDTO);
+		List<UserDTO> usersDTO = new ArrayList<>();
+		for (Pricelist p : pricelist) {
+			UserDTO userDTO = new UserDTO(p.getCompany());
+
+			usersDTO.add(userDTO);
 		}
-		
-		return new ResponseEntity<>(pricelistDTO, HttpStatus.OK);		
+
+		return new ResponseEntity<>(usersDTO, HttpStatus.OK);
 	}
 
-
-	@RequestMapping(value = "/glitches/{id}/company", method = RequestMethod.PUT, produces = "application/json", consumes= "application/json")
+	@RequestMapping(value = "/glitches/{id}/company/{company_id}", method = RequestMethod.PUT, produces = "application/json", consumes = "application/json")
 	@ApiOperation(value = "Choose a componany for a glitch.", notes = "Returns the glitch that was saved.", httpMethod = "PUT", produces = "application/json", consumes = "application/json")
-	@ApiImplicitParam(paramType="header", name="X-Auth-Token", required=true, value="JWT token")
-	@ApiResponses(value = { 
-			@ApiResponse(code = 200, message = "Ok", response = GlitchDTO.class),
+	@ApiImplicitParam(paramType = "header", name = "X-Auth-Token", required = true, value = "JWT token")
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "Ok", response = GlitchDTO.class),
 			@ApiResponse(code = 400, message = "Bad request") })
-	@PreAuthorize("hasRole('ROLE_PRESIDENT')")
-	public ResponseEntity<GlitchDTO> chooseCompany(
-			@ApiParam(value = "The ID of the company.", required = true) @PathVariable Long id,
-			@ApiParam(value = "The UserDTO object", required = true) @RequestBody UserDTO companyDTO) {
+	@PreAuthorize("hasAnyRole('ROLE_COMPANY', 'ROLE_PRESIDENT')")
+	public ResponseEntity<GlitchDTO> setCompany(
+			@ApiParam(value = "The ID of the glich.", required = true) @PathVariable Long id,
+			@ApiParam(value = "The ID of the company.", required = true) @PathVariable Long company_id) {
 
 		Glitch glitch = glitchService.findOne(id);
-		if (glitch== null) {
+		if (glitch == null) {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
-		
-		User company= userService.findOne(companyDTO.getId());
+
+		User company = userService.findOne(company_id);
 		glitch.setCompany(company);
-		glitch= glitchService.save(glitch);
-		
-		return new ResponseEntity<>(new GlitchDTO(glitch), HttpStatus.OK);		
+		glitch = glitchService.save(glitch);
+
+		return new ResponseEntity<>(new GlitchDTO(glitch), HttpStatus.OK);
+	}
+
+	@RequestMapping(value = "/glitches/{id}/state/{state_id}", method = RequestMethod.PUT, produces = "application/json", consumes = "application/json")
+	@ApiOperation(value = "Choose a componany for a glitch.", notes = "Returns the glitch that was saved.", httpMethod = "PUT", produces = "application/json", consumes = "application/json")
+	@ApiImplicitParam(paramType = "header", name = "X-Auth-Token", required = true, value = "JWT token")
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "Ok", response = GlitchDTO.class),
+			@ApiResponse(code = 400, message = "Bad request") })
+	@PreAuthorize("hasRole('ROLE_COMPANY')")
+	public ResponseEntity<GlitchDTO> chooseCompany(
+			@ApiParam(value = "The ID of the company.", required = true) @PathVariable Long id,
+			@ApiParam(value = "The UserDTO object", required = true) @PathVariable Long state_id) {
+
+		Glitch glitch = glitchService.findOne(id);
+		if (glitch == null) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+
+		GlitchState state = glitchService.findGlitchState(state_id);
+		if (state == null) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+
+		glitch.setState(state);
+		glitch = glitchService.save(glitch);
+
+		return new ResponseEntity<>(new GlitchDTO(glitch), HttpStatus.OK);
+	}
+
+	@RequestMapping(value = "/glitches/{id}/users", method = RequestMethod.GET, produces = "application/json")
+	@ApiOperation(value = "Get users for a glitch.", notes = "Returns the users who are living in that house where is the glitch.", httpMethod = "GET", produces = "application/json")
+	@ApiImplicitParam(paramType = "header", name = "X-Auth-Token", required = true, value = "JWT token")
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "Ok", response = GlitchDTO.class),
+			@ApiResponse(code = 400, message = "Bad request") })
+	@PreAuthorize("hasRole('ROLE_PRESIDENT')")
+	public ResponseEntity<List<UserDTO>> getUsersByBuilding(
+			@ApiParam(value = "The ID of the glich.", required = true) @PathVariable Long id) {
+
+		Glitch glitch = glitchService.findOne(id);
+		if (glitch == null) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+
+		List<User> users = glitchService.findUsersByBuilding(id);
+		List<UserDTO> usersDTO = new ArrayList<UserDTO>();
+		for (User user : users) {
+			usersDTO.add(new UserDTO(user));
+		}
+
+		return new ResponseEntity<>(usersDTO, HttpStatus.OK);
 	}
 
 }

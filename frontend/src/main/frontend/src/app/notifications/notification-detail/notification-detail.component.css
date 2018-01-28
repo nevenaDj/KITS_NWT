@@ -1,0 +1,18 @@
+.delete-button{
+    top:31px;
+   left:31px;
+   cursor:pointer;
+   width:20px;
+   height:20px;
+   border:1px solid #DB6374;
+   border-radius:12px;
+   box-shadow:3px 3px 3px #999999;
+   background-color:#DB6374;
+   float: right; 
+   text-align: center; 
+}
+
+.delete-x:visited, .delete-x{
+    color: white; 
+    padding-top: 10px;
+}

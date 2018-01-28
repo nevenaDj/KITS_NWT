@@ -1,0 +1,55 @@
+<br>
+<div class="row">
+  <div class="col-lg-10">
+    <a (click)="gotoAddNotification()"  class="small-btn">Add notification</a>
+    <span class="building-view"> 
+        <b>Building: </b> {{building.address.street}} {{building.address.number}}
+    </span>
+  </div>   
+</div>
+<br><br>
+<div class="row">
+  <div class="col-lg-1"></div>
+  <div class="col-lg-10">
+        <table class="table table-hover">
+              <thead>
+              <tr>
+                  <th>#</th>
+                  <th>User</th>
+                  <th>Date</th>
+                  <th>Text</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr class="notifications" *ngFor="let notification of notifications | orderBy: 'date': true" (click)="gotoGetNotification(notification.id)">
+                  <td>&nbsp;</td>
+                  <td>{{notification.user.username}}</td>
+                  <td>{{notification.date | date: "dd.MM.y HH:mm"}}</td>
+                  <td>{{notification.text | slice: 0: 100}}</td>
+              </tr>
+              </tbody>
+          </table>
+      <br>
+  </div>   
+</div>
+<div class="row">
+  <nav data-pagination *ngIf="pager.totalPages > 1">
+    <ul *ngIf="pager.pages && pager.pages.length">
+      <li [ngClass]="{disabled:pager.currentPage === 1}">
+        <a (click)="setPage(1)">First</a>
+      </li>
+      <li [ngClass]="{disabled:pager.currentPage === 1}">
+        <a (click)="setPage(pager.currentPage - 1)">Previous</a>
+      </li>
+      <li *ngFor="let page of pager.pages" [ngClass]="{active:pager.currentPage === page}">
+        <a (click)="setPage(page)">{{page}}</a>
+      </li>
+      <li [ngClass]="{disabled:pager.currentPage === pager.totalPages}">
+        <a (click)="setPage(pager.currentPage + 1)">Next</a>
+      </li>
+      <li [ngClass]="{disabled:pager.currentPage === pager.totalPages}">
+        <a (click)="setPage(pager.totalPages)">Last</a>
+      </li>
+    </ul>
+  </nav>
+</div>

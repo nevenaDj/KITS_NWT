@@ -1,0 +1,88 @@
+<div class="row">
+    <div class="col-lg-9 main-chart">
+        <div class="row">
+            <p class="title">ITEM DETAILS</p>
+ 
+  
+            </div>
+      <div class="row">
+        <div class="col-lg-1"></div>
+        <div class="col-lg-10 border">
+          <div class="border-title">Title</div>
+          <div class="border-desc">{{item.title}}</div>
+        </div>
+      </div>
+  
+      <div class="row">
+          <div class="col-lg-1"></div>
+          <div class="col-lg-10 border">
+          <div class="border-title">CONTENT</div>
+          <div class="border-desc">{{item.content}}</div>
+        </div>
+      </div>
+      <div class="row">
+          <div class="col-lg-1"></div>
+          <div class="col-lg-5 border">
+          <div class="border-title">TYPE</div>
+          <div class="border-desc">{{item.type}}</div>
+        </div>
+        <div class="col-lg-5 border">
+            <br>
+            <div class="border-desc" *ngIf="item.type=='GLITCH'" (click)="goToGlitch()"> GO TO THE GLITCH...</div>
+            <div class="border-title" *ngIf="item.type=='NOTIFICATION'"> NOTIFICATION TEXT: </div>
+            <div class="border-desc" *ngIf="item.type=='NOTIFICATION'"> {{item.notification.text}} </div>
+            <div class="border-desc" *ngIf="item.type=='COMMUNAL_PROBLEM'" (click)="goToCommProblem()"> GO TO THE COMMUNAL PROBLEM...</div>
+          </div>
+      </div>
+      <div class="row" *ngIf="item.conclusion!=null">
+          <div class="col-lg-1"></div>
+          <div class="col-lg-10 border">
+          <div class="border-title">CONCLUSION</div>
+          <div class="border-desc">{{item.conclusion}}</div>
+        </div>
+      </div>
+      <div class="row" *ngFor="let comment of comments" >
+          <br>
+          <div class="col-lg-1"></div>
+          <div class="col-lg-10">
+            <div class="speech-bubble-right" *ngIf="comment.writer.username === username">
+            <p class="name">
+               {{comment.writer.username}} ({{comment.date | date : "dd.MM.y HH:mm"}}):<br>
+            </p>
+             {{comment.text}}
+            </div>
+            <div class="speech-bubble-left" *ngIf="comment.writer.username !== username">
+            <p class="name">
+              {{comment.writer.username}} ({{comment.date}}): <br>
+            </p>
+              {{comment.text}}
+            </div>
+          </div>   
+          <br>
+          <br>
+          </div>
+
+          <div class="row" *ngIf="active">
+							<form name="form" (ngSubmit)="saveComment()">
+							  <div class="col-lg-1"></div>
+							  <div class="col-lg-10 border">
+								<input type="text" class="form-control" [(ngModel)]="comment.text" name="text" placeholder="Add comment">
+							  </div>
+							</form>
+						  </div>
+          <div class="row" *ngIf="expired">
+              <div  *ngIf="!meeting.active">
+              <div  *ngIf="item.conclusion==null">
+                  <form name="form" (ngSubmit)="saveReport()">
+                    <div class="col-lg-1"></div>
+                    <div class="col-lg-10 border">
+                    <div class="border-title"> Report</div>
+                    <input type="text" class="form-control" [(ngModel)]="conclusion" name="text" placeholder="Add conclusion">
+                    </div>
+                  </form>
+                  </div>
+                </div>
+                </div>
+  
+    </div>
+</div>

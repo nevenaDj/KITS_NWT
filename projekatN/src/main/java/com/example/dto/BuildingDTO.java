@@ -1,3 +1,4 @@
+
 package com.example.dto;
 
 import com.example.model.Building;
@@ -65,8 +66,10 @@ public class BuildingDTO {
 			building.setAddress(AddressDTO.getAddress(buildingDTO.getAddress()));
 		}
 
-		if (buildingDTO.getPresident() != null) {
+		if (buildingDTO.getPresident() != null && buildingDTO.getPresident().getId() != null) {
 			building.setPresident(UserDTO.getUser(buildingDTO.getPresident()));
+		} else {
+			building.setPresident(null);
 		}
 
 		return building;

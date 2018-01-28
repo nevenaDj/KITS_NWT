@@ -11,12 +11,16 @@ public class NotificationDTO {
 	private Date date;
 	private String text;
 	private NotificationStatus status;
+	private UserDTO user;
 
 	public NotificationDTO() {
 	}
 
 	public NotificationDTO(Notification notification) {
 		this(notification.getId(), notification.getDate(), notification.getText());
+		if (notification.getWriter() != null) {
+			this.user = new UserDTO(notification.getWriter());
+		}
 	}
 
 	public NotificationDTO(Long id, Date date, String text) {
@@ -57,6 +61,14 @@ public class NotificationDTO {
 
 	public void setDate(Date date) {
 		this.date = date;
+	}
+
+	public UserDTO getUser() {
+		return user;
+	}
+
+	public void setUser(UserDTO user) {
+		this.user = user;
 	}
 
 	public static Notification getNotification(NotificationDTO notificationDTO) {

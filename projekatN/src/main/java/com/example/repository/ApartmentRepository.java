@@ -1,5 +1,7 @@
 package com.example.repository;
 
+import java.util.List;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -14,5 +16,9 @@ public interface ApartmentRepository extends JpaRepository<Apartment, Long> {
 	@Query("SELECT ap FROM Apartment ap, Building b WHERE b.id = ap.building.id AND "
 			+ "b.address.street = ?1 AND b.address.number = ?2 AND b.address.city = ?3 AND ap.number=?4")
 	Apartment findByAddress(String street, String number, String city, int numberApartment);
+	
+	@Query("SELECT a FROM Apartment a WHERE a.owner.id=?1")
+	public List<Apartment> getApartmentsOfOwner(Long idOwner);
+
 
 }

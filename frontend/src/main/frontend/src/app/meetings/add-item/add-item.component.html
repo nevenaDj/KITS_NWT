@@ -1,0 +1,96 @@
+<div class="row">
+  <div class="col-lg-9 main-chart">
+      <div class="row">
+          <p class="title">ADD ITEM </p>
+
+          </div>
+    <div class="row">
+      <div class="col-lg-1"></div>
+      <div class="col-lg-10 border">
+        <div class="border-title">Title</div>
+        <div class="container-4">
+          <input type="search" id="update"  name="title" [(ngModel)]="item.title" >
+    </div>
+      </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-1"></div>
+        <div class="col-lg-10 border">
+        <div class="border-title">CONTENT</div>
+        <div class="container-4">
+          <input type="text" id="update"  name="content" [(ngModel)]="item.content"  >
+        </div>
+      </div>
+    </div>
+    <br><br>
+    <div class="row">
+        <div class="col-lg-1"></div>
+        <div class="col-lg-5 border"  [style.height]="'250px'">
+          <div class="border-title">Type</div>
+          <div class="container">
+            <div class="check" *ngFor="let type of types ; let i=index; ">
+                  <input id="{{i}}" type="radio" name="types" [value]="type" (change)="onSelectionChange(type)"/>
+                  <label for="{{i}}" (change)="onSelectionChange(type)"> 
+                    <div class="box" (change)="onSelectionChange(type)"><i class="fa fa-check"></i></div>
+                    <div class="text" (change)="onSelectionChange(type)">{{type}}</div>
+                  </label>                
+            </div>   
+        </div>
+        </div>
+
+        <!-- glitch -->
+        <div class="col-lg-5 border" [style.height]="'250px'" style="overflow:scroll;" *ngIf="selectedType==='GLITCH'">
+          <div class="border-title">CHOOSE GLITCH</div>
+          <div class="container">
+            <div class="check" *ngFor="let glitch of contentWithoutMeeting.glitches ; let i=index; ">
+                  <input id="glitch-{{i}}" type="radio" name="glitch" [value]="glitch" (change)="onSelectionChangeGlitch(glitch)"/>
+                  <label for="glitch-{{i}}" (change)="onSelectionChangeGlitch(glitch)"> 
+                    <div class="box" (change)="onSelectionChangeGlitch(glitch)"><i class="fa fa-check"></i></div>
+                    <div class="text" (change)="onSelectionChangeGlitch(glitch)">{{glitch.apartment.number}} ({{glitch.dateOfReport | date}}) -{{glitch.description}} </div>
+                  </label>                
+            </div>   
+        </div>
+        </div>     
+
+
+        <!-- notification -->
+        <div class="col-lg-5 border" [style.height]="'250px'" style="overflow:scroll;" *ngIf="selectedType==='NOTIFICATION'">
+            <div class="border-title">CHOOSE NOTIFICAITON</div>
+            <div class="container">
+              <div class="check" *ngFor="let notification of contentWithoutMeeting.notifications ; let i=index; ">
+                    <input id="not-{{i}}" type="radio" name="notificaiton" [value]="notificaiton" (change)="onSelectionChangeNotification(notification)"/>
+                    <label for="not-{{i}}" (change)="onSelectionChangeNotification(notification)"> 
+                      <div class="box" (change)="onSelectionChangeNotification(notification)"><i class="fa fa-check"></i></div>
+                      <div class="text" (change)="onSelectionChangeNotification(notification)">{{notification.text}} </div>
+                    </label>                
+              </div>   
+          </div>
+          </div>  
+
+              <!-- problem -->
+          <div class="col-lg-5 border" [style.height]="'250px'" style="overflow:scroll;" *ngIf="selectedType==='COMMUNAL_PROBLEM'">
+                  <div class="border-title">CHOOSE COMMUNAL PROBLEM</div>
+                  <div class="container">
+                    <div class="check" *ngFor="let problem of contentWithoutMeeting.communalProblems ; let i=index; ">
+                          <input id="prob-{{i}}" type="radio" name="problems" [value]="problem" (change)="onSelectionChangeProblem(problem)"/>
+                          <label for="prob-{{i}}" (change)="onSelectionChangeProblem(problem)"> 
+                            <div class="box" (change)="onSelectionChangeProblem(problem)"><i class="fa fa-check"></i></div>
+                            <div class="text" (change)="onSelectionChangeProblem(problem)">{{problem.description}} </div>
+                          </label>                
+                    </div>   
+                </div>
+                </div>  
+    </div>
+    <div class="row">
+      <div class="col-lg-1"></div>
+      <div class="col-lg-10 border">
+        <br>
+        <div class="full-button" >
+          <input type="submit" class="save-button-text" value="Save..." (click)="addNewItem()">
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>

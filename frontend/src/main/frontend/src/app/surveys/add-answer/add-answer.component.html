@@ -1,0 +1,74 @@
+<section>
+    <form (ngSubmit)="save()">
+  <div class="row">
+    <div class="col-lg-9 main-chart">
+      <p class="title">SURVEY</p>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-lg-9 main-chart">
+      <div class="row">
+        <div class="col-lg-1"></div>
+        <div class="col-lg-10 border">
+          <div class="border-title">title</div>
+          <div class="border-desc" id="title">{{survey.title}}</div>
+        </div>
+      </div>
+      <br><br>
+      <div *ngFor="let question of survey.questions; let i=index">
+      <div class="row">
+        <div class="col-lg-9 main-chart pFont">
+          <p class="title">QUESTION {{i+1}}</p>
+        </div>
+      </div>
+      <div class="row">
+          <div class="col-lg-1"></div>
+          <div class="col-lg-10">
+            <div class="notification">
+              <p> <br> {{question.text}} <br> &nbsp; </p>
+            </div>
+          </div>   
+      </div>
+      <div class="row" >
+          <div class="col-lg-1"></div>
+          <div class="col-lg-10">
+              <ul>
+                <li *ngFor="let option of question.options; let j=index"> 
+                    <input *ngIf="question.type === 'checkbox'" id="check" type="checkbox" name="isChecked" [(ngModel)]="questionAnswer[i].optionAnswers[j].isChecked"/>
+                    <input *ngIf="question.type === 'radio'" id="radio" type="radio" name="{{question.id}}" (click)="onChange(question.id, option.id)"/>
+                    
+                    <div class="lists">
+                        <div class="first">{{j+1}}</div> 
+                        <div class="sec">{{option.text}}</div>
+                    </div>
+                  </li>
+              </ul>
+                
+          </div>  
+    </div>
+
+    
+
+      
+      <br>
+    </div>
+      <div class="row">
+          <div class="col-lg-1"></div>
+          <div class="col-lg-5">
+            <div class="full-button cancel" >
+              <a class="full-button-text" (click)="cancel()">Cancel
+              </a>
+            </div>
+          </div>
+          <div class="col-lg-5">
+            <div class="full-button">
+              <input type="submit"  class="save-button-text" value="Save answer">
+          </div>
+          </div>
+      </div>
+    </div>
+    </div>
+    
+    </form>    
+</section>
+  

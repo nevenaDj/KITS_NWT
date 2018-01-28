@@ -1,5 +1,7 @@
 package com.example.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -25,12 +27,22 @@ public class ApartmentService {
 		return apartmentRepository.save(apartment);
 	}
 
-	public void remove(Long id) {
-		apartmentRepository.delete(id);
+	public boolean remove(Long id) {
+		try {
+			apartmentRepository.delete(id);
+		} catch (Exception e) {
+			return false;
+		}
+		return true;
+
 	}
 
 	public Apartment findByAddress(String street, String number, String city, int numberApartment) {
 		return apartmentRepository.findByAddress(street, number, city, numberApartment);
+	}
+
+	public List<Apartment> getApartmentsOfOwner(Long id) {
+		return apartmentRepository.getApartmentsOfOwner(id);
 	}
 
 }

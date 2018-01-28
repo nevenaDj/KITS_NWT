@@ -25,7 +25,7 @@ public class Notification {
 	@ManyToOne(fetch = FetchType.EAGER)
 	private User writer;
 	
-	@OneToOne(fetch = FetchType.LAZY)
+	@OneToOne(fetch = FetchType.EAGER)
 	private AgendaItem item;
 	
 	public Notification(){
@@ -75,6 +75,14 @@ public class Notification {
 	}
 	public void setBuilding(Building building) {
 		this.building = building;
+	}
+
+	public AgendaItem getItem() {
+		return item;
+	}
+
+	public void setItem(AgendaItem item) {
+		this.item = item;
 	}
 	
 	

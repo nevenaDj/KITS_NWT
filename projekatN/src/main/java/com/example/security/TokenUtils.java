@@ -1,9 +1,12 @@
 package com.example.security;
 
+import java.io.UnsupportedEncodingException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.stream.Collectors;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
@@ -14,11 +17,12 @@ import io.jsonwebtoken.SignatureAlgorithm;
 
 @Component
 public class TokenUtils {
+	 private final Logger logger = Logger.getLogger(this.getClass());
 
 	@Value("myXAuthSecret")
 	private String secret;
 
-	@Value("900")
+	@Value("86400")
 	private Long expiration;
 
 	public String getUsernameFromToken(String token) {
@@ -38,7 +42,10 @@ public class TokenUtils {
 	private Claims getClaimsFromToken(String token) {
 		Claims claims = null;
 		try {
-			claims = Jwts.parser().setSigningKey(this.secret).parseClaimsJws(token).getBody();
+			claims = Jwts.parser()
+			        .setSigningKey(this.secret.getBytes("UTF-8"))
+			        .parseClaimsJws(token)
+			        .getBody();
 		} catch (Exception e) {
 			e.getMessage();
 		}
@@ -73,8 +80,21 @@ public class TokenUtils {
 		Map<String, Object> claims = new HashMap<>();
 		claims.put("sub", userDetails.getUsername());
 		claims.put("created", new Date(System.currentTimeMillis()));
-		return Jwts.builder().setClaims(claims).setExpiration(new Date(System.currentTimeMillis() + expiration * 1000))
-				.signWith(SignatureAlgorithm.HS512, secret).compact();
+		claims.put("scopes", userDetails.getAuthorities().stream().map(s -> s.toString()).collect(Collectors.toList()));
+		try {
+			return Jwts.builder()
+					.setClaims(claims)
+					.setExpiration(new Date(System.currentTimeMillis() + expiration * 1000))
+					.signWith(SignatureAlgorithm.HS512, this.secret.getBytes("UTF-8"))
+					.compact();
+		} catch (UnsupportedEncodingException e) {
+			logger.warn(e.getMessage());
+	          return Jwts.builder()
+	                  .setClaims(claims)
+	                  .setExpiration(new Date(System.currentTimeMillis() + expiration * 1000))
+	                  .signWith(SignatureAlgorithm.HS512, this.secret)
+	                  .compact();
+		}
 
 	}
 

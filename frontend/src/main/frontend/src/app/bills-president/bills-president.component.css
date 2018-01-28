@@ -1,0 +1,35 @@
+.lists{
+    height: 40px;
+    margin: 5px;
+    font-size: 15px;
+    color: white;
+    border-radius:10px;
+    background: #cbc5c1;  
+    width: 80%;
+    line-height: 40px;
+    
+}
+
+.lists:hover{
+    background: #a2aab0;
+}
+
+.lists:hover>.first{
+    height: 40px;
+    background: #4c586f;
+    width: 110px;
+    text-align: center;
+    display: inline-block;
+    border-radius:10px 0px 0px 10px;
+
+}
+
+.lists>.first{
+    height: 40px;
+    background: #4c586f;
+    width: 100px;
+    text-align: center;
+    display: inline-block;
+    border-radius:10px 0px 0px 10px;
+
+}

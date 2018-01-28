@@ -1,0 +1,50 @@
+
+        <div class="row">
+          <div class="col-lg-9 main-chart">
+            <p class="title">Send a bill</p>
+          </div>
+        </div>
+        <div class="col-lg-9 main-chart">
+          <div class="row">
+            <div class="col-lg-1 "></div>
+            <div class="col-lg-6 border">
+              <div class="border-title">Name</div>
+            </div>
+            <div class="col-lg-2 border">
+              <div class="border-title">Price</div>
+            </div>
+            <div class="col-lg-2 border">
+              <div class="border-title">Piece</div>
+            </div>
+          </div>
+          
+          <div *ngFor="let item of items;">
+            <div class="row">
+              <div class="col-lg-1 "></div>
+              <div class="col-lg-6 border">
+                <div class="border-desc">{{item.nameOfItem}}</div>
+              </div>
+              <div class="col-lg-2 border">
+                <div class="border-desc">{{item.price}}</div>
+              </div>
+              <div class="col-lg-2 border">
+                <div class="container-4">
+                  <input id="update" type="number" [(ngModel)]="item.piece" (change)="changePrice()">
+                </div>
+              </div>
+            </div>
+          </div>
+        
+          <div class="row">
+            <div class="col-lg-1"></div>
+            <div class="col-lg-5 border">
+                <div class="border-desc">{{price}}</div>
+            </div>
+
+            <div class="col-lg-5 border">
+              <div class="full-button" >
+                <input type="submit" class="save-button-text" value="Send a bill..." (click)="sendBill()">
+              </div>
+            </div>
+          </div>
+        </div>

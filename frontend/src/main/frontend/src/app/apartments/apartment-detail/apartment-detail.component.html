@@ -1,0 +1,81 @@
+<section>
+  <div class="row">
+    <div class="col-lg-9 main-chart">
+      <p class="title">APARTMENT</p>
+      <p *ngIf="tenants && tenants.length === 0" class="delete-button">
+        <a class="delete-x" (click)="deleteApartment()">x</a>
+      </p>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-lg-9 main-chart">
+      <div class="row">
+        <div class="col-lg-1"></div>
+        <div class="col-lg-5 border">
+          <div class="border-title">number</div>
+          <div class="border-desc" id="number">{{apartment.number}}</div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-lg-1"></div>
+        <div class="col-lg-10 border">
+          <div class="border-title">description</div>
+          <div class="border-desc" id="description">{{apartment.description}}</div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-lg-1"></div>
+        <div class="col-lg-10">
+          <div class="full-button">
+            <a (click)="gotoEditApartment()" class="full-button-text">Update apartment</a>
+          </div>
+        </div>
+      </div>
+      <br><br>
+      <div class="row">
+        <div class="col-lg-9 main-chart owner">
+          <p class="title pFont">OWNER</p>
+          <a class="small-btn" *ngIf="!apartment.owner" (click)="gotoAddOwner()">Add owner</a>
+          <button *ngIf="apartment.owner" (click)="deleteOwner()" class="btn btn-danger btn-xs pFont">
+            <i class="fa fa-trash-o "></i>
+          </button>
+        </div>
+      </div>
+      <div class="row" *ngIf="apartment.owner">
+        <div class="col-lg-1"></div>
+        <div class="col-lg-5 border">
+          <div class="border-title">username</div>
+          <div class="border-desc">{{apartment.owner.username}}</div>
+        </div>
+        <div class="col-lg-5 border">
+          <div class="border-title">phone number</div>
+          <div class="border-desc">{{apartment.owner.phoneNo}}</div>
+        </div>
+      </div>
+      <div class="row" *ngIf="apartment.owner">
+        <div class="col-lg-1"></div>
+        <div class="col-lg-10 border">
+          <div class="border-title">email</div>
+          <div class="border-desc">{{apartment.owner.email}}</div>
+        </div>
+      </div>
+      <br><br><br><br><br><br>
+    </div>
+    <div class="col-lg-3 ds">
+      <h3>TENANTS</h3>
+      <div class="weather-new pn">
+        <i class="fa fa-plus"></i>
+        <h2><a id="new" (click)="gotoAddTenant()">NEW</a></h2>
+        <h4></h4>
+      </div> 
+      <div *ngFor="let tenant of tenants">
+        <div class="weather pn">
+          <i class="fa fa-home"></i>
+          <h2><a class="tenant" (click)="gotoGetTenant(tenant.id)">{{tenant.username}}</a></h2>
+          <h4></h4>
+        </div> 
+      </div>
+    </div> 
+  </div>
+</section>
+  

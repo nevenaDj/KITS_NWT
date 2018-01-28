@@ -1,0 +1,129 @@
+
+			<div class="row">
+				<div class="col-lg-9 main-chart">
+					<p class="title">GLITCH DETAILS</p>
+				</div>
+			</div>
+			<div class="row">
+
+				<div class="col-lg-9 main-chart">
+					<div class="row">
+						<div class="col-lg-1"></div>
+						<div class="col-lg-10 border">
+							<div class="border-title">DESCRIPTION</div>
+							<div class="border-desc">{{glitch.description}}</div>
+						</div>
+
+					</div>
+					<div class="row">
+						<div class="col-lg-1"></div>
+						<div class="col-lg-5 border">
+							<div class="border-title">DATE OF REPORT</div>
+							<div class="border-desc">{{glitch.dateOfReport | date}}</div>
+						</div>
+						<div class="col-lg-5 border">
+							<div class="border-title">Glitch type</div>
+							<div class="border-desc">{{glitch.type.type}}</div>
+						</div>
+
+					</div>					
+					<div class="row">
+						<div class="col-lg-1"></div>
+						<div class="col-lg-10 border">
+							<div class="border-title">Address</div>
+							<div class="border-desc">{{glitch.apartment.number}}</div>
+							<div class="border-desc">{{glitch.apartment.number}}</div>
+							<div class="border-desc">{{glitch.apartment.number}}</div>
+						</div>
+					</div>
+					<div class="row" *ngIf="glitch.state.id==1">
+						<div class="col-lg-1"></div>
+						<div class="col-lg-5 border">
+							<div class="full-button" style="background: #cbc5c1">
+								<input type="submit" style="background: #cbc5c1" class="save-button-text"  value="Send to other company" (click)="sendCompany()">
+							</div>
+						</div>
+						<div class="col-lg-5 border">
+							<div class="full-button" >
+								<input type="submit" class="save-button-text" value="Accept" (click)="acceptGlitch()">
+							</div>
+						</div>	
+					</div>
+					<div *ngIf="glitch.state.id==2">
+						<div class="row" *ngIf="glitch.dateOfRepair==null">
+							<div class="col-lg-1"></div>
+							<div class="col-lg-5 border">
+								<label>
+									<div class="border-title">Date Of repairing</div>
+									<input id="update" [owlDateTime]="dt1" [(ngModel)]="selectedMoment" [min]="min" 
+										[owlDateTimeFilter]="myFilter">
+									<span class="trigger" [owlDateTimeTrigger]="dt1">
+										<i class="fa fa-calendar" aria-hidden="true"></i>
+									</span>
+									<owl-date-time #dt1></owl-date-time>
+								</label>
+							</div>
+							<div class="col-lg-5 border">
+								<div class="full-button" >
+									<input type="submit" class="save-button-text" value="Schedule..." (click)="setTime()">
+								</div>
+							</div>
+						</div>
+						<div *ngIf="glitch.dateOfRepair!=null"> 
+							<div class="row" *ngIf="!glitch.repairApproved">
+								<div class="col-lg-1"></div>
+								<div class="col-lg-5 border">
+									<div class="border-title">DATE OF REPAIRING</div>
+									<div class="border-desc">{{glitch.dateOfRepair | date : "dd.MM.y HH:mm"}}</div>
+								</div>
+								<div class="col-lg-5 border">
+									<div class="border-title">DATE IS APPROVED</div>
+									<div class="border-desc">No</div>
+								</div>
+							</div>	
+							<div class="row" *ngIf="glitch.repairApproved">
+								<div class="col-lg-1"></div>
+								<div class="col-lg-5 border">
+									<div class="border-title">DATE OF REPAIRING</div>
+									<div class="border-desc">{{glitch.dateOfRepair | date}}</div>
+								</div>
+								<div class="col-lg-5 border">
+									<div class="full-button" >
+										<input type="submit" class="save-button-text" value="Send a bill..." (click)="sendBill()">
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="row" *ngFor="let comment of comments">
+							<br>
+							<div class="col-lg-1"></div>
+							<div class="col-lg-10">
+							  <div class="speech-bubble-right" *ngIf="comment.user.username === company.username">
+								<p class="name">
+								   {{comment.user.username}}:<br>
+								</p>
+								 {{comment.text}}
+							  </div>
+							  <div class="speech-bubble-left" *ngIf="comment.user.username !== company.username">
+								<p class="name">
+								  {{comment.user.username}}: <br>
+								</p>
+								  {{comment.text}}
+							  </div>
+							</div>   
+							<br>
+						  </div>
+						  <br><br>
+						  <div class="row">
+							<form name="form" (ngSubmit)="saveComment()">
+							  <div class="col-lg-1"></div>
+							  <div class="col-lg-10 border">
+								<input type="text" class="form-control" [(ngModel)]="comment.text" name="text" placeholder="Add comment">
+							  </div>
+							</form>
+						  </div>
+				</div>
+			</div>
+
+

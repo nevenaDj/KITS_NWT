@@ -1,0 +1,90 @@
+<div class="row">
+				<div class="col-lg-9 main-chart">
+					<p class="title">PRICELIST</p>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-lg-9 main-chart">
+					<div class="row">
+						<div class="col-lg-1"></div>
+						<div class="col-lg-5 border">
+							<div class="border-title">type <div class="border-title-hover" style="float:right;" (click)="goToChangeType()">change type</div></div>
+							<div class="border-desc">{{pricelist.type.type}}</div>
+						</div>
+						<div class="col-lg-5 border">
+							<div class="border-title">last update</div>
+							<div class="border-desc">{{pricelist.dateUpdate | date}}</div>
+						</div>
+		
+					</div>
+					<br> 
+          			<div class="row">
+						<div class="col-lg-1"></div>
+						<div class="col-lg-10">
+             				<a (click)="addItemShow()" class="small-btn">Add new item</a>
+            			</div>
+          			</div>
+          			<br>
+          			<div class="row" *ngIf="addItem">
+              			<div class="col-lg-1"></div>
+              			<div class="col-lg-8 border">
+                  			<div class="border-title">
+                      			Name
+                  			</div>
+							<div class="container-4">
+                        		<input type="search" name="name" id="update" [(ngModel)]="newItem.nameOfType" required >
+                  			</div>
+						</div>
+						<div class="col-lg-2 border">
+                  			<div class="border-title">
+                      			price
+                  			</div>
+                  			<div class="container-4">
+                        		<input type="number" id="update" name="price" [(ngModel)]="newItem.price" required>
+                  			</div>
+                  
+              			</div>
+              
+        			</div>
+        			<div *ngIf="addItem" class="row">
+            <div class="col-lg-8"></div>
+            <div class="col-lg-2">
+                  <div class="full-button">
+                      <a class="full-button-text" (click)="addNewItem()" disa>Save</a>
+                  </div>
+          
+            </div>
+           
+            
+      </div>
+            <div class="row">
+						<div class="col-lg-1"></div>
+						<div class="col-lg-10">
+							<div *ngFor="let item of pricelist.items ; let i=index; ">
+								<ul>
+									<li>
+										<div class="lists" *ngIf="updatedItemIndex==i" >
+											<div class="first"><div class="container-4">
+												<input type="number" id="update3" name="price2" [(ngModel)]="updatedItem.price" required >
+											  </div>	</div>
+											<div class="sec"> <div class="container-4">
+													<input type="search" id="update2" name="name" [(ngModel)]="updatedItem.nameOfType" required >
+											  </div> </div>
+											<div class="update"> <i class="fa fa-times" aria-hidden="true" (click)="cancel()"></i></div>
+											<div class="delete"> <i class="fa fa-check" aria-hidden="true" (click)="saveUpdatedItem()"></i></div>
+										</div>
+
+										<div class="lists" *ngIf="updatedItemIndex!=i" >
+												<div class="first">{{item.price}}</div>
+												<div class="sec"> {{item.nameOfType}} </div>
+												<div class="update"> <i class="fa fa-trash-o" aria-hidden="true" (click)="deleteItem(item.id)"></i></div>
+												<div class="delete"> <i class="fa fa-pencil" aria-hidden="true" (click)="updateItem(item, i)"> </i></div>
+											</div>
+										
+									</li>
+								</ul>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>

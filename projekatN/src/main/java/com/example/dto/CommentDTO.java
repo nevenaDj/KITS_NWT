@@ -5,6 +5,7 @@ import com.example.model.Comment;
 public class CommentDTO {
 	private Long id;
 	private String text;
+	private UserDTO user;
 
 	public CommentDTO() {
 
@@ -18,6 +19,9 @@ public class CommentDTO {
 
 	public CommentDTO(Comment comment) {
 		this(comment.getId(), comment.getText());
+		if (comment.getUser() != null) {
+			this.user = new UserDTO(comment.getUser());
+		}
 	}
 
 	public String getText() {
@@ -34,6 +38,14 @@ public class CommentDTO {
 
 	public void setId(Long id) {
 		this.id = id;
+	}
+
+	public UserDTO getUser() {
+		return user;
+	}
+
+	public void setUser(UserDTO user) {
+		this.user = user;
 	}
 
 	public static Comment getComment(CommentDTO commnetDTO) {

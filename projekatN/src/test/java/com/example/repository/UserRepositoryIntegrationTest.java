@@ -7,6 +7,8 @@ import static com.example.constants.UserConstants.PHONE_NO;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
+import java.util.List;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +20,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import com.example.model.User;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest(webEnvironment = WebEnvironment.DEFINED_PORT)
+@SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 @TestPropertySource(locations="classpath:test.properties")
 public class UserRepositoryIntegrationTest {
 	@Autowired
@@ -26,10 +28,10 @@ public class UserRepositoryIntegrationTest {
 
 	@Test
 	public void testGetUserAuthority() {
-		String authority = userRepository.getUserAuthority(ID_USER);
+		List<String> authority = userRepository.getUserAuthority(ID_USER);
 
 		assertNotNull(authority);
-		assertEquals("ROLE_USER", authority);
+		assertEquals(true, authority.contains("ROLE_USER"));
 
 	}
 

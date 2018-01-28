@@ -1,5 +1,7 @@
 package com.example.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -12,6 +14,7 @@ import com.example.model.User;
 import com.example.model.UserAuthority;
 import com.example.repository.AddressRepository;
 import com.example.repository.AuthorityRepository;
+import com.example.repository.UserApatmentRepository;
 import com.example.repository.UserAuthorityRepository;
 import com.example.repository.UserRepository;
 
@@ -26,6 +29,8 @@ public class UserService {
 	AuthorityRepository authorityRepository;
 	@Autowired
 	AddressRepository addressRepository;
+	@Autowired
+	UserApatmentRepository userApartmentRepository;
 	@Autowired
 	PasswordEncoder passwordEncoder;
 
@@ -68,6 +73,11 @@ public class UserService {
 
 	}
 
+	public void removeUserApartment(Long idTenant, Long idApartment) {
+		Long id = userApartmentRepository.get(idTenant, idApartment);
+		userApartmentRepository.delete(id);
+	}
+
 	public User findByUsername(String username) {
 		return userRepository.findByUsername(username);
 	}
@@ -95,5 +105,18 @@ public class UserService {
 
 		UserAuthority userAuthority = new UserAuthority(user, authority);
 		return userAuthorityRepository.save(userAuthority);
+	}
+
+	public int count(String role) {
+		List<User> users = userRepository.findAll(role);
+		return users.size();
+	}
+
+	public Long getCountOfUsers() {
+		return userRepository.count();
+	}
+
+	public List<String> getUsersAuthority(User user) {
+		return userRepository.getUserAuthority(user.getId());
 	}
 }

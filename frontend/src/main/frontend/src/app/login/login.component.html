@@ -1,0 +1,27 @@
+<div id="login-page">
+	<div class="container">
+	  <form [formGroup]="complexForm" class="form-login" name="form" (ngSubmit)="login()">
+		  <div class="login-wrap">
+        <img src="http://www.freeiconspng.com/uploads/home-house-silhouette-icon-building--public-domain-pictures--20.png" class="login-image" >
+        <br>
+        <div class="form-group" [ngClass]="{'has-error':!complexForm.controls['username'].valid && complexForm.controls['username'].touched}">
+          <input type="text" class="form-control" placeholder="User ID" name="username" [(ngModel)]="user.username" [formControl]="complexForm.controls['username']" required autofocus>
+        </div>
+        <br>
+        <div class="form-group" [ngClass]="{'has-error':!complexForm.controls['password'].valid && complexForm.controls['password'].touched}">
+          <input type="password" class="form-control" placeholder="Password" name="password" [(ngModel)]="user.password" [formControl]="complexForm.controls['password']" required>
+        </div>
+        <br>
+        <button class="btn btn-theme btn-block" type="submit" [disabled]="!complexForm.valid"><i class="fa fa-lock"></i> SIGN IN</button>
+        <hr>
+        <div class="registration">
+          Don't have an account yet?
+          <br>
+          <a class="" (click)="gotoRegister()">Create an account</a>
+        </div>
+      </div>
+    </form>	
+  </div>
+</div>
+<br>
+<br>

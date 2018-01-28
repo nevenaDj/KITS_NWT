@@ -54,7 +54,7 @@ public class Glitch {
 	@OneToMany(mappedBy = "glitch", fetch = FetchType.LAZY)
 	private Set<Comment> comments = new HashSet<>();
 
-	@OneToOne(fetch = FetchType.LAZY)
+	@OneToOne(fetch = FetchType.EAGER)
 	private AgendaItem item;
 
 	@OneToOne(fetch = FetchType.EAGER)
@@ -199,4 +199,13 @@ public class Glitch {
 		this.images = images;
 	}
 
+	public AgendaItem getItem() {
+		return item;
+	}
+
+	public void setItem(AgendaItem item) {
+		this.item = item;
+	}
+
+	
 }
