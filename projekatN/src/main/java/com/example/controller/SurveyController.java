@@ -1,5 +1,6 @@
 package com.example.controller;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -21,7 +22,6 @@ import com.example.dto.OptionDTO;
 import com.example.dto.QuestionDTO;
 import com.example.dto.SurveyDTO;
 import com.example.model.Answer;
-import com.example.model.Building;
 import com.example.model.Meeting;
 import com.example.model.Option;
 import com.example.model.Question;
@@ -78,6 +78,7 @@ public class SurveyController {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 		survey.setMeeting(meeting);
+		survey.setEnd(meeting.getDateAndTime());
 		survey = surveyService.save(survey);
 		surveyDTO.setId(survey.getId());
 
@@ -126,8 +127,8 @@ public class SurveyController {
 				return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 			}
 
-			if (question.getType().equals("radio")){
-				if (answerDTO.getOptions().size() != 1){
+			if (question.getType().equals("radio")) {
+				if (answerDTO.getOptions().size() != 1) {
 					return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 				}
 			}
@@ -143,6 +144,43 @@ public class SurveyController {
 		}
 
 		return new ResponseEntity<>(answersDTO, HttpStatus.CREATED);
+	}
+
+	@RequestMapping(value = "/surveys/{id}/answers", method = RequestMethod.GET)
+	@ApiOperation(value = "Get a answers to survey.", httpMethod = "GET")
+	@ApiImplicitParam(paramType = "header", name = "X-Auth-Token", required = true, value = "JWT token")
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "Success", response = SurveyDTO.class),
+			@ApiResponse(code = 404, message = "Not found") })
+	/*** get an answer ***/
+	public ResponseEntity<SurveyDTO> getAnswer(
+			@ApiParam(value = "The ID of the survey.", required = true) @PathVariable Long id,
+			HttpServletRequest request) {
+		Survey survey = surveyService.findOne(id);
+
+		if (survey == null) {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+
+		String token = request.getHeader("X-Auth-Token");
+		String username = tokenUtils.getUsernameFromToken(token);
+
+		User owner = userService.findByUsername(username);
+
+		Set<QuestionDTO> questions = new HashSet<>();
+		for (Question question : survey.getQuestions()) {
+			Set<OptionDTO> options = new HashSet<>();
+			for (Option option : question.getOptions()) {
+				OptionDTO optionDTO = new OptionDTO(option);
+				int count = surveyService.getAnswer(survey.getId(), owner.getId(), question.getId(), option.getId());
+				optionDTO.setCount(count);
+				options.add(optionDTO);
+			}
+
+			questions.add(new QuestionDTO(question, options));
+		}
+
+		return new ResponseEntity<>(new SurveyDTO(survey, questions), HttpStatus.OK);
+
 	}
 
 	@RequestMapping(value = "/surveys/{id}", method = RequestMethod.GET)
@@ -173,6 +211,31 @@ public class SurveyController {
 
 	}
 
+	@RequestMapping(value = "/surveys/{id}/hasAnswer", method = RequestMethod.GET)
+	@ApiOperation(value = "Get a survey.", httpMethod = "GET")
+	@ApiImplicitParam(paramType = "header", name = "X-Auth-Token", required = true, value = "JWT token")
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "Success", response = SurveyDTO.class),
+			@ApiResponse(code = 404, message = "Not found") })
+	/*** get survey by id ***/
+	public ResponseEntity<Boolean> getSurveyAnswer(
+			@ApiParam(value = "The ID of the survey.", required = true) @PathVariable Long id,
+			HttpServletRequest request) {
+		Survey survey = surveyService.findOne(id);
+
+		if (survey == null) {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+
+		String token = request.getHeader("X-Auth-Token");
+		String username = tokenUtils.getUsernameFromToken(token);
+		User owner = userService.findByUsername(username);
+
+		Boolean flag = answerService.hasAnswer(survey, owner);
+
+		return new ResponseEntity<>(flag, HttpStatus.OK);
+
+	}
+
 	@RequestMapping(value = "/surveys/{id}", method = RequestMethod.DELETE)
 	@ApiOperation(value = "Delete a survey.", httpMethod = "DELETE")
 	@ApiImplicitParam(paramType = "header", name = "X-Auth-Token", required = true, value = "JWT token")
@@ -194,6 +257,41 @@ public class SurveyController {
 		} else {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
+
+	}
+
+	@RequestMapping(value = "/meetings/{id}/surveys", method = RequestMethod.GET)
+	@ApiOperation(value = "Get a list of surveys.", httpMethod = "GET")
+	@ApiImplicitParam(paramType = "header", name = "X-Auth-Token", required = true, value = "JWT token")
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "Success"),
+			@ApiResponse(code = 404, message = "Not found") })
+	/*** get surveys of meeting ***/
+	public ResponseEntity<List<SurveyDTO>> getSurveysOfMeeting(
+			@ApiParam(value = "The ID of the meeting.", required = true) @PathVariable Long id) {
+		Meeting meeting = meetingService.findOne(id);
+
+		if (meeting == null) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+
+		List<Survey> surveys = surveyService.findAllSurveys(id);
+
+		List<SurveyDTO> surveysDTO = new ArrayList<>();
+
+		for (Survey survey : surveys) {
+			Set<QuestionDTO> questions = new HashSet<>();
+
+			for (Question question : survey.getQuestions()) {
+				Set<OptionDTO> options = new HashSet<>();
+				for (Option option : question.getOptions()) {
+					options.add(new OptionDTO(option));
+				}
+				questions.add(new QuestionDTO(question, options));
+			}
+			surveysDTO.add(new SurveyDTO(survey, questions));
+
+		}
+		return new ResponseEntity<>(surveysDTO, HttpStatus.OK);
 
 	}
 

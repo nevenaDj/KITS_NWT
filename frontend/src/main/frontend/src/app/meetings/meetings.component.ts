@@ -6,6 +6,7 @@ import { Router } from '@angular/router';
 import { PagerService } from '../services/pager.service';
 import { MeetingsService } from './meetings.service';
 import { Builder } from 'selenium-webdriver';
+import { ApartmentService } from '../apartments/apartment.service';
 
 @Component({
   selector: 'app-meetings',
@@ -25,11 +26,15 @@ export class MeetingsComponent implements OnInit {
 
   pager: any = {};
 
-  canWeAddMeeting:boolean=false
+  canWeAddMeeting:boolean=false;
+
+  president: boolean;
+
 
   constructor(private router: Router, 
               private meetingSerivce: MeetingsService,
-              private pagerService: PagerService)  {
+              private pagerService: PagerService,
+              private apartmentService: ApartmentService)  {
 
     this.subscription = meetingSerivce.RegenerateData$
       .subscribe(() => {
@@ -38,7 +43,15 @@ export class MeetingsComponent implements OnInit {
       });
   }
   ngOnInit() {
-    this.getBuildings();
+    if (this.router.url.startsWith("/president")){
+      this.getBuildings();
+      this.president= true;
+    }else if (this.router.url.startsWith("/owner")){
+      let apartment = this.apartmentService.getMyApartment();
+      this.selectedBuilding = apartment.building;
+      this.president = false;
+      this.getMeetingsAll();
+    }
 
   }
 
@@ -50,12 +63,7 @@ export class MeetingsComponent implements OnInit {
         console.log("buildings: "+JSON.stringify(buildings));
         if (buildings.length==1){
           this.selectedBuilding=buildings[0];
-          this.meetingSerivce.getMeetingsCount(this.selectedBuilding.id).then(
-            count => {
-              this.meetingsCount = count;
-              this.setPage(1);
-            }
-          );
+          this.getMeetingsAll();
         }
         else{
           this.tempSelectedBuilding=buildings[0];
@@ -63,9 +71,18 @@ export class MeetingsComponent implements OnInit {
       }
     )
   }
+
+  getMeetingsAll(){
+    this.meetingSerivce.getMeetingsCount(this.selectedBuilding.id).then(
+      count => {
+        this.meetingsCount = count;
+        this.setPage(1);
+      }
+    );
+
+  }
  
   chooseBuilding(){
-    
     this.selectedBuilding=this.tempSelectedBuilding;
     console.log("selected: "+JSON.stringify(this.selectedBuilding));
     this.meetingSerivce.getMeetingsCount(this.selectedBuilding.id).then(
@@ -118,7 +135,11 @@ export class MeetingsComponent implements OnInit {
   }
   
   gotoGetMeeting(id: number) {
-    this.router.navigate(['/president/meetings', id]);
+    if (this.president){
+      this.router.navigate(['/president/meetings', id]);
+    }else{
+      this.router.navigate(['/owner/meetings', id]);
+    }
   }
 
   

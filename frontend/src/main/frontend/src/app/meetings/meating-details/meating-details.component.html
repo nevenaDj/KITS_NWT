@@ -19,29 +19,51 @@
           <div class="border-desc">{{meeting.building.address.street}} {{meeting.building.address.number}}, {{meeting.building.address.city}}</div>
       </div>
     </div>
-
-    <div class="row">
-        <div class="col-lg-1"></div>
-        <div class="col-lg-5 border">
-            <br>
-            <div class="border-title">SURVEYS</div>
-        </div>
-        <div class="col-lg-5 border">
-            
-        </div>
-      </div>
     <br><br>
     <div class="row">
         <div class="col-lg-1"></div>
         <div class="col-lg-10" *ngIf="!expired">
-            <a (click)="newItem()" class="small-btn"  *ngIf="agendaSize">New item
-                
-            </a>  
-            <a (click)="updateOrder()" class="small-btn" style="float: right;"> Update order</a>         
+            <a (click)="newItem()" class="small-btn"  *ngIf="agendaSize">New item</a>
+            <a (click)="addSurvey()" class="small-btn"  *ngIf="president">Add survey</a>
+            <a (click)="updateOrder()" class="small-btn" *ngIf="president" style="float: right;"> Update order</a>         
         </div>
-
     </div>
     <br><br>
+
+    <div class="row" *ngIf="surveys.length > 0">
+        <div class="col-lg-9 main-chart pFont">
+          <p class="title">SURVEYS &nbsp;</p>
+        </div>
+    </div >
+    <div class="row">
+        <div class="col-lg-1"></div>
+        <div class="col-lg-10">
+          <div *ngFor="let survey of surveys ; let i=index; ">
+            <ul >
+              <li>
+                <div class="lists">
+                  <div class="first">{{i+1}}</div>
+                  <div class="sec" (click)="gotoGetSurvey(survey.id)" *ngIf="!expired && president">
+                    <b>{{survey.title}}</b> 
+                  </div>
+                  <div class="sec" (click)="gotoGetAnswer(survey.id)" *ngIf="!expired && !president">
+                      <b>{{survey.title}}</b> 
+                    </div>
+                  <div class="sec" (click)="gotoGetSurveyAnswer(survey.id)" *ngIf="expired && president">
+                      <b>{{survey.title}}</b> 
+                  </div>  
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    
+    <div class="row" *ngIf="meeting.agenda.agendaPoints.length > 0">
+        <div class="col-lg-9 main-chart pFont">
+          <p class="title">ITEMS &nbsp;</p>
+        </div>
+    </div >
     <div class="row">
       <div class="col-lg-1"></div>
       <div class="col-lg-10">

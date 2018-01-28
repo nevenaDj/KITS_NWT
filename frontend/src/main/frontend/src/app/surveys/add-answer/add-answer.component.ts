@@ -1,12 +1,14 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewContainerRef } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
+import { Location } from '@angular/common';
+import { ToastsManager } from 'ng2-toastr/ng2-toastr';
 
 import { SurveyService } from '../survey.service';
 import { Survey } from '../../models/survey';
 import { QuestionAnswer } from '../../models/questionAnswer';
-import { forEach } from '@angular/router/src/utils/collection';
 import { OptionAnswer } from '../../models/optionAnswer';
 import { Answer } from '../../models/answer';
+
 
 @Component({
   selector: 'app-add-answer',
@@ -20,7 +22,11 @@ export class AddAnswerComponent implements OnInit {
 
   constructor(private router: Router,
               private route: ActivatedRoute,
-              private surveyService: SurveyService) { 
+              private location: Location,
+              private surveyService: SurveyService,
+              private toastr: ToastsManager, 
+              private vcr: ViewContainerRef) { 
+    this.toastr.setRootViewContainerRef(vcr);
     this.survey = {
       id: null,
       title: '',
@@ -30,28 +36,38 @@ export class AddAnswerComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.surveyService.getSurvey(+this.route.snapshot.params['id'])
-        .then(survey => {
-          this.survey = survey;
-          this.questionAnswer = [];
+    this.surveyService.hasAnswer(+this.route.snapshot.params['id'])
+        .then(flag => {
+          if (flag){
+            this.toastr.info('You have already answered the survey questions.');
+            this.location.back();
+          }else{
+            this.surveyService.getSurvey(+this.route.snapshot.params['id'])
+                .then(survey => {
+                    this.survey = survey;
+                    this.questionAnswer = [];
 
-          for(let question of survey.questions){
-            this.questionAnswer.push(new QuestionAnswer({
-              id: question.id,
-              type: question.type,
-              optionAnswers: []
-            }));
-            for(let option of question.options){
-              this.questionAnswer[this.questionAnswer.length-1].optionAnswers.push(
-                new OptionAnswer({
-                  id: option.id,
-                  isChecked: false
-              }));
-            }
-          }
+                    for(let question of survey.questions){
+                      this.questionAnswer.push(new QuestionAnswer({
+                        id: question.id,
+                        type: question.type,
+                        optionAnswers: []
+                      }));
+                      for(let option of question.options){
+                        this.questionAnswer[this.questionAnswer.length-1].optionAnswers.push(
+                          new OptionAnswer({
+                            id: option.id,
+                            isChecked: false
+                        }));
+                      }
+                    }
 
-          console.log(this.questionAnswer);
+                    console.log(this.questionAnswer);
         });
+            
+          }
+        })
+    
   }
 
   save(){
@@ -81,7 +97,7 @@ export class AddAnswerComponent implements OnInit {
 
     if (flag){
       this.surveyService.addAnswer(this.survey.id, answers)
-          .then(answers => console.log(answers));
+          .then(answers => this.location.back());
     }
   }
 
@@ -103,4 +119,7 @@ export class AddAnswerComponent implements OnInit {
     console.log(this.questionAnswer);
   }
 
+  cancel(){
+    this.location.back();
+  }
 }

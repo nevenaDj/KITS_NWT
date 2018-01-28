@@ -1,6 +1,5 @@
 package com.example.service;
 
-import java.util.Collection;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,18 +26,21 @@ public class SurveyService {
 		return surveyRepsotory.findOne(id);
 	}
 
-	public Collection<Survey> findAllSurveys(Long id) {
+	public List<Survey> findAllSurveys(Long id) {
 		return surveyRepsotory.findAllSurveys(id);
 	}
-	
-	public boolean remove(Long id){
+
+	public boolean remove(Long id) {
 		List<Answer> answers = answerRepository.findAllAnswers(id);
-		if (answers.isEmpty()){
+		if (answers.isEmpty()) {
 			surveyRepsotory.delete(id);
 			return true;
 		}
 		return false;
-		
-		
+
+	}
+	
+	public int getAnswer(Long idSurvey, Long idUser, Long idQuestion, Long idOption){
+		return answerRepository.getAnswer(idSurvey, idUser, idQuestion, idOption);
 	}
 }

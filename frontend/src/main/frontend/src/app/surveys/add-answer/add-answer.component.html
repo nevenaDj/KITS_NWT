@@ -52,13 +52,19 @@
       
       <br>
     </div>
-    <div class="row">
-        <div class="col-lg-1"></div>
-        <div class="col-lg-10">
-          <div class="full-button">
-            <input type="submit"  class="save-button-text" value="Save answer">
+      <div class="row">
+          <div class="col-lg-1"></div>
+          <div class="col-lg-5">
+            <div class="full-button cancel" >
+              <a class="full-button-text" (click)="cancel()">Cancel
+              </a>
+            </div>
           </div>
-        </div>
+          <div class="col-lg-5">
+            <div class="full-button">
+              <input type="submit"  class="save-button-text" value="Save answer">
+          </div>
+          </div>
       </div>
     </div>
     </div>

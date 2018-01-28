@@ -16,6 +16,7 @@ import { Answer } from '../../models/answer';
 })
 export class SurveyDetailComponent implements OnInit {
   survey: Survey;
+  expired: boolean;
 
   constructor(private router: Router,
               private route: ActivatedRoute,
@@ -29,14 +30,26 @@ export class SurveyDetailComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.surveyService.getSurvey(+this.route.snapshot.params['id'])
-        .then(survey => this.survey = survey);
+    if (this.router.url.indexOf("answers") === -1){
+        this.surveyService.getSurvey(+this.route.snapshot.params['id'])
+            .then(survey => {
+              this.survey = survey;
+              this.expired = false;
+            });
+    }else{
+      this.surveyService.getAnswer(+this.route.snapshot.params['id'])
+            .then(survey => {
+              this.survey = survey;
+              this.expired = true;
+            });
+
+    }
   }
 
   deleteSurvey(){
-    console.log("delete");
+    let meetingID: number = +this.route.snapshot.params['idMeeting'];
     this.surveyService.deleteSurvey(this.survey.id)
-        .then(() => this.router.navigate(['meetings']));
+        .then(() => this.router.navigate([`/president/meeting/${meetingID}`]));
 
   }
 

@@ -34,7 +34,7 @@
 
           </div>
         </div>
-    <div class="row" *ngIf="canWeAddMeeting">
+    <div class="row" *ngIf="canWeAddMeeting || president">
       <div class="col-lg-1"></div>
       <div class="col-lg-5">
         <a (click)="newMeeting()" class="small-btn">New meeting</a>

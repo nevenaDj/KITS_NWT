@@ -22,6 +22,7 @@ export class AddItemComponent implements OnInit {
   height:number=0;
   subscription: Subscription;
   meeting: Meeting;
+  president: boolean;
 
   constructor(private router: Router, 
               private meetingSerivce: MeetingsService,
@@ -48,7 +49,13 @@ export class AddItemComponent implements OnInit {
 
 
   ngOnInit() {
-    
+    if (this.router.url.startsWith("/president")){
+      this.president = true;
+      this.types = ['TEXT','GLITCH','NOTIFICATION', 'COMMUNAL_PROBLEM'];
+    }else if (this.router.url.startsWith("/owner")){
+      this.president = false;
+      this.types = ['TEXT'];
+    }
     this.getContent();
   }
 

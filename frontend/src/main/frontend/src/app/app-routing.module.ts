@@ -189,7 +189,7 @@ const routers: Routes = [
       expectedRole: 'ROLE_OWNER'
     },
     children: [
-      {path: 'surveys/:id/addAnswer', component: AddAnswerComponent},
+      { path: 'surveys/:id/addAnswer', component: AddAnswerComponent},
       { path: 'glitches/:id', component:GlitchDetailComponent },
       { path: 'password', component: PasswordComponent},
       { path: 'profile', component: ProfileComponent},
@@ -198,7 +198,12 @@ const routers: Routes = [
       { path: 'apartments', component: CurrentApartmentComponent},
       { path: 'notifications', component: NotificationsComponent},
       { path: 'addNotification', component: AddNotificationComponent},
-      { path: 'notifications/:id', component: NotificationDetailComponent}
+      { path: 'notifications/:id', component: NotificationDetailComponent},
+      { path: 'meetings', component:MeetingsComponent },
+      { path: 'meetings/:id', component:MeatingDetailsComponent },
+      { path: 'meetings/:id/items/add', component: AddItemComponent},
+      { path: 'meetings/:id/items/:id_item', component:ItemDetailsComponent },
+      { path: 'meetings/:id/update', component:UpdateItemComponent },
     ]
   },
   {
@@ -213,7 +218,8 @@ const routers: Routes = [
       { path: 'profile', component: ProfileComponent},
       { path: 'update', component: ProfileUpdateComponent},
       { path: 'meeting/:id/addSurvey', component: AddSurveyComponent},
-      { path: 'surveys/:id', component: SurveyDetailComponent},
+      { path: 'meeting/:idMeeting/surveys/:id', component: SurveyDetailComponent},
+      { path: 'meeting/:idMeeting/surveys/:id/answers', component: SurveyDetailComponent},
       { path: 'bills', component: BillsPresidentComponent},
       { path: 'bills/:id', component: BillDetailsPresidentComponent},
       { path: 'responsiblities', component:ResponsibilitiesComponent },

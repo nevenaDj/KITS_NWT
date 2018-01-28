@@ -43,6 +43,33 @@ export class SurveyService {
         .catch(this.handleError);
   }
 
+  getSurveys(meetingID: number): Promise<Survey[]>{
+    const url = `/api/meetings/${meetingID}/surveys`;
+    return this.http
+        .get(url)
+        .toPromise()
+        .then(res => res)
+        .catch(this.handleError);
+  }
+
+  hasAnswer(surveyID: number): Promise<boolean>{
+    const url = `/api/surveys/${surveyID}/hasAnswer`;
+    return this.http
+        .get(url)
+        .toPromise()
+        .then(res => res)
+        .catch(this.handleError);
+  }
+
+  getAnswer(surveyID: number): Promise<Survey>{
+    const url = `/api/surveys/${surveyID}/answers`;
+    return this.http
+        .get(url)
+        .toPromise()
+        .then(res => res)
+        .catch(this.handleError);
+  }
+
   private handleError(error: any): Promise<any> {
     console.error("Error... ", error);
     return Promise.reject(error.message || error);

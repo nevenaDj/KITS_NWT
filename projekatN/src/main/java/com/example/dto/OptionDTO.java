@@ -7,6 +7,7 @@ public class OptionDTO {
 
 	private Long id;
 	private String text;
+	private int count;
 
 	public OptionDTO() {
 
@@ -41,6 +42,14 @@ public class OptionDTO {
 
 	public void setText(String text) {
 		this.text = text;
+	}
+
+	public int getCount() {
+		return count;
+	}
+
+	public void setCount(int count) {
+		this.count = count;
 	}
 
 	public static Option getOption(OptionDTO optionDTO, Question question) {

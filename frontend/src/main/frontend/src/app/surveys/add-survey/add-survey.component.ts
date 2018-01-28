@@ -30,14 +30,15 @@ export class AddSurveyComponent implements OnInit {
         options: [
           {
             id: null,
-            text: ''
+            text: '',
+            count: null
           }
         ]
         }
       ]
     };
 
-    this.meetingID = 1;
+    this.meetingID = +this.route.snapshot.params['id'];
 
 
   }
@@ -54,7 +55,8 @@ export class AddSurveyComponent implements OnInit {
         options: [
           {
             id: null,
-            text: ''
+            text: '',
+            count: null
           }
         ]
       }));   
@@ -80,10 +82,13 @@ export class AddSurveyComponent implements OnInit {
   }
 
   save(){
-    console.log(this.meetingID);
     this.surveyService.addSurvey(this.meetingID, this.survey)
-      .then(survey => this.router.navigate([`/president/surveys/${survey.id}`]));
+      .then(survey => this.router.navigate([`/president/meeting/${this.meetingID}/surveys/${survey.id}`]));
 
+  }
+
+  cancel(){
+    this.router.navigate([`/president/meetings/${this.meetingID}`]);
   }
 
 }

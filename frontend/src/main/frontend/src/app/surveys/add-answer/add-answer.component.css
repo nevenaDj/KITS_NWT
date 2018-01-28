@@ -106,3 +106,7 @@ input[type=checkbox]{
 .pFont{
 	margin-left: 50px;
 }
+
+.cancel {
+    background-color: #cbc5c1;
+}
