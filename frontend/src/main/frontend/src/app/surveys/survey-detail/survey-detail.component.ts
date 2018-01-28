@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewContainerRef } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
+import { ToastsManager } from 'ng2-toastr/ng2-toastr';
 
 import { SurveyService } from '../survey.service';
 import { Survey } from '../../models/survey';
@@ -20,7 +21,10 @@ export class SurveyDetailComponent implements OnInit {
 
   constructor(private router: Router,
               private route: ActivatedRoute,
-              private surveyService: SurveyService) { 
+              private surveyService: SurveyService,
+              private toastr: ToastsManager, 
+              private vcr: ViewContainerRef) { 
+    this.toastr.setRootViewContainerRef(vcr);
     this.survey = {
       id: null,
       title: '',
@@ -49,7 +53,8 @@ export class SurveyDetailComponent implements OnInit {
   deleteSurvey(){
     let meetingID: number = +this.route.snapshot.params['idMeeting'];
     this.surveyService.deleteSurvey(this.survey.id)
-        .then(() => this.router.navigate([`/president/meeting/${meetingID}`]));
+        .then(() => this.router.navigate([`/president/meetings/${meetingID}`]))
+        .catch(() => this.toastr.error('The survey can not be deleted.'));
 
   }
 

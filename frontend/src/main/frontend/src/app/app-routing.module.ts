@@ -202,11 +202,11 @@ const routers: Routes = [
     },
     children: [
       { path: 'surveys/:id/addAnswer', component: AddAnswerComponent},
+      { path: 'meeting/:idMeeting/surveys/:id/answers', component: SurveyDetailComponent},
       { path: 'glitches/:id', component:GlitchDetailComponent },
       { path: 'password', component: PasswordComponent},
       { path: 'profile', component: ProfileComponent},
       { path: 'update', component: ProfileUpdateComponent},
-      { path: 'surveys/:id/addAnswer', component: AddAnswerComponent},
       { path: 'apartments', component: CurrentApartmentComponent},
       { path: 'notifications', component: NotificationsComponent},
       { path: 'addNotification', component: AddNotificationComponent},

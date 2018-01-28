@@ -1,6 +1,7 @@
 import { async, ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { ActivatedRoute } from '@angular/router';
 import { Router } from '@angular/router';
+import { ToastOptions, ToastsManager } from 'ng2-toastr';
 
 import { SurveyDetailComponent } from './survey-detail.component';
 import { SurveyService } from '../survey.service';
@@ -40,7 +41,9 @@ describe('SurveyDetailComponent', () => {
       providers: [
         {provide: SurveyService, useValue: surveyServiceMock},
         {provide: Router, useValue: routerMock},
-        {provide: ActivatedRoute, useValue: activatedRouteStub}
+        {provide: ActivatedRoute, useValue: activatedRouteStub},
+        ToastsManager,
+        ToastOptions
       ]
     })
     .compileComponents();

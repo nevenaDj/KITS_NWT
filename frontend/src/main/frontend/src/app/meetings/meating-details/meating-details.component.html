@@ -49,7 +49,7 @@
                   <div class="sec" (click)="gotoGetAnswer(survey.id)" *ngIf="!expired && !president">
                       <b>{{survey.title}}</b> 
                     </div>
-                  <div class="sec" (click)="gotoGetSurveyAnswer(survey.id)" *ngIf="expired && president">
+                  <div class="sec" (click)="gotoGetSurveyAnswer(survey.id)" *ngIf="expired">
                       <b>{{survey.title}}</b> 
                   </div>  
                 </div>
