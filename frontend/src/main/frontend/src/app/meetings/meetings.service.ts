@@ -186,6 +186,16 @@ export class MeetingsService {
           .then(res => res)
           .catch(this.handleError);
   }
+
+  getUpcomingMeeting(id:number): Promise<Meeting[]> {
+    const url = '/api/owner/'+id+'/meetings/upcoming';
+    console.log('url: '+url)
+    return this.http
+          .get<Meeting[]>(url, {headers: this.headers})
+          .toPromise()
+          .then(res => res)
+          .catch(this.handleError);
+  }
   
   getOwner():Promise<User>{
     const url = `/api/me`;

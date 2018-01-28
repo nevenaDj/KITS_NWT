@@ -84,7 +84,7 @@ public class AgendaController {
 	@ApiImplicitParam(paramType = "header", name = "X-Auth-Token", required = true, value = "JWT token")
 	@ApiResponses(value = { @ApiResponse(code = 201, message = "Created", response = AgendaItemDTO.class),
 			@ApiResponse(code = 400, message = "Bad request") })
-	@PreAuthorize("hasRole('ROLE_PRESIDENT')")
+	@PreAuthorize("hasAnyRole('ROLE_PRESIDENT','ROLE_OWNER')")
 	public ResponseEntity<AgendaItemDTO> addAgendaItem(
 			@ApiParam(value = "The ID of the meeting.", required = true) @PathVariable("id") Long id,
 			@ApiParam(value = "The AgendaItemDTO Object.", required = true) @RequestBody AgendaItemDTO agendaPointDTO) {
@@ -170,7 +170,7 @@ public class AgendaController {
 	@ApiOperation(value = "Get contents(glitches, notifications, commaunal problems) whiach are not in any agenda.", notes = "Returns the contnts.", httpMethod = "GET", produces = "application/json")
 	@ApiImplicitParam(paramType = "header", name = "X-Auth-Token", required = true, value = "JWT token")
 	@ApiResponses(value = { @ApiResponse(code = 200, message = "Ok", response = ContentWithoutAgendaDTO.class) })
-	@PreAuthorize("hasAnyRole( 'ROLE_PRESIDENT')")
+	@PreAuthorize("hasAnyRole( 'ROLE_PRESIDENT','ROLE_OWNER')")
 	public ResponseEntity<ContentWithoutAgendaDTO> getAgendaWithoutMeeting(
 			@ApiParam(value = "The ID of the building.", required = true) @PathVariable Long id) {
 

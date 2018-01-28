@@ -262,4 +262,37 @@ public class MeetingController {
 		return new ResponseEntity<>(meetingsDTO, HttpStatus.OK);
 	}
 
+
+	@RequestMapping(value = "/owner/{id}/meetings/upcoming", method = RequestMethod.GET, produces = "application/json")
+	@ApiOperation(value = "Get active meetings.", notes = "Returns the meeting being saved.", httpMethod = "POST", 
+	produces = "application/json")
+	@ApiImplicitParam(paramType="header", name="X-Auth-Token", required=true, value="JWT token")
+	@ApiResponses(value = { 
+		@ApiResponse(code = 200, message = "Ok", response = MeetingDTO.class),
+		@ApiResponse(code = 400, message = "Bad request") })
+	/*** get active meeting ***/
+	public ResponseEntity<List<MeetingDTO>> getUpcomingMeeting(
+			@ApiParam(value = "The ID of the owner.", required = true) @PathVariable("id") Long id) {
+	
+		System.out.println("fdfdfg");
+		User owner = userService.findOne(id);
+		if (owner == null) {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+		
+		List<Meeting> meetings= meetingService.findMeetingByOwner(id);
+		List<MeetingDTO> meetingsDTO = new ArrayList<MeetingDTO>();
+		Date today = new Date();
+		today.setHours(0);
+		today.setMinutes(0);
+		today.setSeconds(0);
+		
+
+		for (Meeting m:meetings) {		
+			if (m.getDateAndTime().getTime()-today.getTime()>=0 ) {
+				meetingsDTO.add(new MeetingDTO(m));
+			}
+		}
+		return new ResponseEntity<>(meetingsDTO, HttpStatus.OK);
+	}
 }

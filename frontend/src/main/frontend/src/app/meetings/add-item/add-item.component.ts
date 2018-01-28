@@ -125,9 +125,7 @@ export class AddItemComponent implements OnInit {
   addNewItem(){
     this.item.type=this.selectedType;
     this.item.number=this.meeting.agenda.agendaPoints.length+1;
-    console.log('not1'+JSON.stringify(this.item.notification))
     this.item.notification=null;
-    console.log('not2'+JSON.stringify(this.item.notification))
     if (this.selectedType=="GLITCH")
       this.item.glitch=this.selectedGlitch;
     if (this.selectedType=="NOTIFICATION"){
@@ -138,6 +136,11 @@ export class AddItemComponent implements OnInit {
       this.item.communalProblem=this.selectedProblem;
     
     this.meetingSerivce.addItem(  +this.route.snapshot.params['id'], this.item).then(
-        item=>  this.router.navigate(['/president/meetings',+this.route.snapshot.params['id'], 'items',item.id]) )
+        item=>  {
+          if (this.president )
+            this.router.navigate(['/president/meetings',+this.route.snapshot.params['id'], 'items',item.id]) 
+          else 
+            this.router.navigate(['/owner/meetings',+this.route.snapshot.params['id'], 'items',item.id]) 
+        })
   }
 }

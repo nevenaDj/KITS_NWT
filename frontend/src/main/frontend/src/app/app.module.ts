@@ -96,6 +96,7 @@ import { CommunalProblemDetailComponent } from './communal-problems/communal-pro
 import { AddCommunalProblemComponent } from './communal-problems/add-communal-problem/add-communal-problem.component';
 import { ActivecommunalProblemComponent } from './communal-problems/activecommunal-problem/activecommunal-problem.component';
 import { CompanyComponent } from './company/company.component';
+import { UpcomingMeetingsComponent } from './meetings/upcoming-meetings/upcoming-meetings.component';
 
 
 export class CustomOption extends ToastOptions {
@@ -176,6 +177,7 @@ export class CustomOption extends ToastOptions {
     AddCommunalProblemComponent,
     ActivecommunalProblemComponent,
     CompanyComponent,
+    UpcomingMeetingsComponent,
     
   ],
   imports: [

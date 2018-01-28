@@ -69,6 +69,7 @@ import { AddCommunalProblemComponent } from './communal-problems/add-communal-pr
 import { CommunalProblemDetailComponent } from './communal-problems/communal-problem-detail/communal-problem-detail.component';
 import { ActivecommunalProblemComponent } from './communal-problems/activecommunal-problem/activecommunal-problem.component';
 import { CompanyComponent } from './company/company.component';
+import { UpcomingMeetingsComponent } from './meetings/upcoming-meetings/upcoming-meetings.component';
 
 
 const routers: Routes = [
@@ -216,6 +217,7 @@ const routers: Routes = [
       { path: 'meetings/:id/items/:id_item', component:ItemDetailsComponent },
       { path: 'meetings/:id/update', component:UpdateItemComponent },
       { path: 'meetings', component: ActiveMeetingOwnerComponent},
+      { path: 'upcomingMeetings', component: UpcomingMeetingsComponent},
       { path: 'reports', component: ReportsComponent},
       { path: 'reports/:id', component: MeatingDetailsComponent},
       { path: 'communalProblems' ,  component: ActivecommunalProblemComponent},
