@@ -124,7 +124,7 @@ public class NotificationControllerTest {
 	@Test
 	public void testGetNotification() throws Exception {
 		mockMvc.perform(
-				get("/api/buildings/" + ID_BUILDING + "/notifications/" + ID).header("X-Auth-Token", accessToken))
+				get("/api/notifications/" + ID).header("X-Auth-Token", accessToken))
 				.andExpect(status().isOk()).andExpect(jsonPath("$.id").value(ID.intValue()))
 				.andExpect(jsonPath("$.text").value(TEXT));
 
@@ -135,17 +135,8 @@ public class NotificationControllerTest {
 	@Rollback(true)
 	public void testDeleteNotification() throws Exception {
 		mockMvc.perform(
-				delete("/api/buildings/" + ID_BUILDING + "/notifications/" + ID).header("X-Auth-Token", accessToken))
+				delete("/api/notifications/" + ID).header("X-Auth-Token", accessToken))
 				.andExpect(status().isOk());
-
-	}
-
-	@Test
-	@Transactional
-	@Rollback(true)
-	public void testDeleteNotificationBadRequest() throws Exception {
-		mockMvc.perform(delete("/api/buildings/" + BUILDING_ID_NOT_FOUND + "/notifications/" + ID)
-				.header("X-Auth-Token", accessToken)).andExpect(status().isBadRequest());
 
 	}
 
@@ -161,15 +152,8 @@ public class NotificationControllerTest {
 	@Test
 	public void testGetNotificationNotFound() throws Exception {
 		mockMvc.perform(
-				get("/api/buildings/" + ID_BUILDING + "/notifications/" + ID_NEW).header("X-Auth-Token", accessToken))
+				get("/api/notifications/" + ID_NEW).header("X-Auth-Token", accessToken))
 				.andExpect(status().isNotFound());
-
-	}
-
-	@Test
-	public void testGetNotificationBadRequest() throws Exception {
-		mockMvc.perform(get("/api/buildings/" + BUILDING_ID_NOT_FOUND + "/notifications/" + ID).header("X-Auth-Token",
-				accessToken)).andExpect(status().isBadRequest());
 
 	}
 
