@@ -41,34 +41,30 @@ public class AddCompanyPageTest {
 	public void testAddBuilding() {
 		assertEquals("https://localhost:8443/#/login", browser.getCurrentUrl());
 
+		// login
 		loginPage.ensureIsDisplayed();
-
 		assertTrue(loginPage.getInputUsername().isDisplayed());
 		assertTrue(loginPage.getInputPassword().isDisplayed());
-
 		loginPage.setInputUsername("admin");
 		loginPage.setInputPassword("admin");
-
 		loginPage.getOkButton().click();
 
+		// home page for admin
 		buildingPage.ensureIsDisplayed();
-
 		assertEquals("https://localhost:8443/#/buildings", browser.getCurrentUrl());
 
+		// go to companies
 		buildingPage.getCompaniesElement().click();
 
+		// companies
 		assertEquals("https://localhost:8443/#/companies", browser.getCurrentUrl());
-
 		companyPage.ensureIsDisplayed();
-
 		int elements = companyPage.getCompaniesElement().size();
-
 		companyPage.getNewElement().click();
 
+		// add new company
 		addCompnayPage.ensureIsDisplayed();
-
 		assertEquals("https://localhost:8443/#/addCompany", browser.getCurrentUrl());
-
 		assertTrue(addCompnayPage.getInputUsername().isDisplayed());
 		assertTrue(addCompnayPage.getInputPhoneNo().isDisplayed());
 		assertTrue(addCompnayPage.getInputEmail().isDisplayed());
@@ -87,11 +83,13 @@ public class AddCompanyPageTest {
 
 		addCompnayPage.getOkButton().click();
 
+		// companies
 		companyPage.ensureIsDisplayed();
 		assertEquals(companyPage.getCompaniesElement().size(), elements + 1);
 		int elementsNum = companyPage.getCompaniesDetailElement().size();
 		companyPage.getCompaniesDetailElement().get(elementsNum - 1).click();
 
+		// company detail
 		companyDetailPage.ensureIsDisplayed();
 		assertEquals(companyDetailPage.getDivElements().get(0).getText(), "company");
 		assertEquals(companyDetailPage.getDivElements().get(1).getText(), "123456");
@@ -100,8 +98,11 @@ public class AddCompanyPageTest {
 		assertEquals(companyDetailPage.getDivElements().get(4).getText(), "15000");
 		assertEquals(companyDetailPage.getDivElements().get(5).getText(), "new street");
 		assertEquals(companyDetailPage.getDivElements().get(6).getText(), "1");
+
+		// delete company
 		companyDetailPage.getDelteElement().click();
 
+		// companies
 		companyPage.ensureIsDisplayed();
 		assertEquals(companyPage.getCompaniesElement().size(), elements);
 

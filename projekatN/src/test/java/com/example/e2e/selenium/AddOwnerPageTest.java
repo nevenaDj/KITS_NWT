@@ -119,6 +119,7 @@ public class AddOwnerPageTest {
 
 		apartmentDetailPage.getAddOwnerElement().click();
 
+		// add new owner
 		addOwnerPage.ensureIsDisplayed();
 
 		assertTrue(addOwnerPage.getInputUsername().isDisplayed());
@@ -135,14 +136,13 @@ public class AddOwnerPageTest {
 
 		((JavascriptExecutor) browser).executeScript("window.scrollTo(0, 10)");
 
+		// delete apartment
 		apartmentDetailPage.getDelteElement().click();
-
 		buildigDetailPage.ensureIsDisplayed();
 
+		// delete building
 		buildigDetailPage.getDelteElement().click();
-
 		buildingPage.ensureIsDisplayed();
-
 		assertEquals(buildingPage.getBuildingsElement().size(), elements);
 
 	}

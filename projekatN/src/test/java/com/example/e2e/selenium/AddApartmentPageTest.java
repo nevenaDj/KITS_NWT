@@ -104,6 +104,7 @@ public class AddApartmentPageTest {
 
 		addApartmentPage.getOkButton().click();
 
+		//apartment detail
 		apartmentDetailPage.ensureIsDisplayed();
 
 		assertTrue(apartmentDetailPage.getDivDescription().isDisplayed());
@@ -112,14 +113,13 @@ public class AddApartmentPageTest {
 		assertEquals(apartmentDetailPage.getDivDescription().getText(), "new apartment");
 		assertEquals(apartmentDetailPage.getDivNumber().getText(), "15");
 
+		//delete apartment
 		apartmentDetailPage.getDelteElement().click();
-
 		buildigDetailPage.ensureIsDisplayed();
 
+		//detele building
 		buildigDetailPage.getDelteElement().click();
-
 		buildingPage.ensureIsDisplayed();
-
 		assertEquals(buildingPage.getBuildingsElement().size(), elements);
 
 	}

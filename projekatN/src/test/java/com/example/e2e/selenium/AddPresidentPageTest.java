@@ -42,24 +42,21 @@ public class AddPresidentPageTest {
 	public void testAddPresident() {
 		assertEquals("https://localhost:8443/#/login", browser.getCurrentUrl());
 
+		// login
 		loginPage.ensureIsDisplayed();
-
 		assertTrue(loginPage.getInputUsername().isDisplayed());
 		assertTrue(loginPage.getInputPassword().isDisplayed());
-
 		loginPage.setInputUsername("admin");
 		loginPage.setInputPassword("admin");
-
 		loginPage.getOkButton().click();
 
+		// home page for admin
 		buildingPage.ensureIsDisplayed();
-
 		assertEquals("https://localhost:8443/#/buildings", browser.getCurrentUrl());
-
 		int elements = buildingPage.getBuildingsElement().size();
 
+		// add new building
 		buildingPage.getNewElement().click();
-
 		assertEquals("https://localhost:8443/#/addBuilding", browser.getCurrentUrl());
 
 		assertTrue(addBuildingPage.getInputStreet().isDisplayed());
@@ -90,6 +87,7 @@ public class AddPresidentPageTest {
 
 		buildigDetailPage.getAddPresidentElement().click();
 
+		// add new president
 		addPresidentPage.ensureIsDisplayed();
 
 		assertTrue(addPresidentPage.getInputUsername().isDisplayed());
@@ -106,10 +104,9 @@ public class AddPresidentPageTest {
 
 		((JavascriptExecutor) browser).executeScript("window.scrollTo(0, 10)");
 
+		// delete building
 		buildigDetailPage.getDelteElement().click();
-
 		buildingPage.ensureIsDisplayed();
-
 		assertEquals(buildingPage.getBuildingsElement().size(), elements);
 
 	}

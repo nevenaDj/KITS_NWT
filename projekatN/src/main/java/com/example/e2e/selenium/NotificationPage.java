@@ -1,5 +1,7 @@
 package com.example.e2e.selenium;
 
+import java.util.List;
+
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -11,6 +13,9 @@ public class NotificationPage {
 
 	@FindBy(className = "small-btn")
 	private WebElement newElement;
+	
+	@FindBy(className = "notifications")
+	private List<WebElement> notificationsDetailElement;
 
 	public NotificationPage(WebDriver webDriver) {
 		this.driver = webDriver;
@@ -23,5 +28,9 @@ public class NotificationPage {
 	public WebElement getNewElement() {
 		return newElement;
 	}
+
+	public List<WebElement> getNotificationsDetailElement() {
+		return notificationsDetailElement;
+	}	
 
 }
