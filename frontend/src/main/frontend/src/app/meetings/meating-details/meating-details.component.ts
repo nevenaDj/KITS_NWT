@@ -2,10 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { Meeting } from '../../models/meeting';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MeetingsService } from '../meetings.service';
-import { AgendaItem } from '../../models/agendaItem';
+import { AgendaItem } from '../../models/agenda-item';
 import { AuthService } from '../../login/auth.service';
-import { SurveyService } from '../../surveys/survey.service';
-import { Survey } from '../../models/survey';
 
 @Component({
   selector: 'app-meating-details',
@@ -23,7 +21,7 @@ export class MeatingDetailsComponent implements OnInit {
   //if there are more than twenty agendaPoints or user is not a president, then false
   agendaSize:boolean=true;
 
-  allReported:boolean=false;
+  canActivate:boolean=false;
 
   president: boolean;
 
@@ -58,8 +56,13 @@ export class MeatingDetailsComponent implements OnInit {
         let now= new Date();
         let date= new Date(this.meeting.dateAndTime);
         let diff= date.getTime()-now.getTime();
-        if (diff<0)
+        if (diff<0){
+          let one_day:Date= new Date(date.getTime() + (1000 * 60 * 60 * 24));
+          let diff2=one_day.getTime()-now.getTime();
           this.expired=true;
+            if (diff2<0)
+              this.canActivate=true;
+        }
         if (!this.expired)
           /* if (!this.authService.isPresident())
             this.agendaSize=false;

@@ -118,6 +118,16 @@ export class GlitchService {
           .catch(this.handleError);
   }
 
+  upload(id_apartment:number, id_glitch:number, file:File): Promise<Glitch>{
+    let new_headers: HttpHeaders = new HttpHeaders({'X-Auth-Token': localStorage.getItem('token'),'Content-Type':'multipart/form-data', 'Accept':'multipart/form-data'});
+    const url = '/api/apartments/'+id_apartment+'/glitches/'+id_glitch+'/photo';
+    return this.http.put<Glitch>(url, file, {headers: new_headers})
+          .toPromise()
+          .then(res => res)
+          .catch(this.handleError);
+  }
+
+
   private handleError(error: any): Promise<any> {
     console.error("Error... ", error);
     return Promise.reject(error.message || error);

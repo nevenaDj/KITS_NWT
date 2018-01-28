@@ -64,18 +64,30 @@
                         <span>My apartments</span>
                     </a>
                 </li>
+                <li class="mt">
+                    <a [routerLink]="['/owner/meetings']">
+                        <i class="fa fa-building"></i>
+                        <span>Active meetings</span>
+                    </a>
+                </li>
                 <li class="sub-menu">
                     <a [routerLink]="['/owner/notifications']">
                         <i class="fa fa-bell" aria-hidden="true"></i>
                         <span>Notifications</span>
                   </a>
                 </li>
-                <li class="mt">
-                    <a [routerLink]="['/owner/meetings']">
-                        <i class="fa fa-cogs"></i>
-                        <span>Meetings</span>
-                    </a>
+                <li class="sub-menu">
+                    <a [routerLink]="['/owner/reports']">
+                        <i class="fa fa-bell" aria-hidden="true"></i>
+                        <span>Reports</span>
+                  </a>
                 </li>
+                <li class="sub-menu">
+                        <a [routerLink]="['/owner/communalProblems']">
+                            <i class="fa fa-bell" aria-hidden="true"></i>
+                            <span>Communal Problems</span>
+                      </a>
+                    </li>
             </nav>
         </ul>
     </div>

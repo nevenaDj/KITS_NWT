@@ -6,7 +6,7 @@ import { User } from '../models/user';
 import { Builder } from 'selenium-webdriver';
 import { Building } from '../models/building';
 import { ContentWithoutAgenda } from '../models/content-without-agenda';
-import { AgendaItem } from '../models/agendaItem';
+import { AgendaItem } from '../models/agenda-item';
 import { Agenda } from '../models/agenda';
 import { ItemComment } from '../models/itemComment';
 
@@ -35,6 +35,22 @@ export class MeetingsService {
 
   getBuildings():Promise<Building[]>{
     const url = `/api/buildings/president`;
+      return this.http.get<Building[]>(url, {headers: this.headers})
+            .toPromise()
+            .then(res => {return res})
+            .catch(this.handleError);
+  }
+
+  getBuildingsOwner():Promise<Building[]>{
+    const url = `/api/buildings/owner`;
+      return this.http.get<Building[]>(url, {headers: this.headers})
+            .toPromise()
+            .then(res => {return res})
+            .catch(this.handleError);
+  }
+
+  getBuildingsTenant():Promise<Building[]>{
+    const url = `/api/buildings/tenant`;
       return this.http.get<Building[]>(url, {headers: this.headers})
             .toPromise()
             .then(res => {return res})
@@ -161,6 +177,24 @@ export class MeetingsService {
           .then(res => res)
           .catch(this.handleError);
   }
+
+  getActiveMeeting(id:number): Promise<Meeting[]> {
+    const url = '/api/owner/'+id+'/meetings';
+    return this.http
+          .get<Meeting[]>(url, {headers: this.headers})
+          .toPromise()
+          .then(res => res)
+          .catch(this.handleError);
+  }
+  
+  getOwner():Promise<User>{
+    const url = `/api/me`;
+      return this.http.get<User>(url, {headers: this.headers})
+            .toPromise()
+            .then(res => {return res})
+            .catch(this.handleError);
+  }
+
 
   private handleError(error: any): Promise<any> {
     console.error("Error... ", error);

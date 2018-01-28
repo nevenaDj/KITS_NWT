@@ -1,6 +1,8 @@
 import { Meeting } from "./meeting";
 import { Glitch } from "./glitch";
 import { ItemComment } from "./itemComment";
+import { CommunalProblem } from "./communal-problem";
+import { Notification } from "./notification";
 
 
 export class AgendaItem implements AgendaItemInterface{
@@ -9,9 +11,9 @@ export class AgendaItem implements AgendaItemInterface{
     public content: string;
     public conclusion: string;
     public number: number;
-    //public notification: Notification;
+    public notification: Notification;
     public glitch: Glitch;
-    //public communalProblem: CommunalProblem;
+    public communalProblem: CommunalProblem;
     public type: string;
   	public comments: ItemComment[];
 		
@@ -24,8 +26,8 @@ export class AgendaItem implements AgendaItemInterface{
         this.number = agendaItemCfg.number;
         this.type = agendaItemCfg.type;
         this.glitch = agendaItemCfg.glitch;
-       // this.notification= agendaItemCfg.notification;
-       // this.communalProblem= this.communalProblem;
+        this.notification= agendaItemCfg.notification;
+        this.communalProblem= this.communalProblem;
         this.comments = agendaItemCfg.comments;
 	}
 }
@@ -36,9 +38,9 @@ interface AgendaItemInterface{
     content: string;
     conclusion?: string;
     number: number;
-    // notification: Notification;
+    notification?: Notification;
     glitch?: Glitch;
-    //public communalProblem: CommunalProblem;
+    communalProblem?: CommunalProblem;
     type: string;
   	comments: ItemComment[];
 }

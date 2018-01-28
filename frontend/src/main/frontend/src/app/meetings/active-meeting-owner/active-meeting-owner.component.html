@@ -1,0 +1,25 @@
+
+<div class="row">
+<div class="col-lg-9 main-chart">
+    <div class="row">
+        <p class="title">ACTIVE MEETINGS</p>
+    </div>
+  <div class="row">
+    <div class="col-lg-1"></div>
+    <div class="col-lg-10">
+      <div *ngFor="let meeting of meetings ; let i=index;">
+        <ul (click)="gotoGetMeeting(meeting.id)">
+          <li>
+            <div class="lists">
+              <div class="first" >{{i+1}} </div>
+              <div class="sec">
+                <b>{{meeting.dateAndTime | date}}</b> 
+              </div>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+</div>

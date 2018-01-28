@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MeetingsService } from '../meetings.service';
 import { ItemComment } from '../../models/itemComment';
-import { AgendaItem } from '../../models/agendaItem';
+import { AgendaItem } from '../../models/agenda-item';
 import { AuthService } from '../../login/auth.service';
 import { Meeting } from '../../models/meeting';
 
@@ -103,7 +103,12 @@ export class ItemDetailsComponent implements OnInit {
   }
 
   goToCommProblem(){
-
+    if (this.authService.isPresident())
+      this.router.navigate(['/president/buildings', this.meeting.building.id, 'communalProblems', this.item.communalProblem.id]);
+    if (this.authService.isOwner())
+      this.router.navigate(['/owner/buildings', this.meeting.building.id, 'communalProblems', this.item.communalProblem.id]);
+    if (this.authService.isTenant())
+      this.router.navigate(['/tenant/buildings', this.meeting.building.id, 'communalProblems', this.item.communalProblem.id]);
   }
 
 

@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Meeting } from '../../models/meeting';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MeetingsService } from '../meetings.service';
-import { AgendaItem } from '../../models/agendaItem';
+import { AgendaItem } from '../../models/agenda-item';
 import { and } from '@angular/router/src/utils/collection';
 import { Agenda } from '../../models/agenda';
 
@@ -53,7 +53,9 @@ export class UpdateItemComponent implements OnInit {
             content:'',
             glitch:null,
             title:this.meeting.agenda.agendaPoints[i].title,
-            type:''  
+            type:''  ,
+            communalProblem:null, 
+            notification:null
           }
           this.agenda.agendaPoints.push(item);
         }

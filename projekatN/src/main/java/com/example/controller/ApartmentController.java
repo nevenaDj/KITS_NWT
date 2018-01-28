@@ -296,4 +296,6 @@ public class ApartmentController {
 
 		return new ResponseEntity<>(apartmentsDTO, HttpStatus.OK);
 	}
+	
+	
 }

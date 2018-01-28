@@ -35,6 +35,7 @@ export class BillDetailsCompanyComponent implements OnInit {
         zipCode: 0
       }
     };
+
     this.subscription = companyService.RegenerateData$
       .subscribe(() => this.getCompany());
 

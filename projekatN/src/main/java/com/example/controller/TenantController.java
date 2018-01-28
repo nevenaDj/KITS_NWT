@@ -141,7 +141,6 @@ public class TenantController {
 		User tenant = userService.findByUsername(username);
 
 		Page<Glitch> glitches = glitchService.findByResponsibility(page, tenant.getId());
-		System.out.println("size: "+glitches.getSize());
 		List<GlitchDTO> glitchesDTO = new ArrayList<>();
 		for (Glitch glitch : glitches) {
 			glitchesDTO.add(new GlitchDTO(glitch));
@@ -164,7 +163,6 @@ public class TenantController {
 		User user = userService.findByUsername(username);
 
 		Integer count = glitchService.getCountOfMyResponsabilities(user);
-		System.out.println("count: "+count);
 		return new ResponseEntity<>(count, HttpStatus.OK);
 	}
 

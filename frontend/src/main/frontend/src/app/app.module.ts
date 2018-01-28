@@ -7,6 +7,7 @@ import { DropdownModule } from 'ngx-dropdown';
 import { OwlDateTimeModule, OwlNativeDateTimeModule } from 'ng-pick-datetime';
 import { Ng2OrderModule } from 'ng2-order-pipe';
 import { ToastModule, ToastOptions} from 'ng2-toastr/ng2-toastr';
+import { ImageUploadModule } from "angular2-image-upload";
 
 import { NotificationService } from './notifications/notification.service';
 import { SurveyService } from './surveys/survey.service';
@@ -23,6 +24,7 @@ import { BuildingService } from './buildings/building.service';
 import { AuthService } from './login/auth.service';
 import { AuthGuardService } from './guards/auth-guard.service';
 import { RoleGuardService } from './guards/role-guard.service';
+import { CommunalProblemService } from "./communal-problems/communal-problem.service";
 import { AppRoutingModule } from './/app-routing.module';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
@@ -87,6 +89,12 @@ import { NotificationsComponent } from './notifications/notifications.component'
 import { AddNotificationComponent } from './notifications/add-notification/add-notification.component';
 import { CurrentBuildingComponent } from './buildings/current-building/current-building.component';
 import { NotificationDetailComponent } from './notifications/notification-detail/notification-detail.component';
+import { ActiveMeetingOwnerComponent } from './meetings/active-meeting-owner/active-meeting-owner.component';
+import { ReportsComponent } from './meetings/reports/reports.component';
+import { CommunalProblemsComponent } from './communal-problems/communal-problems.component';
+import { CommunalProblemDetailComponent } from './communal-problems/communal-problem-detail/communal-problem-detail.component';
+import { AddCommunalProblemComponent } from './communal-problems/add-communal-problem/add-communal-problem.component';
+import { ActivecommunalProblemComponent } from './communal-problems/activecommunal-problem/activecommunal-problem.component';
 
 
 export class CustomOption extends ToastOptions {
@@ -160,6 +168,12 @@ export class CustomOption extends ToastOptions {
     AddNotificationComponent,
     CurrentBuildingComponent,
     NotificationDetailComponent,
+    ActiveMeetingOwnerComponent,
+    ReportsComponent,
+    CommunalProblemsComponent,
+    CommunalProblemDetailComponent,
+    AddCommunalProblemComponent,
+    ActivecommunalProblemComponent,
     
   ],
   imports: [
@@ -173,7 +187,8 @@ export class CustomOption extends ToastOptions {
     OwlDateTimeModule, 
     OwlNativeDateTimeModule,
     Ng2OrderModule,
-    ToastModule.forRoot()
+    ToastModule.forRoot(),
+    ImageUploadModule.forRoot()
   ],
   providers: [
     AuthGuardService,
@@ -194,6 +209,7 @@ export class CustomOption extends ToastOptions {
     BillsDataService,
     MeetingsService,
     NotificationService,
+    CommunalProblemService,
     {provide: ToastOptions, useClass: CustomOption},
     {
       provide: HTTP_INTERCEPTORS,

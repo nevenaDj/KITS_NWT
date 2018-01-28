@@ -43,6 +43,6 @@ public class ContentWithoutAgendaDTO {
 
 	public void setCommunalProblems(List<CommunalProblemDTO> communalProblems) {
 		this.communalProblems = communalProblems;
-	}	
+	}
 
 }

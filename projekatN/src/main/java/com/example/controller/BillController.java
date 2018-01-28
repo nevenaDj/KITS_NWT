@@ -102,7 +102,6 @@ public class BillController {
 		glitch.setBill(bill);
 		glitchService.save(glitch);
 		
-		System.out.println("itemsize:"+billDTO.getItems().size());
 		for (ItemInBillDTO itemDTO: billDTO.getItems()){
 			ItemInBill item = ItemInBillDTO.getItemInBill(itemDTO);
 			item.setBill(bill);
@@ -170,14 +169,11 @@ public class BillController {
 		@ApiResponse(code = 404, message = "Not found")})
 	public ResponseEntity<BillDTO> findBill(
 			@ApiParam(value = "The ID of the bill.", required = true) @PathVariable("id") Long id) {
-		System.out.println("kezdet get/bill");
 		Bill bill = billService.findOne(id);
 		if (bill == null) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		} else {
 			BillDTO billDTO = new BillDTO(bill);
-			System.out.println("price  "+bill.getPrice());
-			System.out.println("priceDTO  "+billDTO.getPrice());
 			return new ResponseEntity<>(billDTO, HttpStatus.OK);
 		}
 	}
@@ -192,22 +188,15 @@ public class BillController {
 			Pageable page, 
 			@ApiParam(value = "The ID of the company.", required = true) @PathVariable("id") Long id) {
 
-		System.out.println("kezet ");
 		User user = userService.findOne(id);
 
 		Page<Bill> billsPage = billService.findAllByCompnany(page, user.getId());
-		System.out.println("length:"+billsPage.getTotalElements());
 		List<Bill> bills =billsPage.getContent();
-		System.out.println("length:"+bills.size());
 		List<BillDTO> billsDTO = new ArrayList<>();
 
 		for (Bill bill : bills) {
-			System.out.println("in");
 			billsDTO.add(new BillDTO(bill));
 		}
-		System.out.println("length:"+billsDTO.size());
-		
-		System.out.println("vege");
 		return new ResponseEntity<>(billsDTO, HttpStatus.OK);
 	}
 	
@@ -227,18 +216,13 @@ public class BillController {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		
 		Page<Bill> billsPage = billService.findAllByPresident(page,id);
-		System.out.println("length:"+billsPage.getTotalElements());
 		List<Bill> bills =billsPage.getContent();
-		System.out.println("length:"+bills.size());
 		List<BillDTO> billsDTO = new ArrayList<>();
 
 		for (Bill bill : bills) {
-			System.out.println("in");
 			billsDTO.add(new BillDTO(bill));
 		}
-		System.out.println("length:"+billsDTO.size());
-		
-		System.out.println("vege");
+
 		return new ResponseEntity<>(billsDTO, HttpStatus.OK);
 	}
 	
@@ -362,7 +346,6 @@ public class BillController {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}else{
 			Long count = billService.getCountOfBill(id);
-			System.out.println("count:"+count);
 			return new ResponseEntity<>(count, HttpStatus.OK);
 		}
 		
@@ -380,7 +363,6 @@ public class BillController {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}else{
 			Long count = billService.getCountOfBillByUser(id);
-			System.out.println("count:"+count);
 			return new ResponseEntity<>(count, HttpStatus.OK);
 		}
 		

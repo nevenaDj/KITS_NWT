@@ -40,7 +40,7 @@
         </div>
 
         <!-- glitch -->
-        <div class="col-lg-5 border" [style.height]="height+'px'" *ngIf="selectedType==='GLITCH'">
+        <div class="col-lg-5 border" [style.height]="'250px'" style="overflow:scroll;" *ngIf="selectedType==='GLITCH'">
           <div class="border-title">CHOOSE GLITCH</div>
           <div class="container">
             <div class="check" *ngFor="let glitch of contentWithoutMeeting.glitches ; let i=index; ">
@@ -52,6 +52,35 @@
             </div>   
         </div>
         </div>     
+
+
+        <!-- notification -->
+        <div class="col-lg-5 border" [style.height]="'250px'" style="overflow:scroll;" *ngIf="selectedType==='NOTIFICATION'">
+            <div class="border-title">CHOOSE NOTIFICAITON</div>
+            <div class="container">
+              <div class="check" *ngFor="let notification of contentWithoutMeeting.notifications ; let i=index; ">
+                    <input id="not-{{i}}" type="radio" name="notificaiton" [value]="notificaiton" (change)="onSelectionChangeNotification(notification)"/>
+                    <label for="not-{{i}}" (change)="onSelectionChangeNotification(notification)"> 
+                      <div class="box" (change)="onSelectionChangeNotification(notification)"><i class="fa fa-check"></i></div>
+                      <div class="text" (change)="onSelectionChangeNotification(notification)">{{notification.text}} </div>
+                    </label>                
+              </div>   
+          </div>
+          </div>  
+
+              <!-- problem -->
+          <div class="col-lg-5 border" [style.height]="'250px'" style="overflow:scroll;" *ngIf="selectedType==='COMMUNAL_PROBLEM'">
+                  <div class="border-title">CHOOSE COMMUNAL PROBLEM</div>
+                  <div class="container">
+                    <div class="check" *ngFor="let problem of contentWithoutMeeting.communalProblems ; let i=index; ">
+                          <input id="prob-{{i}}" type="radio" name="problems" [value]="problem" (change)="onSelectionChangeProblem(problem)"/>
+                          <label for="prob-{{i}}" (change)="onSelectionChangeProblem(problem)"> 
+                            <div class="box" (change)="onSelectionChangeProblem(problem)"><i class="fa fa-check"></i></div>
+                            <div class="text" (change)="onSelectionChangeProblem(problem)">{{problem.description}} </div>
+                          </label>                
+                    </div>   
+                </div>
+                </div>  
     </div>
     <div class="row">
       <div class="col-lg-1"></div>

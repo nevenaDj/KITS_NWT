@@ -1,11 +1,14 @@
 package com.example.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.example.model.Pricelist;
+import com.example.model.User;
 import com.example.repository.PricelistRepository;
 
 @Service
@@ -35,6 +38,11 @@ public class PricelistService {
 
 	public java.util.List<Pricelist> findbyGlitchType(Long id) {
 		return pricelistRepository.findOneByGlitchType(id);
+	}
+
+	public List<User> findCompaniesByType(Long id) {
+		// TODO Auto-generated method stub
+		return pricelistRepository.findCompaniesByType( id);
 	}
 
 }

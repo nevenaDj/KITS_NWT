@@ -1,9 +1,12 @@
 package com.example.dto;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
+import com.example.model.Apartment;
 import com.example.model.CommunalProblem;
 
 public class CommunalProblemDTO {
@@ -24,6 +27,11 @@ public class CommunalProblemDTO {
 		if (communalProblem.getType() != null) {
 			this.type = new GlitchTypeDTO(communalProblem.getType());
 		}
+		if (communalProblem.getCompany()!=null)
+			this.companyID=communalProblem.getCompany().getId();
+		
+		for (Apartment a: communalProblem.getApartments())
+			apartments.add(new ApartmentDTO(a));
 	}
 
 	public CommunalProblemDTO(Long id, String description, Date dateOfRepair) {
@@ -88,7 +96,9 @@ public class CommunalProblemDTO {
 		if (communalProblemDTO.getType() != null) {
 			communalProblem.setType(GlitchTypeDTO.getGlitchType(communalProblemDTO.getType()));
 		}
-
+		List<Apartment> apartment = new ArrayList<Apartment>();
+		for (ApartmentDTO a: communalProblemDTO.getApartments())
+			apartment.add(ApartmentDTO.getApartment(a));
 		return communalProblem;
 	}
 

@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.dto.AddressDTO;
+import com.example.dto.ApartmentDTO;
 import com.example.dto.BuildingDTO;
 import com.example.dto.UserDTO;
 import com.example.model.Building;
@@ -219,19 +220,54 @@ public class BuildingController {
 	@ApiOperation(value = "Get a list of buildings, where president is the current user.", httpMethod = "GET")
 	/*** get a list of the buildings ***/
 	public ResponseEntity<List<BuildingDTO>> getBuildingsByPresident(HttpServletRequest request) {
-		System.out.println("eddig eljut");
 		String token = request.getHeader("X-Auth-Token");
 		String username = tokenUtils.getUsernameFromToken(token);
 
 		User president = userService.findByUsername(username);
 
 		List<Building> buildings = buildingService.findAllByPresident(president.getId());
-
 		List<BuildingDTO> buildingsDTO = new ArrayList<>();
 		for (Building building : buildings) {
 			buildingsDTO.add(new BuildingDTO(building));
 		}
-		System.out.println("vege");
+		return new ResponseEntity<>(buildingsDTO, HttpStatus.OK);
+	}
+	
+	@RequestMapping(value = "/owner", method = RequestMethod.GET)
+	@ApiOperation(value = "Get a list of buildings, where owner is the current user.", httpMethod = "GET")
+	/*** get a list of the buildings ***/
+	public ResponseEntity<List<BuildingDTO>> getBuildingsByOwner(HttpServletRequest request) {
+		String token = request.getHeader("X-Auth-Token");
+		String username = tokenUtils.getUsernameFromToken(token);
+
+		User owner = userService.findByUsername(username);		
+		
+		List<Building> buildings = buildingService.getBuildingsByOwner(owner.getId());
+
+		List<BuildingDTO> buildingsDTO = new ArrayList<>();
+		for (Building building : buildings) {
+			buildingsDTO.add(new BuildingDTO(building));
+		}		
+	
+		return new ResponseEntity<>(buildingsDTO, HttpStatus.OK);
+	}
+	
+	
+	@RequestMapping(value = "/tenant", method = RequestMethod.GET)
+	@ApiOperation(value = "Get a list of buildings, where tenant is the current user.", httpMethod = "GET")
+	/*** get a list of the buildings ***/
+	public ResponseEntity<List<BuildingDTO>> getBuildingsByTenant(HttpServletRequest request) {
+
+		String token = request.getHeader("X-Auth-Token");
+		String username = tokenUtils.getUsernameFromToken(token);
+
+		User tenant = userService.findByUsername(username);		
+		
+		List<Building> buildings = buildingService.getBuildingsOfTenant(tenant.getId());
+		List<BuildingDTO> buildingsDTO = new ArrayList<>();
+		for (Building building : buildings) {
+			buildingsDTO.add(new BuildingDTO(building));
+		}
 		return new ResponseEntity<>(buildingsDTO, HttpStatus.OK);
 	}
 

@@ -96,7 +96,6 @@ public class AgendaController {
 
 		AgendaItem agendaPoint = AgendaItemDTO.getAgendaPoint(agendaPointDTO);
 		agendaPoint.setMeeting(meeting);
-
 		agendaPoint = agendaPointService.save(agendaPoint);
 		if (agendaPoint.getType()==ItemType.GLITCH) {
 			Glitch glitch = glitchService.findOne(agendaPoint.getGlitch().getId());

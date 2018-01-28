@@ -18,4 +18,10 @@ public interface BuildingRepository extends JpaRepository<Building, Long> {
 	@Query("SELECT b FROM Building b WHERE b.president.id=?1")
 	public List<Building> getBuildingsOfPresident(Long idPresident);
 
+	@Query("SELECT a.building FROM Apartment a WHERE a.owner.id=?1")
+	public List<Building> getBuildingsOfOwner(Long id);
+	
+	@Query("SELECT ua.apartment.building FROM UserAparment ua WHERE ua.tenant.id=?1")
+	public List<Building> getBuildingsOfTenane(Long id);
+
 }

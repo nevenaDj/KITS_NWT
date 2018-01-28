@@ -7,6 +7,7 @@ import { PagerService } from '../services/pager.service';
 import { MeetingsService } from './meetings.service';
 import { Builder } from 'selenium-webdriver';
 import { ApartmentService } from '../apartments/apartment.service';
+import { AuthService } from '../login/auth.service';
 
 @Component({
   selector: 'app-meetings',
@@ -34,7 +35,8 @@ export class MeetingsComponent implements OnInit {
   constructor(private router: Router, 
               private meetingSerivce: MeetingsService,
               private pagerService: PagerService,
-              private apartmentService: ApartmentService)  {
+              private apartmentService: ApartmentService,  
+              private authService: AuthService)  {
 
     this.subscription = meetingSerivce.RegenerateData$
       .subscribe(() => {
@@ -135,11 +137,13 @@ export class MeetingsComponent implements OnInit {
   }
   
   gotoGetMeeting(id: number) {
-    if (this.president){
+  
+    if (this.authService.isPresident())
       this.router.navigate(['/president/meetings', id]);
-    }else{
+    if (this.authService.isOwner())
       this.router.navigate(['/owner/meetings', id]);
-    }
+    if (this.authService.isTenant())
+      this.router.navigate(['/tenant/meetings', id]);
   }
 
   
