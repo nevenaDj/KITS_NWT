@@ -1,22 +1,18 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
-import * as decode from 'jwt-decode';
+import { Router } from '@angular/router';
 
-import { CompanyDataService } from './company-data.service'
-import { User } from '../models/user'
-import { Address } from '../models/address'
-
-
+import { User } from '../models/user';
+import { Address } from '../models/address';
+import { CompanyDataService } from '../home-company/company-data.service';
 
 @Component({
-  selector: 'app-home-company',
-  templateUrl: './home-company.component.html',
-  styleUrls: ['./home-company.component.css']
+  selector: 'app-company',
+  templateUrl: './company.component.html',
+  styleUrls: ['./company.component.css']
 })
-export class HomeCompanyComponent implements OnInit {
+export class CompanyComponent implements OnInit {
 
-  token = '';
   company: User;
   subscription: Subscription;
   address: Address;
@@ -42,16 +38,9 @@ export class HomeCompanyComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.token = localStorage.getItem('token');
-    
     this.getCompany();
   }
 
-  logout(){
-    localStorage.removeItem('token');
-    this.router.navigate(['login']);
-
-  }
   
   getCompany(){
      this.companyService.getCompany().then(
@@ -60,7 +49,6 @@ export class HomeCompanyComponent implements OnInit {
         console.log("companyR:"+JSON.stringify(company));
         console.log("companythis:"+JSON.stringify(this.company));
         this.company.username=company.username;
-        this.router.navigate(['/company/profile']);
        }
     );
     console.log("company:"+JSON.stringify(this.company));
@@ -70,13 +58,10 @@ export class HomeCompanyComponent implements OnInit {
     this.router.navigate(['/company/update']);
   }
   
-  gotoProfile(){
-    this.router.navigate(['/company/profile']);
-  }
 
   
     
   goToChangePass(){
-    this.router.navigate(['company/changePassword']);
+    this.router.navigate(['/company/changePassword']);
   }
 }
