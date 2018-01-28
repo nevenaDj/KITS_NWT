@@ -27,6 +27,13 @@ describe('GlitchDetailComponent', () => {
           type: {
             id: 1,
             type: 'type'
+          },
+          apartment: {
+              id: 1,
+              building: null,
+              description: '',
+              number: 1,
+              owner: null
           }
         }))),
       getComments: jasmine.createSpy('getComments')

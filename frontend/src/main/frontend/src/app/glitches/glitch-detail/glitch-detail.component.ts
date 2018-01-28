@@ -77,7 +77,7 @@ export class GlitchDetailComponent implements OnInit {
     this.glitchService.getGlitch(+this.route.snapshot.params['id'])
         .then(glitch => {
           this.glitch = glitch;
-          this.photoRoute= '/api/apartments/'+glitch.apartment.id+'/glitches/'+this.glitch.id+'/photo?image='
+          this.photoRoute= '/api/apartments/'+this.glitch.apartment.id+'/glitches/'+this.glitch.id+'/photo?image='
           this.getComments();
         });
     this.username = this.authService.getCurrentUser();
