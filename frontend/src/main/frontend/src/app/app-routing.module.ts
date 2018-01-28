@@ -57,10 +57,6 @@ import { MeatingDetailsComponent } from './meetings/meating-details/meating-deta
 import { AddItemComponent } from './meetings/add-item/add-item.component';
 import { ItemDetailsComponent } from './meetings/item-details/item-details.component';
 import { UpdateItemComponent } from './meetings/update-item/update-item.component';
-import { CurrentApartmentComponent } from './apartments/current-apartment/current-apartment.component';
-import { NotificationsComponent } from './notifications/notifications.component';
-import { AddNotificationComponent } from './notifications/add-notification/add-notification.component';
-import { CurrentBuildingComponent } from './buildings/current-building/current-building.component';
 import { NotificationDetailComponent } from './notifications/notification-detail/notification-detail.component';
 import { CurrentApartmentComponent } from './apartments/current-apartment/current-apartment.component';
 import { AddNotificationComponent } from './notifications/add-notification/add-notification.component';
@@ -188,7 +184,7 @@ const routers: Routes = [
       { path: 'apartments', component: CurrentApartmentComponent},
       { path: 'notifications', component: NotificationsComponent},
       { path: 'addNotification', component: AddNotificationComponent},
-      { path: 'notifications/:id', component: NotificationDetailComponent}
+      { path: 'notifications/:id', component: NotificationDetailComponent},
       { path: 'reports', component: ReportsComponent},
       { path: 'reports/:id', component: MeatingDetailsComponent},
       { path: 'meetings/:id/items/:id_item', component: ItemDetailsComponent},

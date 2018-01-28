@@ -4,6 +4,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { MeetingsService } from '../meetings.service';
 import { AgendaItem } from '../../models/agenda-item';
 import { AuthService } from '../../login/auth.service';
+import { Survey } from '../../models/survey';
+import { SurveyService } from '../../surveys/survey.service';
 
 @Component({
   selector: 'app-meating-details',
