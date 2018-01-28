@@ -87,32 +87,11 @@ export class PricelistCompanyComponent implements OnInit {
 
 
     gotoGetBill(id: number) {
-      this.router.navigate(['company/bills', id]);
+      this.router.navigate(['/company/bills', id]);
     }
-
-    goToActiveGlitches() {
-      this.router.navigate(['company/activeGlitches']);
-    }
-
-    goToPendingGlitches() {
-      this.router.navigate(['company/pendingGlitches']);
-    }
-
-    goToBills() {
-      this.router.navigate(['company/bills']);
-    }
-
-    goToPricelist() {
-      this.router.navigate(['company/pricelist']);
-    }
-
-    goToChangeType() {
-      this.router.navigate(['company/pricelist/changeType']);
-    }
-
 
     goToChangePass() {
-      this.router.navigate(['company/changePassword']);
+      this.router.navigate(['/company/changePassword']);
     }
 
     addItemShow(){
@@ -140,14 +119,14 @@ export class PricelistCompanyComponent implements OnInit {
             });
       }
 
-      deleteItem(id:number){
+    deleteItem(id:number){
         this.companyService.deleteItem(this.company.id,id).then(company => {
                 this.companyService.announceChange();
                
               });
         }
 
-      saveUpdatedItem(){
+    saveUpdatedItem(){
         this.updatedItem.price=Number(this.updatedItem.price);
           console.log("updated:" +JSON.stringify(this.updatedItem));
           this.companyService.updateItem(this.company.id, this.updatedItem).then(company => {
@@ -162,7 +141,7 @@ export class PricelistCompanyComponent implements OnInit {
                 });
           }
       
-      updateItem(item:ItemInPricelist, i:number){
+    updateItem(item:ItemInPricelist, i:number){
         console.log("update:" +JSON.stringify(item));
           this.updatedItemIndex=i;
           this.updatedItem.id=item.id;
@@ -171,7 +150,7 @@ export class PricelistCompanyComponent implements OnInit {
           console.log("updatedItem:" +JSON.stringify(this.updatedItem));
           }
   
-      cancel(){
+    cancel(){
         this.updatedItemIndex=null;
         this.updatedItem={
             id:null,
@@ -179,6 +158,10 @@ export class PricelistCompanyComponent implements OnInit {
               price:0
             }
             }
-
+    
+    goToChangeType() {
+      this.router.navigate(['/company/pricelist/changeType']);
+    }
+        
     
 }
