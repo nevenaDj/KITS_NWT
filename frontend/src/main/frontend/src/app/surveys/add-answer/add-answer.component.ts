@@ -88,7 +88,7 @@ export class AddAnswerComponent implements OnInit {
         }
       }
       if (num === 0){
-        console.log('nije odgovoreno na sva pitanja');
+        this.toastr.info('You have not answered all the questions.');
         flag = false;
       }
     }

@@ -1,6 +1,8 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { Router, ActivatedRoute } from '@angular/router';
+import { Location } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { ToastOptions, ToastsManager} from 'ng2-toastr';
 
 import { AddAnswerComponent } from './add-answer.component';
 import { Survey } from '../../models/survey';
@@ -22,7 +24,9 @@ describe('AddAnswerComponent', () => {
         questions: []
       }))),
     addAnswer: jasmine.createSpy('addAnswer')
-      .and.returnValue(Promise.resolve())
+      .and.returnValue(Promise.resolve()),
+    hasAnswer: jasmine.createSpy('hasAnswer')
+      .and.returnValue(Promise.resolve(false))
   };
 
   let activatedRouteStub: ActivatedRouteStub = new ActivatedRouteStub();
@@ -32,6 +36,11 @@ describe('AddAnswerComponent', () => {
     navigate: jasmine.createSpy('navigate')
   };
 
+  let locationMock = {
+    back: jasmine.createSpy('back')
+      .and.returnValue(Promise.resolve())
+  }
+
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ AddAnswerComponent ],
@@ -39,7 +48,10 @@ describe('AddAnswerComponent', () => {
       providers: [
         {provide: SurveyService, useValue: surveyServiceMock},
         {provide: Router, useValue: routerMock},
-        {provide: ActivatedRoute, useValue: activatedRouteStub}
+        {provide: Location, useValue: locationMock},
+        {provide: ActivatedRoute, useValue: activatedRouteStub},
+        ToastsManager,
+        ToastOptions
       ]
     })
     .compileComponents();
@@ -53,11 +65,6 @@ describe('AddAnswerComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
-  });
-
-  it('should get survey', () => {
-    component.ngOnInit();
-    expect(surveyService.getSurvey).toHaveBeenCalledWith(1);
   });
 
   it('should save answer', () => {

@@ -68,9 +68,4 @@ describe('SurveyDetailComponent', () => {
     expect(router.navigate).toHaveBeenCalled();
 
   }));
-
-  it('should get survey', () => {
-    component.ngOnInit();
-    expect(surveyService.getSurvey).toHaveBeenCalledWith(1);
-  });
 });

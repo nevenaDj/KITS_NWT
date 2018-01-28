@@ -52,7 +52,8 @@ describe('SurveyService', () => {
           options: [
             {
               id:1,
-              text: 'option'
+              text: 'option',
+              count: null
             }
           ]
         }
