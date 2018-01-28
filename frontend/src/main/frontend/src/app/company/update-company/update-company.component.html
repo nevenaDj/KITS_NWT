@@ -1,0 +1,59 @@
+			<div class="row">
+				<div class="col-lg-9 main-chart">
+					<p class="title">UPDATE PROFILE</p>
+				</div>
+			</div>
+			<form name="form" (ngSubmit)="saveCompany()">
+			<div class="row">
+
+				<div class="col-lg-10 main-chart">
+					<div class="row">
+                              <div class="col-lg-1"></div>
+                              <div class="col-lg-10 border">
+                                  <div class="border-title">username <div class="border-title-hover" (click)="goToChangePass()" style="float:right;">change passport</div></div>
+							
+                                  <div class="border-desc">{{company.username}}</div>
+                              </div>
+                              
+                        </div>
+					  <div class="row">
+                              <div class="col-lg-1"></div>
+                              <div class="col-lg-5 border">
+                                  <div class="border-title">
+                                      email
+                                  </div>
+                    
+                                  <div class="container-4">
+                                        <input type="search" id="update"  name="email" [(ngModel)]="company.email" >
+                                  </div>
+                              </div>
+                              <div class="col-lg-5 border">
+                                  <div class="border-title">
+                                      phone no.
+                                  </div>
+                                  <div class="container-4">
+                                        <input type="search" id="update"  name="phoneNo" [(ngModel)]="company.phoneNo" >
+                                  </div>
+                                  
+                              </div>
+                              
+                        </div>
+                        
+
+					<div class="row">
+						<div class="col-lg-1"></div>
+						<div class="col-lg-5">
+							<div class="full-button" style="background-color: #cbc5c1;" >
+								<a class="full-button-text" (click)="cancel()" >Cancel
+									</a>
+							</div>
+						</div>
+						<div class="col-lg-5">
+							<div class="full-button">
+					            <input type="submit"  class="save-button-text" value="Save">
+					         </div>
+						</div>
+					</div>
+				</div>
+			</div>
+			</form>

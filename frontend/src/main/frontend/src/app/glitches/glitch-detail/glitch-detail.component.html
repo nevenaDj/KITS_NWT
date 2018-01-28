@@ -73,11 +73,6 @@
           (uploadStateChanged)="onUploadStateChanged($event)">
         </image-upload>
       -->
-        <image-upload
-          (removed)="onRemoved($event)"
-          (uploadFinished)="imageFinishedUploading($event)"
-          (uploadStateChanged)="onUploadStateChanged($event)">
-        </image-upload>
       <br><br>
       <div class="row" *ngFor="let comment of comments">
         <br>

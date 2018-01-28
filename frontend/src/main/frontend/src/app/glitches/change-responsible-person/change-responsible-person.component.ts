@@ -4,7 +4,6 @@ import { Glitch } from '../../models/glitch';
 import { Subscription } from 'rxjs';
 import { Router, ActivatedRoute } from '@angular/router';
 import { CompanyDataService } from '../../home-company/company-data.service';
-import { GlitchDataService } from '../../glitch-details-company/glitch-data.service';
 import { GlitchService } from '../glitch.service';
 import { Route } from '@angular/compiler/src/core';
 

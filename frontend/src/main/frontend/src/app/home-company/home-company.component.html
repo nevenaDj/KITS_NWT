@@ -15,29 +15,15 @@
 		<!--logo end-->
 		<div class="nav notify-row" id="top_menu"></div>
 		<div class="top-menu">
-
 			<ul class="nav pull-right top-menu">
 				<ul class="nav top-menu">
-					<!-- settings start -->
-					<li class="dropdown"><a data-toggle="dropdown"
-						class="dropdown-toggle"> <i
-							class="fa fa-angle-down" style="margin-top: 20px"></i>
-					</a>
-						<ul class="dropdown-menu dropdown-menu-right">
-
-							<li><a href="home/company">
-									<div class="task-info">
-										<div class="desc">Profile</div>
-
-									</div>
-
-							</a></li>
-							<li><a (click)="logout()">
-									<div>Log out</div>
-							</a></li>
-
-						</ul></li>
-					<!-- settings end -->
+					<div class="dropdown" dropdown [dropdownToggle]="true" >
+						<button class="dropdown-button"  dropdown-open><i class="fa fa-angle-down">Settings</i></button>
+						<ul class="dropdown-menu dropdown-button" >
+							<li class="dropdown-button"><a (click)="gotoProfile()">Profile</a></li>
+							<li class="dropdown-button"><a (click)="logout()">Log out</a></li>
+						</ul>
+					</div>
 				</ul>
 			</ul>
 			<ul class="nav pull-right top-menu">
@@ -62,19 +48,19 @@
 		<div id="sidebar" class="nav-collapse ">
 			<!-- sidebar menu start-->
 			<ul class="sidebar-menu" id="nav-accordion">
-				<li class="mt"><a (click)="goToPendingGlitches()"> <i
+				<li class="mt"><a [routerLink]="['/company/pendingGlitches']"> <i
 						class="fa fa-building"></i> <span>Pending glitches</span>
 				</a></li>
 
-				<li class="sub-menu"><a (click)="goToActiveGlitches()"> <i
+				<li class="sub-menu"><a [routerLink]="['/company/activeGlitches']"> <i
 						class="fa fa-users"></i> <span>Active glitches</span>
 				</a></li>
 
-				<li class="sub-menu"><a (click)="goToBills()"> <i
+				<li class="sub-menu"><a [routerLink]="['/company/bills']"> <i
 						class="fa fa-users"></i> <span>Bills</span>
 				</a></li>
 
-				<li class="sub-menu"><a (click)="goToPricelist()"> <i
+				<li class="sub-menu"><a [routerLink]="['/company/pricelist']"> <i
 						class="fa fa-cogs"></i> <span>Pricelist</span>
 				</a></li>
 
@@ -90,46 +76,8 @@
 	<!--main content start-->
 	<section id="main-content">
 		<section class="wrapper">
-			<div class="row">
-				<div class="col-lg-9 main-chart">
-					<p class="title">PROFILE</p>
-				</div>
-			</div>
-			<div class="row">
-
-				<div class="col-lg-9 main-chart">
-					<div class="row">
-						<div class="col-lg-1"></div>
-						<div class="col-lg-10 border">
-							<div class="border-title">username <div class="border-title-hover" (click)="goToChangePass()" style="float:right;">change passport</div></div>
-							<div class="border-desc">{{company.username}}</div>
-						</div>
-
-					</div>
-					<div class="row">
-						<div class="col-lg-1"></div>
-						<div class="col-lg-5 border">
-							<div class="border-title">email</div>
-							<div class="border-desc">{{company.email}}</div>
-						</div>
-						<div class="col-lg-5 border">
-							<div class="border-title">phone no.</div>
-							<div class="border-desc">{{company.phoneNo}}</div>
-						</div>
-
-					</div>
-					
-					<div class="row">
-						<div class="col-lg-1"></div>
-						<div class="col-lg-10">
-							<div class="full-button" (click)="goToUpdate()">
-								<a class="full-button-text" href="#/company/update">Update
-									data</a>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
+			<router-outlet></router-outlet>
+			
 		</section>
 	</section>
 	<!--main content end-->

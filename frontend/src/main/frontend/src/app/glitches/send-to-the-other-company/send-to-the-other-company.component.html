@@ -1,0 +1,32 @@
+            <div class="row">
+              <div class="col-lg-9 main-chart">
+                  <div class="row">
+                    <p class="title">CHOOSE COMPANY</p>
+                  </div>
+                  <div class="row">
+             
+                      <div class="container">
+                          <div class="check" *ngFor="let com of companies ; let i=index; ">
+                            <div *ngIf="company.id!=com.id">
+                                <input id="{{i}}" type="radio" name="types" [value]="company" (change)="onSelectionChange(com)"/>
+                                <label for="{{i}}" (change)="onSelectionChange(com)"> 
+                                  <div class="box" (change)="onSelectionChange(com)"><i class="fa fa-check"></i></div>
+                                  <div class="text" (change)="onSelectionChange(com)">{{com.username}}</div>
+                                </label>
+                            </div>                
+                          </div>   
+                      </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-1"></div>
+                    <div class="col-lg-5">
+                      
+                    </div>
+                    <div class="col-lg-5">
+                      <div class="full-button" >
+                        <input type="submit" class="save-button-text" (click)="update()" value="Send">
+                      </div>
+                    </div>
+                  </div>
+            </div>
+            </div>
