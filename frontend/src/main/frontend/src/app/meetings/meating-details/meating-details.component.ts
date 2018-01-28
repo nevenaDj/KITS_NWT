@@ -131,7 +131,11 @@ export class MeatingDetailsComponent implements OnInit {
 
   gotoGetSurveyAnswer(id:number){
     let meetingID = +this.route.snapshot.params['id'];
-    this.router.navigate([`/president/meeting/${meetingID}/surveys/${id}/answers`]);
+    if(this.president){
+      this.router.navigate([`/president/meeting/${meetingID}/surveys/${id}/answers`]);
+    }else{
+      this.router.navigate([`/owner/meeting/${meetingID}/surveys/${id}/answers`]);
+    }
 
   }
 

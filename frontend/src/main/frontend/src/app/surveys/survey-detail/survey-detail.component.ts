@@ -49,7 +49,7 @@ export class SurveyDetailComponent implements OnInit {
   deleteSurvey(){
     let meetingID: number = +this.route.snapshot.params['idMeeting'];
     this.surveyService.deleteSurvey(this.survey.id)
-        .then(() => this.router.navigate([`/president/meeting/${meetingID}`]));
+        .then(() => this.router.navigate([`/president/meetings/${meetingID}`]));
 
   }
 
