@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewContainerRef } from '@angular/core';
 import { CommunalProblem } from '../../models/communal-problem';
 import { CommunalProblemService } from '../communal-problem.service';
 import { Router, ActivatedRoute } from '@angular/router';
@@ -6,6 +6,7 @@ import { GlitchType } from '../../models/glitch-type';
 import { GlitchTypeService } from '../../glitch-types/glitch-type.service';
 import { Glitch } from '../../models/glitch';
 import { User } from '../../models/user';
+import { ToastsManager } from 'ng2-toastr';
 
 @Component({
   selector: 'app-add-communal-problem',
@@ -28,7 +29,11 @@ export class AddCommunalProblemComponent implements OnInit {
   constructor(private router: Router,
               private route: ActivatedRoute,
               private communalServiceProblem: CommunalProblemService,
-              private glitchTypeService: GlitchTypeService){ 
+              private glitchTypeService: GlitchTypeService,
+              private toastr: ToastsManager, 
+              private vcr: ViewContainerRef) { 
+      this.toastr.setRootViewContainerRef(vcr);
+      this.min.setDate(this.min.getDate() + 1);
       this.problem={
         id:null,
         apartments:[],
@@ -58,12 +63,20 @@ export class AddCommunalProblemComponent implements OnInit {
   
 
   save(){
-    this.problem.dateOfRepair=this.selectedMoment;
-    this.problem.companyID=this.selectedCompany.id;
-    this.problem.type=this.selectedType;
-    this.communalServiceProblem.addCommunalProblem(+this.route.snapshot.params['id'], this.problem).then(
-      prob => this.router.navigate(['/president/communalProblems'])
-    )
+    if (this.selectedType==null){
+      this.toastr.error('You have to select a type!');
+    } else if (this.selectedCompany==null){
+      this.toastr.error('You have to select a company!');
+    } else if (this.problem.description==''){
+      this.toastr.error('You dont have a description!');
+    }else{
+      this.problem.dateOfRepair=this.selectedMoment;
+      this.problem.companyID=this.selectedCompany.id;
+      this.problem.type=this.selectedType;
+      this.communalServiceProblem.addCommunalProblem(+this.route.snapshot.params['id'], this.problem).then(
+        prob => this.router.navigate(['/president/communalProblems'])
+      )
+    }
   }
 
   selectType(type:GlitchType){

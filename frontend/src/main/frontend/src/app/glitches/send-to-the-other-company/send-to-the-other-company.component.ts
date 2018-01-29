@@ -1,10 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewContainerRef } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
 import { Router, ActivatedRoute } from '@angular/router';
 import { GlitchDataService } from '../glitch-details-company/glitch-data.service';
 import { User } from '../../models/user';
 import { Glitch } from '../../models/glitch';
 import { CompanyDataService } from '../../home-company/company-data.service';
+import { ToastsManager } from 'ng2-toastr';
 
 @Component({
   selector: 'app-send-to-the-other-company',
@@ -26,7 +27,10 @@ export class SendToTheOtherCompanyComponent implements OnInit {
   constructor(private router: Router,
               private route:ActivatedRoute,
               private companyService: CompanyDataService,
-              private glitchService: GlitchDataService) {
+              private glitchService: GlitchDataService,
+              private toastr: ToastsManager, 
+              private vcr: ViewContainerRef) { 
+    this.toastr.setRootViewContainerRef(vcr);
     this.company = {
       id: null,
       password: '',
@@ -46,17 +50,14 @@ export class SendToTheOtherCompanyComponent implements OnInit {
 
   }
   ngOnInit() {
-    this.token = localStorage.getItem('token');
     this.getCompany();
     this.companyService.getGlitch(+this.route.snapshot.params['id'])
         .then(glitch => {
-          console.log("id:"+JSON.stringify(this.route.snapshot.params['id']));
-          console.log("glitch"+JSON.stringify(glitch));
+
           this.glitch = glitch;
           this.glitchService.getCompanies(this.glitch).then(
             companies=>{
               this.companies=companies;
-              console.log("companies:"+JSON.stringify(this.companies))
             }
           )
         }
@@ -72,7 +73,6 @@ export class SendToTheOtherCompanyComponent implements OnInit {
 
   onSelectionChange(company){
     this.selected=company;
-    console.log(JSON.stringify("change:"+this.selected.username));
   }
 
 
@@ -82,10 +82,16 @@ export class SendToTheOtherCompanyComponent implements OnInit {
 
 
   update(){
+    if (this.selected==null){
+      this.toastr.error('You have to select a company');
+    }else{
     this.glitch.companyID=this.selected.id;
     this.glitchService.setCompany(this.glitch,this.selected.id).then(company => {
       this.glitchService.announceChange();
       this.router.navigate(['/company/pendingGlitches']);}
+    ).catch(
+      error=>  this.toastr.error('Error during updating.')
     );
+  }
   }
 }

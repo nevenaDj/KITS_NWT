@@ -1,10 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewContainerRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MeetingsService } from '../meetings.service';
 import { ItemComment } from '../../models/itemComment';
 import { AgendaItem } from '../../models/agenda-item';
 import { AuthService } from '../../login/auth.service';
 import { Meeting } from '../../models/meeting';
+import { ToastsManager } from 'ng2-toastr';
 
 @Component({
   selector: 'app-item-details',
@@ -32,14 +33,17 @@ export class ItemDetailsComponent implements OnInit {
   constructor(private route: ActivatedRoute,
               private meetingService: MeetingsService,
               private router: Router, 
-              private authService: AuthService) { 
-                this.comment={
-                  id:null,
-                  writer:null,
-                  date:new Date(), 
-                  text:''
-                }
-              }
+              private authService: AuthService,
+              private toastr: ToastsManager, 
+              private vcr: ViewContainerRef) { 
+    this.toastr.setRootViewContainerRef(vcr);
+    this.comment={
+        id:null,
+        writer:null,
+        date:new Date(), 
+        text:''
+       }
+      }
 
 
   ngOnInit() {
@@ -79,7 +83,9 @@ export class ItemDetailsComponent implements OnInit {
   }
 
   saveComment(){
-    console.log(this.comment);
+    if (this.comment.text===''){
+      this.toastr.error('Your comment is empty. Pleas, write something!')
+    } else{
     this.comment.date=new Date()
     this.meetingService.addComment(this.meeting.id, this.item.id, this.comment)
         .then(() => {
@@ -91,6 +97,7 @@ export class ItemDetailsComponent implements OnInit {
             date:new Date()
           }
         });
+      }
   }
 
   goToGlitch(){
@@ -113,7 +120,12 @@ export class ItemDetailsComponent implements OnInit {
 
 
   saveReport(){
+    if (this.conclusion===''){
+      this.toastr.error('Your conclusion is empty. Pleas, write something!')
+    } else{
     this.item.conclusion=this.conclusion;
-    this.meetingService.addConclusion(this.meeting.id, this.item);
-  }
+    this.meetingService.addConclusion(this.meeting.id, this.item).catch(
+      error=>this.toastr.error('Error during update!')
+    );
+  }}
 }

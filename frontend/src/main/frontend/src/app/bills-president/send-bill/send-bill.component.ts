@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewContainerRef } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
 import { Router, ActivatedRoute } from '@angular/router';
 import { forEach } from '@angular/router/src/utils/collection';
@@ -9,6 +9,8 @@ import { ItemInBill } from '../../models/item-in-bill';
 import { CompanyDataService } from '../../home-company/company-data.service';
 import { GlitchDataService } from '../../glitches/glitch-details-company/glitch-data.service';
 import { Bill } from '../../models/bill';
+import { ItemInPricelist } from '../../models/item-in-pricelist';
+import { ToastsManager } from 'ng2-toastr';
 
 @Component({
   selector: 'app-send-bill',
@@ -31,7 +33,10 @@ export class SendBillComponent implements OnInit {
   constructor(private router: Router,
               private route:ActivatedRoute,
               private companyService: CompanyDataService,
-              private glitchService: GlitchDataService) {
+              private glitchService: GlitchDataService,
+              private toastr: ToastsManager, 
+              private vcr: ViewContainerRef) {
+    this.toastr.setRootViewContainerRef(vcr);
     this.company = {
       id: null,
       password: '',
@@ -99,11 +104,16 @@ export class SendBillComponent implements OnInit {
     );
   }
 
-  changePrice(){
-    this.price=0;
-    for (let item of this.items) {
-      if (item.piece!=0){
-        this.price+=item.price*item.piece;
+  changePrice(i:ItemInBill){
+    if (i.piece<0){
+      this.toastr.error('Item cant be negative.');
+      i.piece=0;
+    } else {
+      this.price=0;
+      for (let item of this.items) {
+        if (item.piece!=0){
+          this.price+=item.price*item.piece;
+        }
       }
     }
   }
@@ -116,6 +126,9 @@ export class SendBillComponent implements OnInit {
 
 
   sendBill(){
+    if (this.price<=0){
+      this.toastr.error('You dont have item.');
+    }else{
     let bill:Bill={
       items:[],
       approved:false,
@@ -133,5 +146,5 @@ export class SendBillComponent implements OnInit {
         this.router.navigate(['/company/bills']);
       }
     );
-  }
+  }}
 }

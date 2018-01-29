@@ -1,11 +1,12 @@
 import { CompanyDataService } from '../home-company/company-data.service';
 import { Pricelist } from '../models/pricelist';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewContainerRef } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { User } from '../models/user'
 import { Subscription } from 'rxjs/Subscription';
 import { ItemInPricelist } from '../models/item-in-pricelist';
+import { ToastsManager } from 'ng2-toastr';
 
 @Component({
   selector: 'app-pricelist-company',
@@ -23,7 +24,11 @@ export class PricelistCompanyComponent implements OnInit {
     updatedItem:ItemInPricelist;
     updatedItemIndex:number=null;
 
-    constructor(private router: Router, private companyService: CompanyDataService) {
+    constructor(private router: Router,
+                private companyService: CompanyDataService,
+                private toastr: ToastsManager, 
+                private vcr: ViewContainerRef) { 
+      this.toastr.setRootViewContainerRef(vcr);
       this.newItem={
         id:null,
         nameOfType:'',
@@ -63,14 +68,7 @@ export class PricelistCompanyComponent implements OnInit {
           }
 
     ngOnInit() {
-      this.token = localStorage.getItem('token');
       this.getCompany();
-    }
-
-    logout() {
-      localStorage.removeItem('token');
-      this.router.navigate(['login']);
-
     }
 
     getCompany() {
@@ -78,7 +76,6 @@ export class PricelistCompanyComponent implements OnInit {
         company => {this.company = company;
           this.companyService.getPricelist(this.company.id).then(
             pricelist=>{ this.pricelist=pricelist;
-            console.log(JSON.stringify(pricelist));
           }
           );
         }
@@ -104,10 +101,12 @@ export class PricelistCompanyComponent implements OnInit {
     addNewItem(){
       this.newItem.price=Number(this.newItem.price);
       if ( this.newItem.price === null) {
-        console.log(JSON.stringify(this.newItem));
-        console.log("error")
-        return;
-      }
+        this.toastr.error('You dont have a price!');
+      }else if ( this.newItem.price <=0) {
+        this.toastr.error('The price has to be bigger than 0!');
+      }else if ( this.newItem.nameOfType ==='') {
+        this.toastr.error('Name of type is missing!');
+      }else{
       this.companyService.addItem(this.company.id, this.newItem).then(company => {
               this.companyService.announceChange();
               this.newItem={
@@ -117,18 +116,24 @@ export class PricelistCompanyComponent implements OnInit {
               };
               this.addItem=false;
             });
+          }
       }
 
     deleteItem(id:number){
         this.companyService.deleteItem(this.company.id,id).then(company => {
-                this.companyService.announceChange();
-               
-              });
+                this.companyService.announceChange();            
+              }).catch(error=>this.toastr.error('Error during deleting!'));
         }
 
     saveUpdatedItem(){
         this.updatedItem.price=Number(this.updatedItem.price);
-          console.log("updated:" +JSON.stringify(this.updatedItem));
+        if ( this.updatedItem.price === null) {
+          this.toastr.error('You dont have a price!');
+        }else if ( this.updatedItem.price <=0) {
+          this.toastr.error('The price has to be bigger than 0!');
+        }else if ( this.updatedItem.nameOfType ==='') {
+          this.toastr.error('Name of type is missing!');
+        }else{
           this.companyService.updateItem(this.company.id, this.updatedItem).then(company => {
                   this.companyService.announceChange();
                   this.updatedItemIndex=null;
@@ -139,15 +144,15 @@ export class PricelistCompanyComponent implements OnInit {
                       }
                  
                 });
+              }
           }
       
     updateItem(item:ItemInPricelist, i:number){
-        console.log("update:" +JSON.stringify(item));
           this.updatedItemIndex=i;
           this.updatedItem.id=item.id;
           this.updatedItem.nameOfType=item.nameOfType;
           this.updatedItem.price=Number(item.price);
-          console.log("updatedItem:" +JSON.stringify(this.updatedItem));
+          
           }
   
     cancel(){

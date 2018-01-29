@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewContainerRef } from '@angular/core';
 import { ContentWithoutAgenda } from '../../models/content-without-agenda';
 import { AgendaItem } from '../../models/agenda-item';
 import { Glitch } from '../../models/glitch';
@@ -8,6 +8,7 @@ import { Subscription } from 'rxjs/Subscription';
 import { Meeting } from '../../models/meeting';
 import { Notification } from '../../models/notification';
 import { CommunalProblem } from '../../models/communal-problem';
+import { ToastsManager } from 'ng2-toastr';
 
 @Component({
   selector: 'app-add-item',
@@ -16,7 +17,7 @@ import { CommunalProblem } from '../../models/communal-problem';
 })
 export class AddItemComponent implements OnInit {
 
-  selectedType:string='TEXT';
+  selectedType:string;
   types:string[]=['TEXT','GLITCH','NOTIFICATION', 'COMMUNAL_PROBLEM'];
   contentWithoutMeeting:ContentWithoutAgenda;
   item:AgendaItem;
@@ -34,7 +35,10 @@ export class AddItemComponent implements OnInit {
 
   constructor(private router: Router, 
               private meetingSerivce: MeetingsService,
-              private route: ActivatedRoute) {
+              private route: ActivatedRoute,
+              private toastr: ToastsManager, 
+              private vcr: ViewContainerRef) { 
+    this.toastr.setRootViewContainerRef(vcr);
     this.item={
       id:null,
       comments:[],
@@ -90,24 +94,6 @@ export class AddItemComponent implements OnInit {
 
   onSelectionChange(type){
     this.selectedType=type;
-    console.log(JSON.stringify("change:"+this.selectedType));
-    if (this.selectedType=="TEXT")
-      this.height=0;
-    else if (this.selectedType=="GLITCH"){
-      if (this.contentWithoutMeeting.glitches.length!=0){
-        this.selectedGlitch=this.contentWithoutMeeting.glitches[0];
-      }
-    }
-    else if (this.selectedType=="NOTIFICATION"){
-      if (this.contentWithoutMeeting.notifications.length!=0){
-        this.selectedNotification=this.contentWithoutMeeting.notifications[0];
-      }
-    }
-    else if (this.selectedType=="COMMUNAL_PROBLEM"){
-      if (this.contentWithoutMeeting.communalProblems.length!=0){
-        this.selectedProblem=this.contentWithoutMeeting.communalProblems[0];
-      }
-    }
   }
 
   onSelectionChangeGlitch(glitch){
@@ -123,24 +109,34 @@ export class AddItemComponent implements OnInit {
   }
 
   addNewItem(){
-    this.item.type=this.selectedType;
-    this.item.number=this.meeting.agenda.agendaPoints.length+1;
-    this.item.notification=null;
-    if (this.selectedType=="GLITCH")
-      this.item.glitch=this.selectedGlitch;
-    if (this.selectedType=="NOTIFICATION"){
-      console.log('selected'+JSON.stringify(this.selectedNotification))
-      this.item.notification=this.selectedNotification;
-    }
-    if (this.selectedType=="COMMUNAL_PROBLEM")
-      this.item.communalProblem=this.selectedProblem;
-    
-    this.meetingSerivce.addItem(  +this.route.snapshot.params['id'], this.item).then(
-        item=>  {
-          if (this.president )
-            this.router.navigate(['/president/meetings',+this.route.snapshot.params['id'], 'items',item.id]) 
-          else 
-            this.router.navigate(['/owner/meetings',+this.route.snapshot.params['id'], 'items',item.id]) 
-        })
-  }
+    if (this.selectedType==null)
+      this.toastr.error('You have to select a type!');
+    else if (this.selectedType=="GLITCH" && this.selectedGlitch==null){
+      this.toastr.error('You have to select a glitch!');
+    }else if (this.selectedType=="NOTIFICATION" && this.selectedNotification==null){
+      this.toastr.error('You have to select a notification!');
+    }else if (this.selectedType=="COMMUNAL_PROBLEM" && this.selectedProblem==null){
+      this.toastr.error('You have to select a communal problem!');
+    }else if (this.item.title==''){
+      this.toastr.error('You dont have title!');
+    }else{
+      this.item.type=this.selectedType;
+      this.item.number=this.meeting.agenda.agendaPoints.length+1;
+      this.item.notification=null;
+      if (this.selectedType=="GLITCH")
+        this.item.glitch=this.selectedGlitch;
+      if (this.selectedType=="NOTIFICATION"){
+        this.item.notification=this.selectedNotification;
+      }
+      if (this.selectedType=="COMMUNAL_PROBLEM")
+        this.item.communalProblem=this.selectedProblem;
+      
+      this.meetingSerivce.addItem(  +this.route.snapshot.params['id'], this.item).then(
+          item=>  {
+            if (this.president )
+              this.router.navigate(['/president/meetings',+this.route.snapshot.params['id'], 'items',item.id]) 
+            else 
+              this.router.navigate(['/owner/meetings',+this.route.snapshot.params['id'], 'items',item.id]) 
+          })
+  }}
 }

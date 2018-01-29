@@ -1,5 +1,5 @@
 
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ViewContainerRef} from '@angular/core';
 import {Router, ActivatedRoute} from '@angular/router';
 import {Subscription} from 'rxjs/Subscription';
 import { GlitchDataService } from './glitch-data.service';
@@ -10,6 +10,7 @@ import { User } from '../../models/user';
 import { Glitch } from '../../models/glitch';
 import { CompanyDataService } from '../../home-company/company-data.service';
 import { Comment } from '../../models/comment';
+import { ToastsManager } from 'ng2-toastr';
 
 @Component({
   selector: 'app-glitch-details-company',
@@ -32,7 +33,10 @@ export class GlitchDetailsCompanyComponent implements OnInit {
   constructor(private router: Router,
               private route:ActivatedRoute,
               private companyService: CompanyDataService,
-              private glitchService: GlitchDataService) {
+              private glitchService: GlitchDataService,
+              private toastr: ToastsManager, 
+              private vcr: ViewContainerRef) { 
+    this.toastr.setRootViewContainerRef(vcr);
     this.company = {
       id: null,
       password: '',
@@ -61,7 +65,6 @@ export class GlitchDetailsCompanyComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.token = localStorage.getItem('token');
     this.getCompany();
     this.companyService.getGlitch(+this.route.snapshot.params['id'])
         .then(glitch => {
@@ -78,23 +81,23 @@ export class GlitchDetailsCompanyComponent implements OnInit {
 }
 
   acceptGlitch(){
-    console.log('accept');
+    
     this.glitchService.updateState(this.glitch.id, 2)
       .then( glitch => {
         console.log(JSON.stringify(glitch));
-        this.router.navigate(['/company/activeGlitches', this.glitch.id]);
+        this.router.navigate(['/company/activeGlitches', this.glitch.id]).catch(error=>this.toastr.error('Error during approve.'));
     } 
   );
   }
 
 
   setTime(){
-    console.log('accept');
     this.glitch.dateOfRepair=this.selectedMoment;
     this.glitchService.setTime(this.glitch)
       .then( glitch => {
-        console.log(JSON.stringify(glitch));
-        this.router.navigate(['/company/activeGlitches', this.glitch.id]);
+        this.router.navigate(['/company/activeGlitches', this.glitch.id]).catch(
+          error=>this.toastr.error('Error during setting time.')
+        );
     } 
   );
   }
@@ -120,7 +123,9 @@ export class GlitchDetailsCompanyComponent implements OnInit {
   }
 
   saveComment(){
-    console.log(this.comment);
+    if (this.comment.text===''){
+      this.toastr.error('You have to write something!')
+    }else{
     this.glitchService.addComment(this.glitch.id, this.comment)
         .then(() => {
           this.getComments();
@@ -129,7 +134,8 @@ export class GlitchDetailsCompanyComponent implements OnInit {
             text: '',
             user: null
           }
-        });
+        }).catch(error=>this.toastr.error('Error! Your comment didnt send.'));
+      }
   }
 
   gotoGetGlitch(id: number) {

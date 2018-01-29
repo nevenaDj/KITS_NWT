@@ -1,10 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewContainerRef } from '@angular/core';
 import { Meeting } from '../../models/meeting';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MeetingsService } from '../meetings.service';
 import { AgendaItem } from '../../models/agenda-item';
 import { and } from '@angular/router/src/utils/collection';
 import { Agenda } from '../../models/agenda';
+import { ToastsManager } from 'ng2-toastr';
 
 @Component({
   selector: 'app-update-item',
@@ -19,7 +20,10 @@ export class UpdateItemComponent implements OnInit {
 
   constructor(private route: ActivatedRoute,
     private meetingService: MeetingsService,
-    private router: Router) {
+    private router: Router,
+    private toastr: ToastsManager, 
+    private vcr: ViewContainerRef) { 
+      this.toastr.setRootViewContainerRef(vcr);
       this.meeting={
           id:null,
           active:false,
@@ -67,9 +71,6 @@ export class UpdateItemComponent implements OnInit {
   }
 
   setNewNumber(value:number, item:AgendaItem){
-    console.log("old items: "+JSON.stringify(this.agenda.agendaPoints))
-    console.log("item: "+JSON.stringify(item.title)+', '+item.number+", number: "+value)
-
     let old_num:number=0;
     for (let temp of this.agenda.agendaPoints){
       if (temp.id===item.id){
@@ -79,37 +80,25 @@ export class UpdateItemComponent implements OnInit {
     }
 
     for (let temp of this.agenda.agendaPoints){
-      console.log('old_num:'+old_num+', value: '+value+', temp.number: '+temp.number);
       if (old_num>value){
-        console.log(old_num+' > '+value);
         if (item.id==temp.id){
-            console.log('temp -'+temp.number)
             temp.number=+value;
-            console.log('temp -'+temp.number)
           }
         else{
           if (temp.number>=value && temp.number<old_num){
-            console.log('temp before++ '+temp.number);
             temp.number++;
-            console.log('temp after++ '+temp.number);
           } }
       }
       if (old_num<value){
-        console.log(old_num+' < '+value)
         if (item.id==temp.id){
-          console.log('temp -'+temp.number)
           temp.number=+value;
-          console.log('temp -'+temp.number)
         }else{
           if (temp.number<=value && temp.number>old_num){
-            console.log('temp before-- '+temp.number);
             temp.number--;
-            console.log('temp after-- '+temp.number);
           } 
       }
       }
     }
-    console.log("old items: "+JSON.stringify(this.agenda.agendaPoints))
     for (let temp of this.agenda.agendaPoints){
       for (let temp2 of this.meeting.agenda.agendaPoints){
         if (temp.id==temp2.id)
@@ -117,14 +106,12 @@ export class UpdateItemComponent implements OnInit {
       }
     }
     this.meeting.agenda.agendaPoints.sort((a,b)=>a.number-b.number);
-    console.log("new items: "+JSON.stringify(this.meeting.agenda.agendaPoints))
-
 
   }
 
   save(){
     this.meetingService.updateOrder(this.meeting.agenda).then(
       agenda=>this.router.navigate(['/president/meetings',this.meeting.id])
-    )
+    ).catch(error=> this.toastr.error('Error during update!'))
   }
 }

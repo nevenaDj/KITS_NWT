@@ -76,7 +76,7 @@ describe('NotificationsComponent', () => {
   });
 
   it('should call getNotifications()', () => {
-    component.buildingID = 1
+    //component.buildingID = 1
     component.getNotifications(0,15);
     expect(notificationService.getNotifications).toHaveBeenCalledWith(1,0,15);
   });

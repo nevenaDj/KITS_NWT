@@ -202,9 +202,6 @@ public class PricelistController {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		} else {
 			itemService.remove(itemId);
-			Pricelist pricelist = pricelistService.findOneByCompany(id);
-			pricelist.setDateUpdate(new Date());
-			pricelistService.save(pricelist);
 			return new ResponseEntity<>(HttpStatus.OK);
 		}
 	}
