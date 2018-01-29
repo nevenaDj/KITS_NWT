@@ -183,9 +183,21 @@ public class TenantControllerTest {
 	}
 
 	@Test
-	public void testGetResponsiblePerson() throws Exception {
-		mockMvc.perform(
-				get("/api/responsibleGlitches?page=0&size=" + PAGE_SIZE).header("X-Auth-Token", accessTokenTenant))
-				.andExpect(status().isOk());
-	}
+	public void testGetResponsiblePerson() throws Exception{
+		mockMvc.perform(get("/api/responsibleGlitches?page=0&size="+ PAGE_SIZE).header("X-Auth-Token", accessTokenTenant))
+		.andExpect(status().isOk());	
+	}	
+	
+	@Test
+	public void testGetResponsiblePersonCount() throws Exception{
+		mockMvc.perform(get("/api/responsibleGlitches/count").header("X-Auth-Token", accessTokenTenant))
+		.andExpect(status().isOk());	
+	}	
+	
+	@Test
+	public void testGetTenantOfApartment() throws Exception{
+		mockMvc.perform(get("/api/aparments/"+1L+"/tenants").header("X-Auth-Token", accessTokenTenant))
+		.andExpect(status().isOk());	
+	}	
 }
+

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewContainerRef } from '@angular/core';
 import { Building } from '../models/building';
 import { Meeting } from '../models/meeting';
 import { Subscription } from 'rxjs/Subscription';
@@ -8,6 +8,7 @@ import { MeetingsService } from './meetings.service';
 import { Builder } from 'selenium-webdriver';
 import { ApartmentService } from '../apartments/apartment.service';
 import { AuthService } from '../login/auth.service';
+import { ToastsManager } from 'ng2-toastr';
 
 @Component({
   selector: 'app-meetings',
@@ -36,7 +37,10 @@ export class MeetingsComponent implements OnInit {
               private meetingSerivce: MeetingsService,
               private pagerService: PagerService,
               private apartmentService: ApartmentService,  
-              private authService: AuthService)  {
+              private authService: AuthService,
+              private toastr: ToastsManager, 
+              private vcr: ViewContainerRef) { 
+    this.toastr.setRootViewContainerRef(vcr);
 
     this.subscription = meetingSerivce.RegenerateData$
       .subscribe(() => {
@@ -67,9 +71,6 @@ export class MeetingsComponent implements OnInit {
           this.selectedBuilding=buildings[0];
           this.getMeetingsAll();
         }
-        else{
-          this.tempSelectedBuilding=buildings[0];
-        }
       }
     )
   }
@@ -85,43 +86,38 @@ export class MeetingsComponent implements OnInit {
   }
  
   chooseBuilding(){
+    if (this.tempSelectedBuilding==null){
+      this.toastr.error('You have to select a building!');
+    }else{
     this.selectedBuilding=this.tempSelectedBuilding;
-    console.log("selected: "+JSON.stringify(this.selectedBuilding));
     this.meetingSerivce.getMeetingsCount(this.selectedBuilding.id).then(
       count => {
         this.meetingsCount = count;
         this.setPage(1);
       });
+    }
   }
 
   onSelectionChange(building:Building){
-    console.log("on buildinf: "+JSON.stringify(building));
     this.tempSelectedBuilding=building;
-    console.log("on selected-building: "+JSON.stringify(this.tempSelectedBuilding));
   }
 
   newMeeting(){
     let route: string= '/president/buildings/'+ this.selectedBuilding.id+'/meetings/add';
-    console.log(route);
     this.router.navigate([route]);
   }
 
   getMeetings(page: number, size: number){
     this.meetingSerivce.getMeetings(page,size,this.selectedBuilding.id)
         .then(meetings => {this.meetings=meetings;
-          console.log("this.meetings: "+JSON.stringify(this.meetings));
           this.canWeAddMeeting=true;
           for (let m of meetings){
             if (!m.active)
               this.canWeAddMeeting=false;
           }
           this.meetings.sort(function(x, y) {
-            // true values first
             return (x.active === y.active)? 0 : y.active? -1 : 1;
-            // false values first
-            // return (x === y)? 0 : x? 1 : -1;
         });
-          console.log("active : "+JSON.stringify(this.canWeAddMeeting));
         });
   }
 

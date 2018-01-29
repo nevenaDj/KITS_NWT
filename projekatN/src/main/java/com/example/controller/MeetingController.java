@@ -130,29 +130,6 @@ public class MeetingController {
 		return new ResponseEntity<>(count, HttpStatus.OK);
 	}
 
-/*
-	@RequestMapping(value = "/buildings/{id}/meetings", method = RequestMethod.GET, produces = "application/json", params = {
-			"date" }) 
-	@ApiOperation(value = "Get meeting by a date.", notes = "Returns the meeting", httpMethod = "POST", 
-	produces = "application/json", consumes = "application/json")
-	@ApiImplicitParam(paramType="header", name="X-Auth-Token", required=true, value="JWT token")
-	@ApiResponses(value = { 
-			@ApiResponse(code = 201, message = "Created", response = MeetingDTO.class),
-			@ApiResponse(code = 400, message = "Bad request") })
-	/*** get meeting by date ***/
-	/*
-	public ResponseEntity<MeetingDTO> findMeetingByDate(
-			@ApiParam(value = "The ID of the building.", required = true) @PathVariable Long id,
-			@ApiParam(name = "date", value = "Date of the meeting",required=true) @RequestParam("date") Date date) {
-
-		Meeting meeting = meetingService.findMeetingByDate(id, date);
-
-		if (meeting == null) {
-			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-		}
-		return new ResponseEntity<>(new MeetingDTO(meeting), HttpStatus.CREATED);
-	}
-*/
 	@RequestMapping(value = "/buildings/{id}/meetings/dates", method = RequestMethod.GET, produces = "application/json")
 	@ApiOperation(value = "Get the dates where are meetings.", notes = "Returns the list of date.", httpMethod = "POST", 
 	produces = "application/json")
@@ -193,7 +170,6 @@ public class MeetingController {
 		if (meeting == null) {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
-		
 	
 		meeting.setActive(true);
 		meeting= meetingService.save(meeting);

@@ -30,9 +30,8 @@ public class AgendaItemRepositoryIntegrationTest {
 
 		assertNotNull(item);
 		assertEquals(item.size(), 1);
-		assertEquals(ID_GLITCH, item.get(0).getGlitch().getId());
-		assertEquals(NUMBER, item.get(0).getNumber());
-		assertEquals(TITLE, item.get(0).getTitle());
+		assertEquals(NUMBER2, item.get(0).getNumber());
+		assertEquals(TITLE2, item.get(0).getTitle());
 		assertEquals(ID_MEETING, item.get(0).getMeeting().getId());
 
 	}

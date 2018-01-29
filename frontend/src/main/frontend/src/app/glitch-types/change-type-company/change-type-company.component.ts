@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewContainerRef } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
 import { Router } from '@angular/router';
 import { FormControl, FormGroup } from '@angular/forms';
@@ -8,6 +8,8 @@ import { Pricelist } from '../../models/pricelist';
 import { GlitchType } from '../../models/glitch-type';
 import { CompanyDataService } from '../../home-company/company-data.service';
 import { GlitchTypeService } from '../glitch-type.service';
+import { ToastsManager } from 'ng2-toastr';
+import { error } from 'selenium-webdriver';
 
 @Component({
   selector: 'app-change-type-company',
@@ -22,8 +24,12 @@ export class ChangeTypeCompanyComponent implements OnInit {
   glitchTypes: GlitchType[];
   selectedType:GlitchType;
 
-  constructor(private router: Router, private companyService: CompanyDataService, private glitchTypeService: GlitchTypeService) {
-
+  constructor(private router: Router, 
+              private companyService: CompanyDataService, 
+              private glitchTypeService: GlitchTypeService,
+              private toastr: ToastsManager, 
+              private vcr: ViewContainerRef) { 
+    this.toastr.setRootViewContainerRef(vcr);
     this.company = {
       id: null,
       password: '',
@@ -61,7 +67,6 @@ export class ChangeTypeCompanyComponent implements OnInit {
       company => {this.company = company;
         this.companyService.getPricelist(this.company.id).then(
           pricelist=>{ this.pricelist=pricelist;
-          //console.log(JSON.stringify(pricelist));
           this.glitchTypeService.getGlitchTypes().then(
               types=> {this.glitchTypes=types;
               this.selectedType=pricelist.type;
@@ -75,15 +80,18 @@ export class ChangeTypeCompanyComponent implements OnInit {
 
   onSelectionChange(type){
     this.selectedType=type;
-    console.log(JSON.stringify("change:"+this.selectedType.type));
   }
 
   update(){
-    this.pricelist.type=this.selectedType;
-    this.companyService.updateGlitchType(this.company.id,this.selectedType).then(company => {
-      this.companyService.announceChange();
-      this.router.navigate(['/company/pricelist']);}
-    );
+    if (this.selectedType===null)
+      this.toastr.error('You dont have selected type!')
+    else{
+      this.pricelist.type=this.selectedType;
+      this.companyService.updateGlitchType(this.company.id,this.selectedType).then(company => {
+        this.companyService.announceChange();
+        this.router.navigate(['/company/pricelist']);}
+      ).catch(error=>  this.toastr.error('Error!'));
+    }
   }
 
 

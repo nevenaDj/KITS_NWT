@@ -252,28 +252,6 @@ public class BillController {
 		}
 	}
 
-	@RequestMapping(value = "/bills", method = RequestMethod.GET, produces = "application/json", params = { "start",
-			"end" })
-	@ApiOperation(value = "Get the bill by id.", notes = "Returns the bill being saved.",
-		httpMethod = "GET", produces = "application/json", consumes = "application/json")
-	@ApiImplicitParam(paramType = "header", name = "X-Auth-Token", required = true, value = "JWT token")
-	@ApiResponses(value = { 
-		@ApiResponse(code = 200, message = "Ok", response=BillDTO.class),
-		@ApiResponse(code = 404, message = "Not found")})
-	@PreAuthorize("hasRole('ROLE_PRESIDENT')")
-	public ResponseEntity<BillDTO> findBillByDate(
-			@ApiParam(name="start", value = "Period which starts that day", required = true) @RequestParam("start") Date start,
-			@ApiParam(name="end", value = "Period which ends that day", required = true)@RequestParam("end") Date end) {
-
-		Bill bill = billService.findByDate(start, end);
-		if (bill == null) {
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-		} else {
-			BillDTO billDTO = new BillDTO(bill);
-			return new ResponseEntity<>(billDTO, HttpStatus.OK);
-		}
-	}
-
 	@RequestMapping(value = "/apartments/{ap_id}/glitches/{glitch_id}/bill", method = RequestMethod.PUT, produces = "application/json")
 	@ApiOperation(value = "Approve the bill.", notes = "Returns the bill being saved.",
 		httpMethod = "PUT", produces = "application/json", consumes = "application/json")

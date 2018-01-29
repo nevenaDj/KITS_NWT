@@ -100,8 +100,8 @@ public class PricelistControllerTest {
 
 	@Test
 	public void testGetPricelist() throws Exception {
-	//	mockMvc.perform(get("/api/company/" + NEW_COMPANY_ID + "/pricelist").header("X-Auth-Token", accessToken))
-		//		.andExpect(status().isOk());
+		mockMvc.perform(get("/api/company/" + NEW_COMPANY_ID + "/pricelist").header("X-Auth-Token", accessToken))
+				.andExpect(status().isCreated());
 
 	}
 
@@ -204,5 +204,20 @@ public class PricelistControllerTest {
 				.andExpect(status().isBadRequest());
 
 	}
+	
+	@Test
+	public void testUpdatePricelistItems() throws Exception {
+		mockMvc.perform(put("/api/company/" + COMPANY_ID + "/pricelist/types/"+1L).header("X-Auth-Token", accessToken))
+				.andExpect(status().isOk());
+
+	}
+	
+	@Test
+	public void testUpdatePricelistItemsBadStatur() throws Exception {
+		mockMvc.perform(put("/api/company/" + 10000L + "/pricelist/types/"+1L).header("X-Auth-Token", accessToken))
+				.andExpect(status().isBadRequest());
+
+	}
+
 
 }

@@ -66,6 +66,7 @@ import com.jayway.restassured.RestAssured;
 public class BuildingControllerTest {
 
 	private String accessToken;
+	private String accessTokenPresident;
 
 	@Autowired
 	private TestRestTemplate restTemplate;
@@ -90,6 +91,9 @@ public class BuildingControllerTest {
 		ResponseEntity<String> responseEntity = restTemplate.postForEntity("/api/login",
 				new LoginDTO(USERNAME_ADMIN, PASSWORD_ADMIN), String.class);
 		accessToken = responseEntity.getBody();
+		ResponseEntity<String> responseEntity2 = restTemplate.postForEntity("/api/login",
+				new LoginDTO("president", "user"), String.class);
+		accessTokenPresident = responseEntity2.getBody();
 	}
 
 	@Test
@@ -203,6 +207,42 @@ public class BuildingControllerTest {
 
 	}
 
+	
+	@Test
+	public void testGetCOunt() throws Exception {
+
+		mockMvc.perform(get("/api/buildings/count").header("X-Auth-Token", accessToken)
+				).andExpect(status().isOk());
+	}
+
+	@Test
+	public void testGetPresident() throws Exception {
+
+		mockMvc.perform(get("/api/buildings/president").header("X-Auth-Token", accessToken)
+				).andExpect(status().isOk());
+	}
+
+	@Test
+	public void testGetOwner() throws Exception {
+
+		mockMvc.perform(get("/api/buildings/owner").header("X-Auth-Token", accessToken)
+				).andExpect(status().isOk());
+	}
+	
+	@Test
+	public void testGetTenant() throws Exception {
+
+		mockMvc.perform(get("/api/buildings/tenant").header("X-Auth-Token", accessToken)
+				).andExpect(status().isOk());
+	}
+		
+	@Test
+	public void testGetMy() throws Exception {
+
+		mockMvc.perform(get("/api/buildings/my").header("X-Auth-Token", accessTokenPresident)
+				).andExpect(status().isOk());
+	}
+	
 	@Test
 	@Transactional
 	@Rollback(true)

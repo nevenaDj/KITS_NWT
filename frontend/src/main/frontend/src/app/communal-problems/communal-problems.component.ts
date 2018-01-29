@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewContainerRef } from '@angular/core';
 import { Building } from '../models/building';
 import { CommunalProblem } from '../models/communal-problem';
 import { Subscription } from 'rxjs';
@@ -6,6 +6,7 @@ import { Router } from '@angular/router';
 import { PagerService } from '../services/pager.service';
 import { AuthService } from '../login/auth.service';
 import { CommunalProblemService } from './communal-problem.service';
+import { ToastsManager } from 'ng2-toastr';
 
 @Component({
   selector: 'app-communal-problems',
@@ -30,8 +31,10 @@ export class CommunalProblemsComponent implements OnInit {
   constructor(private router: Router, 
               private problemSerivce: CommunalProblemService,
               private pagerService: PagerService,
-              private authService: AuthService)  {
-
+              private authService: AuthService,
+              private toastr: ToastsManager, 
+              private vcr: ViewContainerRef) { 
+    this.toastr.setRootViewContainerRef(vcr);
     this.subscription = problemSerivce.RegenerateData$
       .subscribe(() => {
         this.getBuildings();
@@ -58,22 +61,21 @@ export class CommunalProblemsComponent implements OnInit {
             }
           );
         }
-        else{
-          this.tempSelectedBuilding=buildings[0];
-        }
       }
     )
   }
  
   chooseBuilding(){
-    
+    if (this.tempSelectedBuilding==null){
+      this.toastr.error('You have to select a building!');
+    }else{
     this.selectedBuilding=this.tempSelectedBuilding;
-    console.log("selected: "+JSON.stringify(this.selectedBuilding));
     this.problemSerivce.getCommunalProblemCount(this.selectedBuilding.id).then(
       count => {
         this.problemsCount = count;
         this.setPage(1);
       });
+    }
   }
 
   onSelectionChange(building:Building){

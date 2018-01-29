@@ -104,10 +104,10 @@ public class PricelistController {
 		}
 	}
 	
-	@ApiOperation(value = "Update a priceList.", notes = "Returns the pricelist being saved.", httpMethod = "PUT", produces = "application/json", consumes = "application/json")
+	@ApiOperation(value = "Update a priceList.", notes = "Returns the pricelist being saved.", httpMethod = "PUT")
 	@ApiResponses(value = { @ApiResponse(code = 200, message = "Ok", response = PricelistDTO.class),
 			@ApiResponse(code = 400, message = "Bad request"), @ApiResponse(code = 404, message = "Not found") })
-	@RequestMapping(value = "/types/{type_id}", method = RequestMethod.PUT, consumes = "application/json")
+	@RequestMapping(value = "/types/{type_id}", method = RequestMethod.PUT)
 	public ResponseEntity<Void> updatePricelists(
 			@ApiParam(value = "The ID of the company.", required = true) @PathVariable Long id,
 			@ApiParam(value = "The ID of the company.", required = true) @PathVariable Long type_id) {
@@ -203,9 +203,6 @@ public class PricelistController {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		} else {
 			itemService.remove(itemId);
-			Pricelist pricelist = pricelistService.findOneByCompany(id);
-			pricelist.setDateUpdate(new Date());
-			pricelistService.save(pricelist);
 			return new ResponseEntity<>(HttpStatus.OK);
 		}
 	}

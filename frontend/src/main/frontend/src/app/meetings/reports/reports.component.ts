@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewContainerRef } from '@angular/core';
 import { Building } from '../../models/building';
 import { Meeting } from '../../models/meeting';
 import { Subscription } from 'rxjs';
@@ -6,6 +6,7 @@ import { Router } from '@angular/router';
 import { MeetingsService } from '../meetings.service';
 import { PagerService } from '../../services/pager.service';
 import { AuthService } from '../../login/auth.service';
+import { ToastsManager } from 'ng2-toastr';
 
 @Component({
   selector: 'app-reports',
@@ -30,8 +31,10 @@ export class ReportsComponent implements OnInit {
   constructor(private router: Router, 
               private meetingSerivce: MeetingsService,
               private pagerService: PagerService,
-              private authService: AuthService)  {
-
+              private authService: AuthService,
+              private toastr: ToastsManager, 
+              private vcr: ViewContainerRef) { 
+    this.toastr.setRootViewContainerRef(vcr);
     this.subscription = meetingSerivce.RegenerateData$
       .subscribe(() => {
         this.getBuildings();
@@ -49,7 +52,6 @@ export class ReportsComponent implements OnInit {
       this.meetingSerivce.getBuildingsOwner().then(
         buildings=>{
           this.buildings=buildings;
-          console.log("buildings: "+JSON.stringify(buildings));
           if (buildings.length==1){
             this.selectedBuilding=buildings[0];
             this.meetingSerivce.getMeetingsCount(this.selectedBuilding.id).then(
@@ -69,7 +71,6 @@ export class ReportsComponent implements OnInit {
       this.meetingSerivce.getBuildingsTenant().then(
         buildings=>{
           this.buildings=buildings;
-          console.log("buildings: "+JSON.stringify(buildings));
           if (buildings.length==1){
             this.selectedBuilding=buildings[0];
             this.meetingSerivce.getMeetingsCount(this.selectedBuilding.id).then(
@@ -88,20 +89,20 @@ export class ReportsComponent implements OnInit {
   }
  
   chooseBuilding(){
-    
-    this.selectedBuilding=this.tempSelectedBuilding;
-    console.log("selected: "+JSON.stringify(this.selectedBuilding));
-    this.meetingSerivce.getMeetingsCount(this.selectedBuilding.id).then(
-      count => {
-        this.meetingsCount = count;
-        this.setPage(1);
-      });
+    if (this.tempSelectedBuilding===null){
+      this.toastr.error('You have to select a building!');
+    }else{
+      this.selectedBuilding=this.tempSelectedBuilding;
+      this.meetingSerivce.getMeetingsCount(this.selectedBuilding.id).then(
+        count => {
+          this.meetingsCount = count;
+          this.setPage(1);
+        });
+    }
   }
 
   onSelectionChange(building:Building){
-    console.log("on buildinf: "+JSON.stringify(building));
     this.tempSelectedBuilding=building;
-    console.log("on selected-building: "+JSON.stringify(this.tempSelectedBuilding));
   }
 
 

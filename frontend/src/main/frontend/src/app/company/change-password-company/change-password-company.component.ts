@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewContainerRef } from '@angular/core';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
 import * as decode from 'jwt-decode';
@@ -6,6 +6,7 @@ import * as decode from 'jwt-decode';
 import { User } from '../../models/user';
 import { UserPassword } from '../../models/user-password';
 import { CompanyDataService } from '../../home-company/company-data.service';
+import { ToastsManager } from 'ng2-toastr';
 
 @Component({
   selector: 'app-change-password-company',
@@ -19,7 +20,10 @@ export class ChangePasswordCompanyComponent implements OnInit {
   subscription: Subscription;
   userPassword: UserPassword;
   
-  constructor(private router: Router, private companyService: CompanyDataService) { 
+  constructor(private router: Router, private companyService: CompanyDataService,
+    private toastr: ToastsManager, 
+    private vcr: ViewContainerRef) { 
+  this.toastr.setRootViewContainerRef(vcr);
      this.userPassword=
      {currentPassword:'',
       newPassword1:'',
@@ -54,13 +58,22 @@ export class ChangePasswordCompanyComponent implements OnInit {
   }
   
   saveCompany(){
+    if (this.userPassword.currentPassword==='')
+      this.toastr.error('Current password is missing');
+    if (this.userPassword.newPassword1==='')
+      this.toastr.error('New password is missing');
+    if (this.userPassword.newPassword2===''){
+      this.toastr.error('Your repeated password is missing.');
+    }
+    if (this.userPassword.newPassword2!==this.userPassword.newPassword1){
+      this.toastr.error('The new passwords are not same!');
+    }
     this.companyService.changePasswordCompany(this.userPassword).then(company => {
           this.companyService.announceChange();
           this.router.navigate(['/company/profile']);
-        });
+        }).catch(error=> this.toastr.error('Your current password is bad!')
+      );
   }
-  
-
   
   cancel(){
     this.router.navigate(['/company/profile']);

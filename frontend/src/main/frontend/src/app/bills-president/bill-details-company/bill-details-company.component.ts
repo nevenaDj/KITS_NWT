@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewContainerRef } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
 import { User } from '../../models/user';
 import { Bill } from '../../models/bill';
 import { CompanyDataService } from '../../home-company/company-data.service';
+import { ToastsManager } from 'ng2-toastr';
 
 @Component({
   selector: 'app-bill-details-company',
@@ -42,7 +43,6 @@ export class BillDetailsCompanyComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.token = localStorage.getItem('token');
     this.getCompany();
     this.companyService.getBill(+this.route.snapshot.params['id'])
         .then(bill => {

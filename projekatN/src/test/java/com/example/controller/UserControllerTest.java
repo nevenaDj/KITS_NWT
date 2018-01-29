@@ -240,5 +240,51 @@ public class UserControllerTest {
 		.andExpect(status().isBadRequest());
 	}
 	
-
+	
+	@Test
+	public void testGetUserCount() throws Exception {
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("X-Auth-Token", accessToken);
+		
+		mockMvc.perform(get("/api/users/count").headers(headers))
+		.andExpect(status().isOk());
+	}
+	
+	@Test
+	public void testFindByUserName() throws Exception {
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("X-Auth-Token", accessToken);
+		
+		mockMvc.perform(get("/api/user?username=admin").headers(headers))
+		.andExpect(status().isNotFound());
+	}
+	
+	@Test
+	public void testFindByUserNameNF() throws Exception {
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("X-Auth-Token", accessToken);
+		
+		mockMvc.perform(get("/api/user?username=notfound").headers(headers))
+		.andExpect(status().isNotFound());
+	}
+	
+	@Test
+	public void testFindByUserNameUser() throws Exception {
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("X-Auth-Token", accessToken);
+		
+		mockMvc.perform(get("/api/user?username=user").headers(headers))
+		.andExpect(status().isOk());
+	}
+	
+	@Test
+	public void testFindMe() throws Exception {
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("X-Auth-Token", accessToken);
+		
+		mockMvc.perform(get("/api/users/me").headers(headers))
+		.andExpect(status().isOk());
+		mockMvc.perform(get("/api/me").headers(headers))
+		.andExpect(status().isOk());
+	}
 }

@@ -5,6 +5,7 @@ import static com.example.constants.UserConstants.USERNAME_PRESIDENT;
 import static com.example.constants.UserConstants.USERNAME_OWNER;
 import static com.example.constants.UserConstants.PASSWORD_OWNER;
 import static org.hamcrest.CoreMatchers.hasItem;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -266,5 +267,51 @@ public class SurveyControllerTest {
 		mockMvc.perform(get("/api/surveys/" + ID_SURVEY_NOT_FOUND).header("X-Auth-Token", accessToken))
 		.andExpect(status().isNotFound());
 	}
-
+	@Test
+	public void testGetAnswers() throws Exception{
+		mockMvc.perform(get("/api/surveys/" + ID_SURVEY+"/answers").header("X-Auth-Token", accessToken))
+		.andExpect(status().isOk());
+	}
+	
+	@Test
+	public void testGetAnswersNF() throws Exception{
+		mockMvc.perform(get("/api/surveys/" + 2000000L+"/answers").header("X-Auth-Token", accessToken))
+		.andExpect(status().isNotFound());
+	}
+	
+	@Test
+	public void testGetHasAnswers() throws Exception{
+		mockMvc.perform(get("/api/surveys/" + ID_SURVEY+"/hasAnswer").header("X-Auth-Token", accessToken))
+		.andExpect(status().isOk());
+	}
+	
+	@Test
+	public void testGetHasAnswersNF() throws Exception{
+		mockMvc.perform(get("/api/surveys/" + 2000000L+"/hasAnswer").header("X-Auth-Token", accessToken))
+		.andExpect(status().isNotFound());
+	}
+	
+	@Test
+	public void testDeleteSurveys() throws Exception{
+		mockMvc.perform(delete("/api/surveys/" + ID_SURVEY).header("X-Auth-Token", accessToken))
+		.andExpect(status().isBadRequest());
+	}
+	
+	@Test
+	public void testDeleteSurveysNF() throws Exception{
+		mockMvc.perform(delete("/api/surveys/" + 2000000L).header("X-Auth-Token", accessToken))
+		.andExpect(status().isNotFound());
+	}
+	
+	@Test
+	public void testGetSurveysByMeeting() throws Exception{
+		mockMvc.perform(get("/api/meetings/" + ID_SURVEY+"/surveys").header("X-Auth-Token", accessToken))
+		.andExpect(status().isOk());
+	}
+	
+	@Test
+	public void testGetSurveysByMeetingNF() throws Exception{
+		mockMvc.perform(get("/api/meetings/" + 2000000L+"/surveys").header("X-Auth-Token", accessToken))
+		.andExpect(status().isBadRequest());
+	}
 }

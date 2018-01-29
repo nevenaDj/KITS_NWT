@@ -3,12 +3,21 @@ package com.example.controller;
 import static com.example.constants.UserConstants.PASSWORD_PRESIDENT;
 import static com.example.constants.UserConstants.USERNAME_PRESIDENT;
 import static com.example.constants.BuildingConstatnts.BUILDING_ID_1;
+import static com.example.constants.BuildingConstatnts.BUILDING_ID_2;
+import static com.example.constants.BuildingConstatnts.CITY;
+import static com.example.constants.BuildingConstatnts.NUMBER;
+import static com.example.constants.BuildingConstatnts.PAGE_SIZE;
+import static com.example.constants.BuildingConstatnts.STREET;
+import static com.example.constants.BuildingConstatnts.ZIP_CODE;
 import static com.example.constants.MeetingConstants.*;
 import static com.example.constants.AgendaItemConstants.ID_MEETING;
 import static com.example.constants.ApartmentConstants.ID_BUILDING_NOT_FOUND;
+import static org.hamcrest.CoreMatchers.hasItem;
+import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -46,7 +55,7 @@ import com.jayway.restassured.RestAssured;
 @TestPropertySource(locations="classpath:test.properties")
 public class MeetingControllerTest {
 	
-	/*private String accessToken;
+	private String accessToken;
 
 	@Autowired
 	private TestRestTemplate restTemplate;
@@ -118,21 +127,11 @@ public class MeetingControllerTest {
 	}
 	
 	@Test
-	public void testGetMeetingByDateBadRequest() throws Exception{
-		Date dateAndTime = new SimpleDateFormat("yyyy-MM-dd").parse("2017-11-14");
-		
-		mockMvc.perform(get("/api/buildings/"+BUILDING_ID_1+"/meetings?date="+dateAndTime).header("X-Auth-Token", accessToken))
-		.andExpect(status().isBadRequest());
-		
-	}
-	
-	@Test
 	public void testGetDatesOfMeeting() throws Exception{	
 		mockMvc.perform(get("/api/buildings/"+BUILDING_ID_1+"/meetings/dates").header("X-Auth-Token", accessToken))
 		.andExpect(status().isOk());
 		
 	}
-	
 	
 	@Test
 	public void testGetDatesOfMeetingBadRequest() throws Exception{	
@@ -146,7 +145,7 @@ public class MeetingControllerTest {
 	@Rollback(true)
 	public void testSetMeetingActive() throws Exception{
 
-		mockMvc.perform(put("/api/buildings/"+BUILDING_ID_1+"/meeting/"+ID_MEETING+"/active").header("X-Auth-Token", accessToken))
+		mockMvc.perform(put("/api/buildings/"+BUILDING_ID_1+"/meetings/"+ID_MEETING+"/active").header("X-Auth-Token", accessToken))
 		.andExpect(status().isOk())
 		.andExpect(jsonPath("$.active").value(true));
 	}
@@ -156,7 +155,7 @@ public class MeetingControllerTest {
 	@Rollback(true)
 	public void testSetMeetingActiveBadRequest() throws Exception{
 
-		mockMvc.perform(put("/api/buildings/"+ID_BUILDING_NOT_FOUND+"/meeting/"+ID_MEETING+"/active").header("X-Auth-Token", accessToken))
+		mockMvc.perform(put("/api/buildings/"+ID_BUILDING_NOT_FOUND+"/meetings/"+ID_MEETING+"/active").header("X-Auth-Token", accessToken))
 		.andExpect(status().isBadRequest());
 	}
 	
@@ -165,7 +164,7 @@ public class MeetingControllerTest {
 	@Rollback(true)
 	public void testSetMeetingActiveBadRequestMeeting() throws Exception{
 
-		mockMvc.perform(put("/api/buildings/"+BUILDING_ID_1+"/meeting/"+ID_MEETING_NOT_FOUND+"/active").header("X-Auth-Token", accessToken))
+		mockMvc.perform(put("/api/buildings/"+BUILDING_ID_1+"/meetings/"+ID_MEETING_NOT_FOUND+"/active").header("X-Auth-Token", accessToken))
 		.andExpect(status().isBadRequest());
 	}
 	
@@ -196,6 +195,68 @@ public class MeetingControllerTest {
 		mockMvc.perform(put("/api/buildings/"+BUILDING_ID_1+"/meeting/"+ID_MEETING_NOT_FOUND+"/deactive").header("X-Auth-Token", accessToken))
 		.andExpect(status().isBadRequest());
 	}
-*/
+	
+	@Test
+	@Transactional
+	@Rollback(true)
+	public void testGetMeetings2() throws Exception{
+		
+		mockMvc.perform(get("/api/meetings/"+1L).header("X-Auth-Token", accessToken))
+		.andExpect(status().isOk());
+	}
+	
+	@Test
+	@Transactional
+	@Rollback(true)
+	public void testGetMeetings2NotFound() throws Exception{
+		
+		mockMvc.perform(get("/api/meetings/"+100000L).header("X-Auth-Token", accessToken))
+		.andExpect(status().isNotFound());
+	}
+	
+	@Test
+	public void testGetMeetings() throws Exception {
+		mockMvc.perform(get("/api/buildings/"+1L+"/meetings/?page=0&size=" + PAGE_SIZE).header("X-Auth-Token", accessToken))
+				.andExpect(status().isOk()).andExpect(content().contentType(contentType))
+				.andExpect(jsonPath("$", hasSize(PAGE_SIZE)));
+	}
+
+	@Test
+	public void testGetMeetingsBadReques() throws Exception {
+		mockMvc.perform(get("/api/buildings/"+1000000L+"/meetings/?page=0&size=" + PAGE_SIZE).header("X-Auth-Token", accessToken))
+				.andExpect(status().isBadRequest());
+	}
+	
+	@Test
+	public void testGetMeetingsCount() throws Exception {
+		mockMvc.perform(get("/api/buildings/"+1L+"/meetings/count" ).header("X-Auth-Token", accessToken))
+				.andExpect(status().isOk());
+	}
+
+	@Test
+	public void testGetMeetingsOwner() throws Exception {
+		mockMvc.perform(get("/api/owner/"+1L+"/meetings").header("X-Auth-Token", accessToken))
+				.andExpect(status().isOk());
+	}
+	
+	@Test
+	public void testGetMeetingsBadRequestOwner() throws Exception {
+		mockMvc.perform(get("/api/owner/"+1000000L+"/meetings").header("X-Auth-Token", accessToken))
+				.andExpect(status().isNotFound());
+	}
+	
+	@Test
+	public void testGetMeetingsOwnerUpcoming() throws Exception {
+		mockMvc.perform(get("/api/owner/"+1L+"/meetings/upcoming").header("X-Auth-Token", accessToken))
+				.andExpect(status().isOk());
+	}
+	
+	@Test
+	public void testGetMeetingsBadRequestOwnerUpcoming() throws Exception {
+		mockMvc.perform(get("/api/owner/"+1000000L+"/meetings/upcoming").header("X-Auth-Token", accessToken))
+				.andExpect(status().isNotFound());
+	}
+
+
 
 }

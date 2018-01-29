@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewContainerRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { Glitch } from '../../models/glitch';
@@ -8,6 +8,7 @@ import { AuthService } from '../../login/auth.service';
 import { take } from 'rxjs/operators/take';
 import { FileHolder } from 'angular2-image-upload';
 import { HttpHeaders } from '@angular/common/http';
+import { ToastsManager } from 'ng2-toastr';
 
 
 @Component({
@@ -38,7 +39,10 @@ export class GlitchDetailComponent implements OnInit {
   constructor(private route: ActivatedRoute,
               private glitchService: GlitchService,
               private router: Router,
-              private authService: AuthService) {
+              private authService: AuthService,
+              private toastr: ToastsManager, 
+              private vcr: ViewContainerRef) { 
+    this.toastr.setRootViewContainerRef(vcr);
     this.glitch = {
       id: null,
       description: '',
@@ -77,7 +81,6 @@ export class GlitchDetailComponent implements OnInit {
     this.glitchService.getGlitch(+this.route.snapshot.params['id'])
         .then(glitch => {
           this.glitch = glitch;
-          this.photoRoute= '/api/apartments/'+this.glitch.apartment.id+'/glitches/'+this.glitch.id+'/photo?image='
           this.getComments();
         });
     this.username = this.authService.getCurrentUser();
@@ -91,6 +94,9 @@ export class GlitchDetailComponent implements OnInit {
   }
 
   saveComment(){
+    if (this.comment.text===''){
+      this.toastr.error('You have to write something!')
+    }else{
     this.glitchService.addComment(this.glitch.id, this.comment)
         .then(() => {
           this.getComments();
@@ -99,12 +105,13 @@ export class GlitchDetailComponent implements OnInit {
             text: '',
             user: null
           }
-        });
+        }).catch(error=>this.toastr.error('Error! Your comment didnt send.'));
+      }
   }
 
   approve(){
     this.glitch.repairApproved=true;
-    this.glitchService.approveRepair(this.glitch.id);
+    this.glitchService.approveRepair(this.glitch.id).catch(error=>this.toastr.error('Error during approve.'));
   }
 
   sendToOtherUser(){

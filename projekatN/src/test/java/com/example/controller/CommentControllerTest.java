@@ -2,10 +2,16 @@ package com.example.controller;
 
 import static com.example.constants.UserConstants.PASSWORD;
 import static com.example.constants.UserConstants.USERNAME;
+import static org.hamcrest.CoreMatchers.hasItem;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static com.example.constants.GlitchConstants.NEW_COMMENT;
+import static com.example.constants.BuildingConstatnts.PAGE_SIZE;
+import static com.example.constants.GlitchConstants.DESCRIPTION;
 import static com.example.constants.GlitchConstants.ID;
+import static com.example.constants.GlitchConstants.ID_GLITCH;
 import static com.example.constants.GlitchConstants.ID_NOT_FOUND;
 
 import java.nio.charset.Charset;
@@ -99,5 +105,12 @@ public class CommentControllerTest {
 				.content(json))
 		.andExpect(status().isBadRequest());
 		
+	}
+	
+	@Test
+	public void testGetComments() throws Exception {
+		mockMvc.perform(get("/api/glitches/1/comments?page=0&size=" + PAGE_SIZE).header("X-Auth-Token", accessToken))
+				.andExpect(status().isOk());
+
 	}
 }

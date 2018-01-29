@@ -1,7 +1,5 @@
 package com.example.controller;
 
-import static com.example.constants.UserConstants.PASSWORD_ADMIN;
-import static com.example.constants.UserConstants.USERNAME_ADMIN;
 import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -9,17 +7,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static com.example.constants.UserConstants.NEW_USERNAME_COMPANY;
-import static com.example.constants.UserConstants.NEW_EMAIL_COMPANY;
-import static com.example.constants.UserConstants.NEW_STREET_COMPANY;
-import static com.example.constants.UserConstants.NEW_CITY_COMPANY;
-import static com.example.constants.UserConstants.NEW_NUMBER_COMPANY;
-import static com.example.constants.UserConstants.NEW_ZIP_CODE_COMPANY;
-import static com.example.constants.UserConstants.NEW_PHONE_NO_COMPANY;
-import static com.example.constants.UserConstants.PAGE_SIZE;
-import static com.example.constants.UserConstants.USERNAME_COMPANY;
-import static com.example.constants.UserConstants.ID_COMPANY;
-import static com.example.constants.UserConstants.ID_NOT_FOUND;
 
 import java.nio.charset.Charset;
 
@@ -49,11 +36,24 @@ import com.example.dto.UserDTO;
 import com.jayway.restassured.RestAssured;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest(webEnvironment = WebEnvironment.DEFINED_PORT)
+@SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 @TestPropertySource(locations="classpath:test.properties")
 public class CompanyControllerTest {
 	
 	private String accessToken;
+	
+	public static final String NEW_USERNAME_COMPANY = "EPS";
+	public static final String NEW_EMAIL_COMPANY = "eps@eps.rs";
+	public static final String NEW_PHONE_NO_COMPANY = "123456";
+	public static final String NEW_STREET_COMPANY = "Address";
+	public static final String NEW_NUMBER_COMPANY = "18";
+	public static final int NEW_ZIP_CODE_COMPANY = 21000;
+	public static final String NEW_CITY_COMPANY = "Novi Sad";
+	public static final int PAGE_SIZE = 4;
+	
+	public static final Long ID_COMPANY = 3L;
+
+	public static final Long ID_NOT_FOUND = 10L;
 
 	@Autowired
 	private TestRestTemplate restTemplate;
@@ -77,7 +77,7 @@ public class CompanyControllerTest {
 									  .build();
 		
 		ResponseEntity<String> responseEntity = restTemplate.postForEntity("/api/login",
-				new LoginDTO(USERNAME_ADMIN, PASSWORD_ADMIN), String.class);
+				new LoginDTO("admin", "admin"), String.class);
 		accessToken = responseEntity.getBody();
 	}
 	
@@ -109,12 +109,10 @@ public class CompanyControllerTest {
 	@Test
 	public void testGetCompanies() throws Exception{
 		
-	/*	mockMvc.perform(get("/api/companies?page=0&size="+PAGE_SIZE).header("X-Auth-Token", accessToken))
+		mockMvc.perform(get("/api/companies?page=0&size="+PAGE_SIZE).header("X-Auth-Token", accessToken))
 		.andExpect(status().isOk())
 		.andExpect(content().contentType(contentType))
-		.andExpect(jsonPath("$", hasSize(2)))
-		.andExpect(jsonPath("$.[*].username").value(USERNAME_COMPANY));*/
-		
+		.andExpect(jsonPath("$", hasSize(2)));		
 	}
 	
 	@Test
@@ -126,9 +124,34 @@ public class CompanyControllerTest {
 	}
 	
 	@Test
+	@Transactional
+    @Rollback(true)
 	public void testDeleteCompanyNotFound() throws Exception{
 		mockMvc.perform(delete("/api/companies/" + ID_NOT_FOUND.intValue()).header("X-Auth-Token", accessToken))
 		.andExpect(status().isNotFound());
 	}
-
+	
+	@Test
+	@Transactional
+    @Rollback(true)
+	public void testCompanyCount() throws Exception{
+		mockMvc.perform(get("/api/companies/count").header("X-Auth-Token", accessToken))
+		.andExpect(status().isOk());
+	}
+	
+	@Test
+	@Transactional
+    @Rollback(true)
+	public void testCompanyActiveGliches() throws Exception{
+		mockMvc.perform(get("/api/companies/activeGlitches").header("X-Auth-Token", accessToken))
+		.andExpect(status().isOk());
+	}
+	
+	@Test
+	@Transactional
+    @Rollback(true)
+	public void testCompanyPendingGliches() throws Exception{
+		mockMvc.perform(get("/api/companies/pendingGlitches").header("X-Auth-Token", accessToken))
+		.andExpect(status().isOk());
+	}
 }

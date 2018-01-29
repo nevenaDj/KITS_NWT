@@ -77,6 +77,7 @@ describe('NotificationsComponent', () => {
   });
 
   it('should call getNotifications()', () => {
+    //component.buildingID = 1
     component.building = {
       id: 1,
       address: null,

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewContainerRef } from '@angular/core';
 import { User } from '../../models/user';
 import { Glitch } from '../../models/glitch';
 import { Subscription } from 'rxjs';
@@ -6,6 +6,8 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { CompanyDataService } from '../../home-company/company-data.service';
 import { GlitchService } from '../glitch.service';
 import { Route } from '@angular/compiler/src/core';
+import { ToastsManager } from 'ng2-toastr';
+import { error } from 'selenium-webdriver';
 
 @Component({
   selector: 'app-change-responsible-person',
@@ -23,7 +25,10 @@ export class ChangeResponsiblePersonComponent implements OnInit {
   constructor(private router: Router,
               private route: ActivatedRoute,
               private companyService: CompanyDataService,
-              private glitchService: GlitchService) {
+              private glitchService: GlitchService,
+              private toastr: ToastsManager, 
+              private vcr: ViewContainerRef) { 
+    this.toastr.setRootViewContainerRef(vcr);
 
     this.president = {
       id: null,
@@ -65,14 +70,17 @@ export class ChangeResponsiblePersonComponent implements OnInit {
 
   onSelectionChange(user){
     this.selectedUser=user;
-    console.log(JSON.stringify("change:"+this.selectedUser.username));
   }
 
   update(){
-    this.glitch.responsiblePerson=this.selectedUser;
-    this.glitchService.updateResponsiblePerson(this.glitch.id,this.selectedUser).then(glitch => {
-      this.router.navigate(['president/responsiblities']);}
-    );
+    if ( this.selectedUser==null){
+      this.toastr.error('You have to select an user!')
+    }else{
+      this.glitch.responsiblePerson=this.selectedUser;
+      this.glitchService.updateResponsiblePerson(this.glitch.id,this.selectedUser).then(glitch => {
+        this.router.navigate(['president/responsiblities']).catch(error=> this.toastr.error('Error!'));}
+      );
+  }
   }
 
   goBack() {
