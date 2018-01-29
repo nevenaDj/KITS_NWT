@@ -7,6 +7,7 @@ import { BuildingService } from '../buildings/building.service';
 import { ApartmentService } from '../apartments/apartment.service';
 import { NotificationService } from './notification.service';
 import { PagerService } from '../services/pager.service';
+import { Building } from '../models/building';
 
 
 describe('NotificationsComponent', () => {
@@ -77,12 +78,21 @@ describe('NotificationsComponent', () => {
 
   it('should call getNotifications()', () => {
     //component.buildingID = 1
+    component.building = {
+      id: 1,
+      address: null,
+      president: null
+    }
     component.getNotifications(0,15);
     expect(notificationService.getNotifications).toHaveBeenCalledWith(1,0,15);
   });
 
 
   it('should call setPage()', fakeAsync(() => {
+    component.building = new Building({
+      id: 1,
+      address: null
+    });
     component.setPage(1);
     expect(pagerService.getPager).toHaveBeenCalled();
     tick();

@@ -55,6 +55,20 @@
             </div>
         </div>
         </div>
+        <div class="row">
+            <div class="col-lg-1"></div>
+            <div class="col-lg-10 border">
+              <div class="border-title">apartment</div>
+              <div class="border-desc">{{glitch.apartment.building.address.street}}, {{glitch.apartment.building.address.number}}/{{glitch.apartment.number}}</div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-1"></div>
+            <div class="col-lg-10 border">
+              <div class="border-title">responsible person </div>
+              <div class="border-desc">{{glitch.responsiblePerson.username}}</div>
+            </div>
+        </div>
         <div class="row" *ngIf="changeResponsiblePerson">
             <div class="col-lg-1"></div>
             <div class="col-lg-10 border">

@@ -81,6 +81,10 @@ export class GlitchDetailComponent implements OnInit {
     this.glitchService.getGlitch(+this.route.snapshot.params['id'])
         .then(glitch => {
           this.glitch = glitch;
+<<<<<<< HEAD
+=======
+          this.photoRoute= '/api/apartments/'+this.glitch.apartment.id+'/glitches/'+this.glitch.id+'/photo?image='
+>>>>>>> branch 'config_angular' of https://github.com/nevenaDj/KITS_NWT.git
           this.getComments();
         });
     this.username = this.authService.getCurrentUser();
