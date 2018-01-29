@@ -2,10 +2,17 @@ package com.example.controller;
 
 import static com.example.constants.UserConstants.PASSWORD_PRESIDENT;
 import static com.example.constants.UserConstants.USERNAME_PRESIDENT;
+import static org.hamcrest.CoreMatchers.hasItem;
+import static org.hamcrest.Matchers.hasSize;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static com.example.constants.CommunalProblemConstants.DESCRIPTION;
+import static com.example.constants.CommunalProblemConstants.DESCRIPTION2;
 import static com.example.constants.CommunalProblemConstants.ID_BUILDING;
 import static com.example.constants.UserConstants.ID_COMPANY;
 import static com.example.constants.CommunalProblemConstants.ID_BUILDING_NOT_FOUND;
@@ -145,6 +152,80 @@ public class CommunalProblemControllerTests {
 	}
 	
 	@Test
+	public void testGetCommunalProblem() throws Exception {
+		mockMvc.perform(get("/api/communalProblems/" +1L ).header("X-Auth-Token", accessToken))
+				.andExpect(status().isOk());
+
+	}
+	
+	@Test
+	public void testGetCommunalProblemNotFound() throws Exception {
+		mockMvc.perform(get("/api/communalProblems/" +1000000L ).header("X-Auth-Token", accessToken))
+				.andExpect(status().isNotFound());
+
+	}
+	
+	@Test
+	public void testGetCommunalProblemByBuilding() throws Exception {
+		mockMvc.perform(get("/api/buildings/"+1L+"/communalProblems"  ).header("X-Auth-Token", accessToken))
+				.andExpect(status().isOk()).andExpect(content().contentType(contentType))
+				.andExpect(jsonPath("$.[*].description").value((DESCRIPTION2)))
+				.andExpect(jsonPath("$.[*].id").value((1)));
+
+	}
+	
+	@Test
+	public void testGetCommunalProblemBadRequest() throws Exception {
+		mockMvc.perform(get("/api/buildings/"+10000L+"/communalProblems"  ).header("X-Auth-Token", accessToken))
+				.andExpect(status().isBadRequest());
+
+	}
+	
+		
+	
+	@Test
+	public void testGetCommunalProblemByBuildingActive() throws Exception {
+		mockMvc.perform(get("/api/buildings/"+1L+"/communalProblems/active"  ).header("X-Auth-Token", accessToken))
+				.andExpect(status().isOk());
+
+	}
+	
+	@Test
+	public void testGetCommunalProblemBadRequestActive() throws Exception {
+		mockMvc.perform(get("/api/buildings/"+10000L+"/communalProblems/active"  ).header("X-Auth-Token", accessToken))
+				.andExpect(status().isBadRequest());
+
+	}
+	
+	@Test
+	public void testGetCommunalProblemByBuildingCount() throws Exception {
+		mockMvc.perform(get("/api/buildings/"+1L+"/communalProblems/count"  ).header("X-Auth-Token", accessToken))
+				.andExpect(status().isOk());
+
+	}
+	
+	
+	@Test
+	public void testGetCommunalProblemByBuildingActiveCount() throws Exception {
+		mockMvc.perform(get("/api/buildings/"+1L+"/communalProblems/active/count"  ).header("X-Auth-Token", accessToken))
+				.andExpect(status().isOk());
+
+	}
+	
+	@Test
+	public void testGetCommunalProblemBadRequestCount() throws Exception {
+		mockMvc.perform(get("/api/buildings/"+10000L+"/communalProblems/count"  ).header("X-Auth-Token", accessToken))
+				.andExpect(status().isBadRequest());
+
+	}
+	
+	@Test
+	public void testGetCommunalProblemBadRequestActiveCount() throws Exception {
+		mockMvc.perform(get("/api/buildings/"+10000L+"/communalProblems/active/count"  ).header("X-Auth-Token", accessToken))
+				.andExpect(status().isBadRequest());
+	}
+	
+	@Test
 	@Transactional
 	@Rollback(true)
 	public void testAddCommunalProblemApartment() throws Exception{
@@ -152,6 +233,39 @@ public class CommunalProblemControllerTests {
 				.header("X-Auth-Token", accessToken))
 		.andExpect(status().isOk());		
 	}
+	
+	@Test
+	@Transactional
+	@Rollback(true)
+	public void testDeleteCommunalProblemApartment() throws Exception{
+		mockMvc.perform(put("/api/communalProblems/" + ID_COMMUNAL_PROBLEM +"/apartments/" + ID_APARTMENT)
+				.header("X-Auth-Token", accessToken));
+		
+		mockMvc.perform(delete("/api/communalProblems/" + ID_COMMUNAL_PROBLEM +"/apartments/" + ID_APARTMENT)
+				.header("X-Auth-Token", accessToken))
+		.andExpect(status().isOk());		
+	}
+	
+	@Test
+	@Transactional
+	@Rollback(true)
+	public void testDeleteCommunalProblemApartmentBadRequestProblem() throws Exception{
+	
+		mockMvc.perform(delete("/api/communalProblems/" + ID_COMMUNAL_PROBLEM +"/apartments/" + ID_APARTMENT_NOT_FOUND)
+				.header("X-Auth-Token", accessToken))
+		.andExpect(status().isBadRequest());		
+	}
+	
+	@Test
+	@Transactional
+	@Rollback(true)
+	public void testDeleteCommunalProblemApartmentBadRequestApartment() throws Exception{
+	
+		mockMvc.perform(delete("/api/communalProblems/" + ID_COMMUNAL_PROBLEM_NOT_FOUND +"/apartments/" + ID_APARTMENT)
+				.header("X-Auth-Token", accessToken))
+		.andExpect(status().isBadRequest());		
+	}
+	
 	
 	@Test
 	public void testAddCommunalProblemApartmentBadId() throws Exception{
@@ -166,6 +280,7 @@ public class CommunalProblemControllerTests {
 				.header("X-Auth-Token", accessToken).contentType(contentType))
 		.andExpect(status().isBadRequest());		
 	}
+	
 	
 	
 

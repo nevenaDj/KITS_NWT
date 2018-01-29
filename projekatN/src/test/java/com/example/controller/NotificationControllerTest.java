@@ -131,6 +131,12 @@ public class NotificationControllerTest {
 	}
 
 	@Test
+	public void testGetNotificationBR() throws Exception {
+		mockMvc.perform(
+				get("/api/notifications/" + 100000L).header("X-Auth-Token", accessToken))
+				.andExpect(status().isNotFound());
+	} 
+	@Test
 	@Transactional
 	@Rollback(true)
 	public void testDeleteNotification() throws Exception {
@@ -139,6 +145,12 @@ public class NotificationControllerTest {
 				.andExpect(status().isOk());
 
 	}
+	@Test
+	public void testDeleteNotificationBR() throws Exception {
+		mockMvc.perform(
+				delete("/api/notifications/" + 100000L).header("X-Auth-Token", accessToken))
+				.andExpect(status().isNotFound());
+	} 
 
 
 	@Test
@@ -158,6 +170,24 @@ public class NotificationControllerTest {
 
 	}
 
+	
+	@Test
+	public void testGetNotificationCount() throws Exception {
+		mockMvc.perform(
+				get("/api/buildings/" + ID_BUILDING + "/notifications/count").header("X-Auth-Token", accessToken))
+				.andExpect(status().isOk());
+
+	}
+	
+	@Test
+	public void testGetNotificationCountBR() throws Exception {
+		mockMvc.perform(
+				get("/api/buildings/" + 10000L + "/notifications/count").header("X-Auth-Token", accessToken))
+				.andExpect(status().isBadRequest());
+
+	}
+
+	
 	@Test
 	public void testGetOwnNotification() throws Exception {
 		mockMvc.perform(get("/api/notifications").header("X-Auth-Token", accessToken)).andExpect(status().isOk());

@@ -29,20 +29,6 @@ public class BillRepositoryIntegrationTest {
 	DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 
 	@Test
-	public void testFindByGlitch() throws ParseException {
-	/*	Date d = formatter.parse("2017-12-03");
-
-		Bill bill = billRepository.findByGlitch(GLITCH_ID);
-
-		assertNotNull(bill);
-		assertEquals(COMPANY_ID, bill.getCompany().getId());
-		assertEquals(PRICE, bill.getPrice(), DELTA);
-		assertEquals(d, bill.getDate());
-		assertEquals(APPROVED, bill.isApproved());*/
-
-	}
-
-	@Test
 	public void testFindByDate() throws ParseException {
 		Date d = formatter.parse("2017-12-03");
 		Date d1 = formatter.parse("2017-12-01");

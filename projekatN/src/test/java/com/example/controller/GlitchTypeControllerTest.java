@@ -45,6 +45,7 @@ import com.jayway.restassured.RestAssured;
 @TestPropertySource(locations="classpath:test.properties")
 public class GlitchTypeControllerTest {
 	private String accessToken;
+	private String accessTokenPresident;
 	
 
 	@Autowired
@@ -69,6 +70,9 @@ public class GlitchTypeControllerTest {
 		ResponseEntity<String> responseEntity = restTemplate.postForEntity("/api/login",
 				new LoginDTO(USERNAME_ADMIN, PASSWORD_ADMIN), String.class);
 		accessToken = responseEntity.getBody();
+		ResponseEntity<String> responseEntity2 = restTemplate.postForEntity("/api/login",
+				new LoginDTO("president", "user"), String.class);
+		accessTokenPresident = responseEntity2.getBody();
 	}
 	
 	@Test
@@ -134,5 +138,17 @@ public class GlitchTypeControllerTest {
 		mockMvc.perform(get("/api/glitchTypes").header("X-Auth-Token", accessToken))
 		.andExpect(status().isOk())
 		.andExpect(jsonPath("$.[*].type").value(hasItem(TYPE)));
+	}
+	
+	@Test
+	public void testGetAllGlitchType() throws Exception{
+		mockMvc.perform(get("/api/glitchTypes/"+1L+"/companies").header("X-Auth-Token", accessTokenPresident))
+		.andExpect(status().isOk());
+	}
+	
+	@Test
+	public void testGetAllGlitchTypeNF() throws Exception{
+		mockMvc.perform(get("/api/glitchTypes/"+10000L+"/companies").header("X-Auth-Token", accessTokenPresident))
+		.andExpect(status().isNotFound());
 	}
 }

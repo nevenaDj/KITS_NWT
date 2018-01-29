@@ -80,7 +80,7 @@ public class CommunalProblemController {
 		return new ResponseEntity<>(new CommunalProblemDTO(communalProblem), HttpStatus.CREATED);
 	}
 
-	@RequestMapping(value = "/communalProblems/{id}", method = RequestMethod.GET, consumes = "application/json")
+	@RequestMapping(value = "/communalProblems/{id}", method = RequestMethod.GET, produces = "application/json")
 	@ApiOperation(value = "Get a communal problems in a building.", 
 				httpMethod = "GET", produces = "application/json", consumes = "application/json")
 	@ApiImplicitParam(paramType="header", name="X-Auth-Token", required=true, value="JWT token")

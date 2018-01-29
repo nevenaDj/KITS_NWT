@@ -65,6 +65,7 @@ import com.jayway.restassured.RestAssured;
 public class ApartmentControllerTest {
 
 	private String accessToken;
+	private String accessTokenOwner;
 
 	@Autowired
 	private TestRestTemplate restTemplate;
@@ -89,6 +90,9 @@ public class ApartmentControllerTest {
 		ResponseEntity<String> responseEntity = restTemplate.postForEntity("/api/login",
 				new LoginDTO(USERNAME_ADMIN, PASSWORD_ADMIN), String.class);
 		accessToken = responseEntity.getBody();
+		ResponseEntity<String> responseEntity2 = restTemplate.postForEntity("/api/login",
+				new LoginDTO("vodovod", "vodovod"), String.class);
+		accessTokenOwner = responseEntity2.getBody();
 	}
 
 	@Test
@@ -221,6 +225,30 @@ public class ApartmentControllerTest {
 	@Test
 	@Transactional
 	@Rollback(true)
+	public void testDeleteOwner() throws Exception {
+		UserDTO userDTO = new UserDTO();
+		userDTO.setId(ID_USER);
+
+		String json = TestUtils.convertObjectToJson(userDTO);
+
+		mockMvc.perform(delete("/api/apartments/ " + ID_APARTMENT + "/owner").header("X-Auth-Token", accessToken)
+				.contentType(contentType).content(json)).andExpect(status().isOk());
+	}
+
+
+	@Test
+	@Transactional
+	@Rollback(true)
+	public void testDeleteOwnerBD() throws Exception {
+
+		mockMvc.perform(delete("/api/apartments/ " + 200000L + "/owner").header("X-Auth-Token", accessToken)
+				).andExpect(status().isBadRequest());
+	}
+
+	
+	@Test
+	@Transactional
+	@Rollback(true)
 	public void testAddOwnerBadUserId() throws Exception {
 		UserDTO userDTO = new UserDTO();
 		userDTO.setId(ID_NOT_FOUND);
@@ -277,5 +305,28 @@ public class ApartmentControllerTest {
 				.andExpect(jsonPath("$.owner.id").value(ID_OWNER))
 				.andExpect(jsonPath("$.owner.username").value(USERNAME_OWNER));
 	}
+	
+	@Test
+	@Transactional
+	@Rollback(true)
+	public void testDeleteApartmentsNF() throws Exception {
+
+		mockMvc.perform(delete("/api/apartments/ " + 100000L ).header("X-Auth-Token", accessToken)).
+				andExpect(status().isNotFound());
+			
+	}
+	
+
+	@Test
+	@Transactional
+	@Rollback(true)
+	public void MyApartments() throws Exception {
+
+		mockMvc.perform(get("/api/apartments/my").header("X-Auth-Token", accessToken)).andExpect(status().isOk());
+		
+		mockMvc.perform(get("/api/apartments/owner/my").header("X-Auth-Token", accessToken)
+				).andExpect(status().isOk());
+	}
+
 
 }

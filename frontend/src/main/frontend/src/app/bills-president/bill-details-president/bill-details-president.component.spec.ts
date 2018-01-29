@@ -6,6 +6,7 @@ import { Bill } from '../../models/bill';
 import { ToastsManager, ToastOptions } from 'ng2-toastr';
 import { BillsDataService } from '../bills-data.service';
 import { Router, ActivatedRoute } from '@angular/router';
+import { RouterTestingModule } from '@angular/router/testing';
 
 describe('BillDetailsPresidentComponent', () => {
   let component: BillDetailsPresidentComponent;
@@ -13,9 +14,10 @@ describe('BillDetailsPresidentComponent', () => {
   let router: any;
   let route:any;
   let billService: any;
-
+  
   beforeEach(async(() => {
     TestBed.configureTestingModule({
+      imports: [RouterTestingModule],
       declarations: [ BillDetailsPresidentComponent ]
     })
     .compileComponents();
@@ -40,6 +42,9 @@ describe('BillDetailsPresidentComponent', () => {
     let routerMock = {
       navigate: jasmine.createSpy('navigate')
     };
+
+    
+
 
 
     TestBed.configureTestingModule({

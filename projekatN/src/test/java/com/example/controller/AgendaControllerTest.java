@@ -40,6 +40,7 @@ import org.springframework.web.context.WebApplicationContext;
 import com.example.TestUtils;
 import com.example.dto.AgendaDTO;
 import com.example.dto.AgendaItemDTO;
+import com.example.dto.GlitchDTO;
 import com.example.dto.ItemCommentDTO;
 import com.example.dto.LoginDTO;
 import com.example.dto.UserDTO;
@@ -49,7 +50,7 @@ import com.jayway.restassured.RestAssured;
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 @TestPropertySource(locations = "classpath:test.properties")
 public class AgendaControllerTest {
-/*
+
 	private String accessTokenOwner;
 	private String accessToken;
 
@@ -83,6 +84,9 @@ public class AgendaControllerTest {
 	@Rollback(true)
 	public void testAddAgendaItem() throws Exception {
 		AgendaItemDTO itemDTO = new AgendaItemDTO(ID_ITEM, NEW_NUMBER, NEW_TYPE, NEW_TITLE);
+		GlitchDTO glitch = new GlitchDTO();
+		glitch.setId(1L);
+		itemDTO.setGlitch(glitch);
 
 		String json = TestUtils.convertObjectToJson(itemDTO);
 
@@ -130,16 +134,13 @@ public class AgendaControllerTest {
 	public void testGetAgenda() throws Exception {
 		mockMvc.perform(get("/api/agendas/" + ID_MEETING).header("X-Auth-Token", accessToken))
 				.andExpect(status().isOk()).andExpect(content().contentType(contentType));
-		// .andExpect(jsonPath("$.[*].id").value(hasItem(ID.intValue())))
-		/// .andExpect(jsonPath("$.[*].title").value(hasItem(TITLE)))
-		// .andExpect(jsonPath("$.[*].number").value(hasItem(NUMBER)));
 
 	}
 
 	// ?????
 	@Test
 	public void testGetAgendaWithoutMeeting() throws Exception {
-		mockMvc.perform(get("/api/agendas/no_meeting").header("X-Auth-Token", accessToken)).andExpect(status().isOk())
+		mockMvc.perform(get("/api/buildings/"+1L+"/agendas/no_meeting").header("X-Auth-Token", accessToken)).andExpect(status().isOk())
 				.andExpect(content().contentType(contentType));
 
 	}
@@ -338,5 +339,5 @@ public class AgendaControllerTest {
 						.header("X-Auth-Token", accessToken))
 				.andExpect(status().isBadRequest());
 	}
-*/
+
 }
